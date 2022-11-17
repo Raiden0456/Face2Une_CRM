@@ -1,0 +1,20 @@
+body{
+    display: flex;
+    justify-content: center;
+    background-color: #f6f6f6;
+    color: #313131;
+    font-weight: 400;
+    font-size: 14px;
+    flex-direction: column;
+}
+@font-face {
+    font-family: 'Point-soft';
+    src: url('stylesheets/Point-soft.ttf');
+}
+span{
+    font-family: 'Point-soft';
+}
+.booking_main{
+    width: 70%;
+    height: 100vh;
+}

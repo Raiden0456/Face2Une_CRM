@@ -1,0 +1,27 @@
+{
+  "name": "face2une_crm",
+  "version": "1.0.0",
+  "description": "CRM System for Face2Une beaty salon  https://www.face2une.com/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raiden0456/Face2Une_CRM.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raiden0456/Face2Une_CRM/issues"
+  },
+  "homepage": "https://github.com/Raiden0456/Face2Une_CRM#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "debug": "^4.3.4",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "http-errors": "^2.0.0",
+    "nodemon": "^2.0.20"
+  }
+}
