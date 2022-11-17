@@ -6,12 +6,13 @@ body{
     font-weight: 400;
     font-size: 14px;
     flex-direction: column;
+    align-items: center;
 }
 @font-face {
     font-family: 'Point-soft';
-    src: url('stylesheets/Point-soft.ttf');
+    src: url('Point-soft.ttf');
 }
-span{
+h1,h2,h3,h4,p,a,button,li,span,input,textarea,div{
     font-family: 'Point-soft';
 }
 .booking_main{

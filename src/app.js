@@ -6,11 +6,9 @@ var app = express();
 
 // Importing the routes //
 var indexRouter = require('./routes/index');
-var loginRouter = require('./routes/login');
 var registerRouter = require('./routes/register');
 
 app.use('/', indexRouter);
-app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 //////////////////////////
 
