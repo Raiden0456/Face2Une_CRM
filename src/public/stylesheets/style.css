@@ -16,6 +16,37 @@ h1,h2,h3,h4,p,a,button,li,span,input,textarea,div{
     font-family: 'Point-soft';
 }
 .booking_main{
-    width: 70%;
+    width: 55%;
     height: 100vh;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px lightgrey; 
+}
+
+.name_container{
+    text-align: center;
+}
+.header{
+    height: 4%;
+}
+.progress{
+    display:flex;
+    justify-content: space-around;
+    height: 100%;
+    padding-left: 0;
+}
+.step-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    border-color: lightgrey;
+    border-width: 1px;
+    border-radius: 10px;
+    width: 30%;
+}
+
+.step-container.active{
+    border-color: #91a0db;
+    box-shadow: 2px 2px 2px #91a0db;
 }
