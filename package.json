@@ -4,8 +4,9 @@
   "description": "CRM System for Face2Une beaty salon  https://www.face2une.com/",
   "main": "index.js",
   "scripts": {
+    "watch:scss": "node-sass --w src/public/stylesheets/style.scss src/public/stylesheets/style.css",
     "start": "node src/bin/www",
-    "dev": "nodemon src/bin/www"
+    "dev": "nodemon src/bin/www & npm run watch:scss"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,8 @@
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "http-errors": "^2.0.0",
-    "nodemon": "^2.0.20"
+    "node-sass": "^8.0.0",
+    "nodemon": "^2.0.20",
+    "sass": "^1.56.1"
   }
 }
