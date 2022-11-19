@@ -10,7 +10,7 @@ body {
 	background-color: #f6f6f6;
 	color: #313131;
 	font-weight: 400;
-	font-size: 14px;
+	font-size: 1vw;
 	flex-direction: column;
 	align-items: center;
 }
@@ -83,6 +83,7 @@ $button-text-color: floralwhite;
 	width: 15%;
 	height: 4%;
 	margin-bottom: 5%;
+	font-size: 0.8vw;
 	display: inline-block;
 	-webkit-appearance: none;
 	appearance: none;
@@ -205,4 +206,14 @@ $button-text-color: floralwhite;
 	width: 90%;
 	height: 80%;
 }
-
+@media(max-width:700px){
+	body {
+		font-size: 2vw;
+	}
+	.booking_page {
+		width: 100%;
+	}
+	.bubbly-button{
+		font-size: 1.5vw;
+	}
+}
