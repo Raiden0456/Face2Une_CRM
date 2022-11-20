@@ -71,7 +71,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 .bubbly-button {
   z-index: 10;
   width: 15%;
-  height: 3vh;
+  height: 70%;
   margin-bottom: 5%;
   font-size: 0.8vw;
   display: inline-block;
