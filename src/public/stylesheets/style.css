@@ -22,7 +22,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   min-height: 900px;
   background-color: white;
   border-radius: 20px;
-  box-shadow: 2px 2px 5px lightgrey;
+  box-shadow: 0 0 20px lightgray;
   display: flex;
   flex-direction: column;
   align-items: center; }
@@ -71,7 +71,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 .bubbly-button {
   z-index: 10;
   width: 15%;
-  height: 4%;
+  height: 3vh;
   margin-bottom: 5%;
   font-size: 0.8vw;
   display: inline-block;
@@ -83,8 +83,8 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   border: none;
   cursor: pointer;
   position: relative;
-  transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
-  box-shadow: 0 2px 25px #6876a8; }
+  transition: transform ease-in 0.1s, box-shadow ease-in 0.2s;
+  box-shadow: 0 0 5px #6876a8; }
   .bubbly-button:focus {
     outline: 0; }
   .bubbly-button:before, .bubbly-button:after {
@@ -110,7 +110,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   .bubbly-button:active {
     transform: scale(0.9);
     background-color: #7e8fd5;
-    box-shadow: 0 2px 25px #6876a8; }
+    box-shadow: 0 0 20px #6876a8; }
   .bubbly-button.animate:before {
     display: block;
     animation: topBubbles ease-in-out 0.75s forwards; }
@@ -146,7 +146,6 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   border-color: lightgrey;
   border-radius: 15px;
   margin-bottom: 2%;
-  height: 30%;
   border-style: solid;
   border-width: 1px; }
 
@@ -154,7 +153,28 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   display: flex;
   flex-direction: column;
   width: 90%;
-  height: 80%; }
+  margin: 5%; }
+  .appointment_body p1 {
+    font-weight: bold; }
+
+.appointment_header {
+  display: grid;
+  margin-bottom: 4%; }
+  .appointment_header p1 {
+    grid-column: 1; }
+  .appointment_header p2 {
+    color: #686868;
+    grid-column: 1; }
+  .appointment_header button {
+    grid-column: 2;
+    width: 25%;
+    height: 100%;
+    grid-row: 1;
+    text-align: center;
+    justify-self: end; }
+
+.appointment_description {
+  color: #686868; }
 
 @media (max-width: 700px) {
   body {

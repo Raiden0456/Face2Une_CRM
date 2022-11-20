@@ -25,7 +25,7 @@ h1,h2,h3,h4,p,a,li,ul,ol,span,div,button,input,textarea,div {
 	min-height: 900px;
 	background-color: white;
 	border-radius: 20px;
-	box-shadow: 2px 2px 5px lightgrey;
+	box-shadow: 0 0 20px lightgray;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -81,7 +81,7 @@ $button-text-color: floralwhite;
 .bubbly-button{
 	z-index: 10;
 	width: 15%;
-	height: 4%;
+	height: 3vh;
 	margin-bottom: 5%;
 	font-size: 0.8vw;
 	display: inline-block;
@@ -93,8 +93,8 @@ $button-text-color: floralwhite;
 	border: none;
 	cursor: pointer;
 	position: relative;
-	transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
-	box-shadow: 0 2px 25px #6876a8;
+	transition: transform ease-in 0.1s, box-shadow ease-in 0.2s;
+	box-shadow: 0 0 5px #6876a8;
 	
 	&:focus {
 	  outline: 0;
@@ -147,7 +147,7 @@ $button-text-color: floralwhite;
 	&:active{
 	  transform: scale(0.9);
 	  background-color: darken($button-bg, 5%);
-	  box-shadow: 0 2px 25px #6876a8;
+	  box-shadow: 0 0 20px #6876a8;
 	}
 	
 	&.animate{
@@ -196,7 +196,6 @@ $button-text-color: floralwhite;
 	border-color: lightgrey;
 	border-radius: 15px;
 	margin-bottom: 2%;
-	height: 30%;
 	border-style: solid;
 	border-width: 1px;
 }
@@ -204,7 +203,32 @@ $button-text-color: floralwhite;
 	display: flex;
 	flex-direction: column;
 	width: 90%;
-	height: 80%;
+	margin: 5%;
+	p1 {
+		font-weight: bold;
+	}
+}
+.appointment_header {
+	display: grid;
+	margin-bottom: 4%;
+	p1 {
+		grid-column: 1;
+	}
+	p2 {
+		color: #686868;
+		grid-column: 1;
+	}
+	button {
+		grid-column: 2;
+		width: 25%;
+		height: 100%;
+		grid-row: 1;
+		text-align: center;
+		justify-self: end;
+	}
+}
+.appointment_description {
+	color: #686868;
 }
 @media(max-width:700px){
 	body {
