@@ -19,6 +19,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 .booking_page {
   width: 50%;
   height: 100vh;
+  min-height: 900px;
   background-color: white;
   border-radius: 20px;
   box-shadow: 2px 2px 5px lightgrey;
