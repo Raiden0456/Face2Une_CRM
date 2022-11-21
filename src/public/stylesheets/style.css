@@ -35,7 +35,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   .header a {
     position: absolute;
     right: 27%;
-    top: 2%;
+    top: 20px;
     color: #778cdb; }
 
 .progress {
@@ -68,7 +68,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 
 /* Bubbly button */
 .bubbly-button {
-  z-index: 10;
+  z-index: 1;
   width: 15%;
   height: 70%;
   margin-bottom: 5%;
@@ -175,9 +175,38 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 .appointment_description {
   color: #686868; }
 
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 2;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: black;
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */ }
+
+.modal_book_content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; }
+
 @media (max-width: 700px) {
   body {
     font-size: 2vw; }
+  .header a {
+    right: 7%; }
   .booking_page {
     width: 100%; }
   .bubbly-button {
