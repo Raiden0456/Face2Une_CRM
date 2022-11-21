@@ -15,12 +15,14 @@ body {
 h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   font-family: 'Point-soft'; }
 
+.border_round {
+  border-radius: 20px; }
+
 /* Top part of the page */
 .booking_page {
   width: 50%;
   height: 100vh;
   background-color: white;
-  border-radius: 20px;
   box-shadow: 0 0 20px lightgray;
   display: flex;
   flex-direction: column;
@@ -141,7 +143,6 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   align-items: center;
   justify-content: center;
   width: 100%;
-  border-radius: 20px;
   border-color: lightgrey;
   border-radius: 15px;
   margin-bottom: 2%;
@@ -162,7 +163,6 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   .appointment_header p1 {
     grid-column: 1; }
   .appointment_header p2 {
-    color: #686868;
     grid-column: 1; }
   .appointment_header button {
     grid-column: 2;
@@ -171,6 +171,9 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
     grid-row: 1;
     text-align: center;
     justify-self: end; }
+
+.time_price {
+  color: #686868; }
 
 .appointment_description {
   color: #686868; }
@@ -204,7 +207,6 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   padding: 20px;
   border: 1px solid #888;
   width: 60%;
-  border-radius: 20px;
   animation: slideIn .8s linear; }
 
 @keyframes slideIn {
@@ -238,9 +240,32 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   font-weight: bold;
   background: none;
   border: none; }
+  .x.active {
+    color: #6b6a6a; }
 
-.x:active {
-  color: #6b6a6a; }
+.appointment_info {
+  display: flex;
+  flex-direction: column;
+  width: fit-content; }
+  .appointment_info .slide_down {
+    overflow: hidden;
+    transition: all .5s ease-in-out;
+    height: 0; }
+  .appointment_info:hover .slide_down {
+    height: 50px; }
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(0); }
+  100% {
+    transform: translateY(40px);
+    opacity: 1; } }
+
+.additional_options {
+  display: none; }
+  .additional_options:active {
+    display: flex;
+    flex-direction: column; }
 
 @media (max-width: 700px) {
   body {

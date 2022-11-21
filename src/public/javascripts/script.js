@@ -20,11 +20,11 @@ var animateButton = function(e) {
 
   //Modal for booking//
   var modal = document.getElementById("book_modal");
-  var btn = document.getElementById("book_btn");
+  var open_modal = document.getElementById("book_btn");
   var close_modal = document.getElementById("close_modal");
 
   // When the user clicks on the button, open the modal 
-btn.onmouseup = function() {
+open_modal.onmouseup = function() {
     modal.style.display = "block";
   }
 
