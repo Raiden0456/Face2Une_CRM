@@ -254,13 +254,6 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   .appointment_info:hover .slide_down {
     height: 50px; }
 
-@keyframes slideDown {
-  0% {
-    transform: translateY(0); }
-  100% {
-    transform: translateY(40px);
-    opacity: 1; } }
-
 .additional_options {
   display: none; }
   .additional_options:active {
