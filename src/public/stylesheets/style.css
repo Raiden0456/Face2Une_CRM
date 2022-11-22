@@ -75,7 +75,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 /* Bubbly button */
 .bubbly-button {
   z-index: 1;
-  width: fit-content;
+  min-width: 15%;
   height: 70%;
   margin-bottom: 5%;
   font-size: 0.8vw;
@@ -244,7 +244,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   font-weight: bold;
   background: none;
   border: none; }
-  .x.active {
+  .x:active {
     color: #6b6a6a; }
 
 .appointment_info {
@@ -277,12 +277,25 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 
 .options_button {
   width: fit-content;
-  height: 70%;
+  height: 2vw;
   margin-bottom: 3%; }
 
-.options {
-  display: none;
-  overflow: hidden; }
+.options_grid {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  padding: 2%; }
+  .options_grid.border_element {
+    max-height: 0;
+    visibility: hidden; }
+
+.option {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1%; }
+  .option label {
+    display: flex;
+    flex-direction: column; }
 
 @media (max-width: 700px) {
   body {
@@ -296,4 +309,6 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   .modal_book_content {
     width: 85%; }
   .desc_appointment:hover .slide_down {
-    height: 10vw; } }
+    height: 10vw; }
+  .options_button {
+    height: 4vw; } }
