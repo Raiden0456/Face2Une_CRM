@@ -20,6 +20,10 @@ h1,h2,h3,h4,p,a,li,ul,ol,span,div,button,input,textarea,div {
 .border_round {
 	border-radius: 20px;
 }
+.border_element {
+	border-radius: 15px;
+	border: 1px solid lightgray;
+}
 
 /* Top part of the page */
 .booking_page {
@@ -81,7 +85,7 @@ $button-bg: #91a0db;
 $button-text-color: floralwhite;
 .bubbly-button{
 	z-index: 1;
-	width: 15%;
+	width: fit-content;
 	height: 70%;
 	margin-bottom: 5%;
 	font-size: 0.8vw;
@@ -193,11 +197,7 @@ $button-text-color: floralwhite;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	border-color: lightgrey;
-	border-radius: 15px;
 	margin-bottom: 2%;
-	border-style: solid;
-	border-width: 1px;
 }
 .appointment_body {
 	display: flex;
@@ -290,7 +290,10 @@ $button-text-color: floralwhite;
 	display: flex;
 	justify-content: space-between;
 }
-
+.modal_book_body {
+	display: flex;
+	flex-direction: column;
+}
 .x {
 	color: #aaaaaa;
 	align-self: end;
@@ -303,29 +306,48 @@ $button-text-color: floralwhite;
 	}
 }
 
-
 .appointment_info {
 	display: flex;
 	flex-direction: column;
 	width: fit-content;
+	padding: 3%;
+}
+.desc_appointment {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-bottom: 2%;
 	.slide_down {
 		overflow: hidden;
 		transition: all .5s ease-in-out;
+		transition-delay: .3s;
  		height: 0;
 	}
 	&:hover {
 		.slide_down {
-			height: 50px;
+			height: 4vw;
 		}
 	}
 }
+.passenger {
+	font-size: 130%;
+	margin-bottom: 2%;
+}
+.additional_body {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
 
-.additional_options {
-	display: none;
-	&:active {
-		display:flex;
-		flex-direction: column;
-	}
+.options_button{
+	width: fit-content;
+	height: 70%;
+	margin-bottom: 3%;
+}
+
+.options{
+	display:none;
+	overflow: hidden;
 }
 
 
@@ -350,6 +372,13 @@ $button-text-color: floralwhite;
 	}
 	.modal_book_content {
 		width: 85%;
+	}
+	.desc_appointment {
+		&:hover {
+			.slide_down {
+				height: 10vw;
+			}
+		}
 	}
 }
 ////////////////////
