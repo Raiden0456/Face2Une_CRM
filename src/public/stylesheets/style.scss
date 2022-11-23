@@ -345,20 +345,29 @@ $button-text-color: floralwhite;
 	margin-bottom: 3%;
 }
 
-.options_grid {
+.options_container {
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.2s ease-out;
 	padding: 0%;
 	visibility: hidden;
+	.options_grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 1fr;
+		gap: 20px;
+		max-width: 90%;
+		max-height: 90%;
+	}
 }
 .option {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: 1%;
 	label {
 		display: flex;
 		flex-direction: column;
+	}
+	input {
+		align-self: flex-start;
 	}
 
 }

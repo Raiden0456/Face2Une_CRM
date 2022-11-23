@@ -280,20 +280,27 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   height: 2vw;
   margin-bottom: 3%; }
 
-.options_grid {
+.options_container {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   padding: 0%;
   visibility: hidden; }
+  .options_container .options_grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1fr;
+    gap: 20px;
+    max-width: 90%;
+    max-height: 90%; }
 
 .option {
   display: flex;
-  flex-direction: row;
-  margin-bottom: 1%; }
+  flex-direction: row; }
   .option label {
     display: flex;
     flex-direction: column; }
+  .option input {
+    align-self: flex-start; }
 
 @media (max-width: 700px) {
   body {

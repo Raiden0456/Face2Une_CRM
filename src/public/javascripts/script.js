@@ -40,21 +40,26 @@ window.onclick = function(event) {
 }
 
 // When the user clicks on the add options, open options 
-var open_options = document.getElementById("open_options");
+var open_options = document.getElementById("open_options_1");
 open_options.addEventListener("click", function() {
   this.classList.toggle("active");
-  var options_grid = this.nextElementSibling;
-  if (options_grid.style.maxHeight)
+  this.firstChild.data = this.firstChild.data == "Add options" ? "Clear and close" : "Add options";
+  var options_container = this.nextElementSibling;
+  if (options_container.style.maxHeight)
   {
-    options_grid.style.maxHeight = null;
-    options_grid.style.visibility = "hidden";
-    options_grid.style.padding = "0";
-  } 
+    options_container.style.maxHeight = null;
+    options_container.style.visibility = "hidden";
+    options_container.style.padding = "0";
+    var checkboxes = document.getElementsByName("option_checkbox_1");
+    for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].checked = false;
+    }
+  }
   else 
   {
-    options_grid.style.maxHeight = options_grid.scrollHeight + "px";
-    options_grid.style.visibility = "visible";
-    options_grid.style.padding = "2%";
+    options_container.style.maxHeight = options_container.scrollHeight + "px";
+    options_container.style.visibility = "visible";
+    options_container.style.padding = "2%";
   } 
 });
 /////////////////////
