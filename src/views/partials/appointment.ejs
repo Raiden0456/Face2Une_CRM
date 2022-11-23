@@ -1,0 +1,25 @@
+<!-- Appointment body section -->
+<div class="appointment border_element">
+    <div class="appointment_body">
+        <div class="appointment_header">
+            <p1>BACK TO BASICS</p1>
+            <p2 class="time_price">30 minutes @ €55.00</p2>
+            <button class="bubbly-button" id="book_btn">BOOK</button>
+        </div>
+        <div class="appointment_description">
+            <span>The Signature manual sculpting technique, suitable for anyone. The basic need to sustain
+                youthful look & plump, radiant skin. / Le modelage manuel signature convient à tout. La base
+                fondamentale pour conserver une appearance jeune et une peau pulpeuse et radieuse.</span>
+        </div>
+        <!-- Modal section -->
+        <div id="book_modal" class="modal">
+            <div class="modal_book_content border_round">
+                <button class="x" id="close_modal">&times;</button>
+                <div class="modal_book_header">
+                    <h1>Your appointment:</h1>
+                </div>
+                <%- include('../partials/modal_book_body.ejs') %>
+            </div>
+        </div>
+    </div>
+</div>

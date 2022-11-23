@@ -22,136 +22,16 @@
                 <li class="step-container">Confirmation</li>
             </ol>
         </section>
-
+        <div class="button_container">
+            <button class="bubbly-button code_button">USE MY CODE</button>
+        </div>
         <section class="appointments">
-            <div class="button_container">
-                <button class="bubbly-button">USE MY CODE</button>
-            </div>
-            <!-- Appointment body section -->
-            <div class="appointment border_element">
-                <div class="appointment_body">
-                    <div class="appointment_header">
-                        <p1>BACK TO BASICS</p1>
-                        <p2 class="time_price">30 minutes @ €55.00</p2>
-                        <button class="bubbly-button" id="book_btn">BOOK</button>
-                    </div>
-                    <div class="appointment_description">
-                        <span>The Signature manual sculpting technique, suitable for anyone. The basic need to sustain
-                            youthful look & plump, radiant skin. / Le modelage manuel signature convient à tout. La base
-                            fondamentale pour conserver une appearance jeune et une peau pulpeuse et radieuse.</span>
-                    </div>
-                    <!-- Modal section -->
-                    <div id="book_modal" class="modal">
-                        <div class="modal_book_content border_round">
-                            <button class="x" id="close_modal">&times;</button>
-                            <div class="modal_book_header">
-                                <h1>Your appointment:</h1>
-                            </div>
-                            <div class="modal_book_body">
-                                <!-- info block for chosen appointent -->
-                                <div class="appointment_info border_element">
-                                    <p1 class="passenger">Passenger 1</p1>
-                                    <div class="desc_appointment">
-                                        <p1>BACK TO BASICS*</p1>
-                                        <p2 class="time_price">30 minutes @ €55.00</p2>
-                                        <span class="appointment_description slide_down">The Signature manual sculpting
-                                            technique, suitable for anyone. The basic need to sustain youthful look &
-                                            plump, radiant skin. / Le modelage manuel signature convient à tout. La base
-                                            fondamentale pour conserver une appearance jeune et une peau pulpeuse et
-                                            radieuse.</span>
-                                    </div>
-                                    <button class="bubbly-button options_button" id="open_options_1">Add options</button>
-                                    <!-- additional options -->
-                                    <div class="options_container border_element">
-                                        <div class="options_grid">
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                            <div class="option">
-                                                <input type="checkbox" id="BMS" name="option_checkbox_1">
-                                                <label>
-                                                    <span class="option_name">BMS: bio-mechanical stimulation to relax
-                                                        muscles </span>
-                                                    <span class="time_price">+20 minutes @ €55.00 </span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <% 
+                //here "10" is arbitrary number of appointments//
+                for(let i = 0; i < 10; i++) { 
+            %>
+            <%- include('../partials/appointment.ejs') %>
+            <% } %>
         </section>
 
     </main>

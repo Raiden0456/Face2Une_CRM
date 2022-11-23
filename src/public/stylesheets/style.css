@@ -68,6 +68,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 /* Apppointents */
 .appointments {
   height: 100%;
+  overflow: auto;
   width: 90%;
   display: flex;
   flex-direction: column; }
@@ -141,12 +142,18 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
     background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
     background-size: 0% 0%, 0% 0%,  0% 0%,  0% 0%,  0% 0%,  0% 0%; } }
 
+.button_container {
+  width: 100%; }
+
+.code_button {
+  margin-left: 5%; }
+
 /*///////////////*/
 .appointment {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 99%;
   margin-bottom: 2%; }
 
 .appointment_body {
