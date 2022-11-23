@@ -25,7 +25,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 /* Top part of the page */
 .booking_page {
   width: 50%;
-  height: 100vh;
+  height: fit-content;
   background-color: white;
   box-shadow: 0 0 20px lightgray;
   display: flex;
@@ -34,7 +34,8 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 
 .top_container {
   width: 100%;
-  margin-bottom: 5%; }
+  margin-bottom: 5%;
+  height: 6vw; }
 
 .header {
   text-align: center; }
@@ -68,7 +69,6 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
 /* Apppointents */
 .appointments {
   height: 100%;
-  overflow: auto;
   width: 90%;
   display: flex;
   flex-direction: column; }
@@ -153,7 +153,7 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 99%;
+  width: 100%;
   margin-bottom: 2%; }
 
 .appointment_body {
@@ -250,7 +250,8 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   font-size: 300%;
   font-weight: bold;
   background: none;
-  border: none; }
+  border: none;
+  position: absolute; }
   .x:active {
     color: #6b6a6a; }
 
@@ -314,6 +315,8 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
     font-size: 2vw; }
   .header a {
     right: 7%; }
+  .top_container {
+    height: 12vw; }
   .booking_page {
     width: 100%; }
   .bubbly-button {
