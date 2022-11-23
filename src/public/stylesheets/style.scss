@@ -197,6 +197,7 @@ $button-text-color: floralwhite;
 }
 .code_button {
 	margin-left: 5%;
+	height: 2vw;
 }
 /*///////////////*/
 
@@ -415,6 +416,9 @@ $button-text-color: floralwhite;
 		}
 	}
 	.options_button{
+		height: 4vw;
+	}
+	.code_button {
 		height: 4vw;
 	}
 }

@@ -146,7 +146,8 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   width: 100%; }
 
 .code_button {
-  margin-left: 5%; }
+  margin-left: 5%;
+  height: 2vw; }
 
 /*///////////////*/
 .appointment {
@@ -326,4 +327,6 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   .desc_appointment:hover .slide_down {
     height: 10vw; }
   .options_button {
+    height: 4vw; }
+  .code_button {
     height: 4vw; } }
