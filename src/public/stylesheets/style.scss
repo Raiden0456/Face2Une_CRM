@@ -349,11 +349,8 @@ $button-text-color: floralwhite;
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.2s ease-out;
-	padding: 2%;
-	&.border_element {
-		max-height: 0;
-		visibility: hidden;
-	}
+	padding: 0%;
+	visibility: hidden;
 }
 .option {
 	display: flex;

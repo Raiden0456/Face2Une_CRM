@@ -284,10 +284,8 @@ h1, h2, h3, h4, p, a, li, ul, ol, span, div, button, input, textarea, div {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
-  padding: 2%; }
-  .options_grid.border_element {
-    max-height: 0;
-    visibility: hidden; }
+  padding: 0%;
+  visibility: hidden; }
 
 .option {
   display: flex;

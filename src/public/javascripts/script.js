@@ -48,11 +48,13 @@ open_options.addEventListener("click", function() {
   {
     options_grid.style.maxHeight = null;
     options_grid.style.visibility = "hidden";
+    options_grid.style.padding = "0";
   } 
   else 
   {
     options_grid.style.maxHeight = options_grid.scrollHeight + "px";
     options_grid.style.visibility = "visible";
+    options_grid.style.padding = "2%";
   } 
 });
 /////////////////////
