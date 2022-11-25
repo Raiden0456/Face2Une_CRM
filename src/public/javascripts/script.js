@@ -18,6 +18,23 @@ for (var i = 0; i < bubblyButtons.length; i++) {
 }
 //////////////////////////
 
+//When user clicks on "use my code" button, open an input field//
+var open_code = document.getElementById("code_open");
+open_code.addEventListener("click", function() {
+  this.classList.toggle("active");
+  //this.firstChild.data = this.firstChild.data == "Add options" ? "Clear and close" : "Add options";
+  var code_input = this.nextElementSibling;
+  if (code_input.style.maxHeight)
+  {
+    code_input.style.maxHeight = null;
+    code_input.style.visibility = "hidden";
+  }
+  else 
+  {
+    code_input.style.maxHeight = "100px";
+    code_input.style.visibility = "visible";
+  } 
+});
 //Modal for booking//
 var modal = document.getElementById("book_modal");
 

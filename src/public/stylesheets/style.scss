@@ -192,12 +192,30 @@ $button-text-color: floralwhite;
 	}
   }
 
-.button_container {
-	width: 100%;
+.code_container {
+	width: 90%;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 2%;
 }
 .code_button {
-	margin-left: 5%;
+	width: fit-content;
+	margin-bottom: 2%;
 	height: 2vw;
+}
+.code_input {
+	max-height: 0;
+	height: 2vw;
+	overflow: hidden;
+	transition: max-height 0.2s ease-out;
+	visibility: hidden;
+	width: 50%;
+	text-align: center;
+	&:focus {
+		border-color: #91a0db;
+		box-shadow: 0 0 2px #91a0db;
+		outline: none;
+	}
 }
 /*///////////////*/
 
@@ -269,31 +287,32 @@ $button-text-color: floralwhite;
 
 @keyframes slideIn {
 	0% {
-	  transform: translateY(400px);
-	  animation-timing-function: ease-out;
+		transform: translateY(400px);
+		animation-timing-function: ease-out;
 	}
 	60% {
-	  transform: translateY(-30px);
-	  animation-timing-function: ease-in;
+		transform: translateY(-30px);
+		animation-timing-function: ease-in;
 	}
 	80% {
-	  transform: translateY(10px);
-	  animation-timing-function: ease-out;
+		transform: translateY(10px);
+		animation-timing-function: ease-out;
 	}
 	100% {
-	  transform: translateY(0px);
-	  animation-timing-function: ease-in;
+		transform: translateY(0px);
+		animation-timing-function: ease-in;
 	}
-  }
-  
-  @keyframes fadeIn {
+}
+
+@keyframes fadeIn {
 	0% {
-	  opacity: 0;
+		opacity: 0;
 	}
 	100% {
-	  opacity: 1;
+		opacity: 1;
 	}
-  }
+}
+
 
 .modal_book_header {
 	display: flex;
@@ -419,6 +438,9 @@ $button-text-color: floralwhite;
 		height: 4vw;
 	}
 	.code_button {
+		height: 4vw;
+	}
+	.code_input{
 		height: 4vw;
 	}
 }
