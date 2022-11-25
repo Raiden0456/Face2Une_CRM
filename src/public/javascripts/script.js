@@ -22,7 +22,6 @@ for (var i = 0; i < bubblyButtons.length; i++) {
 var open_code = document.getElementById("code_open");
 open_code.addEventListener("click", function() {
   this.classList.toggle("active");
-  //this.firstChild.data = this.firstChild.data == "Add options" ? "Clear and close" : "Add options";
   var code_input = this.nextElementSibling;
   if (code_input.style.maxHeight)
   {
