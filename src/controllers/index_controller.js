@@ -6,7 +6,7 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all procedures from the database.
-exports.findAll = (req, res) => {
+exports.loadAllproc = (req, res) => {
   //function from index_model to get all procedures
     procedure.getAll((err, data) => {
       if (err)
