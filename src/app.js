@@ -5,8 +5,8 @@ var cookieParser = require('cookie-parser');
 var app = express();
 
 // Importing the routes //
-var indexRouter = require('./routes/index');
-var registerRouter = require('./routes/register');
+var indexRouter = require('./routes/index_route');
+var registerRouter = require('./routes/register_route');
 
 app.use('/', indexRouter);
 app.use('/register', registerRouter);
@@ -16,6 +16,7 @@ app.use('/register', registerRouter);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 ///////////////////////
+
 
 // app.use(logger('dev')); //
 app.use(express.json());
