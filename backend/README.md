@@ -1,5 +1,5 @@
 # Face2Une_CRM
 Backend stack:
-Node.js
-Express
-PostgreSQL
+Node.js <br>
+Express <br>
+PostgreSQL <br>
