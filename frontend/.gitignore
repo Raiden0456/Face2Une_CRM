@@ -1,9 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+/.idea
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+/package-lock.json
+package-lock.json
+
 
 # testing
 /coverage
@@ -21,3 +24,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# VSCode dependencies
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

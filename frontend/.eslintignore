@@ -1,0 +1,6 @@
+dist/
+public/
+coverage/
+
+*.json
+node_modules
