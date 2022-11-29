@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import NumberFormat from 'react-number-format';
 
 import s from './Input.scss';
