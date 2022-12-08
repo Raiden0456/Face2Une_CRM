@@ -1,10 +1,14 @@
-import { Client } from "pg";
-import { HOST, USER, PASSWORD, DB } from "../config/db_config.js";
+import pg from "pg";
+const { Client } = pg;
+//import { HOST, USER, PASSWORD, DB } from "../config/db_config.js";
+import dotenv from "dotenv";
+dotenv.config();
+
 const client = new Client({
-  user: USER,
-  host: HOST,
-  database: DB,
-  password: PASSWORD,
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: 'Nani1995',
   port: 5432
 })
 client.connect(function(err) {
