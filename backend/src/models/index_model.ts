@@ -1,4 +1,4 @@
-const sql = require("./db.js");
+import query from "./db.js";
 
 // constructor
 const procedure = function(procedure) {
@@ -10,7 +10,7 @@ const procedure = function(procedure) {
 };
 
 procedure.create = (new_procedure, result) => {
-  sql.query("INSERT INTO procedures SET ?", new_procedure, (err, res) => {
+  query("INSERT INTO procedures SET ?", new_procedure, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -23,7 +23,7 @@ procedure.create = (new_procedure, result) => {
 };
 
 procedure.findById = (id, result) => {
-  sql.query(`SELECT * FROM procedures WHERE id = ${id}`, (err, res) => {
+  query(`SELECT * FROM procedures WHERE id = ${id}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -42,9 +42,9 @@ procedure.findById = (id, result) => {
 };
 
 procedure.getAll = result => {
-  let query = "SELECT * FROM procedures";
+  let _query = "SELECT * FROM procedures";
   
-  sql.query(query, (err, res) => {
+  query(_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -57,7 +57,7 @@ procedure.getAll = result => {
 };
 
 procedure.updateById = (id, procedure, result) => {
-  sql.query(
+  query(
     "UPDATE procedures SET name = ?, description = ?, price = ?, duration = ?, additional = ? WHERE id = ?",
     [procedure.name, procedure.description, procedure.price, procedure.duration, procedure.additional, id],
     (err, res) => {
@@ -80,7 +80,7 @@ procedure.updateById = (id, procedure, result) => {
 };
 
 procedure.remove = (id, result) => {
-  sql.query("DELETE FROM procedures WHERE id = ?", id, (err, res) => {
+  query("DELETE FROM procedures WHERE id = ?", id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -111,4 +111,4 @@ procedure.remove = (id, result) => {
 //   });
 // };
 
-module.exports = procedure;
+export default procedure;

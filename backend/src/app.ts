@@ -1,28 +1,27 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
+import createError from 'http-errors';
+import express, { json, urlencoded } from 'express';
+import cookieParser from 'cookie-parser';
 var app = express();
 
 // Importing the routes //
-var indexRouter = require('./routes/index_route');
-var registerRouter = require('./routes/register_route');
+import indexRouter from './routes/index_route.js';
+import registerRouter from './routes/register_route.js';
 
 app.use('/', indexRouter);
 app.use('/register', registerRouter);
 //////////////////////////
 
-// view engine setup //
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-///////////////////////
+// // view engine setup //
+// app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
+// ///////////////////////
 
 
 // app.use(logger('dev')); //
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(path.join(__dirname + 'views')));
 /////////////////////////////
 
@@ -47,4 +46,4 @@ app.use(function(err, req, res, next) {
   ///////////////////////////
 });
 ///////////////////
-module.exports = app;
+export default app;

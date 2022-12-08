@@ -1,12 +1,12 @@
-const procedure = require("../models/index_model.js");
-const path = require('path');
+import procedure from "../models/index_model.js";
+import { join } from 'path';
 // Create and Save a new procedure
-exports.create = (req, res) => {
+export function create(req, res) {
   
-};
+}
 
 // Retrieve all procedures from the database.
-exports.loadAllproc = (req, res) => {
+export function loadAllproc(req, res) {
   //function from index_model to get all procedures
     procedure.getAll((err, data) => {
       if (err)
@@ -29,28 +29,28 @@ exports.loadAllproc = (req, res) => {
           }
         });
         //render the index page with the data
-        res.render(path.join('..', 'views', 'pages', 'index.ejs'), {main_procedures: main_procedures, additional_procedures: additional_procedures});
+        res.render(join('..', 'views', 'pages', 'index.ejs'), {main_procedures: main_procedures, additional_procedures: additional_procedures});
       }
     });
-};
+}
 
 // Find a single procedure with a id
-exports.findOne = (req, res) => {
+export function findOne(req, res) {
   
-};
+}
 
 
 // Update a procedure identified by the id in the request
-exports.update = (req, res) => {
+export function update(req, res) {
   
-};
+}
 
 // Delete a procedure with the specified id in the request
-exports.delete = (req, res) => {
-  
+const _delete = (req, res) => {
 };
+export { _delete as delete };
 
 // Delete all procedure from the database.
-exports.deleteAll = (req, res) => {
+export function deleteAll(req, res) {
   
-};
+}
