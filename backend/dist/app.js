@@ -1,12 +1,16 @@
 import createError from 'http-errors';
 import express, { json, urlencoded } from 'express';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 var app = express();
+// enable cors for localhost //
+app.use(cors());
+/////////////////////////////
 // Importing the routes //
 import indexRouter from './routes/index_route.js';
-import registerRouter from './routes/register_route.js';
+//import registerRouter from './routes/register_route.js';
 app.use('/', indexRouter);
-app.use('/register', registerRouter);
+//app.use('/register', registerRouter);
 //////////////////////////
 // // view engine setup //
 // app.set('view engine', 'ejs');
