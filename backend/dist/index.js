@@ -2,7 +2,6 @@
 /**
  * Module dependencies.
  */
-//rewrite to import
 import app from "./app.js";
 import debug from "debug";
 import http from "http";

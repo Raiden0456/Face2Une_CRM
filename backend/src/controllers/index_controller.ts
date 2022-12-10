@@ -29,7 +29,7 @@ export function loadAllproc(req, res) {
         //   }
         // });
         //render the index page with the data
-        res.send(data);
+        res.send(data.rows);
       }
     });
 }
