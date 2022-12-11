@@ -34,7 +34,9 @@ export const Container: React.FC<IContainer> = ({
 }) => {
   return (
     <div style={{ maxWidth: width, width }} className={s.Container}>
-      <div className={classNames(s.Container__header, mobile && fullPage && s.Container__headerHide)}>{header}</div>
+      {header && (
+        <div className={classNames(s.Container__header, mobile && fullPage && s.Container__headerHide)}>{header}</div>
+      )}
       {content && (
         <div
           style={{ backgroundColor: colors[background || 'white'] }}

@@ -24,7 +24,7 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
     <>
       <Container
         className={s.SignIn}
-        header={mobile ? <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>Mobile</div> : <NavBar />}
+        /* header={mobile ? <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>Mobile</div> : <NavBar />} */
         content={
           <form id="myform" className={s.SignIn__content} onSubmit={onSubmit}>
             <Input

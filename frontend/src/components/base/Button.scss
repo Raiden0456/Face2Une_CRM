@@ -1,7 +1,7 @@
 .ButtonContained {
   height: 44px;
   border-radius: 6px;
-  background: #003de6;
+  background: #91a0db;
   color: #ffffff;
   padding: 11.5px 24px;
   display: flex;
@@ -19,7 +19,7 @@
 }
 
 .ButtonContained:hover {
-  background: #003de6a2;
+  background: #91a0dbb9;
 }
 
 .ButtonContained:active {
@@ -30,7 +30,7 @@
   cursor: default;
 }
 
-.ButtonOutlined {
+/* .ButtonOutlined {
   height: 44px;
   border-radius: 6px;
   background: #ffffff00;
@@ -61,4 +61,4 @@
 .ButtonOutlined:disabled,
 .ButtonOutlined[disabled] {
   cursor: default;
-}
+} */
