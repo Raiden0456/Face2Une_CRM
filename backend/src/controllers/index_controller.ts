@@ -15,7 +15,7 @@ export function loadProc(add = 0, res) {
             err.message || "Some error occurred while retrieving procedures."
         });
       else {
-        res.send(data.rows);
+        res.json(data.rows);
       }
     });
 }
@@ -29,7 +29,7 @@ export function findOne(id, req, res) {
           err.message || "Some error occurred while retrieving procedure."
       });
     else {
-      res.send(data.rows);
+      res.json(data.rows);
     }
   });
 }
