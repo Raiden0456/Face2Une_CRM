@@ -2,6 +2,10 @@ import createError from 'http-errors';
 import express, { json, urlencoded } from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+// import swagger from 'swagger-ui-express'
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../swagger.json' assert { type: "json" };;
+
 var app = express();
 
 // enable cors for localhost //
@@ -15,6 +19,11 @@ import indexRouter from './routes/index_route.js';
 //import registerRouter from './routes/register_route.js';
 
 app.use('/', indexRouter);
+app.use(
+  '/api-docs',
+  swaggerUi.serve, 
+  swaggerUi.setup(swaggerDocument)
+);
 
 //app.use('/register', registerRouter);
 //////////////////////////

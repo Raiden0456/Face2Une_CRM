@@ -1,0 +1,65 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0", 
+      "title": "My User Project CRUD",
+      "description": "My User Project Application API",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Face2Une",
+        "description": "API for ehh, dunno yet, in the system"
+      }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/appointments": {
+          "get": {
+            "tags": ["Procedures"],
+            "summary": "Get all procedures in system",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "$ref": "postgres/public/procedures"
+                }
+              }
+            }
+          }
+        }
+      },
+      "definitions": {
+        "Procedure": {
+          "required": ["name", "_id", "additional"],
+          "properties": {
+            "_id": {
+              "type": "integer",
+              "uniqueItems": true
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number"
+            },
+            "duration": {
+              "type": "number"
+            },
+            "additional": {
+              "type": "number"
+            }
+          }
+        }
+      }
+  }
