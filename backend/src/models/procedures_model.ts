@@ -1,8 +1,8 @@
 import { QueryResult } from "pg";
 import client from "./db.js";
 
-// constructor
-const procedure = function(procedure: { id: bigint, name: string; description: string; price: number; duration: bigint; additional: number; }) {
+// Constructor
+const procedure = function (procedure) {
   this.id = procedure.id;
   this.name = procedure.name;
   this.description = procedure.description;
@@ -53,8 +53,22 @@ procedure.getProcById = (id: bigint, result)  => {
   });
 };
 
-procedure.updateProcById = (id: bigint, name: string, description: string, price: number, duration: bigint, additional: number, result)  => {
-  var _query = "UPDATE procedures SET name = " + name + ", description = " + description + ", price = " + price + ", duration = " + duration + ", additional = " + additional + " WHERE id = " + id;
+procedure.createProc = (proc: {name: string, description: string, price: number, duration: number, additional: number }, result)  => {
+  var _query = "INSERT INTO procedures (name, description, price, duration, additional) VALUES('" + proc.name + "', '" + proc.description + "', " + proc.price + ", " + proc.duration + ", " + proc.additional + ")";
+  client.query(_query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    // console.log("procedures: ", res);
+    result(null, res);
+    client.end();
+  });
+};
+
+procedure.updateProcById = (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
+  var _query = "UPDATE procedures SET name = " + proc.name + ", description = " + proc.description + ", price = " + proc.price + ", duration = " + proc.duration + ", additional = " + proc.additional + " WHERE id = " + proc.id;
   client.query(_query, (err, res) => {
     if (err) {
       console.log("error: ", err);

@@ -2,8 +2,8 @@
     "swagger": "2.0",
     "info": {
       "version": "1.0.0", 
-      "title": "My User Project CRUD",
-      "description": "My User Project Application API",
+      "title": "Face2Une Project",
+      "description": "API",
       "license": {
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT"
@@ -21,26 +21,56 @@
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "paths": {
-        "/appointments": {
+        "/main_proc": {
           "get": {
             "tags": ["Procedures"],
-            "summary": "Get all procedures in system",
+            "summary": "Get all main procedures in system",
             "responses": {
               "200": {
-                "description": "OK",
-                "schema": {
-                  "$ref": "postgres/public/procedures"
-                }
+                "description": "Returns all main procedures in database in JSON format"
+              }
+            }
+          }
+        },
+        "/optional_proc": {
+          "get": {
+            "tags": ["Procedures"],
+            "summary": "Get all optional procedures in system",
+            "responses": {
+              "200": {
+                "description": "Returns all optional procedures in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_proc": {
+          "post": {
+            "tags": ["Procedures"],
+            "summary": "Create new procedure",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of procedure",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Procedure"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Procedure created"
               }
             }
           }
         }
       },
+      
       "definitions": {
         "Procedure": {
-          "required": ["name", "_id", "additional"],
           "properties": {
-            "_id": {
+            "id": {
               "type": "integer",
               "uniqueItems": true
             },
@@ -54,10 +84,10 @@
               "type": "number"
             },
             "duration": {
-              "type": "number"
+              "type": "integer"
             },
             "additional": {
-              "type": "number"
+              "type": "integer"
             }
           }
         }

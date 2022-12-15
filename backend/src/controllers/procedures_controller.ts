@@ -1,9 +1,5 @@
-import procedure from "../models/index_model.js";
+import procedure from "../models/procedures_model.js";
 import { join } from 'path';
-// Create and Save a new procedure
-export function create(req, res) {
-
-}
 
 // Retrieve procedures from the database.
 export function loadProc(add = 0, res) {
@@ -21,7 +17,7 @@ export function loadProc(add = 0, res) {
 }
 
 // Find a single procedure with an id
-export function findOne(id, req, res) {
+export function findOneProc(id, req, res) {
   procedure.getProcById(id, (err, data) => {
     if (err)
       res.status(500).send({
@@ -36,8 +32,8 @@ export function findOne(id, req, res) {
 
 
 // Update a procedure identified by the id in the request
-export function update(id: bigint, _name: string, desc: string, price: number, dur: bigint, add: number, req, res) {
-  procedure.updateProcById(id, _name, desc, price, dur, add, (err, data) => {
+export function updateProc(proc: {id: number, name: string, description: string, price: number, duration: number, additional: number}, res) {
+  procedure.updateProcById(proc, (err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -49,8 +45,22 @@ export function update(id: bigint, _name: string, desc: string, price: number, d
   });
 }
 
+// Create a procedure 
+export function createProc(proc: {name: string, description: string, price: number, duration: number, additional: number}, res) {
+  procedure.createProc(proc, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while updating procedure."
+      });
+    else {
+      res.json(data);
+    }
+  });
+}
+
 // Delete a procedure with the specified id in the request
-const _delete = (id:bigint , req, res) => {
+const deleteProcById = (id:bigint , req, res) => {
   procedure.deleteProcById(id, (err, data) => {
     if (err)
       res.status(500).send({
@@ -62,5 +72,5 @@ const _delete = (id:bigint , req, res) => {
     }
   });
 };
-export { _delete as delete };
+export { deleteProcById as delete };
 
