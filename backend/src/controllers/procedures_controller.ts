@@ -3,7 +3,6 @@ import { join } from 'path';
 
 // Retrieve procedures from the database.
 export function loadProc(add = 0, res) {
-  //function from index_model to get procedures
     procedure.getAllproc(add, (err, data) => {
       if (err)
         res.status(500).send({
@@ -11,13 +10,13 @@ export function loadProc(add = 0, res) {
             err.message || "Some error occurred while retrieving procedures."
         });
       else {
-        res.json(data.rows);
+        res.json({success: true, data: data.rows});
       }
     });
 }
 
 // Find a single procedure with an id
-export function findOneProc(id, req, res) {
+export function findOneProc(id: number, res) {
   procedure.getProcById(id, (err, data) => {
     if (err)
       res.status(500).send({
@@ -25,7 +24,7 @@ export function findOneProc(id, req, res) {
           err.message || "Some error occurred while retrieving procedure."
       });
     else {
-      res.json(data.rows);
+      res.json({success: true, data: data.rows});
     }
   });
 }
@@ -40,7 +39,7 @@ export function updateProc(proc: {id: number, name: string, description: string,
           err.message || "Some error occurred while updating procedure."
       });
     else {
-      res.send(true);
+      res.json({success: true, data: proc});
     }
   });
 }
@@ -54,13 +53,13 @@ export function createProc(proc: {name: string, description: string, price: numb
           err.message || "Some error occurred while updating procedure."
       });
     else {
-      res.json(data);
+      res.json({success: true, data: proc});
     }
   });
 }
 
 // Delete a procedure with the specified id in the request
-const deleteProcById = (id:bigint , req, res) => {
+export function deleteProc(id: number, res) {
   procedure.deleteProcById(id, (err, data) => {
     if (err)
       res.status(500).send({
@@ -68,9 +67,8 @@ const deleteProcById = (id:bigint , req, res) => {
           err.message || "Some error occurred while deleting procedure."
       });
     else {
-      res.send(true);
+      res.json({success: true, data: id});
     }
   });
 };
-export { deleteProcById as delete };
 

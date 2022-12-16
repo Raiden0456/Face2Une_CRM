@@ -37,9 +37,8 @@ procedure.getAllproc = (additional: number, result)  => {
   });
 };
 
-procedure.getProcById = (id: bigint, result)  => {
+procedure.getProcById = (id: number, result)  => {
   var _query = "SELECT * FROM procedures WHERE id = " + id;
-
   client.query(_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -68,7 +67,7 @@ procedure.createProc = (proc: {name: string, description: string, price: number,
 };
 
 procedure.updateProcById = (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
-  var _query = "UPDATE procedures SET name = " + proc.name + ", description = " + proc.description + ", price = " + proc.price + ", duration = " + proc.duration + ", additional = " + proc.additional + " WHERE id = " + proc.id;
+  var _query = "UPDATE procedures SET name = '" + proc.name + "', description = '" + proc.description + "', price = " + proc.price + ", duration = " + proc.duration + ", additional = " + proc.additional + " WHERE id = " + proc.id;
   client.query(_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -82,7 +81,7 @@ procedure.updateProcById = (proc: {id: number, name: string, description: string
   });
 };
 
-procedure.deleteProcById = (id: bigint, result)  => {
+procedure.deleteProcById = (id: number, result)  => {
   var _query = "DELETE FROM procedures WHERE id = " + id;
   client.query(_query, (err, res) => {
     if (err) {
