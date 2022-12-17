@@ -1,0 +1,180 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0", 
+      "title": "Face2Une Project",
+      "description": "API",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Face2Une",
+        "description": "API for ehh, dunno yet"
+      }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/main_proc": {
+          "get": {
+            "tags": ["Procedures"],
+            "summary": "Get all main procedures in db",
+            "responses": {
+              "200": {
+                "description": "Returns all main procedures in database in JSON format"
+              }
+            }
+          }
+        },
+        "/optional_proc": {
+          "get": {
+            "tags": ["Procedures"],
+            "summary": "Get all optional procedures in db",
+            "responses": {
+              "200": {
+                "description": "Returns all optional procedures in database in JSON format"
+              }
+            }
+          }
+        },
+        "/proc/{procid}": {
+          "get": {
+            "tags": ["Procedures"],
+            "summary": "Get a single procedure by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "procid",
+              "description": "id of procedure",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single procedure in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_proc": {
+          "post": {
+            "tags": ["Procedures"],
+            "summary": "Create new procedure",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of procedure",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/newProcedure"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a procedure in database using JSON format"
+              }
+            }
+          }
+        },
+        "/update_proc": {
+          "post": {
+            "tags": ["Procedures"],
+            "summary": "Update procedure by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of procedure",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Procedure"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a procedure in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_proc/{procid}": {
+          "delete": {
+            "tags": ["Procedures"],
+            "summary": "Delete procedure by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "procid",
+              "description": "id of procedure",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a procedure in database by id"
+              }
+            }
+          }
+        }
+      },
+      
+      "definitions": {
+        "newProcedure": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number"
+            },
+            "duration": {
+              "type": "integer"
+            },
+            "additional": {
+              "type": "integer"
+            }
+          }
+        },
+        "Procedure": {
+          "properties": {
+            "id": {
+              "type": "integer",
+              "uniqueItems": true
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number"
+            },
+            "duration": {
+              "type": "integer"
+            },
+            "additional": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+  }
