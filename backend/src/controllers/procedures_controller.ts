@@ -9,8 +9,11 @@ export function loadProc(add = 0, res) {
           message:
             err.message || "Some error occurred while retrieving procedures."
         });
-      else {
+      else if (data.rows.length != 0) {
         res.json({success: true, data: data.rows});
+      }
+      else {
+        res.json({success: false, data: data.rows});
       }
     });
 }
@@ -23,8 +26,11 @@ export function findOneProc(id: number, res) {
         message:
           err.message || "Some error occurred while retrieving procedure."
       });
-    else {
+    else if (data.rows.length != 0) {
       res.json({success: true, data: data.rows});
+    }
+    else {
+      res.json({success: false, data: data.rows});
     }
   });
 }
