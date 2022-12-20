@@ -6,8 +6,15 @@
   cursor: default;
   padding: 33px;
   align-items: flex-start;
-  width: 100%;
   border-radius: 16px;
+}
+
+.BookingBoxModal {
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  padding: 33px;
+  align-items: flex-start;
 }
 
 .BookingBox__header {
@@ -15,6 +22,10 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  h2 {
+    margin-bottom: 15px;
+  }
 }
 
 .BookingBox__header_column {
