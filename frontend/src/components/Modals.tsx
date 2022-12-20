@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { observer } from 'mobx-react';
+import { ModalStore } from '../store/Modal.store';
+import BookingBox from '../components/base/BookingBox';
 
 export const ModalsCustomStyles: object = {
   content: {
@@ -9,7 +11,7 @@ export const ModalsCustomStyles: object = {
     left: '50%',
     right: 'auto',
     bottom: 'auto',
-    marginRight: '-50%',
+    marginRight: '-25%',
     transform: 'translate(-50%, -50%)',
     background: '#FFFFFF',
     boxShadow: '0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)',
@@ -51,19 +53,31 @@ export const ModalsCustomStylesMobile: object = {
 };
 
 export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => {
-  const [status, setStatus] = useState(false);
+  useEffect(() => {
+    if (ModalStore.modalStatus.open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [ModalStore.modalStatus.action]);
 
   return (
     <Modal
-      isOpen={status}
+      isOpen={ModalStore.modalStatus.open}
       onRequestClose={() => {
-        setStatus(false);
+        // temp
+        if (ModalStore.modalStatus.redirectUrl) {
+          window.location.replace(ModalStore.modalStatus.redirectUrl);
+        } else if (ModalStore.modalStatus.action !== 'loader') {
+          ModalStore.setModalStatus({ open: false, action: null });
+        }
       }}
       style={!mobile ? ModalsCustomStyles : ModalsCustomStylesMobile}
       contentLabel="Modal"
       ariaHideApp={false}
     >
-      <div>Your Components</div>
+      {ModalStore.modalStatus.action === 'additional_procedures' && <BookingBox type='modal' />}
+      {ModalStore.modalStatus.action === 'loader' && <p>Loading...</p>}
     </Modal>
   );
 });
