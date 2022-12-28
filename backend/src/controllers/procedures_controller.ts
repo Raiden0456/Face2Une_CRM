@@ -9,14 +9,12 @@ export function loadProc(add = 0, res) {
           message:
             err.message || "Some error occurred while retrieving procedures."
         });
-        console.log(data);
-        return;
-      // else if (data.rows.length != 0) {
-      //   res.json({success: true, data: data.rows});
-      // }
-      // else {
-      //   res.json({success: false, data: data.rows});
-      // }
+      else if (data.length != 0) {
+        res.json({success: true, data: data});
+      }
+      else {
+        res.json({success: false, data: data});
+      }
     });
 }
 
