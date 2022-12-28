@@ -18,22 +18,22 @@ export function loadProc(add = 0, res) {
     });
 }
 
-// // Find a single procedure with an id
-// export function findOneProc(id: number, res) {
-//   procedure.getProcById(id, (err, data) => {
-//     if (err)
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving procedure."
-//       });
-//     else if (data.rows.length != 0) {
-//       res.json({success: true, data: data.rows});
-//     }
-//     else {
-//       res.json({success: false, data: data.rows});
-//     }
-//   });
-// }
+// Find a single procedure with an id
+export function findOneProc(id: number, res) {
+  procedure.getProcById(id, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving procedure."
+      });
+    else if (data.length != 0) {
+      res.json({success: true, data: data});
+    }
+    else {
+      res.json({success: false, data: data});
+    }
+  });
+}
 
 
 // // Update a procedure identified by the id in the request
@@ -50,19 +50,19 @@ export function loadProc(add = 0, res) {
 //   });
 // }
 
-// // Create a procedure 
-// export function createProc(proc: {name: string, description: string, price: number, duration: number, additional: number}, res) {
-//   procedure.createProc(proc, (err, data) => {
-//     if (err)
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while updating procedure."
-//       });
-//     else {
-//       res.json({success: true, data: proc});
-//     }
-//   });
-// }
+// Create a procedure 
+export function createProc(proc: {name: string, description: string, price: number, duration: number, additional: number}, res) {
+  procedure.createProc(proc, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while updating procedure."
+      });
+    else {
+      res.json({success: true, data: data});
+    }
+  });
+}
 
 // // Delete a procedure with the specified id in the request
 // export function deleteProc(id: number, res) {

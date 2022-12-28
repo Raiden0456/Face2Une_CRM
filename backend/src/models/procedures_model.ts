@@ -40,34 +40,27 @@ procedure.getAllproc = async (additional: number, result)  => {
   }
 };
 
-// procedure.getProcById = (id: number, result)  => {
-//   var _query = "SELECT * FROM procedures WHERE id = " + id;
-//   client.query(_query, (err, res) => {
-//     if (err) {
-//       console.log("error: ", err);
-//       result(null, err);
-//       return;
-//     }
+procedure.getProcById = async (id: number, result)  => {
+  let { data: procedures, error } = await supabase
+  .from('procedures')
+  .select('*')
+  .eq('id', id); 
+  result(error, procedures);
+};
 
-//     // console.log("procedures: ", res);
-//     result(null, res);
-//     client.end();
-//   });
-// };
-
-// procedure.createProc = (proc: {name: string, description: string, price: number, duration: number, additional: number }, result)  => {
-//   var _query = "INSERT INTO procedures (name, description, price, duration, additional) VALUES('" + proc.name + "', '" + proc.description + "', " + proc.price + ", " + proc.duration + ", " + proc.additional + ")";
-//   client.query(_query, (err, res) => {
-//     if (err) {
-//       console.log("error: ", err);
-//       result(null, err);
-//       return;
-//     }
-//     // console.log("procedures: ", res);
-//     result(null, res);
-//     client.end();
-//   });
-// };
+procedure.createProc = async (proc: {name: string, description: string, price: number, duration: number, additional: number }, result)  => {
+  const { data, error } = await supabase
+  .from('procedures')
+  .insert([
+    { name: proc.name},
+    { description: proc.description},
+    { price: proc.price},
+    { duration: proc.duration},
+    { additional: proc.additional},
+  ])
+  .select();
+  result(error, data);
+};
 
 // procedure.updateProcById = (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
 //   var _query = "UPDATE procedures SET name = '" + proc.name + "', description = '" + proc.description + "', price = " + proc.price + ", duration = " + proc.duration + ", additional = " + proc.additional + " WHERE id = " + proc.id;

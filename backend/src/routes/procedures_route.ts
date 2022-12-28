@@ -11,12 +11,12 @@ router.get('/main_proc', function(req, res){
 router.get('/optional_proc', function(req, res){
     proc.loadProc(1, res);
 });
-// router.get('/proc/:procid', function(req, res){
-//     proc.findOneProc(req.params.procid, res);
-// });
-// router.post('/create_proc', function(req, res){
-//     proc.createProc(req.body, res);
-// });
+router.get('/proc/:procid', function(req, res){
+    proc.findOneProc(req.params.procid, res);
+});
+router.post('/create_proc', function(req, res){
+    proc.createProc(req.body, res);
+});
 // router.post('/update_proc', function(req, res){
 //     proc.updateProc(req.body, res);
 // });
