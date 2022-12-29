@@ -17,10 +17,10 @@ router.get('/proc/:procid', function(req, res){
 router.post('/create_proc', function(req, res){
     proc.createProc(req.body, res);
 });
-// router.post('/update_proc', function(req, res){
-//     proc.updateProc(req.body, res);
-// });
-// router.delete('/delete_proc/:procid', function(req, res){
-//     proc.deleteProc(req.params.procid, res);
-// });
+router.post('/update_proc', function(req, res){
+    proc.updateProc(req.body, res);
+});
+router.delete('/delete_proc/:procid', function(req, res){
+    proc.deleteProc(req.params.procid, res);
+});
 export default router;

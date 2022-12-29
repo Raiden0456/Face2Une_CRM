@@ -36,19 +36,19 @@ export function findOneProc(id: number, res) {
 }
 
 
-// // Update a procedure identified by the id in the request
-// export function updateProc(proc: {id: number, name: string, description: string, price: number, duration: number, additional: number}, res) {
-//   procedure.updateProcById(proc, (err, data) => {
-//     if (err)
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while updating procedure."
-//       });
-//     else {
-//       res.json({success: true, data: proc});
-//     }
-//   });
-// }
+// Update a procedure identified by the id in the request
+export function updateProc(proc: {id: number, name: string, description: string, price: number, duration: number, additional: number}, res) {
+  procedure.updateProcById(proc, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while updating procedure."
+      });
+    else {
+      res.json({success: true, data: data});
+    }
+  });
+}
 
 // Create a procedure 
 export function createProc(proc: {name: string, description: string, price: number, duration: number, additional: number}, res) {
@@ -64,17 +64,17 @@ export function createProc(proc: {name: string, description: string, price: numb
   });
 }
 
-// // Delete a procedure with the specified id in the request
-// export function deleteProc(id: number, res) {
-//   procedure.deleteProcById(id, (err, data) => {
-//     if (err)
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while deleting procedure."
-//       });
-//     else {
-//       res.json({success: true, data: id});
-//     }
-//   });
-// };
+// Delete a procedure with the specified id in the request
+export function deleteProc(id: number, res) {
+  procedure.deleteProcById(id, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while deleting procedure."
+      });
+    else {
+      res.json({success: true, data: id});
+    }
+  });
+};
 

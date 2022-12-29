@@ -52,44 +52,29 @@ procedure.createProc = async (proc: {name: string, description: string, price: n
   const { data, error } = await supabase
   .from('procedures')
   .insert([
-    { name: proc.name},
-    { description: proc.description},
-    { price: proc.price},
-    { duration: proc.duration},
-    { additional: proc.additional},
+    {name: proc.name,description: proc.description,price: proc.price,duration: proc.duration,additional: proc.additional},
   ])
   .select();
   result(error, data);
 };
 
-// procedure.updateProcById = (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
-//   var _query = "UPDATE procedures SET name = '" + proc.name + "', description = '" + proc.description + "', price = " + proc.price + ", duration = " + proc.duration + ", additional = " + proc.additional + " WHERE id = " + proc.id;
-//   client.query(_query, (err, res) => {
-//     if (err) {
-//       console.log("error: ", err);
-//       result(null, err);
-//       return;
-//     }
+procedure.updateProcById = async (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
+  const { data, error } = await supabase
+  .from('procedures')
+  .update([
+    {name: proc.name,description: proc.description,price: proc.price,duration: proc.duration,additional: proc.additional},
+  ])
+  .eq('id', proc.id)
+  .select();
+  result(error, data);
+};
 
-//     // console.log("procedures: ", res);
-//     result(null, res);
-//     client.end();
-//   });
-// };
-
-// procedure.deleteProcById = (id: number, result)  => {
-//   var _query = "DELETE FROM procedures WHERE id = " + id;
-//   client.query(_query, (err, res) => {
-//     if (err) {
-//       console.log("error: ", err);
-//       result(null, err);
-//       return;
-//     }
-
-//     // console.log("procedures: ", res);
-//     result(null, res);
-//     client.end();
-//   });
-// };
+procedure.deleteProcById = async (id: number, result)  => {
+  const { data, error } = await supabase
+  .from('procedures')
+  .delete()
+  .eq('id', id)
+  result(error, data);
+};
 
 export default procedure;
