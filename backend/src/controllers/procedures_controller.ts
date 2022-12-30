@@ -56,7 +56,7 @@ export function createProc(proc: {name: string, description: string, price: numb
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while updating procedure."
+          err.message || "Some error occurred while creating procedure."
       });
     else {
       res.json({success: true, data: data});

@@ -14,7 +14,7 @@
     "tags": [
       {
         "name": "Face2Une",
-        "description": "API for ehh, dunno yet"
+        "description": "API for communicating with database"
       }
     ],
     "schemes": ["http"],
@@ -130,6 +130,83 @@
               }
             }
           }
+        },
+        "/users": {
+          "get": {
+            "tags": ["Users"],
+            "summary": "Get all users in db",
+            "responses": {
+              "200": {
+                "description": "Returns all users in database in JSON format"
+              }
+            }
+          }
+        },
+        "/users/{userid}": {
+          "get": {
+            "tags": ["Users"],
+            "summary": "Get a single user by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "userid",
+              "description": "id of user",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single user in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_user": {
+          "post": {
+            "tags": ["Users"],
+            "summary": "Create new user",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of user",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/newUser"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a user in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_user/{userid}": {
+          "delete": {
+            "tags": ["Users"],
+            "summary": "Delete user by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "userid",
+              "description": "id of user",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a user in database by id"
+              }
+            }
+          }
         }
       },
 
@@ -173,6 +250,48 @@
             },
             "additional": {
               "type": "integer"
+            }
+          }
+        },
+        "newUser": {
+          "properties": {
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "User": {
+          "properties": {
+            "id": {
+              "type": "integer",
+              "uniqueItems": true
+            },
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
             }
           }
         }

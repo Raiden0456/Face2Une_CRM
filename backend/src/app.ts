@@ -8,7 +8,8 @@ import bodyParser from 'body-parser';
 var app = express();
 
 // Importing the routes //
-import indexRouter from './routes/procedures_route.js';
+import ProceduresRouter from './routes/procedures_route.js';
+import UsersRouter from './routes/users_route.js';
 //////////////////////////
 
 // middleware //
@@ -25,8 +26,8 @@ import indexRouter from './routes/procedures_route.js';
 ////////////////
 
 // Routing //
-
-app.use('/', indexRouter);
+app.use('/', ProceduresRouter);
+app.use('/', UsersRouter);
 /////////////
 
 export default app;
