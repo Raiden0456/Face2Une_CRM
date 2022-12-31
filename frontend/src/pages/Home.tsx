@@ -16,7 +16,6 @@ export const Home = () => {
       .then((procedures) => setProcedures(procedures));
   }, []);
   let proceduresList = procedures.data;
-  console.log(proceduresList);
   return (
     <Container
       /* header={<NavBar />} */
