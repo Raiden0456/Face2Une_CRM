@@ -8,7 +8,7 @@ import s from './BookingBox.scss';
 interface IBookingBox {
   width?: string;
   type?: 'main' | 'modal';
-  procedure?: object;
+  procedure?: {name: string, description: string, price: number, duration: number};
 }
 
 const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', procedure}) => {  
@@ -17,8 +17,8 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
       <div className={s.BookingBox__header}>
         <div className={s.BookingBox__header_column}>
           {ModalStore.modalStatus.open && <h2>Your Cart:</h2>}
-          <h3>{procedure.name}</h3>
-          <p>{procedure.duration} minutes @ {procedure.price}$</p>
+          <h3>{procedure?.name}</h3>
+          <p>{procedure?.duration} minutes @ {procedure?.price}€</p>
         </div>
         <ButtonContained
           width="15%"
@@ -34,7 +34,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
       </div>
       <div className={s.BookingBox__content}>
         <p>
-        {procedure.description}
+        {procedure?.description}
         </p>
       </div>
     </div>
