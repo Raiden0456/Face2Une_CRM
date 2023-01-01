@@ -8,12 +8,12 @@ import s from './BookingBox.scss';
 interface IBookingBox {
   width?: string;
   type?: 'main' | 'modal';
-  procedure?: {name: string, description: string, price: number, duration: number};
+  procedure?: {id: number, name: string, description: string, price: number, duration: number};
 }
 
 const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', procedure}) => {  
   return (
-    <div className={type === 'main' ? s.BookingBox : s.BookingBoxModal} style={{ width: width }}>
+    <div id = {procedure?.id.toString()} className={type === 'main' ? s.BookingBox : s.BookingBoxModal} style={{ width: width }} >
       <div className={s.BookingBox__header}>
         <div className={s.BookingBox__header_column}>
           {ModalStore.modalStatus.open && <h2>Your Cart:</h2>}
