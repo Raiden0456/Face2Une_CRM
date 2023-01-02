@@ -9,11 +9,11 @@ export function loadProc(add = 0, res) {
           message:
             err.message || "Some error occurred while retrieving procedures."
         });
-      else if (data.rows.length != 0) {
-        res.json({success: true, data: data.rows});
+      else if (data.length != 0) {
+        res.json({success: true, data: data});
       }
       else {
-        res.json({success: false, data: data.rows});
+        res.json({success: false, data: data});
       }
     });
 }
@@ -26,11 +26,11 @@ export function findOneProc(id: number, res) {
         message:
           err.message || "Some error occurred while retrieving procedure."
       });
-    else if (data.rows.length != 0) {
-      res.json({success: true, data: data.rows});
+    else if (data.length != 0) {
+      res.json({success: true, data: data});
     }
     else {
-      res.json({success: false, data: data.rows});
+      res.json({success: false, data: data});
     }
   });
 }
@@ -45,7 +45,7 @@ export function updateProc(proc: {id: number, name: string, description: string,
           err.message || "Some error occurred while updating procedure."
       });
     else {
-      res.json({success: true, data: proc});
+      res.json({success: true, data: data});
     }
   });
 }
@@ -56,10 +56,10 @@ export function createProc(proc: {name: string, description: string, price: numb
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while updating procedure."
+          err.message || "Some error occurred while creating procedure."
       });
     else {
-      res.json({success: true, data: proc});
+      res.json({success: true, data: data});
     }
   });
 }

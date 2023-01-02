@@ -9,7 +9,13 @@ import BookingBox from '../components/base/BookingBox';
 export const Home = () => {
   const [displayInput, setDisplayInput] = useState(false);
   const [input, setInput] = useState('');
-
+  const [procedures, setProcedures] = useState({ data: [] });
+  useEffect(() => {
+    fetch("http://localhost:3000/main_proc")
+      .then((res) => res.json())
+      .then((procedures) => setProcedures(procedures));
+  }, []);
+  let proceduresList = procedures.data;
   return (
     <Container
       /* header={<NavBar />} */
@@ -34,11 +40,11 @@ export const Home = () => {
               />
             )}
           </div>
-
-          <BookingBox />
-          <BookingBox />
-          <BookingBox />
-          <BookingBox />
+          {proceduresList.map((procedure)=>{
+            return <BookingBox procedure={procedure} />
+          })
+          }
+          
         </>
       }
     />

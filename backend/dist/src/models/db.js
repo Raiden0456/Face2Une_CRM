@@ -2,7 +2,6 @@
 // const { Client } = pg;
 import dotenv from "dotenv";
 dotenv.config();
-
 // const client = new Client({
 //   user: process.env.DB_USER,
 //   host: process.env.DB_HOST,
@@ -15,11 +14,9 @@ dotenv.config();
 //   console.log("Connected!");
 // });
 // export default client;
-
 import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = 'https://gzydevicrlzlwvldeuex.supabase.co';
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
+var supabaseUrl = 'https://gzydevicrlzlwvldeuex.supabase.co';
+var supabaseKey = process.env.SUPABASE_KEY;
+var supabase = createClient(supabaseUrl, supabaseKey);
 export default supabase;
+//# sourceMappingURL=db.js.map

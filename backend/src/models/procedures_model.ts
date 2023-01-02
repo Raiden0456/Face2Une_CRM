@@ -1,5 +1,6 @@
-import { QueryResult } from "pg";
-import client from "./db.js";
+// import { QueryResult } from "pg";
+// import client from "./db.js";
+import supabase from "./db.js";
 
 // Constructor
 const procedure = function (procedure) {
@@ -11,89 +12,69 @@ const procedure = function (procedure) {
   this.additional = procedure.additional;
 };
 
-procedure.getAllproc = (additional: number, result)  => {
+procedure.getAllproc = async (additional: number, result)  => {
   switch (additional) {
-    case 0:
-      var _query = "SELECT * FROM procedures WHERE additional = 0";
+    case 0: {
+      let { data: procedures, error } = await supabase
+      .from('procedures')
+      .select('*')
+      .eq('additional', 0); 
+      result(error, procedures);
       break;
-    case 1:
-      var _query = "SELECT * FROM procedures WHERE additional = 1";
+    }
+    case 1: {
+      let { data: procedures, error } = await supabase
+      .from('procedures')
+      .select('*')
+      .eq('additional', 1);
+      result(error, procedures);
       break;
-    default:
-      var _query = "SELECT * FROM procedures";
+    }
+    default: {
+      let { data: procedures, error } = await supabase
+      .from('procedures')
+      .select('*')
+      result(error, procedures);
       break;
+    }
   }
-  
-  client.query(_query, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    // console.log("procedures: ", res);
-    result(null, res);
-    client.end();
-  });
 };
 
-procedure.getProcById = (id: number, result)  => {
-  var _query = "SELECT * FROM procedures WHERE id = " + id;
-  client.query(_query, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    // console.log("procedures: ", res);
-    result(null, res);
-    client.end();
-  });
+procedure.getProcById = async (id: number, result)  => {
+  let { data: procedures, error } = await supabase
+  .from('procedures')
+  .select('*')
+  .eq('id', id); 
+  result(error, procedures);
 };
 
-procedure.createProc = (proc: {name: string, description: string, price: number, duration: number, additional: number }, result)  => {
-  var _query = "INSERT INTO procedures (name, description, price, duration, additional) VALUES('" + proc.name + "', '" + proc.description + "', " + proc.price + ", " + proc.duration + ", " + proc.additional + ")";
-  client.query(_query, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-    // console.log("procedures: ", res);
-    result(null, res);
-    client.end();
-  });
+procedure.createProc = async (proc: {name: string, description: string, price: number, duration: number, additional: number }, result)  => {
+  const { data, error } = await supabase
+  .from('procedures')
+  .insert([
+    {name: proc.name,description: proc.description,price: proc.price,duration: proc.duration,additional: proc.additional},
+  ])
+  .select();
+  result(error, data);
 };
 
-procedure.updateProcById = (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
-  var _query = "UPDATE procedures SET name = '" + proc.name + "', description = '" + proc.description + "', price = " + proc.price + ", duration = " + proc.duration + ", additional = " + proc.additional + " WHERE id = " + proc.id;
-  client.query(_query, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    // console.log("procedures: ", res);
-    result(null, res);
-    client.end();
-  });
+procedure.updateProcById = async (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
+  const { data, error } = await supabase
+  .from('procedures')
+  .update([
+    {name: proc.name,description: proc.description,price: proc.price,duration: proc.duration,additional: proc.additional},
+  ])
+  .eq('id', proc.id)
+  .select();
+  result(error, data);
 };
 
-procedure.deleteProcById = (id: number, result)  => {
-  var _query = "DELETE FROM procedures WHERE id = " + id;
-  client.query(_query, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    // console.log("procedures: ", res);
-    result(null, res);
-    client.end();
-  });
+procedure.deleteProcById = async (id: number, result)  => {
+  const { data, error } = await supabase
+  .from('procedures')
+  .delete()
+  .eq('id', id)
+  result(error, data);
 };
 
 export default procedure;
