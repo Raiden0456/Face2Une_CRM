@@ -1,5 +1,5 @@
 // To Be Changed
-const buildUrl = (path: string) => (process.env.NODE_ENV === 'production' ? `/api/v1/${path}` : `/api/v1/${path}`);
+const buildUrl = (path: string) => (process.env.NODE_ENV === 'production' ? `/api/v1/${path}` : `http://localhost:3000/${path}`);
 
 interface ISafeFetch {
   path: string;

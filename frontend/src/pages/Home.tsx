@@ -5,16 +5,28 @@ import { Input } from '../components/base/Input';
 import s from './Home.scss';
 import NavBar from '../components/Navbar';
 import BookingBox from '../components/base/BookingBox';
+import { ProceduresService } from '../service/ProceduresService';
+import { TailSpinFixed } from '../components/TailSpin';
+import { ModalStore } from '../store/Modal.store';
 
 export const Home = () => {
+  const proceduresService = new ProceduresService();
   const [displayInput, setDisplayInput] = useState(false);
   const [input, setInput] = useState('');
   const [procedures, setProcedures] = useState({ data: [] });
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    fetch("http://localhost:3000/main_proc")
-      .then((res) => res.json())
-      .then((procedures) => setProcedures(procedures));
+    setLoading(true);
+    proceduresService.getProcedures().then((procedures) => {
+      console.log(procedures);
+      if (procedures.success) {
+        setProcedures(procedures);
+        setLoading(false);
+      }
+    });
   }, []);
+
   let proceduresList = procedures.data;
   return (
     <Container
@@ -40,11 +52,13 @@ export const Home = () => {
               />
             )}
           </div>
-          {proceduresList.map((procedure)=>{
-            return <BookingBox procedure={procedure} />
-          })
-          }
-          
+          {loading ? (
+            <TailSpinFixed />
+          ) : (
+            proceduresList?.map((procedure, i) => {
+              return <BookingBox key={i} procedure={procedure} />;
+            })
+          )}
         </>
       }
     />
