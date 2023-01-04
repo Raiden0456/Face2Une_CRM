@@ -5,15 +5,12 @@ import { join } from 'path';
 export function loadUsers(res) {
     user.getAllusers((err, data) => {
       if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving users."
+        res.status(500).json({
+          success: false, 
+          message: err.message || "Some error occurred while retrieving users."
         });
-      else if (data.length != 0) {
-        res.json({success: true, data: data});
-      }
       else {
-        res.json({success: false, data: data});
+        res.json({success: true, data: data});
       }
     });
 }
@@ -22,15 +19,12 @@ export function loadUsers(res) {
 export function findOneUser(id: number, res) {
   user.getUserById(id, (err, data) => {
     if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving user."
+      res.status(500).json({
+        success: false, 
+        message: err.message || "Some error occurred while retrieving user."
       });
-    else if (data.length != 0) {
-      res.json({success: true, data: data});
-    }
     else {
-      res.json({success: false, data: data});
+      res.json({success: true, data: data});
     }
   });
 }
@@ -54,9 +48,9 @@ export function findOneUser(id: number, res) {
 export function createUser(_user: {first_name: string, last_name: string, phone: string, email: string, password: string }, res) {
   user.createUser(_user, (err, data) => {
     if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating user."
+      res.status(500).json({
+        success: false, 
+        message: err.message || "Some error occurred while creating user."
       });
     else {
       res.json({success: true, data: data});
@@ -68,9 +62,9 @@ export function createUser(_user: {first_name: string, last_name: string, phone:
 export function deleteUser(id: number, res) {
   user.deleteUserById(id, (err, data) => {
     if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while deleting user."
+      res.status(500).json({
+         success: false, 
+         message: err.message || "Some error occurred while deleting user."
       });
     else {
       res.json({success: true, data: id});

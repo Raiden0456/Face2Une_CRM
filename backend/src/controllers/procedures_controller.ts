@@ -5,15 +5,12 @@ import { join } from 'path';
 export function loadProc(add = 0, res) {
     procedure.getAllproc(add, (err, data) => {
       if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving procedures."
+        res.status(500).json({
+          success: false, 
+          message: err.message || "Some error occurred while retrieving procedures."
         });
-      else if (data.length != 0) {
-        res.json({success: true, data: data});
-      }
       else {
-        res.json({success: false, data: data});
+        res.json({success: true, data: data});
       }
     });
 }
@@ -22,15 +19,12 @@ export function loadProc(add = 0, res) {
 export function findOneProc(id: number, res) {
   procedure.getProcById(id, (err, data) => {
     if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving procedure."
+      res.status(500).json({
+        success: false, 
+          message: err.message || "Some error occurred while retrieving procedure."
       });
-    else if (data.length != 0) {
-      res.json({success: true, data: data});
-    }
     else {
-      res.json({success: false, data: data});
+      res.json({success: true, data: data});
     }
   });
 }
@@ -40,9 +34,9 @@ export function findOneProc(id: number, res) {
 export function updateProc(proc: {id: number, name: string, description: string, price: number, duration: number, additional: number}, res) {
   procedure.updateProcById(proc, (err, data) => {
     if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while updating procedure."
+      res.status(500).json({
+        success: false, 
+        message: err.message || "Some error occurred while updating procedure."
       });
     else {
       res.json({success: true, data: data});
@@ -54,9 +48,9 @@ export function updateProc(proc: {id: number, name: string, description: string,
 export function createProc(proc: {name: string, description: string, price: number, duration: number, additional: number}, res) {
   procedure.createProc(proc, (err, data) => {
     if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating procedure."
+      res.status(500).json({
+        success: false, 
+        message: err.message || "Some error occurred while creating procedure."
       });
     else {
       res.json({success: true, data: data});
@@ -68,9 +62,9 @@ export function createProc(proc: {name: string, description: string, price: numb
 export function deleteProc(id: number, res) {
   procedure.deleteProcById(id, (err, data) => {
     if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while deleting procedure."
+      res.status(500).json({
+        success: false, 
+        message: err.message || "Some error occurred while deleting procedure."      
       });
     else {
       res.json({success: true, data: id});
