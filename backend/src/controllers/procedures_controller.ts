@@ -84,7 +84,7 @@ export function deleteProc(id: number, res) {
         success: false, 
         message: err.message || "Some error occurred while deleting procedure."      
       });
-    else if (data.length == 0) {
+    else if (data == null) {
       res.status(404).json({
         success: false, 
         message: `Procedure with id ${id} not found.`

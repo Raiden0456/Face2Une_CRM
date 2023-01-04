@@ -78,7 +78,7 @@ export function deleteUser(id: number, res) {
          success: false, 
          message: err.message || "Some error occurred while deleting user."
       });
-    else if (data.length == 0) {
+    else if (data == null) {
       res.status(404).json({
         success: false,
         message: `User with id ${id} not found.`
