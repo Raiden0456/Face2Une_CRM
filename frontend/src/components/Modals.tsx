@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { observer } from 'mobx-react';
 import { ModalStore } from '../store/Modal.store';
 import BookingBox from '../components/base/BookingBox';
+import { StatusContainer } from './StatusContainer';
 
 export const ModalsCustomStyles: object = {
   content: {
@@ -69,14 +70,19 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
         if (ModalStore.modalStatus.redirectUrl) {
           window.location.replace(ModalStore.modalStatus.redirectUrl);
         } else if (ModalStore.modalStatus.action !== 'loader') {
-          ModalStore.setModalStatus({ open: false, action: null });
+          ModalStore.setModalStatus({ open: false, action: null, procedureData: null });
         }
       }}
       style={!mobile ? ModalsCustomStyles : ModalsCustomStylesMobile}
       contentLabel="Modal"
       ariaHideApp={false}
     >
-      {ModalStore.modalStatus.action === 'additional_procedures' && <BookingBox type='modal' />}
+      {ModalStore.modalStatus.action === 'complete_booking' && (
+        <BookingBox procedure={ModalStore.modalStatus.procedureData} type="modal" />
+      )}
+      {(ModalStore.modalStatus.action === 'success' || ModalStore.modalStatus.action === 'error') && (
+        <StatusContainer />
+      )}
       {ModalStore.modalStatus.action === 'loader' && <p>Loading...</p>}
     </Modal>
   );
