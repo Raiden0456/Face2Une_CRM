@@ -9,6 +9,12 @@ export function loadProc(add = 0, res) {
           success: false, 
           message: err.message || "Some error occurred while retrieving procedures."
         });
+      else if (data.length == 0) {
+        res.status(404).json({
+          success: false, 
+          message: `No procedures found.`
+        });
+      }
       else {
         res.json({success: true, data: data});
       }
@@ -23,6 +29,12 @@ export function findOneProc(id: number, res) {
         success: false, 
           message: err.message || "Some error occurred while retrieving procedure."
       });
+    else if (data.length == 0) {
+      res.status(404).json({
+        success: false, 
+        message: `Procedure with id ${id} not found.`
+      });
+    }
     else {
       res.json({success: true, data: data});
     }
@@ -38,6 +50,12 @@ export function updateProc(proc: {id: number, name: string, description: string,
         success: false, 
         message: err.message || "Some error occurred while updating procedure."
       });
+    else if (data.length == 0) {
+      res.status(404).json({
+        success: false, 
+        message: `Procedure with id ${proc.id} not found.`
+      });
+    }
     else {
       res.json({success: true, data: data});
     }
@@ -66,6 +84,12 @@ export function deleteProc(id: number, res) {
         success: false, 
         message: err.message || "Some error occurred while deleting procedure."      
       });
+    else if (data.length == 0) {
+      res.status(404).json({
+        success: false, 
+        message: `Procedure with id ${id} not found.`
+      });
+    }
     else {
       res.json({success: true, data: id});
     }

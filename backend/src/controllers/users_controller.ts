@@ -9,6 +9,12 @@ export function loadUsers(res) {
           success: false, 
           message: err.message || "Some error occurred while retrieving users."
         });
+      else if (data.length == 0) {
+        res.status(404).json({
+          success: false,
+          message: `No users found.`
+        });
+      }
       else {
         res.json({success: true, data: data});
       }
@@ -23,6 +29,12 @@ export function findOneUser(id: number, res) {
         success: false, 
         message: err.message || "Some error occurred while retrieving user."
       });
+    else if (data.length == 0) {
+      res.status(404).json({
+        success: false,
+        message: `User with id ${id} not found.`
+      });
+    }
     else {
       res.json({success: true, data: data});
     }
@@ -66,6 +78,12 @@ export function deleteUser(id: number, res) {
          success: false, 
          message: err.message || "Some error occurred while deleting user."
       });
+    else if (data.length == 0) {
+      res.status(404).json({
+        success: false,
+        message: `User with id ${id} not found.`
+      });
+    }
     else {
       res.json({success: true, data: id});
     }
