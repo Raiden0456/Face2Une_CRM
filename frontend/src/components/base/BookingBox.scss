@@ -67,3 +67,16 @@
     color: #777;
   }
 }
+
+.BookingBox__optionalProcedures {
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+
+  label {
+    margin-right: 15px;
+    margin-bottom: 15px;
+    width: 200px;
+  }
+}
+

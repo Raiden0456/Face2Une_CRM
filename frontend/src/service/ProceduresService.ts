@@ -8,7 +8,17 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/fallback_page' });
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/fallback_page' }); // TBD Set Fallback
+    }
+  }
+
+  async getOptionalProcedures() {
+    const r = await JSONFetchGet('optional_proc');
+
+    if (r?.success) {
+      return r;
+    } else {
+      return false;
     }
   }
 }

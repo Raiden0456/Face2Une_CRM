@@ -7,27 +7,39 @@ import NavBar from '../components/Navbar';
 import BookingBox from '../components/base/BookingBox';
 import { ProceduresService } from '../service/ProceduresService';
 import { TailSpinFixed } from '../components/TailSpin';
-import { ModalStore } from '../store/Modal.store';
+import { ProceduresStore } from '../store/Procedures.store';
 
 export const Home = () => {
   const proceduresService = new ProceduresService();
   const [displayInput, setDisplayInput] = useState(false);
   const [input, setInput] = useState('');
-  const [procedures, setProcedures] = useState({ data: [] });
   const [loading, setLoading] = useState(false);
 
+  // Fetch Main & Optional Procedures
   useEffect(() => {
     setLoading(true);
+    proceduresService.getOptionalProcedures().then((optionalProcedures) => {
+      console.log(optionalProcedures);
+      if (optionalProcedures?.success) {
+        ProceduresStore.setProceduresStatus({
+          ...ProceduresStore.proceduresStatus,
+          optionalProceduresData: optionalProcedures.data,
+        });
+      }
+    });
+
     proceduresService.getProcedures().then((procedures) => {
       console.log(procedures);
-      if (procedures.success) {
-        setProcedures(procedures);
+      if (procedures?.success) {
+        ProceduresStore.setProceduresStatus({
+          ...ProceduresStore.proceduresStatus,
+          proceduresData: procedures.data,
+        });
         setLoading(false);
       }
     });
   }, []);
 
-  let proceduresList = procedures.data;
   return (
     <Container
       /* header={<NavBar />} */
@@ -55,8 +67,8 @@ export const Home = () => {
           {loading ? (
             <TailSpinFixed />
           ) : (
-            proceduresList?.map((procedure, i) => {
-              return <BookingBox key={i} procedure={procedure} />;
+            ProceduresStore.proceduresStatus.proceduresData?.map((procedure, i) => {
+              return <BookingBox key={procedure.id} procedure={procedure} />;
             })
           )}
         </>
