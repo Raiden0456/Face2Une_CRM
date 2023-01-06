@@ -1,14 +1,13 @@
 import { observable } from 'mobx';
+import { ProcedureData, OptionalProcedureData } from './Procedures.store';
 
 type Action = 'complete_booking' | 'loader' | 'error' | 'success' | null;
-
-export type ProcedureData = { id: number; name: string; description: string; price: number; duration: number } | null;
 
 interface IModalStatus {
   open: boolean;
   action: Action;
   redirectUrl?: string | null;
-  procedureData?: ProcedureData;
+  procedure?: ProcedureData | null;
 }
 
 export interface IModalStore {
@@ -21,14 +20,14 @@ export const ModalStore = observable<IModalStore>({
     open: false,
     action: null,
     redirectUrl: null,
-    procedureData: null,
+    procedure: null,
   },
-  setModalStatus({ open, action, redirectUrl, procedureData }) {
+  setModalStatus({ open, action, redirectUrl, procedure }) {
     this.modalStatus = {
       open,
       redirectUrl,
       action,
-      procedureData,
+      procedure
     };
   },
 });

@@ -70,7 +70,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
         if (ModalStore.modalStatus.redirectUrl) {
           window.location.replace(ModalStore.modalStatus.redirectUrl);
         } else if (ModalStore.modalStatus.action !== 'loader') {
-          ModalStore.setModalStatus({ open: false, action: null, procedureData: null });
+          ModalStore.setModalStatus({ open: false, action: null });
         }
       }}
       style={!mobile ? ModalsCustomStyles : ModalsCustomStylesMobile}
@@ -78,7 +78,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
       ariaHideApp={false}
     >
       {ModalStore.modalStatus.action === 'complete_booking' && (
-        <BookingBox procedure={ModalStore.modalStatus.procedureData} type="modal" />
+        <BookingBox procedure={ModalStore.modalStatus.procedure} type="modal" />
       )}
       {(ModalStore.modalStatus.action === 'success' || ModalStore.modalStatus.action === 'error') && (
         <StatusContainer />

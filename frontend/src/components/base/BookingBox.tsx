@@ -1,18 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { ButtonContained } from '../base/Button';
+import { Checkbox } from '../base/Checkbox';
 import { ModalStore } from '../../store/Modal.store';
-import { ProcedureData } from '../../store/Modal.store';
+import { ProceduresStore } from '../../store/Procedures.store';
+import { ProcedureData } from '../../store/Procedures.store';
 
 import s from './BookingBox.scss';
 
 interface IBookingBox {
   width?: string;
   type?: 'main' | 'modal';
-  procedure?: ProcedureData;
+  procedure?: ProcedureData | null;
 }
 
 const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', procedure }) => {
+  const [optionalProcedures, setOptionalProcedures] = useState({});
+
+  const handleCheckBoxes = (e: any, id: number) => {
+    setOptionalProcedures({ ...optionalProcedures, [id]: e });
+  };
+
+  const handleClick = () => {
+    if (type === 'main') {
+      ModalStore.setModalStatus({
+        action: 'complete_booking',
+        open: true,
+        procedure: procedure,
+      });
+    } else {
+      console.log('Procedure ID:', procedure?.id);
+      console.log('Additional Procedures:', optionalProcedures);
+
+      ModalStore.setModalStatus({
+        action: null,
+        open: false,
+        procedure: null,
+      });
+    }
+  };
   return (
     <div
       id={procedure?.id.toString()}
@@ -28,22 +54,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
           </p>
         </div>
         <div className={s.BookingBox__header_btns}>
-          <ButtonContained
-            width="20%"
-            onClick={() => {
-              type === 'main'
-                ? ModalStore.setModalStatus({
-                    action: 'complete_booking',
-                    open: true,
-                    procedureData: procedure,
-                  })
-                : ModalStore.setModalStatus({
-                    action: null,
-                    open: false,
-                    procedureData: null,
-                  });
-            }}
-          >
+          <ButtonContained width="20%" onClick={handleClick}>
             Book
           </ButtonContained>
           {type === 'main' && (
@@ -62,6 +73,16 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
       <div className={s.BookingBox__content}>
         <p>{procedure?.description}</p>
       </div>
+
+      {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
+        <div className={s.BookingBox__optionalProcedures}>
+          {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (
+            <Checkbox onChange={(e) => handleCheckBoxes(e, optProd.id)} key={optProd.id}>
+              {optProd.name}
+            </Checkbox>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
