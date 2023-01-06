@@ -101,7 +101,7 @@ export function deleteProc(id: number, res) {
     //   });
     // }
     else {
-      res.json({success: true, data: id});
+      res.json({success: true, message: "deleted procedure with id: "+ id +", successfully!"});
     }
   });
 };

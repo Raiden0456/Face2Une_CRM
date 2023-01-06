@@ -91,7 +91,7 @@ export function deleteUser(id: number, res) {
     //   });
     // }
     else {
-      res.json({success: true, data: id});
+      res.json({success: true, message: "deleted user with id: "+ id +", successfully!"});
     }
   });
 };
