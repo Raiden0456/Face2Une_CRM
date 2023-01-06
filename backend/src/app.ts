@@ -10,6 +10,7 @@ var app = express();
 // Importing the routes //
 import ProceduresRouter from './routes/procedures_route.js';
 import UsersRouter from './routes/users_route.js';
+import AppointmentsRouter from './routes/appointments_route.js';
 //////////////////////////
 
 // middleware //
@@ -28,6 +29,7 @@ import UsersRouter from './routes/users_route.js';
 // Routing //
 app.use('/', ProceduresRouter);
 app.use('/', UsersRouter);
+app.use('/', AppointmentsRouter);
 /////////////
 
 export default app;
