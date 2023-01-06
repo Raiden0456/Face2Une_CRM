@@ -291,6 +291,9 @@
             },
             "password": {
               "type": "string"
+            },
+            "rights": {
+              "type": "string"
             }
           }
         },
@@ -313,6 +316,9 @@
               "type": "string"
             },
             "password": {
+              "type": "string"
+            },
+            "rights": {
               "type": "string"
             }
           }

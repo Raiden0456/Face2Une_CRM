@@ -43,7 +43,7 @@ export function findOneUser(id: number, res) {
 
 
 // Update a user identified by the id in the request
-export function updateUser(_user: {id: number, first_name: string, last_name: string, phone: string, email: string, password: string}, res) {
+export function updateUser(_user: {id: number, first_name: string, last_name: string, phone: string, email: string, password: string, rights: string}, res) {
   user.updateUserById(_user, (err, data) => {
     if (err)
       res.status(500).send({
@@ -63,7 +63,7 @@ export function updateUser(_user: {id: number, first_name: string, last_name: st
 }
 
 // Create a user 
-export function createUser(_user: {first_name: string, last_name: string, phone: string, email: string, password: string }, res) {
+export function createUser(_user: {first_name: string, last_name: string, phone: string, email: string, password: string, rights: string }, res) {
   user.createUser(_user, (err, data) => {
     if (err)
       res.status(500).json({
