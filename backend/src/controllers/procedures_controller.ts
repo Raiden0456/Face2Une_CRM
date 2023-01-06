@@ -10,10 +10,20 @@ export function loadProc(add = 0, res) {
           message: err.message || "Some error occurred while retrieving procedures."
         });
       else if (data.length == 0) {
-        res.status(404).json({
-          success: false, 
-          message: `No procedures found.`
-        });
+        switch (add) {
+          case 0:
+            res.status(404).json({
+              success: false, 
+              message: `No main procedures found.`
+            });
+            break;
+          case 1:
+            res.status(404).json({
+              success: true,
+              message: `No additional procedures found.`
+            });
+            break;
+          }
       }
       else {
         res.json({success: true, data: data});
@@ -26,12 +36,12 @@ export function findOneProc(id: number, res) {
   procedure.getProcById(id, (err, data) => {
     if (err)
       res.status(500).json({
-        success: false, 
+          success: false, 
           message: err.message || "Some error occurred while retrieving procedure."
       });
     else if (data.length == 0) {
       res.status(404).json({
-        success: false, 
+        success: true, 
         message: `Procedure with id ${id} not found.`
       });
     }
@@ -52,7 +62,7 @@ export function updateProc(proc: {id: number, name: string, description: string,
       });
     else if (data.length == 0) {
       res.status(404).json({
-        success: false, 
+        success: true, 
         message: `Procedure with id ${proc.id} not found.`
       });
     }

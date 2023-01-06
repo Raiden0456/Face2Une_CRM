@@ -31,7 +31,7 @@ export function findOneUser(id: number, res) {
       });
     else if (data.length == 0) {
       res.status(404).json({
-        success: false,
+        success: true,
         message: `User with id ${id} not found.`
       });
     }
