@@ -186,6 +186,28 @@
             }
           }
         },
+        "/update_user": {
+          "post": {
+            "tags": ["Users"],
+            "summary": "Update user by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of user",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a user in database using JSON format"
+              }
+            }
+          }
+        },
         "/delete_user/{userid}": {
           "delete": {
             "tags": ["Users"],

@@ -13,9 +13,9 @@ router.get('/users/:userid', function(req, res){
 router.post('/create_user', function(req, res){
     user.createUser(req.body, res);
 });
-// router.post('/update_user', function(req, res){
-//     user.updateUser(req.body, res);
-// });
+router.post('/update_user', function(req, res){
+    user.updateUser(req.body, res);
+});
 router.delete('/delete_user/:userid', function(req, res){
     user.deleteUser(req.params.userid, res);
 });

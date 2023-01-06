@@ -39,16 +39,17 @@ user.createUser = async (user: {first_name: string, last_name: string, phone: st
   result(error, data);
 };
 
-// user.updateProcById = async (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
-//   const { data, error } = await supabase
-//   .from('users')
-//   .update([
-//     {name: proc.name,description: proc.description,price: proc.price,duration: proc.duration,additional: proc.additional},
-//   ])
-//   .eq('id', proc.id)
-//   .select();
-//   result(error, data);
-// };
+user.updateUserById = async (user: {id: number, first_name: string, last_name: string, phone: string, email: string, password: string }, result)  => {
+  const hash_password = bcrypt.hashSync(user.password, 10);
+  const { data, error } = await supabase
+  .from('users')
+  .update([
+    {first_name: user.first_name, last_name: user.last_name, phone: user.phone, email: user.email, password: hash_password},
+  ])
+  .eq('id', user.id)
+  .select();
+  result(error, data);
+};
 
 user.deleteUserById = async (id: number, result)  => {
   const { data, error } = await supabase
