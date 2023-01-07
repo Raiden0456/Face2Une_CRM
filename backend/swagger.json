@@ -76,7 +76,7 @@
               "description": "object of procedure",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/newProcedure"
+                "$ref": "#/definitions/Procedure"
               }
             }
             ],
@@ -98,7 +98,19 @@
               "description": "object of procedure",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/Procedure"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Procedure"
+                  }
+                ]
               }
             }
             ],
@@ -175,7 +187,7 @@
               "description": "object of user",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/newUser"
+                "$ref": "#/definitions/User"
               }
             }
             ],
@@ -197,7 +209,19 @@
               "description": "object of user",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/User"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/User"
+                  }
+                ]
               }
             }
             ],
@@ -229,35 +253,145 @@
               }
             }
           }
+        },
+         "/appoint": {
+          "get": {
+            "tags": ["Appointments"],
+            "summary": "Get all Appointments in db",
+            "responses": {
+              "200": {
+                "description": "Returns all Appointments in database in JSON format"
+              }
+            }
+          }
+        },
+        "/appoint/{appointid}": {
+          "get": {
+            "tags": ["Appointments"],
+            "summary": "Get a single appointment by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "appointid",
+              "description": "id of appointment",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single appointment in database in JSON format"
+              }
+            }
+          }
+        },
+        "/appoint/client/{clientid}": {
+          "get": {
+            "tags": ["Appointments"],
+            "summary": "Get all appointments by client_id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "clientid",
+              "description": "id of client",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns all appointments in database of client by client_id in JSON format"
+              }
+            }
+          }
+        },
+        "/create_appoint": {
+          "post": {
+            "tags": ["Appointments"],
+            "summary": "Create new appointment",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of appointment",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Appointment"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create an user in appointment using JSON format"
+              }
+            }
+          }
+        },
+        "/update_appoint": {
+          "post": {
+            "tags": ["Appointments"],
+            "summary": "Update appointment by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of appointment",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Appointment"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update an appointment in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_appoint/{appointid}": {
+          "delete": {
+            "tags": ["Appointments"],
+            "summary": "Delete appointment by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "appointid",
+              "description": "id of appointment",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete an appointment in database by id"
+              }
+            }
+          }
         }
       },
 
       "definitions": {
-        "newProcedure": {
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "price": {
-              "type": "number"
-            },
-            "duration": {
-              "type": "integer"
-            },
-            "additional": {
-              "type": "integer"
-            }
-          }
-        },
         "Procedure": {
           "properties": {
-            "id": {
-              "type": "integer",
-              "uniqueItems": true
-            },
             "name": {
               "type": "string"
             },
@@ -272,37 +406,11 @@
             },
             "additional": {
               "type": "integer"
-            }
-          }
-        },
-        "newUser": {
-          "properties": {
-            "first_name": {
-              "type": "string"
-            },
-            "last_name": {
-              "type": "string"
-            },
-            "phone": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            },
-            "rights": {
-              "type": "string"
             }
           }
         },
         "User": {
           "properties": {
-            "id": {
-              "type": "integer",
-              "uniqueItems": true
-            },
             "first_name": {
               "type": "string"
             },
@@ -319,6 +427,37 @@
               "type": "string"
             },
             "rights": {
+              "type": "string"
+            }
+          }
+        },
+        "Appointment": {
+          "properties": {
+            "procedure_id": {
+              "type": "integer"
+            },
+            "additional_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "reservation_date": {
+              "type": "string"
+            },
+            "reservation_time": {
+              "type": "string"
+            },
+            "client_id": {
+              "type": "integer"
+            },
+            "master_id": {
+              "type": "integer"
+            },
+            "total_price": {
+              "type": "number"
+            },
+            "saloon_name": {
               "type": "string"
             }
           }
