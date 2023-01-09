@@ -1,24 +1,23 @@
 import user from "../models/users_model.js";
-import { join } from 'path';
+import { join } from "path";
 
 // Retrieve users from the database.
 export function loadUsers(res) {
-    user.getAllusers((err, data) => {
-      if (err)
-        res.status(500).json({
-          success: false, 
-          message: err.message || "Some error occurred while retrieving users."
-        });
-      else if (data.length == 0) {
-        res.status(404).json({
-          success: false,
-          message: `No users found.`
-        });
-      }
-      else {
-        res.json({success: true, data: data});
-      }
-    });
+  user.getAllusers((err, data) => {
+    if (err)
+      res.status(500).json({
+        success: false,
+        message: err.message || "Some error occurred while retrieving users.",
+      });
+    else if (data.length == 0) {
+      res.status(404).json({
+        success: false,
+        message: `No users found.`,
+      });
+    } else {
+      res.json({ success: true, data: data });
+    }
+  });
 }
 
 // Find a single user with an id
@@ -26,52 +25,69 @@ export function findOneUser(id: number, res) {
   user.getUserById(id, (err, data) => {
     if (err)
       res.status(500).json({
-        success: false, 
-        message: err.message || "Some error occurred while retrieving user."
+        success: false,
+        message: err.message || "Some error occurred while retrieving user.",
       });
     else if (data.length == 0) {
       res.status(404).json({
         success: true,
-        message: `User with id ${id} not found.`
+        message: `User with id ${id} not found.`,
       });
-    }
-    else {
-      res.json({success: true, data: data});
+    } else {
+      res.json({ success: true, data: data });
     }
   });
 }
 
-
 // Update a user identified by the id in the request
-export function updateUser(_user: {id: number, first_name: string, last_name: string, phone: string, email: string, password: string, rights: string}, res) {
+export function updateUser(
+  _user: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    email: string;
+    password: string;
+    rights: string;
+  },
+  res
+) {
   user.updateUserById(_user, (err, data) => {
     if (err)
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while updating user."
+        message: err.message || "Some error occurred while updating user.",
       });
     else if (data.length == 0) {
       res.status(404).json({
-        success: true, 
-        message: `User with id ${_user.id} not found.`
+        success: true,
+        message: `User with id ${_user.id} not found.`,
       });
-    }
-    else {
-      res.json({success: true, data: data});
+    } else {
+      res.json({ success: true, data: data });
     }
   });
 }
 
-// Create a user 
-export function createUser(_user: {first_name: string, last_name: string, phone: string, email: string, password: string, rights: string }, res) {
+// Create a user
+export function createUser(
+  _user: {
+    first_name: string;
+    last_name: string;
+    phone: string;
+    email: string;
+    password: string;
+    rights: string;
+  },
+  res
+) {
   user.createUser(_user, (err, data) => {
     if (err)
       res.status(500).json({
-        success: false, 
-        message: err.message || "Some error occurred while creating user."
+        success: false,
+        message: err.message || "Some error occurred while creating user.",
       });
     else {
-      res.json({success: true, data: data});
+      res.json({ success: true, data: data });
     }
   });
 }
@@ -81,8 +97,8 @@ export function deleteUser(id: number, res) {
   user.deleteUserById(id, (err, data) => {
     if (err)
       res.status(500).json({
-         success: false, 
-         message: err.message || "Some error occurred while deleting user."
+        success: false,
+        message: err.message || "Some error occurred while deleting user.",
       });
     // else if (data == null) {
     //   res.status(404).json({
@@ -91,8 +107,10 @@ export function deleteUser(id: number, res) {
     //   });
     // }
     else {
-      res.json({success: true, message: "deleted user with id: "+ id +", successfully!"});
+      res.json({
+        success: true,
+        message: "deleted user with id: " + id + ", successfully!",
+      });
     }
   });
-};
-
+}
