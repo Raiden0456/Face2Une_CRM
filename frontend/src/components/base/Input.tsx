@@ -7,7 +7,7 @@ import s from './Input.scss';
 interface IInput extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
   value?: string;
   label?: string;
-  onChange?(value: string): void;
+  onChange?(value: any): void;
   onInput?(value: any): void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onIconClick?(value?: any): void;
@@ -23,7 +23,7 @@ interface IInput extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onCh
 interface ITextArea extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange' | 'value'> {
   value?: string;
   label?: string;
-  onChange?(value: string): void;
+  onChange?(value: any): void;
   className?: string;
   error?: boolean | string;
   helperText?: string | boolean;
@@ -51,11 +51,12 @@ export const Input: React.FC<IInput> = ({
     <div className={classNames(s.InputWrapper, className)}>
       <label htmlFor={className}>{label}</label>
       <input
+        name={name}
         maxLength={maxLength}
         minLength={minLength}
         className={error ? s.Input__Invalid : undefined}
-        onInput={(e: React.ChangeEvent<HTMLInputElement>) => (onInput ? onInput(e.target.value) : '')}
-        onChange={(e) => (onChange ? onChange(e.target.value) : '')}
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) => (onInput ? onInput(e.target) : '')}
+        onChange={(e) => (onChange ? onChange(e) : '')}
         {...shared}
       />
       {helperText && <small>{helperText}</small>}
@@ -110,11 +111,12 @@ export const TextArea: React.FC<ITextArea> = ({
     <div className={classNames(s.InputWrapper, className)}>
       <label htmlFor={className}>{label}</label>
       <textarea
+        name={name}
         rows={rows}
         maxLength={maxLength}
         minLength={minLength}
         className={error ? s.Input__Invalid : undefined}
-        onChange={(e) => (onChange ? onChange(e.target.value) : '')}
+        onChange={(e) => (onChange ? onChange(e) : '')}
         {...shared}
       />
       {helperText && <small>{helperText}</small>}

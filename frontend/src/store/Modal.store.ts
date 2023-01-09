@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-import { ProcedureData, OptionalProcedureData } from './Procedures.store';
+import { ProcedureData } from './Procedures.store';
 
 type Action = 'complete_booking' | 'loader' | 'error' | 'success' | null;
 
