@@ -1,7 +1,6 @@
 import { observable } from 'mobx';
 
-export type ProcedureData = { id: number; name: string; description: string; price: number; duration: number };
-export type OptionalProcedureData = {
+export type ProcedureData = {
   id: number;
   name: string;
   description: string;
@@ -12,7 +11,7 @@ export type OptionalProcedureData = {
 
 interface IProceduresStatus {
   proceduresData?: ProcedureData[] | null;
-  optionalProceduresData?: OptionalProcedureData[] | null;
+  optionalProceduresData?: ProcedureData[] | null;
 }
 
 export interface IProceduresStore {
