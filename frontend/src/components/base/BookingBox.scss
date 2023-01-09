@@ -22,8 +22,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-top: 15px;
 
-  h2 {
+  h2, p {
     margin-bottom: 15px;
   }
 }

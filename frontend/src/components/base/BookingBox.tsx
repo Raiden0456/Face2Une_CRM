@@ -8,6 +8,7 @@ import { ProcedureData } from '../../store/Procedures.store';
 import { ProceduresService } from '../../service/ProceduresService';
 import { Input, TextArea } from './Input';
 import { TailSpinFixed } from '../TailSpin';
+import DatePicker from 'react-datepicker';
 import useForm from '../../utils/useForm';
 
 import s from './BookingBox.scss';
@@ -22,6 +23,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
   const proceduresService = new ProceduresService();
   const [optionalProcedures, setOptionalProcedures] = useState({});
   const { inputs, handleChange, clearForm, resetForm } = useForm(procedure);
+  const [startDate, setStartDate] = useState(new Date());
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -61,6 +63,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
     } else {
       console.log('Procedure ID:', procedure?.id);
       console.log('Additional Procedures:', optionalProcedures);
+      console.log('Date Selected:', startDate);
 
       ModalStore.setModalStatus({
         action: null,
@@ -133,6 +136,10 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
               <p>
                 {procedure?.duration} minutes @ {procedure?.price}€
               </p>
+              <div>
+                Choose Date:{' '}
+                {type === 'modal' && <DatePicker selected={startDate} onChange={(date: Date) => setStartDate(date)} />}
+              </div>
             </div>
             <div className={s.BookingBox__header_btns}>
               <ButtonContained width="20%" onClick={handleModal}>
