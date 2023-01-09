@@ -81,9 +81,10 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
             <TailSpinFixed />
           ) : (
             <>
-              <Input label="Name:" type="text" name="name" value={inputs?.name} onChange={handleChange} />
+              <Input required label="Name:" type="text" name="name" value={inputs?.name} onChange={handleChange} />
               <br />
               <Input
+                required
                 min="0"
                 label="Duration:"
                 type="number"
@@ -92,9 +93,18 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
                 onChange={handleChange}
               />
               <br />
-              <Input min="0" label="Price:" type="number" name="price" value={inputs?.price} onChange={handleChange} />
+              <Input
+                required
+                min="0"
+                label="Price:"
+                type="number"
+                name="price"
+                value={inputs?.price}
+                onChange={handleChange}
+              />
               <br />
               <TextArea
+                required
                 value={inputs?.description}
                 label="Description:"
                 name="description"
