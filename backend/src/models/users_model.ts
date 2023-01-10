@@ -37,8 +37,12 @@ user.createUser = async (
   },
   result
 ) => {
+  var resp;
+  let check = await supabase.from("users").select().eq("email", user.email);
+
+  if (check.data.length == 0) {
   const hash_password = bcrypt.hashSync(user.password, 10);
-  const { data, error } = await supabase
+  resp = await supabase
     .from("users")
     .insert([
       {
@@ -52,7 +56,11 @@ user.createUser = async (
       },
     ])
     .select();
-  result(error, data);
+  }
+  else {
+    resp = { error: {message: "Email is already registrated"}, data: [] };
+  }
+  result(resp.error, resp.data);
 };
 
 user.updateUserById = async (
@@ -67,8 +75,12 @@ user.updateUserById = async (
   },
   result
 ) => {
+  var resp;
+  let check = await supabase.from("users").select("id").eq("email", user.email);
+
+  if (check.data.length == 0 || check.data[0].id == user.id) {
   const hash_password = bcrypt.hashSync(user.password, 10);
-  const { data, error } = await supabase
+  resp = await supabase
     .from("users")
     .update([
       {
@@ -83,7 +95,11 @@ user.updateUserById = async (
     ])
     .eq("id", user.id)
     .select();
-  result(error, data);
+  }
+  else {
+    resp = { error: {message: "Email is already registrated"}, data: [] };
+  }
+  result(resp.error, resp.data);
 };
 
 user.deleteUserById = async (id: number, result) => {

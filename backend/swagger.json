@@ -330,7 +330,7 @@
                     }
                   },
                   {
-                    "$ref": "#/definitions/Clients"
+                    "$ref": "#/definitions/Client"
                   }
                 ]
               }

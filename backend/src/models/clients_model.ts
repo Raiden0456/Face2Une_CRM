@@ -23,7 +23,6 @@ client.getClientById = async (id: number, result) => {
     .eq("id", id);
   result(error, clients);
 };
-//TODO Maybe just ignore query if it exits? and for users make an error
 client.createClient = async (
   client: {
     full_name: string;
@@ -34,11 +33,8 @@ client.createClient = async (
   result
 ) => {
   var resp;
-  let check = await supabase
-    .from("clients")
-    .select()
-    .eq("email", client.email);
-    
+  let check = await supabase.from("clients").select().eq("email", client.email);
+
   if (check.data.length == 0) {
     resp = await supabase
       .from("clients")
@@ -51,11 +47,10 @@ client.createClient = async (
         },
       ])
       .select();
+  } else {
+    resp = { error: "", data: [] };
   }
-  else {
-    resp = {error: {message: "Client already exists."}, data: []};
-  }
-  result(resp.error,resp.data);
+  result(resp.error, resp.data);
 };
 
 client.updateClientById = async (
@@ -68,19 +63,26 @@ client.updateClientById = async (
   },
   result
 ) => {
-  const { data, error } = await supabase
-    .from("clients")
-    .update([
-      {
-        full_name: client.full_name,
-        phone: client.phone,
-        email: client.email,
-        user_id: client.user_id,
-      },
-    ])
-    .eq("id", client.id)
-    .select();
-  result(error, data);
+  var resp;
+  let check = await supabase.from("clients").select("id").eq("email", client.email);
+
+  if (check.data.length == 0 || check.data[0].id == client.id) {
+    resp = await supabase
+      .from("clients")
+      .update([
+        {
+          full_name: client.full_name,
+          phone: client.phone,
+          email: client.email,
+          user_id: client.user_id,
+        },
+      ])
+      .eq("id", client.id)
+      .select();
+  } else {
+    resp = { error: {message: "Email is already registrated"}, data: [] };
+  }
+  result(resp.error, resp.data);
 };
 
 client.deleteClientById = async (id: number, result) => {
