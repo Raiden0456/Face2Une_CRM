@@ -19,7 +19,8 @@ const appointment = function (appointment) {
 appointment.getAllappoint = async (result) => {
   let { data: appointments, error } = await supabase
     .from("appointments")
-    .select("*");
+    .select("*")
+    .order("reservation_date", { ascending: true });
   result(error, appointments);
 };
 
@@ -35,7 +36,8 @@ appointment.getAppointsByClient_Id = async (id: number, result) => {
   let { data: appointments, error } = await supabase
     .from("appointments")
     .select("*")
-    .eq("client_id", id);
+    .eq("client_id", id)
+    .order("reservation_date", { ascending: true });
   result(error, appointments);
 };
 

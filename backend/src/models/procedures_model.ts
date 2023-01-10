@@ -18,7 +18,8 @@ procedure.getAllproc = async (additional: number, result) => {
       let { data: procedures, error } = await supabase
         .from("procedures")
         .select("*")
-        .eq("additional", 0);
+        .eq("additional", 0)
+        .order("price", { ascending: true });
       result(error, procedures);
       break;
     }
@@ -26,14 +27,16 @@ procedure.getAllproc = async (additional: number, result) => {
       let { data: procedures, error } = await supabase
         .from("procedures")
         .select("*")
-        .eq("additional", 1);
+        .eq("additional", 1)
+        .order("price", { ascending: true });
       result(error, procedures);
       break;
     }
     default: {
       let { data: procedures, error } = await supabase
         .from("procedures")
-        .select("*");
+        .select("*")
+        .order("price", { ascending: true });
       result(error, procedures);
       break;
     }
