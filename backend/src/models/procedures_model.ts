@@ -12,68 +12,102 @@ const procedure = function (procedure) {
   this.additional = procedure.additional;
 };
 
-procedure.getAllproc = async (additional: number, result)  => {
+procedure.getAllproc = async (additional: number, result) => {
   switch (additional) {
     case 0: {
       let { data: procedures, error } = await supabase
-      .from('procedures')
-      .select('*')
-      .eq('additional', 0); 
+        .from("procedures")
+        .select("*")
+        .eq("additional", 0)
+        .order("price", { ascending: true });
       result(error, procedures);
       break;
     }
     case 1: {
       let { data: procedures, error } = await supabase
-      .from('procedures')
-      .select('*')
-      .eq('additional', 1);
+        .from("procedures")
+        .select("*")
+        .eq("additional", 1)
+        .order("price", { ascending: true });
       result(error, procedures);
       break;
     }
     default: {
       let { data: procedures, error } = await supabase
-      .from('procedures')
-      .select('*')
+        .from("procedures")
+        .select("*")
+        .order("price", { ascending: true });
       result(error, procedures);
       break;
     }
   }
 };
 
-procedure.getProcById = async (id: number, result)  => {
+procedure.getProcById = async (id: number, result) => {
   let { data: procedures, error } = await supabase
-  .from('procedures')
-  .select('*')
-  .eq('id', id); 
+    .from("procedures")
+    .select("*")
+    .eq("id", id);
   result(error, procedures);
 };
 
-procedure.createProc = async (proc: {name: string, description: string, price: number, duration: number, additional: number }, result)  => {
+procedure.createProc = async (
+  proc: {
+    name: string;
+    description: string;
+    price: number;
+    duration: number;
+    additional: number;
+  },
+  result
+) => {
   const { data, error } = await supabase
-  .from('procedures')
-  .insert([
-    {name: proc.name,description: proc.description,price: proc.price,duration: proc.duration,additional: proc.additional},
-  ])
-  .select();
+    .from("procedures")
+    .insert([
+      {
+        name: proc.name,
+        description: proc.description,
+        price: proc.price,
+        duration: proc.duration,
+        additional: proc.additional,
+      },
+    ])
+    .select();
   result(error, data);
 };
 
-procedure.updateProcById = async (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
+procedure.updateProcById = async (
+  proc: {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    duration: number;
+    additional: number;
+  },
+  result
+) => {
   const { data, error } = await supabase
-  .from('procedures')
-  .update([
-    {name: proc.name,description: proc.description,price: proc.price,duration: proc.duration,additional: proc.additional},
-  ])
-  .eq('id', proc.id)
-  .select();
+    .from("procedures")
+    .update([
+      {
+        name: proc.name,
+        description: proc.description,
+        price: proc.price,
+        duration: proc.duration,
+        additional: proc.additional,
+      },
+    ])
+    .eq("id", proc.id)
+    .select();
   result(error, data);
 };
 
-procedure.deleteProcById = async (id: number, result)  => {
+procedure.deleteProcById = async (id: number, result) => {
   const { data, error } = await supabase
-  .from('procedures')
-  .delete()
-  .eq('id', id)
+    .from("procedures")
+    .delete()
+    .eq("id", id);
   result(error, data);
 };
 

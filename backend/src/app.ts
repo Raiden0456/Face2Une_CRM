@@ -11,6 +11,7 @@ var app = express();
 import ProceduresRouter from './routes/procedures_route.js';
 import UsersRouter from './routes/users_route.js';
 import AppointmentsRouter from './routes/appointments_route.js';
+import ClientsRouter from './routes/clients_route.js';
 //////////////////////////
 
 // middleware //
@@ -30,6 +31,7 @@ import AppointmentsRouter from './routes/appointments_route.js';
 app.use('/', ProceduresRouter);
 app.use('/', UsersRouter);
 app.use('/', AppointmentsRouter);
+app.use('/', ClientsRouter);
 /////////////
 
 export default app;

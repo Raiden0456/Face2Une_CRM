@@ -254,6 +254,117 @@
             }
           }
         },
+        "/clients": {
+          "get": {
+            "tags": ["Clients"],
+            "summary": "Get all clients in db",
+            "responses": {
+              "200": {
+                "description": "Returns all clients in database in JSON format"
+              }
+            }
+          }
+        },
+        "/clients/{clientid}": {
+          "get": {
+            "tags": ["Clients"],
+            "summary": "Get a single client by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "clientid",
+              "description": "id of client",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single client in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_client": {
+          "post": {
+            "tags": ["Clients"],
+            "summary": "Create new client",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of client",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Client"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a client in database using JSON format"
+              }
+            }
+          }
+        },
+        "/update_client": {
+          "post": {
+            "tags": ["Clients"],
+            "summary": "Update client by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of client",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Client"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a client in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_client/{clientid}": {
+          "delete": {
+            "tags": ["Clients"],
+            "summary": "Delete client by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "clientsid",
+              "description": "id of client",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a client in database by id"
+              }
+            }
+          }
+        },
          "/appoint": {
           "get": {
             "tags": ["Appointments"],
@@ -431,6 +542,22 @@
             }
           }
         },
+        "Client": {
+          "properties": {
+            "full_name": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "user_id": {
+              "type": "number"
+            }
+          }
+        },
         "Appointment": {
           "properties": {
             "procedure_id": {
@@ -439,7 +566,8 @@
             "additional_ids": {
               "type": "array",
               "items": {
-                "type": "integer"
+                "type": "integer",
+                "uniqueItems": true
               }
             },
             "reservation_date": {
