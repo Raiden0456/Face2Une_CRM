@@ -25,15 +25,6 @@ const NavBar = observer(() => {
             Confirmation
           </div>
         </div>
-        {/* <div className={s.Navbar__left}>
-          <div className={s.Navbar__logo} onClick={() => (window.location.href = window.location.origin)}>
-            <h2>Starter Template</h2>
-          </div>
-        </div> */}
-
-        {/* <div className={s.Navbar__right}>
-          {AuthStore.authorized === 'auth' && <div onClick={() => authService.signOut()}>Logout</div>}
-        </div> */}
       </div>
     </div>
   );
