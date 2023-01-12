@@ -7,6 +7,7 @@ import { StatusContainer } from './StatusContainer';
 
 export const ModalsCustomStyles: object = {
   content: {
+    maxHeight: '625px', //test
     padding: '0',
     top: '50%',
     left: '50%',

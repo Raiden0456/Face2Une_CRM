@@ -3,72 +3,47 @@
 }
 
 .Navbar {
-  color: #fff;
+  color: rgb(0, 0, 0);
   width: 100%;
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   cursor: default;
 }
 
-.Navbar__balance {
-  margin-right: 20px;
-  font-size: 24px;
+.Navbar__logo {
+  font-size: 1.5em;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 12px 0;
 }
 
-.Navbar__balance_mask {
-  color: rgb(99, 99, 99);
-}
-
-.Navbar__left {
+.Navbar__pageStatus {
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
 
-  .Navbar__logo {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-
-    h2 {
-      margin-left: 2px;
-      margin-right: 40px;
-      font-size: 22px;
-    }
+  .Navbar__pageStatus_el {
+    text-align: center;
+    width: 200px;
+    padding: 11px 22px;
+    border: 1px solid #e2e2e2;
+    cursor: default;
+    border-radius: 14px;
+    margin: 12px;
   }
 
-}
-
-.Navbar__iconTopupbalance {
-  border-radius: 100%;
-  font-size: 20px;
-  line-height: 20px;
-  background-color: #e65100;
-  font-weight: 900;
-  width: 24px;
-  height: 24px;
-  text-align: center;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.7;
-  }
-}
-
-.Navbar__right {
-  display: flex;
-  align-items: center;
-
-  div {
-    cursor: pointer;
-  }
-
-  img {
-    cursor: pointer;
-    margin-left: 2em;
-
-    &:hover {
-      opacity: 0.8;
-    }
+  .Navbar__pageStatus_el_focused {
+    text-align: center;
+    width: 200px;
+    padding: 11px 22px;
+    border: 1px solid #91a0db;
+    box-shadow: 5px 5px #91a0db;
+    cursor: default;
+    border-radius: 14px;
+    margin: 12px;
   }
 }
 

@@ -24,7 +24,6 @@ const MainLayout: React.FC<MainLayoutProps> = observer(({ children, footer, back
           <Modals mobile={mobile} />
         </>
       </div>
-      <footer className={s.MainLayout__footer}>Footer</footer>
     </div>
   );
 });

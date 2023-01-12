@@ -42,11 +42,10 @@ export const Home = () => {
 
   return (
     <Container
-      /* header={<NavBar />} */
+      header={<NavBar />}
       width="100%"
       content={
         <>
-          <div style={{ color: 'black' }}>Home (Logged In)</div>
           <div style={{ margin: '25px 0', alignSelf: 'start', width: '25%' }}>
             <ButtonContained
               onClick={() => {
