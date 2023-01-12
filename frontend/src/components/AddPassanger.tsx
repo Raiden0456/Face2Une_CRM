@@ -34,11 +34,6 @@ export const AddPassanger = observer(({ setProcedures, setItems, items, procedur
   //console.log('Additional Passengers', items);
   return (
     <>
-      <div className="AddPassenger__buttons" style={{ marginBottom: '16px' }}>
-        <ButtonContained onClick={handleAdd}>Add Passanger</ButtonContained>
-        <ButtonContained onClick={handleClear}>Clear Passangers</ButtonContained>
-      </div>
-
       <div className="AddPassenger__procedures_wrapper">
         {procedures &&
           items.map((el: any, i: number) => (
@@ -50,6 +45,13 @@ export const AddPassanger = observer(({ setProcedures, setItems, items, procedur
               defaultValue={{ label: procedures[0].name, value: procedures[0].id }}
             />
           ))}
+      </div>
+
+      <div className="AddPassenger__buttons" style={{ marginTop: '14px' }}>
+        <ButtonContained onClick={handleAdd}>Add Passanger</ButtonContained>
+        <ButtonContained style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)'}} onClick={handleClear}>
+          Clear Passangers
+        </ButtonContained>
       </div>
     </>
   );
