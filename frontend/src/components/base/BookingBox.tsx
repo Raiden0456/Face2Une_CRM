@@ -8,6 +8,7 @@ import { ProcedureData } from '../../store/Procedures.store';
 import { ProceduresService } from '../../service/ProceduresService';
 import { Input, TextArea } from './Input';
 import { TailSpinFixed } from '../TailSpin';
+import AddPassanger from '../AddPassanger';
 import DatePicker from 'react-datepicker';
 import useForm from '../../utils/useForm';
 
@@ -26,6 +27,10 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
   const [startDate, setStartDate] = useState(new Date());
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Add Passengers State
+  const [procedures, setProcedures] = useState<any>(() => ProceduresStore.proceduresStatus.proceduresData || null); // TBD TS
+  const [items, setItems] = useState<any>([]); // TBD TS
 
   // Edit Button
   async function handleSubmit(event: any) {
@@ -64,6 +69,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
       console.log('Procedure ID:', procedure?.id);
       console.log('Additional Procedures:', optionalProcedures);
       console.log('Date Selected:', startDate);
+      console.log('Additional Passengers Procedures:', items);
 
       ModalStore.setModalStatus({
         action: null,
@@ -136,10 +142,11 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
               <p>
                 {procedure?.duration} minutes @ {procedure?.price}€
               </p>
-              <div>
-                Choose Date:{' '}
-                {type === 'modal' && <DatePicker selected={startDate} onChange={(date: Date) => setStartDate(date)} />}
-              </div>
+              {type === 'modal' && (
+                <div>
+                  Choose Date: <DatePicker selected={startDate} onChange={(date: Date) => setStartDate(date)} />
+                </div>
+              )}
             </div>
             <div className={s.BookingBox__header_btns}>
               <ButtonContained width="20%" onClick={handleModal}>
@@ -163,13 +170,18 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
       )}
 
       {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
-        <div className={s.BookingBox__optionalProcedures}>
-          {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (
-            <Checkbox onChange={(e) => handleCheckBoxes(e, optProd.id)} key={optProd.id}>
-              {optProd.name}
-            </Checkbox>
-          ))}
-        </div>
+        <>
+          <div className={s.BookingBox__optionalProcedures}>
+            {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (
+              <Checkbox onChange={(e) => handleCheckBoxes(e, optProd.id)} key={optProd.id}>
+                {optProd.name}
+              </Checkbox>
+            ))}
+          </div>
+          <div className={s.BookingBox__addPassengers}>
+            <AddPassanger procedures={procedures} setProcedures={setProcedures} items={items} setItems={setItems} />
+          </div>
+        </>
       )}
     </div>
   );
