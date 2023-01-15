@@ -146,10 +146,30 @@
         "/users": {
           "get": {
             "tags": ["Users"],
-            "summary": "Get all users in db",
+            "summary": "Get users in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "column",
+              "description": "filter column name(id, first_name, last_name, email, phone, rights))",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+              },
+              {
+              "in": "query",
+              "name": "value",
+              "description": "value of filter column",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+              }
+            ],
             "responses": {
               "200": {
-                "description": "Returns all users in database in JSON format"
+                "description": "Returns users in database in JSON format"
               }
             }
           }
@@ -257,10 +277,30 @@
         "/clients": {
           "get": {
             "tags": ["Clients"],
-            "summary": "Get all clients in db",
+            "summary": "Get clients in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "column",
+              "description": "filter column name(id, full_name, phone, email, user_id))",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+              },
+              {
+              "in": "query",
+              "name": "value",
+              "description": "value of filter column",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+              }
+            ],
             "responses": {
               "200": {
-                "description": "Returns all clients in database in JSON format"
+                "description": "Returns clients in database in JSON format"
               }
             }
           }
@@ -273,16 +313,16 @@
               {
               "in": "path",
               "name": "clientid",
-              "description": "id of client",
+              "description": "client id",
               "required": true,
               "schema": {
                 "type": "integer"
               }
-            }
+              }
             ],
             "responses": {
               "200": {
-                "description": "Returns a single client in database in JSON format"
+                "description": "Returns client in database in JSON format"
               }
             }
           }
@@ -368,10 +408,30 @@
          "/appoint": {
           "get": {
             "tags": ["Appointments"],
-            "summary": "Get all Appointments in db",
+            "summary": "Get Appointments in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "column",
+              "description": "filter column name(id, procedure_id, reservation_date, cient_id, master_id, total_price, reserved_on, saloon_name))",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+              },
+              {
+              "in": "query",
+              "name": "value",
+              "description": "value of filter column",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+              }
+            ],
             "responses": {
               "200": {
-                "description": "Returns all Appointments in database in JSON format"
+                "description": "Returns Appointments in database in JSON format"
               }
             }
           }
@@ -394,28 +454,6 @@
             "responses": {
               "200": {
                 "description": "Returns a single appointment in database in JSON format"
-              }
-            }
-          }
-        },
-        "/appoint/client/{clientid}": {
-          "get": {
-            "tags": ["Appointments"],
-            "summary": "Get all appointments by client_id in db",
-            "parameters": [
-              {
-              "in": "path",
-              "name": "clientid",
-              "description": "id of client",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-            ],
-            "responses": {
-              "200": {
-                "description": "Returns all appointments in database of client by client_id in JSON format"
               }
             }
           }

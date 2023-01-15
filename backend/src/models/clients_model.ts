@@ -11,18 +11,25 @@ const client = function (client) {
   this.user_id = client.user_id;
 };
 
-client.getAllClients = async (result) => {
-  let { data: clients, error } = await supabase.from("clients").select("*");
-  result(error, clients);
-};
-
-client.getClientById = async (id: number, result) => {
-  let { data: clients, error } = await supabase
+client.getClients = async (
+  filter: { column: string; value: any } = { column: "", value: false},
+  result
+) => {
+  var resp;
+  resp = filter.value
+  ? 
+  await supabase
     .from("clients")
     .select("*")
-    .eq("id", id);
-  result(error, clients);
+    .eq(filter.column, filter.value)
+  :
+  await supabase
+    .from("clients")
+    .select("*");
+  
+  return result(resp.error, resp.data);
 };
+
 client.createClient = async (
   client: {
     full_name: string;
@@ -50,7 +57,7 @@ client.createClient = async (
   } else {
     resp = { error: "", data: [] };
   }
-  result(resp.error, resp.data);
+  return result(resp.error, resp.data);
 };
 
 client.updateClientById = async (
@@ -64,7 +71,10 @@ client.updateClientById = async (
   result
 ) => {
   var resp;
-  let check = await supabase.from("clients").select("id").eq("email", client.email);
+  let check = await supabase
+    .from("clients")
+    .select("id")
+    .eq("email", client.email);
 
   if (check.data.length == 0 || check.data[0].id == client.id) {
     resp = await supabase
@@ -80,14 +90,14 @@ client.updateClientById = async (
       .eq("id", client.id)
       .select();
   } else {
-    resp = { error: {message: "Email is already registrated"}, data: [] };
+    resp = { error: { message: "Email is already registrated" }, data: [] };
   }
-  result(resp.error, resp.data);
+  return result(resp.error, resp.data);
 };
 
 client.deleteClientById = async (id: number, result) => {
   const { data, error } = await supabase.from("clients").delete().eq("id", id);
-  result(error, data);
+  return result(error, data);
 };
 
 export default client;

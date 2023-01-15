@@ -41,6 +41,7 @@ procedure.getAllproc = async (additional: number, result) => {
       break;
     }
   }
+  return result;
 };
 
 procedure.getProcById = async (id: number, result) => {
@@ -48,7 +49,7 @@ procedure.getProcById = async (id: number, result) => {
     .from("procedures")
     .select("*")
     .eq("id", id);
-  result(error, procedures);
+  return result(error, procedures);
 };
 
 procedure.createProc = async (
@@ -73,7 +74,7 @@ procedure.createProc = async (
       },
     ])
     .select();
-  result(error, data);
+  return result(error, data);
 };
 
 procedure.updateProcById = async (
@@ -100,7 +101,7 @@ procedure.updateProcById = async (
     ])
     .eq("id", proc.id)
     .select();
-  result(error, data);
+  return result(error, data);
 };
 
 procedure.deleteProcById = async (id: number, result) => {
@@ -108,7 +109,7 @@ procedure.deleteProcById = async (id: number, result) => {
     .from("procedures")
     .delete()
     .eq("id", id);
-  result(error, data);
+  return result(error, data);
 };
 
 export default procedure;

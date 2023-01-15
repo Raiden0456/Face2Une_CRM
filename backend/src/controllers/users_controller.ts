@@ -1,28 +1,10 @@
 import user from "../models/users_model.js";
+import clients from "../models/clients_model.js";
 import { join } from "path";
 
-// Retrieve users from the database.
-export function loadUsers(res) {
-  user.getAllusers((err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while retrieving users.",
-      });
-    else if (data.length == 0) {
-      res.status(404).json({
-        success: false,
-        message: `No users found.`,
-      });
-    } else {
-      res.json({ success: true, data: data });
-    }
-  });
-}
-
 // Find a single user with an id
-export function findOneUser(id: number, res) {
-  user.getUserById(id, (err, data) => {
+export function loadUsers(url_params, res) {
+  user.getUsers(url_params, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -31,7 +13,7 @@ export function findOneUser(id: number, res) {
     else if (data.length == 0) {
       res.status(404).json({
         success: true,
-        message: `User with id ${id} not found.`,
+        message: `Users not found.`,
       });
     } else {
       res.json({ success: true, data: data });
@@ -52,7 +34,7 @@ export function updateUser(
   },
   res
 ) {
-  user.updateUserById(_user, (err, data) => {
+  user.updateUserById(_user, async (err, data) => {
     if (err)
       res.status(500).send({
         message: err.message || "Some error occurred while updating user.",
@@ -63,6 +45,61 @@ export function updateUser(
         message: `User with id ${_user.id} not found.`,
       });
     } else {
+      const client_same_user = (await clients.getClients(
+        { column: "user_id", value: _user.id },
+        (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            return data;
+          }
+        }
+      )) as any;
+      const client_same_email = (await clients.getClients(
+        { column: "email", value: _user.email },
+        (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            return data;
+          }
+        }
+      )) as any;
+      // update client with if assosiated user was updated //
+      if (client_same_user) {
+        const client = {
+          id: client_same_user[0].id,
+          full_name: _user.first_name + " " + _user.last_name,
+          phone: _user.phone,
+          email: _user.email,
+          user_id: _user.id,
+        };
+        clients.updateClientById(client, (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("assosiated client to user updated");
+          }
+        });
+      }
+      // connect and update client if user is now connected to it //
+      else if (client_same_email && !client_same_email[0].user_id) {
+        const client = {
+          id: client_same_email[0].id,
+          full_name: _user.first_name + " " + _user.last_name,
+          phone: _user.phone,
+          email: _user.email,
+          user_id: _user.id,
+        };
+        clients.updateClientById(client, (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("updated client connected to updated user with same email");
+          }
+        });
+      }
+
       res.json({ success: true, data: data });
     }
   });
@@ -80,13 +117,56 @@ export function createUser(
   },
   res
 ) {
-  user.createUser(_user, (err, data) => {
+  user.createUser(_user, async (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
         message: err.message || "Some error occurred while creating user.",
       });
     else {
+      // Create a client for the user if client with such email does not exist //
+      // assing client variable to response from getClients //
+      const client = (await clients.getClients(
+        { column: "email", value: _user.email },
+        (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            return data;
+          }
+        }
+      )) as any;
+      if (!client) {
+        const client = {
+          full_name: _user.first_name + " " + _user.last_name,
+          phone: _user.phone,
+          email: _user.email,
+          user_id: data[0].id,
+        };
+        clients.createClient(client, (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Created client for user with id: " + data[0].id);
+          }
+        });
+      } else {
+        //update client with user_id //
+        const client_update = {
+          id: client[0].id,
+          full_name: _user.first_name + " " + _user.last_name,
+          phone: _user.phone,
+          email: _user.email,
+          user_id: data[0].id,
+        };
+        clients.updateClientById(client_update, (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Updated client with same email: " + data[0].email);
+          }
+        });
+      }
       res.json({ success: true, data: data });
     }
   });

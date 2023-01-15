@@ -5,13 +5,10 @@ import * as appoint from '../controllers/appointments_controller.js';
 //Routing for the appointments page//
 
 router.get('/appoint', function(req, res){
-    appoint.loadAppoint(res);
+    appoint.loadAppoint(req.query, res);
 });
 router.get('/appoint/:appointid', function(req, res){
-    appoint.findOneAppoint(req.params.appointid, res);
-});
-router.get('/appoint/client/:clientid', function(req, res){
-    appoint.findAppointsByClient_id(req.params.clientid, res);
+    appoint.loadAppoint({column: "id", value: req.params.appointid}, res);
 });
 router.post('/create_appoint', function(req, res){
     appoint.createAppoint(req.body, res);

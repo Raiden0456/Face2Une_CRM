@@ -2,6 +2,7 @@
 // import client from "./db.js";
 import supabase from "./db.js";
 import bcrypt from "bcrypt";
+import client from "./clients_model.js";
 
 // Constructor
 const user = function (user) {
@@ -13,17 +14,23 @@ const user = function (user) {
   this.password = user.password;
 };
 
-user.getAllusers = async (result) => {
-  let { data: users, error } = await supabase.from("users").select("*");
-  result(error, users);
-};
-
-user.getUserById = async (id: number, result) => {
-  let { data: users, error } = await supabase
+user.getUsers = async (
+  filter: { column: string; value: any } = { column: "", value: false},
+  result
+) => {
+  var resp;
+  resp = filter.value
+  ? 
+  await supabase
     .from("users")
     .select("*")
-    .eq("id", id);
-  result(error, users);
+    .eq(filter.column, filter.value)
+  :
+  await supabase
+    .from("users")
+    .select("*");
+
+  return result(resp.error, resp.data);
 };
 
 user.createUser = async (
@@ -38,29 +45,30 @@ user.createUser = async (
   result
 ) => {
   var resp;
-  let check = await supabase.from("users").select().eq("email", user.email);
+  let check = await supabase.from("users").select("id").eq("email", user.email);
 
-  if (check.data.length == 0) {
-  const hash_password = bcrypt.hashSync(user.password, 10);
-  resp = await supabase
-    .from("users")
-    .insert([
-      {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone: user.phone,
-        email: user.email,
-        password: hash_password,
-        salt: 10,
-        rights: user.rights,
-      },
-    ])
-    .select();
+  if (check.data.length == 0) 
+  {
+    const hash_password = bcrypt.hashSync(user.password, 10);
+    resp = await supabase
+      .from("users")
+      .insert([
+        {
+          first_name: user.first_name,
+          last_name: user.last_name,
+          phone: user.phone,
+          email: user.email,
+          password: hash_password,
+          salt: 10,
+          rights: user.rights,
+        },
+      ])
+      .select();
   }
   else {
     resp = { error: {message: "Email is already registrated"}, data: [] };
   }
-  result(resp.error, resp.data);
+  return result(resp.error, resp.data);
 };
 
 user.updateUserById = async (
@@ -76,35 +84,37 @@ user.updateUserById = async (
   result
 ) => {
   var resp;
+
   let check = await supabase.from("users").select("id").eq("email", user.email);
 
-  if (check.data.length == 0 || check.data[0].id == user.id) {
-  const hash_password = bcrypt.hashSync(user.password, 10);
-  resp = await supabase
-    .from("users")
-    .update([
-      {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone: user.phone,
-        email: user.email,
-        password: hash_password,
-        salt: 10,
-        rights: user.rights,
-      },
-    ])
-    .eq("id", user.id)
-    .select();
+  if (check.data.length == 0 || check.data[0].id == user.id) 
+  {
+    const hash_password = bcrypt.hashSync(user.password, 10);
+    resp = await supabase
+      .from("users")
+      .update([
+        {
+          first_name: user.first_name,
+          last_name: user.last_name,
+          phone: user.phone,
+          email: user.email,
+          password: hash_password,
+          salt: 10,
+          rights: user.rights,
+        },
+      ])
+      .eq("id", user.id)
+      .select();
   }
   else {
     resp = { error: {message: "Email is already registrated"}, data: [] };
   }
-  result(resp.error, resp.data);
+  return result(resp.error, resp.data);
 };
 
 user.deleteUserById = async (id: number, result) => {
   const { data, error } = await supabase.from("users").delete().eq("id", id);
-  result(error, data);
+  return result(error, data);
 };
 
 export default user;

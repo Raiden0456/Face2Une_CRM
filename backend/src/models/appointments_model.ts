@@ -16,29 +16,25 @@ const appointment = function (appointment) {
   this.saloon_name = appointment.saloon_name;
 };
 
-appointment.getAllappoint = async (result) => {
-  let { data: appointments, error } = await supabase
+appointment.getAppointments = async (
+  filter: { column: string; value: any } = { column: "", value: false},
+  result
+) => {
+  var resp;
+  resp = filter.value
+  ? 
+  await supabase
+    .from("appointments")
+    .select("*")
+    .eq(filter.column, filter.value)
+    .order("reservation_date", { ascending: true })
+  :
+  await supabase
     .from("appointments")
     .select("*")
     .order("reservation_date", { ascending: true });
-  result(error, appointments);
-};
 
-appointment.getAppointById = async (id: number, result) => {
-  let { data: appointments, error } = await supabase
-    .from("appointments")
-    .select("*")
-    .eq("id", id);
-  result(error, appointments);
-};
-
-appointment.getAppointsByClient_Id = async (id: number, result) => {
-  let { data: appointments, error } = await supabase
-    .from("appointments")
-    .select("*")
-    .eq("client_id", id)
-    .order("reservation_date", { ascending: true });
-  result(error, appointments);
+  return result(resp.error, resp.data);
 };
 
 appointment.createAppoint = async (
@@ -69,7 +65,7 @@ appointment.createAppoint = async (
       },
     ])
     .select();
-  result(error, data);
+  return result(error, data);
 };
 
 appointment.updateAppointById = async (
@@ -102,7 +98,7 @@ appointment.updateAppointById = async (
     ])
     .eq("id", appoint.id)
     .select();
-  result(error, data);
+  return result(error, data);
 };
 
 appointment.deleteAppointById = async (id: number, result) => {
@@ -110,7 +106,7 @@ appointment.deleteAppointById = async (id: number, result) => {
     .from("appointments")
     .delete()
     .eq("id", id);
-  result(error, data);
+  return result(error, data);
 };
 
 export default appointment;

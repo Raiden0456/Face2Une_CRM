@@ -1,28 +1,9 @@
 import client from "../models/clients_model.js";
 import { join } from "path";
 
-// Retrieve clients from the database.
-export function loadClients(res) {
-  client.getAllClients((err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while retrieving clients.",
-      });
-    else if (data.length == 0) {
-      res.status(404).json({
-        success: false,
-        message: `No clients found.`,
-      });
-    } else {
-      res.json({ success: true, data: data });
-    }
-  });
-}
-
-// Find a single client with an id
-export function findOneClient(id: number, res) {
-  client.getClientById(id, (err, data) => {
+// Retrieve clients from the database with filter.
+export function loadClients(url_params, res) {
+  client.getClients(url_params, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -31,7 +12,7 @@ export function findOneClient(id: number, res) {
     else if (data.length == 0) {
       res.status(404).json({
         success: true,
-        message: `client with id ${id} not found.`,
+        message: `No clients found.`,
       });
     } else {
       res.json({ success: true, data: data });
