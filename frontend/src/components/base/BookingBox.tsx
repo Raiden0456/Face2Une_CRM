@@ -11,6 +11,8 @@ import { TailSpinFixed } from '../TailSpin';
 import AddPassanger from '../AddPassanger';
 import DatePicker from 'react-datepicker';
 import useForm from '../../utils/useForm';
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
 
 import s from './BookingBox.scss';
 
@@ -24,7 +26,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
   const proceduresService = new ProceduresService();
   const [optionalProcedures, setOptionalProcedures] = useState({});
   const { inputs, handleChange, clearForm, resetForm } = useForm(procedure);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 30), 16));
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -143,7 +145,18 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
               </p>
               {type === 'modal' && (
                 <div>
-                  Choose Date: <DatePicker selected={startDate} onChange={(date: Date) => setStartDate(date)} />
+                  Choose Date: 
+                  <DatePicker 
+                    selected={startDate} 
+                    onChange={(date: Date) => setStartDate(date)} 
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    minDate={new Date()}
+                    minTime={setHours(setMinutes(new Date(), 0), 10)}
+                    maxTime={setHours(setMinutes(new Date(), 0), 20)}
+                    timeIntervals={15}
+                    dateFormat="MMMM d, yyyy HH:mm"
+                  />
                 </div>
               )}
             </div>
