@@ -66,9 +66,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
         procedure: procedure,
       });
     } else {
-      console.log('Procedure ID:', procedure?.id);
-      console.log('Additional Procedures:', optionalProcedures);
-      console.log('Date Selected:', startDate);
+      console.log('Main Passanger', { proc_id: procedure?.id, opt_proc_id: optionalProcedures, date: startDate });
       console.log('Additional Passengers Procedures:', items);
 
       ModalStore.setModalStatus({
@@ -134,11 +132,12 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
           )}
         </form>
       ) : (
-        <div>
+        <div className={type === 'modal' ? s.BookingBox__main : null}>
           <div className={s.BookingBox__header}>
             <div className={s.BookingBox__header_column}>
               {ModalStore.modalStatus.open && <h2>Your Cart:</h2>}
               <h3>{procedure?.name}</h3>
+              <h4>Passenger 1</h4>
               <p>
                 {procedure?.duration} minutes @ {procedure?.price}€
               </p>
@@ -166,21 +165,28 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
           <div className={s.BookingBox__content}>
             <p>{procedure?.description}</p>
           </div>
+
+          {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
+            <div className={s.BookingBox__optionalProcedures}>
+              {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (
+                <Checkbox onChange={(e) => handleCheckBoxes(e, optProd.id)} key={optProd.id}>
+                  {optProd.name}
+                </Checkbox>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
       {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
         <>
-          <div className={s.BookingBox__optionalProcedures}>
-            {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (
-              <Checkbox onChange={(e) => handleCheckBoxes(e, optProd.id)} key={optProd.id}>
-                {optProd.name}
-              </Checkbox>
-            ))}
-          </div>
-          <div className={s.BookingBox__addPassengers}>
-            <AddPassanger procedures={procedures} setProcedures={setProcedures} items={items} setItems={setItems} />
-          </div>
+          <AddPassanger
+            optionalProcedures={ProceduresStore.proceduresStatus.optionalProceduresData}
+            procedures={procedures}
+            setProcedures={setProcedures}
+            items={items}
+            setItems={setItems}
+          />
         </>
       )}
     </div>

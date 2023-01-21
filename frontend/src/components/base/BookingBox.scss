@@ -17,6 +17,14 @@
   align-items: flex-start;
 }
 
+.BookingBox__main {
+  border: 1px solid #e2e2e2;
+  cursor: default;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
 .BookingBox__header {
   width: 100%;
   display: flex;
@@ -74,24 +82,14 @@
   margin-bottom: 15px;
   display: flex;
   flex-wrap: wrap;
+  border: 1px solid #e2e2e2;
+  cursor: default;
+  padding: 16px;
+  border-radius: 16px;
 
   label {
     margin-right: 15px;
     margin-bottom: 15px;
     width: 200px;
   }
-}
-
-.BookingBox__addPassengers {
-
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #e2e2e2;
-  margin-bottom: 22px;
-  cursor: default;
-  padding: 16px;
-  align-items: flex-start;
-  border-radius: 16px;
-  overflow: auto;
 }
