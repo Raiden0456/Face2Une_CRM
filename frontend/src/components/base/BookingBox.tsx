@@ -161,9 +161,11 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
               )}
             </div>
             <div className={s.BookingBox__header_btns}>
-              <ButtonContained width="20%" onClick={handleModal}>
-                Book
-              </ButtonContained>
+              {type === 'main' && (
+                <ButtonContained width="20%" onClick={handleModal}>
+                  Book
+                </ButtonContained>
+              )}
               {type === 'main' && (
                 <ButtonContained
                   width="5%"
@@ -200,6 +202,9 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
             items={items}
             setItems={setItems}
           />
+          <ButtonContained width="20%" onClick={handleModal}>
+            Book
+          </ButtonContained>
         </>
       )}
     </div>
