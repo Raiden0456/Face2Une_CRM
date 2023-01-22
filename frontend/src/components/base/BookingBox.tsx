@@ -11,8 +11,8 @@ import { TailSpinFixed } from '../TailSpin';
 import AddPassanger from '../AddPassanger';
 import DatePicker from 'react-datepicker';
 import useForm from '../../utils/useForm';
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
+import setHours from 'date-fns/setHours';
+import setMinutes from 'date-fns/setMinutes';
 
 import s from './BookingBox.scss';
 
@@ -139,26 +139,10 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
             <div className={s.BookingBox__header_column}>
               {ModalStore.modalStatus.open && <h2>Your Cart:</h2>}
               <h3>{procedure?.name}</h3>
-              <h4>Passenger 1</h4>
+              {ModalStore.modalStatus.open && <h4>Passenger 1</h4>}
               <p>
                 {procedure?.duration} minutes @ {procedure?.price}€
               </p>
-              {type === 'modal' && (
-                <div>
-                  Choose Date: 
-                  <DatePicker 
-                    selected={startDate} 
-                    onChange={(date: Date) => setStartDate(date)} 
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    minDate={new Date()}
-                    minTime={setHours(setMinutes(new Date(), 0), 10)}
-                    maxTime={setHours(setMinutes(new Date(), 0), 20)}
-                    timeIntervals={15}
-                    dateFormat="MMMM d, yyyy HH:mm"
-                  />
-                </div>
-              )}
             </div>
             <div className={s.BookingBox__header_btns}>
               {type === 'main' && (
@@ -195,16 +179,35 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
 
       {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
         <>
-          <AddPassanger
-            optionalProcedures={ProceduresStore.proceduresStatus.optionalProceduresData}
-            procedures={procedures}
-            setProcedures={setProcedures}
-            items={items}
-            setItems={setItems}
-          />
-          <ButtonContained width="20%" onClick={handleModal}>
-            Book
-          </ButtonContained>
+          <div>
+            <p style={{ marginBottom: '5px' }}>Choose Date:</p>
+            <DatePicker
+              selected={startDate}
+              onChange={(date: Date) => setStartDate(date)}
+              showTimeSelect
+              timeFormat="HH:mm"
+              minDate={new Date()}
+              minTime={setHours(setMinutes(new Date(), 0), 10)}
+              maxTime={setHours(setMinutes(new Date(), 0), 20)}
+              timeIntervals={15}
+              dateFormat="MMMM d, yyyy HH:mm"
+            />
+          </div>
+          <div className={s.BookingBox__buttons_group}>
+            <div>
+              <AddPassanger
+                optionalProcedures={ProceduresStore.proceduresStatus.optionalProceduresData}
+                procedures={procedures}
+                setProcedures={setProcedures}
+                items={items}
+                setItems={setItems}
+              />
+            </div>
+
+            <ButtonContained width="25%" onClick={handleModal}>
+              Book
+            </ButtonContained>
+          </div>
         </>
       )}
     </div>

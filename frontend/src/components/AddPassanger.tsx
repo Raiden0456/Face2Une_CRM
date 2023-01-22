@@ -60,7 +60,7 @@ export const AddPassanger = observer(({ setProcedures, setItems, items, procedur
         </div>
       )}
 
-      <div className="AddPassenger__buttons" style={{ marginTop: '14px' }}>
+      <div className="AddPassenger__buttons">
         <ButtonContained onClick={handleAdd}>Add Passanger</ButtonContained>
         <ButtonContained style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }} onClick={handleClear}>
           Clear Passangers
