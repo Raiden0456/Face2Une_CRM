@@ -27,8 +27,7 @@ export function updateAppoint(
     id: number;
     procedure_id: number;
     additional_ids: [];
-    reservation_date: string;
-    reservation_time: string;
+    reservation_date_time: Date;
     client_id: number;
     master_id: number;
     total_price: number;
@@ -59,8 +58,7 @@ export function createAppoint(
   appoint: {
     procedure_id: number;
     additional_ids: [];
-    reservation_date: string;
-    reservation_time: string;
+    reservation_date_time: Date;
     client_id: number;
     master_id: number;
     total_price: number;

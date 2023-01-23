@@ -608,11 +608,9 @@
                 "uniqueItems": true
               }
             },
-            "reservation_date": {
-              "type": "string"
-            },
-            "reservation_time": {
-              "type": "string"
+            "reservation_date_time": {
+              "type": "string",
+              "format": "date-time"
             },
             "client_id": {
               "type": "integer"
