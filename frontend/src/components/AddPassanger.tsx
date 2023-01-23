@@ -35,9 +35,10 @@ export const AddPassanger = observer(({ setProcedures, setItems, items, procedur
   //console.log('Additional Passengers', items);
   return (
     <>
-      {procedures && items.length > 0 && (
-        <div className="AddPassenger__procedures_wrapper">
-          {items.map((el: any, i: number) => (
+      {procedures &&
+        items.length > 0 &&
+        items.map((el: any, i: number) => (
+          <div className="AddPassenger__procedures_wrapper">
             <div key={i} style={{ marginBottom: '1rem' }}>
               <SelectField
                 label={`Choose a Procedure for Passenger ${i + 2}`}
@@ -56,9 +57,8 @@ export const AddPassanger = observer(({ setProcedures, setItems, items, procedur
                 </Checkbox>
               ))}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
 
       <div className="AddPassenger__buttons">
         <ButtonContained onClick={handleAdd}>Add Passanger</ButtonContained>

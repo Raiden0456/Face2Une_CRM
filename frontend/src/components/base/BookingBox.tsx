@@ -179,6 +179,13 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
 
       {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
         <>
+          <AddPassanger
+            optionalProcedures={ProceduresStore.proceduresStatus.optionalProceduresData}
+            procedures={procedures}
+            setProcedures={setProcedures}
+            items={items}
+            setItems={setItems}
+          />
           <div>
             <p style={{ marginBottom: '5px' }}>Choose Date:</p>
             <DatePicker
@@ -194,21 +201,10 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
               inline
             />
           </div>
-          <div className={s.BookingBox__buttons_group}>
-            <div>
-              <AddPassanger
-                optionalProcedures={ProceduresStore.proceduresStatus.optionalProceduresData}
-                procedures={procedures}
-                setProcedures={setProcedures}
-                items={items}
-                setItems={setItems}
-              />
-            </div>
 
-            <ButtonContained width="25%" onClick={handleModal}>
-              Book
-            </ButtonContained>
-          </div>
+          <ButtonContained onClick={handleModal} style={{ marginTop: '1.5rem' }}>
+            Book
+          </ButtonContained>
         </>
       )}
     </div>
