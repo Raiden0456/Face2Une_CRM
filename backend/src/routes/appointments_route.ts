@@ -2,7 +2,7 @@ import { Router } from 'express';
 var router = Router();
 import * as appoint from '../controllers/appointments_controller.js';
 
-//Routing for the appointments page//
+//Routing for the appointments//
 
 router.get('/appoint', function(req, res){
     appoint.loadAppoint(res);

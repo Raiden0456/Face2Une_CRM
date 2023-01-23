@@ -2,7 +2,7 @@ import { Router } from 'express';
 var router = Router();
 import * as proc from '../controllers/procedures_controller.js';
 
-//Routing for the procedures page//
+//Routing for the procedures//
 
 router.get('/main_proc', function(req, res){
     proc.loadProc(0, res);

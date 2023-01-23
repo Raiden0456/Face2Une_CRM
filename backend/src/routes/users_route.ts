@@ -2,7 +2,7 @@ import { Router } from 'express';
 var router = Router();
 import * as user from '../controllers/users_controller.js';
 
-//Routing for the users page//
+//Routing for the users//
 
 router.get('/users', function(req, res){
     user.loadUsers(res);
