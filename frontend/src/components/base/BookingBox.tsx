@@ -186,7 +186,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
             items={items}
             setItems={setItems}
           />
-          <div>
+          <div className={s.BookingBox__datepicker}>
             <p style={{ marginBottom: '5px' }}>Choose Date:</p>
             <DatePicker
               selected={startDate}
