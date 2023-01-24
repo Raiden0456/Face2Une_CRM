@@ -10,14 +10,20 @@ const NavBar = observer(() => {
   return (
     <div className={s.HeaderWrapper}>
       <div className={s.Navbar}>
-        <div className={s.Navbar__left}>
-          <div className={s.Navbar__logo} onClick={() => (window.location.href = window.location.origin)}>
-            <h2>Starter Template</h2>
-          </div>
+        <div className={s.Navbar__logo}>
+          Face2Une
         </div>
 
-        <div className={s.Navbar__right}>
-          {AuthStore.authorized === 'auth' && <div onClick={() => authService.signOut()}>Logout</div>}
+        <div className={s.Navbar__pageStatus}>
+          <div className={s.Navbar__pageStatus_el_focused}>
+            Choose Appointment
+          </div>
+          <div className={s.Navbar__pageStatus_el}>
+            Your Info
+          </div>
+          <div className={s.Navbar__pageStatus_el}>
+            Confirmation
+          </div>
         </div>
       </div>
     </div>

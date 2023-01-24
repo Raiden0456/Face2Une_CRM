@@ -1,0 +1,36 @@
+.SelectWrapper {
+  width: 50%;
+  margin-bottom: 22px;
+  margin-right: 16px;
+}
+
+.AddPassenger__buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+
+  button {
+    margin-right: 16px;
+    margin-bottom: 1.5rem;
+    max-width: 35%;
+  }
+}
+
+.AddPassenger__procedures_wrapper {
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e2e2;
+  margin-bottom: 22px;
+  cursor: default;
+  padding: 16px;
+  align-items: flex-start;
+  border-radius: 16px;
+  overflow: auto;
+
+  label {
+    margin-right: 1rem;
+  }
+}

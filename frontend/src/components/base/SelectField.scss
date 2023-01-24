@@ -1,0 +1,35 @@
+.SelectWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+
+  label {
+    color: #8e8e93;
+    line-height: 13px;
+    margin-bottom: 5px;
+  };
+
+  select {
+    padding: 8px 16px;
+    width: 100%;
+    background: #ffffff;
+    border: 2px solid #f2f2f7;
+    border-radius: 6px;
+    color: #8e8e93;
+    letter-spacing: -0.32px;
+
+    &:focus {
+      outline: none !important;
+      border: 2px solid #91a0db;
+    }
+  }
+
+  .Select__Invalid {
+    background: #ffebee;
+    border: 2px solid #b71c1c;
+    border-radius: 6px;
+  }
+}
+
+

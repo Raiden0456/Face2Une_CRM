@@ -17,13 +17,22 @@
   align-items: flex-start;
 }
 
+.BookingBox__main {
+  border: 1px solid #e2e2e2;
+  cursor: default;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
 .BookingBox__header {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-top: 15px;
 
-  h2 {
+  h2, p {
     margin-bottom: 15px;
   }
 }
@@ -68,10 +77,42 @@
   }
 }
 
+.BookingBox__datepicker {
+  .react-datepicker__header {
+    text-align: center;
+    background-color: #91a0db;
+    padding-top: 8px;
+    position: relative;
+
+  }
+
+  .react-datepicker__today-button {
+    background: #91a0db;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+  }
+
+  .react-datepicker {
+    font-size: 0.8rem;
+    color: #000;
+    border: 0px;
+    border-radius: 16px;
+    display: inline-block;
+    position: relative;
+  }
+}
+
 .BookingBox__optionalProcedures {
   margin-top: 25px;
+  margin-bottom: 15px;
   display: flex;
   flex-wrap: wrap;
+  border: 1px solid #e2e2e2;
+  cursor: default;
+  padding: 16px;
+  border-radius: 16px;
 
   label {
     margin-right: 15px;
@@ -79,4 +120,3 @@
     width: 200px;
   }
 }
-
