@@ -196,7 +196,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
               minDate={new Date()}
               minTime={setHours(setMinutes(new Date(), 0), 10)}
               maxTime={setHours(setMinutes(new Date(), 0), 20)}
-              timeIntervals={15}
+              timeIntervals={5}
               dateFormat="MMMM d, yyyy HH:mm"
               inline
             />

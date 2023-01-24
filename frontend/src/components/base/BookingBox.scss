@@ -80,10 +80,10 @@
 .BookingBox__datepicker {
   .react-datepicker__header {
     text-align: center;
-    background-color: #91a0db;
+    background: none;
     padding-top: 8px;
     position: relative;
-
+    border-bottom: none;
   }
 
   .react-datepicker__today-button {
@@ -97,11 +97,33 @@
   .react-datepicker {
     font-size: 0.8rem;
     color: #000;
-    border: 0px;
+    border: 1px solid gray;
     border-radius: 16px;
     display: inline-block;
     position: relative;
   }
+  .react-datepicker__time-container {
+    .react-datepicker__time {
+      border-bottom-right-radius: 16px;
+      .react-datepicker__time-box {
+        ul.react-datepicker__time-list  {
+          li.react-datepicker__time-list-item--selected {
+            background-color: #91a0db;
+            &:hover {
+              background-color: #91a0db;
+            }
+          }
+        }
+      }
+    }
+  }
+  .react-datepicker__day--selected {
+    background-color: #91a0db;
+    &:hover {
+      background-color: #91a0db;
+    }
+  }
+  
 }
 
 .BookingBox__optionalProcedures {
