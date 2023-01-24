@@ -5,10 +5,10 @@ import * as client from '../controllers/clients_controller.js';
 //Routing for the clients//
 
 router.get('/clients', function(req, res){
-    client.loadClients(res);
+    client.loadClients(req.query, res);
 });
 router.get('/clients/:clientid', function(req, res){
-    client.findOneClient(req.params.clientid, res);
+    client.loadClients({column: "id", value: req.params.clientid}, res);
 });
 router.post('/create_client', function(req, res){
     client.createClient(req.body, res);

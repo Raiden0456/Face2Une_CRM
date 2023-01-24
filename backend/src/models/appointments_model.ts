@@ -1,6 +1,7 @@
 // import { QueryResult } from "pg";
 // import client from "./db.js";
 import supabase from "./db.js";
+import date from "date-and-time";
 
 // Constructor
 const appointment = function (appointment) {
@@ -16,37 +17,32 @@ const appointment = function (appointment) {
   this.saloon_name = appointment.saloon_name;
 };
 
-appointment.getAllappoint = async (result) => {
-  let { data: appointments, error } = await supabase
+appointment.getAppointments = async (
+  filter: { column: string; value: any } = { column: "", value: false},
+  result
+) => {
+  var resp;
+  resp = filter.value
+  ? 
+  await supabase
+    .from("appointments")
+    .select("*")
+    .eq(filter.column, filter.value)
+    .order("reservation_date", { ascending: true })
+  :
+  await supabase
     .from("appointments")
     .select("*")
     .order("reservation_date", { ascending: true });
-  result(error, appointments);
-};
 
-appointment.getAppointById = async (id: number, result) => {
-  let { data: appointments, error } = await supabase
-    .from("appointments")
-    .select("*")
-    .eq("id", id);
-  result(error, appointments);
-};
-
-appointment.getAppointsByClient_Id = async (id: number, result) => {
-  let { data: appointments, error } = await supabase
-    .from("appointments")
-    .select("*")
-    .eq("client_id", id)
-    .order("reservation_date", { ascending: true });
-  result(error, appointments);
+  return result(resp.error, resp.data);
 };
 
 appointment.createAppoint = async (
   appoint: {
     procedure_id: number;
     additional_ids: [];
-    reservation_date: string;
-    reservation_time: string;
+    reservation_date_time: Date;
     client_id: number;
     master_id: number;
     total_price: number;
@@ -54,14 +50,19 @@ appointment.createAppoint = async (
   },
   result
 ) => {
+    // Get date and time from reservation_date_time //
+    let date_r_obj = new Date(appoint.reservation_date_time);
+    let date_reserved = date.format(date_r_obj,'YYYY-MM-DD');
+    let time_reserved = date.format(date_r_obj,'HH:mm');
+    //////////////////////////////////////////////////
   const { data, error } = await supabase
     .from("appointments")
     .insert([
       {
         procedure_id: appoint.procedure_id,
         additional_ids: appoint.additional_ids,
-        reservation_date: appoint.reservation_date,
-        reservation_time: appoint.reservation_time,
+        reservation_date: date_reserved,
+        reservation_time: time_reserved,
         client_id: appoint.client_id,
         master_id: appoint.master_id,
         total_price: appoint.total_price,
@@ -69,7 +70,7 @@ appointment.createAppoint = async (
       },
     ])
     .select();
-  result(error, data);
+  return result(error, data);
 };
 
 appointment.updateAppointById = async (
@@ -77,8 +78,7 @@ appointment.updateAppointById = async (
     id: number;
     procedure_id: number;
     additional_ids: [];
-    reservation_date: string;
-    reservation_time: string;
+    reservation_date_time: Date;
     client_id: number;
     master_id: number;
     total_price: number;
@@ -86,14 +86,19 @@ appointment.updateAppointById = async (
   },
   result
 ) => {
+  // Get date and time from reservation_date_time //
+  let date_r_obj = new Date(appoint.reservation_date_time);
+  let date_reserved = date.format(date_r_obj,'YYYY-MM-DD');
+  let time_reserved = date.format(date_r_obj,'HH:mm');
+  //////////////////////////////////////////////////
   const { data, error } = await supabase
     .from("appointments")
     .update([
       {
         procedure_id: appoint.procedure_id,
         additional_ids: appoint.additional_ids,
-        reservation_date: appoint.reservation_date,
-        reservation_time: appoint.reservation_time,
+        reservation_date: date_reserved,
+        reservation_time: time_reserved,
         client_id: appoint.client_id,
         master_id: appoint.master_id,
         total_price: appoint.total_price,
@@ -102,7 +107,7 @@ appointment.updateAppointById = async (
     ])
     .eq("id", appoint.id)
     .select();
-  result(error, data);
+  return result(error, data);
 };
 
 appointment.deleteAppointById = async (id: number, result) => {
@@ -110,7 +115,7 @@ appointment.deleteAppointById = async (id: number, result) => {
     .from("appointments")
     .delete()
     .eq("id", id);
-  result(error, data);
+  return result(error, data);
 };
 
 export default appointment;

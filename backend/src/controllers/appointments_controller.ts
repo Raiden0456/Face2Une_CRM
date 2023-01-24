@@ -2,8 +2,8 @@ import appointment from "../models/appointments_model.js";
 import { join } from "path";
 
 // Retrieve appointments from the database.
-export function loadAppoint(res) {
-  appointment.getAllappoint((err, data) => {
+export function loadAppoint(url_params, res) {
+  appointment.getAppointments(url_params, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -21,54 +21,13 @@ export function loadAppoint(res) {
   });
 }
 
-// Find a single appointment with an id
-export function findOneAppoint(id: number, res) {
-  appointment.getAppointById(id, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message:
-          err.message || "Some error occurred while retrieving appointment.",
-      });
-    else if (data.length == 0) {
-      res.status(404).json({
-        success: true,
-        message: `appointment with id ${id} not found.`,
-      });
-    } else {
-      res.json({ success: true, data: data });
-    }
-  });
-}
-
-// Find all appointments by client_id
-export function findAppointsByClient_id(id: number, res) {
-  appointment.getAppointsByClient_Id(id, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message:
-          err.message || "Some error occurred while retrieving appointment.",
-      });
-    else if (data.length == 0) {
-      res.status(404).json({
-        success: true,
-        message: `appointments with client_id ${id} not found.`,
-      });
-    } else {
-      res.json({ success: true, data: data });
-    }
-  });
-}
-
 // Update an appointment identified by the id in the request
 export function updateAppoint(
   appoint: {
     id: number;
     procedure_id: number;
     additional_ids: [];
-    reservation_date: string;
-    reservation_time: string;
+    reservation_date_time: Date;
     client_id: number;
     master_id: number;
     total_price: number;
@@ -99,8 +58,7 @@ export function createAppoint(
   appoint: {
     procedure_id: number;
     additional_ids: [];
-    reservation_date: string;
-    reservation_time: string;
+    reservation_date_time: Date;
     client_id: number;
     master_id: number;
     total_price: number;
