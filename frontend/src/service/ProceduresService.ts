@@ -13,6 +13,16 @@ export class ProceduresService {
     }
   }
 
+  async getProcedure(id: number | string | null) {
+    const r = await JSONFetchGet(`proc/${id}`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
   async getOptionalProcedures() {
     const r = await JSONFetchGet('optional_proc');
 

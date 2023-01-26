@@ -4,7 +4,7 @@ import { ButtonContained } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import s from './Home.scss';
 import NavBar from '../components/Navbar';
-import BookingBox from '../components/base/BookingBox';
+import BookingBox from '../components/BookingBox';
 import { ProceduresService } from '../service/ProceduresService';
 import { TailSpinFixed } from '../components/TailSpin';
 import { ProceduresStore } from '../store/Procedures.store';

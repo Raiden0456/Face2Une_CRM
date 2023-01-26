@@ -9,6 +9,7 @@ import { AuthService } from './service/AuthService';
 import { AuthStore } from './store/Auth.store';
 import { WIDTH_QUERY } from './const/widthQuery';
 import { Home } from './pages/Home';
+import { UserInfo } from './pages/UserInfo';
 
 require('./App.scss');
 
@@ -45,6 +46,7 @@ const App = observer(() => {
             <Route path="*" element={<div>404 :(</div>} />
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
+              <Route path="/userInfo" element={<UserInfo />} />
             </Route>
           </Routes>
         </MainLayout>
