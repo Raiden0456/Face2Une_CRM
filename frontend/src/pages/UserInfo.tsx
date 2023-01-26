@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
-import { ButtonContained } from '../components/base/Button';
-import { Input } from '../components/base/Input';
-import s from './Home.scss';
 import NavBar from '../components/Navbar';
-import BookingBox from '../components/BookingBox';
 import { ProceduresService } from '../service/ProceduresService';
-import { TailSpinFixed } from '../components/TailSpin';
-import { ProceduresStore } from '../store/Procedures.store';
-import PersonalAgreement from '../components/PersonalAgreement';
 import UserInfoForm from '../components/UserInfoForm';
-import ProcedureBox from '../components/ProcedureBox';
+import { TailSpinFixed } from '../components/TailSpin';
+import useForm from '../utils/useForm';
+import { useNavigate } from 'react-router-dom';
 
+import s from './UserInfo.scss';
 
 export const UserInfo = () => {
-  const proceduresService = new ProceduresService();
-  const [procedure, setProcedure] = useState(null);
+  const navigate = useNavigate();
+  const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
+    name: '',
+    phone: '',
+    email: '',
+  });
   const [loading, setLoading] = useState(false);
 
-  // TBD
+  const handleSubmit = () => {
+    console.log('UserInfoForm', inputs);
+    sessionStorage.setItem('user_info', JSON.stringify(inputs));
+
+    navigate('/confirmation');
+  };
+
   // Look up for booking info in sessionStorage
   // Redirect back if not found
   useEffect(() => {
-    let sessionProcId = sessionStorage.getItem('proc_id');
     setLoading(true);
-    // Pass id from sessionStorage (TBD)
-    if (sessionProcId) {
-      proceduresService.getProcedure(sessionProcId).then((procedure) => {
-        console.log(procedure);
-        setLoading(false);
-        if (procedure?.success) {
-          setProcedure(procedure.data[0]);
-        }
-      });
+    let sessionMainPassanger: any = sessionStorage.getItem('main_passanger');
+
+    if (sessionMainPassanger) {
+      setLoading(false);
     } else {
       window.location.href = window.location.origin;
     }
@@ -44,9 +44,31 @@ export const UserInfo = () => {
       width="100%"
       content={
         <>
-          {loading ? <TailSpinFixed /> : <ProcedureBox procedure={procedure} />}
+          {loading ? (
+            <TailSpinFixed />
+          ) : (
+            <>
+              <div className={s.YourDetails}>
+                <div className={s.YourDetails__header}>
+                  <h3>Your Details</h3>
+                </div>
+                <div className={s.YourDetails__content}>
+                  <p>
+                    Enter your personal details below that will be used to make a reservation (details of a single
+                    person is enough). Upon arriving at Face2Une use this data to proceed with your flight on beauty the
+                    spaceship!
+                  </p>
+                </div>
+              </div>
 
-          <UserInfoForm />
+              <UserInfoForm
+                inputs={inputs}
+                handleChange={handleChange}
+                handleNumberChange={handleNumberChange}
+                handleSubmit={handleSubmit}
+              />
+            </>
+          )}
         </>
       }
     />

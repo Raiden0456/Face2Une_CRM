@@ -31,14 +31,22 @@ export default function useForm(initial) {
     });
   }
 
+  function handleNumberChange(e, name) {
+    let { value, formattedValue, floatValue } = e;
+
+    setInputs({
+      ...inputs,
+      // dynamic var + override the existing property
+      [name]: value,
+    });
+  }
+
   function resetForm() {
     setInputs(initial);
   }
 
   function clearForm() {
-    const blankState = Object.fromEntries(
-      Object.entries(inputs).map(([key, value]) => [key, ''])
-    );
+    const blankState = Object.fromEntries(Object.entries(inputs).map(([key, value]) => [key, '']));
     setInputs(blankState);
   }
 
@@ -46,6 +54,7 @@ export default function useForm(initial) {
   return {
     inputs,
     handleChange,
+    handleNumberChange,
     resetForm,
     clearForm,
   };

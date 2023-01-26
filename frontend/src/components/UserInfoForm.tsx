@@ -1,20 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ButtonContained } from './base/Button';
-import { Input } from './base/Input';
+import { Input, NumberInput } from './base/Input';
 import PersonalAgreement from './PersonalAgreement';
-import useForm from '../utils/useForm';
 
 import s from './UserInfoForm.scss';
 
-export const UserInfoForm = () => {
-  const { inputs, handleChange, clearForm, resetForm } = useForm({ name: '', phone: '', email: '' });
+export const UserInfoForm = ({ inputs, handleChange, handleNumberChange, handleSubmit }: any) => {
+  const [phoneError, setPhoneError] = useState<boolean>(false);
+
   return (
     <div className={s.UserInfoForm}>
-      <form id="userInfo">
+      <form
+        id="userInfo"
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+          !phoneError && handleSubmit();
+        }}
+      >
         <div className={s.UserInfoForm__inputs}>
           <Input required label="Your name:" type="text" name="name" value={inputs?.name} onChange={handleChange} />
           <br />
-          <Input required label="Phone:" type="text" name="phone" value={inputs?.phone} onChange={handleChange} />
+          <NumberInput
+            error={phoneError}
+            helperText={phoneError && 'Your phone number is not valid!'}
+            numberFormat="+# (###) ###-##-##"
+            type="tel"
+            className={s.Input}
+            onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
+            required
+            label="Phone:"
+            name="phone"
+            value={inputs?.phone}
+            onChange={(e) => handleNumberChange(e, 'phone')}
+          />
           <br />
           <Input
             autoComplete="email"
@@ -30,7 +48,7 @@ export const UserInfoForm = () => {
         <PersonalAgreement />
 
         <ButtonContained type="submit" form="userInfo" style={{ margin: '1rem 0', minWidth: '100%' }}>
-          Pay now
+          Proceed
         </ButtonContained>
       </form>
     </div>

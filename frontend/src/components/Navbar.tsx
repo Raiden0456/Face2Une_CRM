@@ -23,7 +23,13 @@ const NavBar = observer(() => {
           >
             Your Info
           </div>
-          <div className={s.Navbar__pageStatus_el}>Confirmation</div>
+          <div
+            className={
+              window.location.pathname === '/confirmation' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el
+            }
+          >
+            Confirmation
+          </div>
         </div>
       </div>
     </div>

@@ -25,7 +25,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/utils/funcs.js"  ],
   "exclude": [
     "server"
   ]

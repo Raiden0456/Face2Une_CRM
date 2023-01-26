@@ -10,6 +10,7 @@ import { AuthStore } from './store/Auth.store';
 import { WIDTH_QUERY } from './const/widthQuery';
 import { Home } from './pages/Home';
 import { UserInfo } from './pages/UserInfo';
+import { Confirmation } from './pages/Confirmation';
 
 require('./App.scss');
 
@@ -47,6 +48,7 @@ const App = observer(() => {
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
               <Route path="/userInfo" element={<UserInfo />} />
+              <Route path="/confirmation" element={<Confirmation />} />
             </Route>
           </Routes>
         </MainLayout>

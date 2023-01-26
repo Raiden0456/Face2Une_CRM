@@ -38,8 +38,8 @@ export const AddPassanger = observer(({ setProcedures, setItems, items, procedur
       {procedures &&
         items.length > 0 &&
         items.map((el: any, i: number) => (
-          <div className="AddPassenger__procedures_wrapper">
-            <div key={i} style={{ marginBottom: '1rem' }}>
+          <div className="AddPassenger__procedures_wrapper" key={i}>
+            <div style={{ marginBottom: '1rem' }}>
               <SelectField
                 label={`Choose a Procedure for Passenger ${i + 2}`}
                 options={procedures.map((procedure: any) => ({ label: procedure.name, value: procedure.id }))}
