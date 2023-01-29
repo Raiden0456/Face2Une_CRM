@@ -1,5 +1,21 @@
 .Confirmation {
+  width: 100%;
   div {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
+  }
+}
+
+.Confirmation__header {
+  width: 100%;
+  text-align: left;
+}
+
+.Confirmation__footer {
+  p {
+    margin-bottom: 0.5rem;
+  }
+  
+  button {
+    align-self: flex-end;
   }
 }

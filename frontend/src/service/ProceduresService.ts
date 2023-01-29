@@ -29,7 +29,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      return false;
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
     }
   }
 
