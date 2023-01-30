@@ -22,4 +22,9 @@ router.post('/update_proc', function(req, res){
 router.delete('/delete_proc/:procid', function(req, res){
     proc.deleteProc(req.params.procid, res);
 });
+
+router.get('/proc_total', function(req, res){
+    let proc_ids_array = JSON.parse("[" + req.query.proc_array + "]");
+    proc.totalCost(proc_ids_array, res);
+});
 export default router;

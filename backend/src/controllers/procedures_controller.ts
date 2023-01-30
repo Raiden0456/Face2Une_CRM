@@ -31,6 +31,21 @@ export function loadProc(add = 0, res) {
   });
 }
 
+// Get total cost of procedures by array of their ids
+export function totalCost(proc_ids: [number], res) {
+  procedure.getTotalCost(proc_ids, (data) => {
+    // if (err)
+    //   res.status(500).json({
+    //     success: false,
+    //     message:
+    //       err.message || "Some error occurred while counting total cost.",
+    //   });
+    // else {
+      res.json({ success: true, data: data });
+    // }
+  });
+}
+
 // Find a single procedure with an id
 export function findOneProc(id: number, res) {
   procedure.getProcById(id, (err, data) => {
