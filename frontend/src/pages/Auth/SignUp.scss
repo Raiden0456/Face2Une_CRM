@@ -1,9 +1,5 @@
-  .SignIn__content {
+  .SignUp__content {
     width: 100%;
-
-    h2 {
-      margin-bottom: 1rem;
-    }
 
     p {
       color: #e65100;
@@ -18,7 +14,16 @@
       margin: 10px 0;
     }
 
-    .SignIn_content_error {
+    .CheckboxWrapper {
+      display: flex;
+      flex-direction: column;
+
+      .Checkbox {
+        margin: 0.35em 0;
+      }
+    }
+
+    .SignUp_content_error {
       color: #B71C1C;
       font-weight: 700;
       font-size: 18px;
@@ -27,7 +32,7 @@
     }
   }
 
-  .SignIn__bottom {
+  .SignUp__bottom {
     margin-top: 25px;
   }
 

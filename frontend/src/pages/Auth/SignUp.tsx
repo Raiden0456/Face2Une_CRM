@@ -7,19 +7,19 @@ import { AuthService } from '../../service/AuthService';
 import NavBar from '../../components/Navbar';
 import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
 
-import s from './SignIn.scss';
+import s from './SignUp.scss';
+import { Link } from 'react-router-dom';
 
-const SignIn = observer(({ mobile }: { mobile: boolean }) => {
+const SignUp = observer(({ mobile }: { mobile: boolean }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(false);
+  const [passwordCompareError, setPasswordCompareError] = useState(false);
   const authService = new AuthService();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && password) {
-      authService.signIn();
-    }
   };
 
   const handlePassword = () => {
@@ -29,17 +29,15 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
   return (
     <>
       <Container
-        /* header={mobile ? <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>Mobile</div> : <NavBar />} */
         width="100%"
         content={
-          <form id="myform" className={s.SignIn__content} onSubmit={onSubmit}>
-            <h2>Welcome back!</h2>
+          <form id="myform" className={s.SignUp__content} onSubmit={onSubmit}>
             <Input
               required
               className={s.Input}
               name="email"
               label="Email"
-              type="text"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -54,11 +52,27 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
+            <Input
+              required
+              className={s.Input}
+              error={passwordCompareError}
+              helperText={passwordCompareError && 'Passwords must match!'}
+              name="confirm_password"
+              label="Confirm Password"
+              endIcon={!hidePassword ? <IconEyeClosed /> : <IconEyeOpened />}
+              onIconClick={handlePassword}
+              type={hidePassword ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              onBlur={(e) =>
+                e.target.value !== password ? setPasswordCompareError(true) : setPasswordCompareError(false)
+              }
+            />
           </form>
         }
         bottom={
-          <ButtonContained width="35%" className={s.SignIn__bottom} type="submit" form="myform" value="Update">
-            LogIn
+          <ButtonContained width="35%" type="submit" form="myform" value="Update" className={s.SignUp__bottom}>
+            Sign Up
           </ButtonContained>
         }
       />
@@ -66,4 +80,4 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
   );
 });
 
-export default SignIn;
+export default SignUp;

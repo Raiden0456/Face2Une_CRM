@@ -23,7 +23,6 @@ export const Confirmation = () => {
   const [loading, setLoading] = useState({ global: false, local: false });
   const [isToggled, setIsToggled] = useState<boolean>(false);
 
-  // UPD.: USE IN CONFIRMATION COMP.
   // Look up for booking info in sessionStorage
   // Redirect back if not found
   useEffect(() => {
@@ -41,7 +40,6 @@ export const Confirmation = () => {
     if (sessionMainPassanger && sessionUserInfo) {
       // Fetch MAIN proc for main passanger
       proceduresService.getProcedure(parsedMainPassanger.proc_id).then((procedure) => {
-        console.log(procedure);
         if (procedure?.success) {
           setProcedure(procedure.data[0]);
           setLoading({ ...loading, global: false });
@@ -50,7 +48,6 @@ export const Confirmation = () => {
       // Fetch ADDITIONAL proc-s
       proceduresService.getOptionalProcedures().then((optProcedures) => {
         if (optProcedures?.success) {
-          console.log('setAddProcedures', optProcedures.data);
           setAddProcedures(optProcedures.data);
         }
       });
@@ -64,7 +61,6 @@ export const Confirmation = () => {
     setIsToggled(!isToggled);
 
     proceduresService.getProcedures().then((procedures) => {
-      console.log('getProcedures', procedures);
       if (procedures?.success) {
         setMainProcedures(procedures.data);
         setLoading({ ...loading, local: false });
@@ -87,7 +83,7 @@ export const Confirmation = () => {
           ) : (
             <div className={s.Confirmation}>
               <div className={s.Confirmation__header}>
-                <h2>Your reservation, {userInfo?.name}:</h2>
+                <h2>Your reservation, {userInfo?.name.split(' ')[0]}:</h2>
               </div>
 
               <div className={s.Confirmation__content}>
@@ -135,25 +131,14 @@ export const Confirmation = () => {
 
               <div className={s.Confirmation__footer}>
                 <p>
-                  Date: {new Date(mainPassanger?.date).toLocaleDateString()} at{' '}
-                  {new Date(mainPassanger?.date).toLocaleTimeString()}
+                  <strong>Date:</strong> {new Date(mainPassanger?.date).toLocaleDateString()} at{' '}
+                  {new Date(mainPassanger?.date).toLocaleTimeString().slice(0, 5)}
                 </p>
-                <p>Total: //TBD Calc total</p>
+                <p>
+                  <strong>Total:</strong> //TBD Calc total (Backend)
+                </p>
                 <ButtonContained width="35%">Pay Now</ButtonContained>
               </div>
-
-              {/* <div>
-                <p>From session mainPassanger:</p>
-                <div>{JSON.stringify(mainPassanger)}</div>
-              </div>
-              <div>
-                <p>From session addPassangers:</p>
-                <div>{JSON.stringify(addPassangers)}</div>
-              </div>
-              <div>
-                <p>From session userInfo:</p>
-                <div>{JSON.stringify(userInfo)}</div>
-              </div> */}
             </div>
           )}
         </>

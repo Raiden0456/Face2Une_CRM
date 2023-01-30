@@ -15,7 +15,7 @@ export interface IAuthStore {
 
 export const AuthStore = observable<IAuthStore>({
   email: '',
-  authorized: "auth", // null for prod
+  authorized: "not_auth", // null for prod
   restorePassword: 'init',
 
   setupAuthData(authInfo: any) {

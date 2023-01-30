@@ -45,11 +45,11 @@ const App = observer(() => {
           <Routes>
             <Route path="/auth/*" element={<MainAuth mobile={mobile} />} />
             <Route path="*" element={<div>404 :(</div>} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/userInfo" element={<UserInfo />} />
-              <Route path="/confirmation" element={<Confirmation />} />
-            </Route>
+            {/* <Route element={<PrivateRoute />}> */}
+            <Route path="/" element={<Home />} />
+            <Route path="/userInfo" element={<UserInfo />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+            {/* </Route> */}
           </Routes>
         </MainLayout>
       </BrowserRouter>
