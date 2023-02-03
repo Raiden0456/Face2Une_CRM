@@ -55,11 +55,11 @@ procedure.getProcById = async (id: number, result) => {
 procedure.getTotalCost = async (proc_ids: [number], result) => {
   let total = 0;
   for (let i = 0; i < proc_ids.length; i++) {
-    let { data: procedures, error } = await supabase
+    let { data: procedure, error } = await supabase
       .from("procedures")
-      .select("*")
+      .select("price")
       .eq("id", proc_ids[i]);
-    total += procedures[0].price;
+    total += procedure[0].price;
   }
   return result(total);
 };

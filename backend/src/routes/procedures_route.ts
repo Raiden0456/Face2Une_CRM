@@ -24,7 +24,7 @@ router.delete('/delete_proc/:procid', function(req, res){
 });
 
 router.get('/proc_total', function(req, res){
-    let proc_ids_array = JSON.parse("[" + req.query.proc_array + "]");
+    let proc_ids_array = req.query.proc_array.split(',');
     proc.totalCost(proc_ids_array, res);
 });
 export default router;
