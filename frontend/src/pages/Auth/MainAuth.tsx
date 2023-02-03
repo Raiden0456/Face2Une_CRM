@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { ButtonContained } from '../../components/base/Button';
 import { Link, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-
-import s from './MainAuth.scss';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { AuthStore } from '../../store/Auth.store';
+
+import s from './MainAuth.scss';
 
 const MainAuth = observer(({ mobile }: { mobile: boolean }) => {
   const navigate = useNavigate();
@@ -23,8 +23,8 @@ const MainAuth = observer(({ mobile }: { mobile: boolean }) => {
   return (
     <>
       <Routes>
-        <Route path="/signIn" element={<SignIn mobile={mobile} />} />
-        <Route path="/signUp" element={<SignUp mobile={mobile} />} />
+        <Route path="/signin" element={<SignIn mobile={mobile} />} />
+        <Route path="/signup" element={<SignUp mobile={mobile} />} />
       </Routes>
     </>
   );

@@ -6,20 +6,25 @@ import { Input } from '../../components/base/Input';
 import { AuthService } from '../../service/AuthService';
 import NavBar from '../../components/Navbar';
 import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
+import useForm from '../../utils/useForm';
 
 import s from './SignUp.scss';
-import { Link } from 'react-router-dom';
 
 const SignUp = observer(({ mobile }: { mobile: boolean }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [hidePassword, setHidePassword] = useState(false);
-  const [passwordCompareError, setPasswordCompareError] = useState(false);
+  const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [hidePassword, setHidePassword] = useState<boolean>(false);
+  const [passwordCompareError, setPasswordCompareError] = useState<boolean>(false);
   const authService = new AuthService();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!passwordCompareError) {
+      console.log(inputs);
+    }
   };
 
   const handlePassword = () => {
@@ -32,14 +37,15 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
         width="100%"
         content={
           <form id="myform" className={s.SignUp__content} onSubmit={onSubmit}>
+            <h2>Please, register!</h2>
             <Input
               required
               className={s.Input}
               name="email"
               label="Email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={inputs?.email}
+              onChange={handleChange}
             />
             <Input
               required
@@ -49,24 +55,24 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               endIcon={!hidePassword ? <IconEyeClosed /> : <IconEyeOpened />}
               onIconClick={handlePassword}
               type={hidePassword ? 'text' : 'password'}
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              value={inputs?.password}
+              onChange={handleChange}
             />
             <Input
               required
               className={s.Input}
               error={passwordCompareError}
               helperText={passwordCompareError && 'Passwords must match!'}
-              name="confirm_password"
+              name="confirmPassword"
               label="Confirm Password"
               endIcon={!hidePassword ? <IconEyeClosed /> : <IconEyeOpened />}
               onIconClick={handlePassword}
               type={hidePassword ? 'text' : 'password'}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
               onBlur={(e) =>
-                e.target.value !== password ? setPasswordCompareError(true) : setPasswordCompareError(false)
+                e.target.value !== inputs?.password ? setPasswordCompareError(true) : setPasswordCompareError(false)
               }
+              value={inputs?.confirmPassword}
+              onChange={handleChange}
             />
           </form>
         }

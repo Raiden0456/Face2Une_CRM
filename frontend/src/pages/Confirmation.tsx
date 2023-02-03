@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
 import { ButtonContained } from '../components/base/Button';
-import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import { ProceduresService } from '../service/ProceduresService';
 import { TailSpinFixed } from '../components/TailSpin';
-import { ProceduresStore } from '../store/Procedures.store';
-import PersonalAgreement from '../components/PersonalAgreement';
-import UserInfoForm from '../components/UserInfoForm';
 import ProcedureBox from '../components/ProcedureBox';
+import { allProcsIds } from '../utils/funcs';
 
 import s from './Confirmation.scss';
 
@@ -22,6 +19,7 @@ export const Confirmation = () => {
   const [addProcedures, setAddProcedures] = useState<any[]>([]); // TBD TS
   const [loading, setLoading] = useState({ global: false, local: false });
   const [isToggled, setIsToggled] = useState<boolean>(false);
+  const [total, setTotal] = useState<number | null>(null);
 
   // Look up for booking info in sessionStorage
   // Redirect back if not found
@@ -32,6 +30,7 @@ export const Confirmation = () => {
     setMainPassanger(JSON.parse(sessionMainPassanger));
 
     let sessionAddPassangers: any = sessionStorage.getItem('add_passangers');
+    const parsedAddPassangers = JSON.parse(sessionAddPassangers);
     setAddPassangers(JSON.parse(sessionAddPassangers));
 
     let sessionUserInfo: any = sessionStorage.getItem('user_info');
@@ -42,13 +41,19 @@ export const Confirmation = () => {
       proceduresService.getProcedure(parsedMainPassanger.proc_id).then((procedure) => {
         if (procedure?.success) {
           setProcedure(procedure.data[0]);
-          setLoading({ ...loading, global: false });
         }
       });
       // Fetch ADDITIONAL proc-s
       proceduresService.getOptionalProcedures().then((optProcedures) => {
         if (optProcedures?.success) {
           setAddProcedures(optProcedures.data);
+        }
+      });
+      // Calc total sum
+      proceduresService.calcTotal(allProcsIds(parsedMainPassanger, parsedAddPassangers)).then((total) => {
+        if (total?.success) {
+          setTotal(total.data);
+          setLoading({ ...loading, global: false });
         }
       });
     } else {
@@ -68,9 +73,9 @@ export const Confirmation = () => {
     });
   };
 
-  /* console.log('From session mainPassanger', mainPassanger); */
-  /*  console.log('From session addPassangers', addPassangers);
-  console.log('From session userInfo', userInfo);  */
+  /* console.log('From session mainPassanger', mainPassanger);
+  console.log('From session addPassangers', addPassangers); */
+  /* console.log('From session userInfo', userInfo);  */
 
   return (
     <Container
@@ -134,9 +139,12 @@ export const Confirmation = () => {
                   <strong>Date:</strong> {new Date(mainPassanger?.date).toLocaleDateString()} at{' '}
                   {new Date(mainPassanger?.date).toLocaleTimeString().slice(0, 5)}
                 </p>
-                <p>
-                  <strong>Total:</strong> //TBD Calc total (Backend)
-                </p>
+                {total && (
+                  <p>
+                    <strong>Total:</strong> {total}€
+                  </p>
+                )}
+
                 <ButtonContained width="35%">Pay Now</ButtonContained>
               </div>
             </div>

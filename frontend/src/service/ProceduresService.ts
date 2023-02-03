@@ -43,4 +43,14 @@ export class ProceduresService {
       ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
     }
   }
+
+  async calcTotal(ids: string) {
+    const r = await JSONFetchGet(`proc_total?proc_array=${ids}`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
 }

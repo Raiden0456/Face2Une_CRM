@@ -6,20 +6,21 @@ import { Input } from '../../components/base/Input';
 import { AuthService } from '../../service/AuthService';
 import NavBar from '../../components/Navbar';
 import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
+import useForm from '../../utils/useForm';
 
 import s from './SignIn.scss';
 
 const SignIn = observer(({ mobile }: { mobile: boolean }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
+    email: '',
+    password: '',
+  });
   const [hidePassword, setHidePassword] = useState(false);
   const authService = new AuthService();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && password) {
-      authService.signIn();
-    }
+    console.log(inputs);
   };
 
   const handlePassword = () => {
@@ -40,8 +41,8 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
               name="email"
               label="Email"
               type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={inputs?.email}
+              onChange={handleChange}
             />
             <Input
               required
@@ -51,8 +52,8 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
               endIcon={!hidePassword ? <IconEyeClosed /> : <IconEyeOpened />}
               onIconClick={handlePassword}
               type={hidePassword ? 'text' : 'password'}
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              value={inputs?.password}
+              onChange={handleChange}
             />
           </form>
         }
