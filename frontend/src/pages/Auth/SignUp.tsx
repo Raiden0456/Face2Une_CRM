@@ -35,6 +35,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
     <>
       <Container
         width="100%"
+        centeredContent
         content={
           <form id="myform" className={s.SignUp__content} onSubmit={onSubmit}>
             <h2>Please, register!</h2>
@@ -74,12 +75,10 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               value={inputs?.confirmPassword}
               onChange={handleChange}
             />
+            <ButtonContained width="35%" type="submit" form="myform" value="Update" className={s.SignUp__bottom}>
+              Sign Up
+            </ButtonContained>
           </form>
-        }
-        bottom={
-          <ButtonContained width="35%" type="submit" form="myform" value="Update" className={s.SignUp__bottom}>
-            Sign Up
-          </ButtonContained>
         }
       />
     </>

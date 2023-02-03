@@ -30,8 +30,8 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
   return (
     <>
       <Container
-        /* header={mobile ? <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>Mobile</div> : <NavBar />} */
         width="100%"
+        centeredContent
         content={
           <form id="myform" className={s.SignIn__content} onSubmit={onSubmit}>
             <h2>Welcome back!</h2>
@@ -55,12 +55,11 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
               value={inputs?.password}
               onChange={handleChange}
             />
+
+            <ButtonContained width="35%" className={s.SignIn__bottom} type="submit" form="myform" value="Update">
+              LogIn
+            </ButtonContained>
           </form>
-        }
-        bottom={
-          <ButtonContained width="35%" className={s.SignIn__bottom} type="submit" form="myform" value="Update">
-            LogIn
-          </ButtonContained>
         }
       />
     </>

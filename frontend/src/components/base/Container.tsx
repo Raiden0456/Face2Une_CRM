@@ -12,6 +12,7 @@ interface IContainer {
   content?: React.ReactNode;
   bottom?: React.ReactNode;
   fullPage?: boolean;
+  centeredContent?: boolean;
   mobile?: boolean;
   background?: 'grey' | 'white';
 }
@@ -24,6 +25,7 @@ const colors = {
 // Optional background container
 export const Container: React.FC<IContainer> = ({
   fullPage = false,
+  centeredContent = false,
   content,
   width,
   className,
@@ -40,7 +42,7 @@ export const Container: React.FC<IContainer> = ({
       {content && (
         <div
           style={{ backgroundColor: colors[background || 'white'] }}
-          className={classNames(s.Container__box, mobile && fullPage && s.Container__boxFull)}
+          className={classNames(s.Container__box, mobile && fullPage && s.Container__boxFull, centeredContent && s.Container__box_centered)}
         >
           <div className={classNames(s.Container__content, className)}>{content}</div>
           <div className={classNames(s.Container__bottom, className)}>{bottom}</div>
