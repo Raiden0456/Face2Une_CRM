@@ -1,0 +1,25 @@
+.YourDetails {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e2e2;
+  margin-bottom: 2rem;
+  cursor: default;
+  padding: 33px;
+  align-items: flex-start;
+  border-radius: 16px;
+}
+
+.YourDetails__header {
+  margin-bottom: 15px;
+
+  h3 {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}
+
+.YourDetails__content {
+  p {
+    color: #777;
+  }
+}

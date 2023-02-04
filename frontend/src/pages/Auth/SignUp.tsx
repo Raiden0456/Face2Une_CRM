@@ -8,19 +8,23 @@ import NavBar from '../../components/Navbar';
 import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
 import useForm from '../../utils/useForm';
 
-import s from './SignIn.scss';
+import s from './SignUp.scss';
 
-const SignIn = observer(({ mobile }: { mobile: boolean }) => {
+const SignUp = observer(({ mobile }: { mobile: boolean }) => {
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
     email: '',
     password: '',
+    confirmPassword: '',
   });
-  const [hidePassword, setHidePassword] = useState(false);
+  const [hidePassword, setHidePassword] = useState<boolean>(false);
+  const [passwordCompareError, setPasswordCompareError] = useState<boolean>(false);
   const authService = new AuthService();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(inputs);
+    if (!passwordCompareError) {
+      console.log(inputs);
+    }
   };
 
   const handlePassword = () => {
@@ -33,14 +37,14 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
         width="100%"
         centeredContent
         content={
-          <form id="myform" className={s.SignIn__content} onSubmit={onSubmit}>
-            <h2>Welcome back!</h2>
+          <form id="myform" className={s.SignUp__content} onSubmit={onSubmit}>
+            <h2>Please, register!</h2>
             <Input
               required
               className={s.Input}
               name="email"
               label="Email"
-              type="text"
+              type="email"
               value={inputs?.email}
               onChange={handleChange}
             />
@@ -55,9 +59,24 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
               value={inputs?.password}
               onChange={handleChange}
             />
-
-            <ButtonContained width="35%" className={s.SignIn__bottom} type="submit" form="myform" value="Update">
-              Sign In
+            <Input
+              required
+              className={s.Input}
+              error={passwordCompareError}
+              helperText={passwordCompareError && 'Passwords must match!'}
+              name="confirmPassword"
+              label="Confirm Password"
+              endIcon={!hidePassword ? <IconEyeClosed /> : <IconEyeOpened />}
+              onIconClick={handlePassword}
+              type={hidePassword ? 'text' : 'password'}
+              onBlur={(e) =>
+                e.target.value !== inputs?.password ? setPasswordCompareError(true) : setPasswordCompareError(false)
+              }
+              value={inputs?.confirmPassword}
+              onChange={handleChange}
+            />
+            <ButtonContained width="35%" type="submit" form="myform" value="Update" className={s.SignUp__bottom}>
+              Sign Up
             </ButtonContained>
           </form>
         }
@@ -66,4 +85,4 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
   );
 });
 
-export default SignIn;
+export default SignUp;

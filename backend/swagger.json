@@ -143,6 +143,30 @@
             }
           }
         },
+        "/proc_total": {
+          "get": {
+            "tags": ["Procedures"],
+            "summary": "Get total cost of procedures in db by array of their ids",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "proc_array",
+              "description": "ids of procedures",
+              "required": true,
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "uniqueItems": false
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns total cost of all procedures in database as number"
+              }
+            }
+          }
+        },
         "/users": {
           "get": {
             "tags": ["Users"],

@@ -1,7 +1,7 @@
 // import { QueryResult } from "pg";
 // import client from "./db.js";
 import supabase from "./db.js";
-
+import p_validator from "validate-phone-number-node-js";
 // Constructor
 const client = function (client) {
   this.id = client.id;
@@ -41,8 +41,9 @@ client.createClient = async (
 ) => {
   var resp;
   let check = await supabase.from("clients").select().eq("email", client.email);
+  let phone_check = p_validator.validate(client.phone);
 
-  if (check.data.length == 0) {
+  if (check.data.length == 0 && phone_check) {
     resp = await supabase
       .from("clients")
       .insert([
@@ -55,7 +56,7 @@ client.createClient = async (
       ])
       .select();
   } else {
-    resp = { error: "", data: [] };
+    resp = { error: {message: "email in use or invalid phone format" }, data: [] };
   }
   return result(resp.error, resp.data);
 };
@@ -75,22 +76,25 @@ client.updateClientById = async (
     .from("clients")
     .select("id")
     .eq("email", client.email);
-
+  let phone_check = p_validator.validate(client.phone);
   if (check.data.length == 0 || check.data[0].id == client.id) {
-    resp = await supabase
-      .from("clients")
-      .update([
-        {
-          full_name: client.full_name,
-          phone: client.phone,
-          email: client.email,
-          user_id: client.user_id,
-        },
-      ])
-      .eq("id", client.id)
-      .select();
+    if (!phone_check)
+      resp = { error: { message: "invalid phone format" }, data: [] };
+    else
+      resp = await supabase
+        .from("clients")
+        .update([
+          {
+            full_name: client.full_name,
+            phone: client.phone,
+            email: client.email,
+            user_id: client.user_id,
+          },
+        ])
+        .eq("id", client.id)
+        .select();
   } else {
-    resp = { error: { message: "Email is already registrated" }, data: [] };
+    resp = { error: { message: "email is already in use" }, data: [] };
   }
   return result(resp.error, resp.data);
 };

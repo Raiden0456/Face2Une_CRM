@@ -34,6 +34,7 @@ export function updateClient(
   client.updateClientById(_client, (err, data) => {
     if (err)
       res.status(500).send({
+        success: false,
         message: err.message || "Some error occurred while updating client.",
       });
     else if (data.length == 0) {

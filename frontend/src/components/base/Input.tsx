@@ -81,7 +81,7 @@ export const NumberInput: React.FC<IInput> = ({
       <NumberFormat
         className={error ? s.Input__Invalid : undefined}
         format={numberFormat}
-        onValueChange={(values: any) => (onChange ? onChange(values.value) : '')}
+        onValueChange={(values: any) => (onChange ? onChange(values) : '')}
         onBlur={onBlur}
       />
       {helperText && <small>{helperText}</small>}

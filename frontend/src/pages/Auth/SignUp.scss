@@ -1,4 +1,4 @@
-  .SignIn__content {
+  .SignUp__content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -14,7 +14,16 @@
       width: 55%;
     }
 
-    .SignIn_content_error {
+    .CheckboxWrapper {
+      display: flex;
+      flex-direction: column;
+
+      .Checkbox {
+        margin: 0.35em 0;
+      }
+    }
+
+    .SignUp_content_error {
       color: #B71C1C;
       font-weight: 700;
       font-size: 18px;
@@ -22,9 +31,8 @@
       text-align: center;
     }
 
-    .SignIn__bottom {
+    .SignUp__bottom {
       margin-top: 25px;
     }
   }
-
 

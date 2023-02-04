@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
-import { ButtonContained } from '../base/Button';
-import { Checkbox } from '../base/Checkbox';
-import { ModalStore } from '../../store/Modal.store';
-import { ProceduresStore } from '../../store/Procedures.store';
-import { ProcedureData } from '../../store/Procedures.store';
-import { ProceduresService } from '../../service/ProceduresService';
-import { Input, TextArea } from './Input';
-import { TailSpinFixed } from '../TailSpin';
-import AddPassanger from '../AddPassanger';
+import { ButtonContained } from './base/Button';
+import { Checkbox } from './base/Checkbox';
+import { ModalStore } from '../store/Modal.store';
+import { ProceduresStore } from '../store/Procedures.store';
+import { ProcedureData } from '../store/Procedures.store';
+import { ProceduresService } from '../service/ProceduresService';
+import { Input, TextArea } from './base/Input';
+import { TailSpinFixed } from './TailSpin';
+import AddPassanger from './AddPassanger';
 import DatePicker from 'react-datepicker';
-import useForm from '../../utils/useForm';
+import useForm from '../utils/useForm';
+import { filterAddPassengers, filterObjectToArray } from '../utils/funcs';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
+import { useNavigate } from 'react-router-dom';
 
 import s from './BookingBox.scss';
 
@@ -23,6 +25,7 @@ interface IBookingBox {
 }
 
 const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', procedure }) => {
+  const navigate = useNavigate();
   const proceduresService = new ProceduresService();
   const [optionalProcedures, setOptionalProcedures] = useState({});
   const { inputs, handleChange, clearForm, resetForm } = useForm(procedure);
@@ -59,6 +62,8 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
     setOptionalProcedures({ ...optionalProcedures, [id]: e });
   };
 
+  // Filter optional proc-s
+
   // Open/Submit Modal
   const handleModal = () => {
     if (type === 'main') {
@@ -68,14 +73,32 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
         procedure: procedure,
       });
     } else {
-      console.log('Main Passanger', { proc_id: procedure?.id, opt_proc_id: optionalProcedures, date: startDate });
-      console.log('Additional Passengers Procedures:', items);
+      // Main Passanger
+      console.log('Main Passanger Booked:', {
+        proc_id: procedure?.id,
+        opt_proc_id: filterObjectToArray(optionalProcedures),
+        date: startDate,
+      });
+      sessionStorage.setItem(
+        'main_passanger',
+        JSON.stringify({
+          proc_id: procedure?.id,
+          opt_proc_id: filterObjectToArray(optionalProcedures),
+          date: startDate,
+        }),
+      );
+
+      // Other Passangers
+      console.log('Additional Passengers Booked:', filterAddPassengers(items));
+      sessionStorage.setItem('add_passangers', JSON.stringify(filterAddPassengers(items)));
 
       ModalStore.setModalStatus({
         action: null,
         open: false,
         procedure: null,
       });
+
+      navigate('/userInfo');
     }
   };
   return (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { observer } from 'mobx-react';
 import { ModalStore } from '../store/Modal.store';
-import BookingBox from '../components/base/BookingBox';
+import BookingBox from './BookingBox';
 import { StatusContainer } from './StatusContainer';
 
 export const ModalsCustomStyles: object = {

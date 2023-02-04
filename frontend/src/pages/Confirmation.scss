@@ -1,0 +1,22 @@
+.Confirmation {
+  width: 100%;
+  div {
+    margin: 1.5rem 0;
+  }
+}
+
+.Confirmation__header {
+  width: 100%;
+  text-align: left;
+}
+
+.Confirmation__footer {
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  button {
+    margin-top: 1rem;
+    align-self: flex-end;
+  }
+}

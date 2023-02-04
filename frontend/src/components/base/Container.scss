@@ -77,6 +77,11 @@
   overflow-x: hidden;
 }
 
+.Container__box_centered {
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
   .Container__box {
     justify-content: space-between;
