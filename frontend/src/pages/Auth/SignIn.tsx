@@ -57,7 +57,7 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
             />
 
             <ButtonContained width="35%" className={s.SignIn__bottom} type="submit" form="myform" value="Update">
-              LogIn
+              Sign In
             </ButtonContained>
           </form>
         }
