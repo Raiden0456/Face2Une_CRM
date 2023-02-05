@@ -24,7 +24,8 @@ export function loadClients(url_params, res) {
 export function updateClient(
   _client: {
     id: number;
-    full_name: string;
+    first_name: string;
+    last_name: string;
     phone: string;
     email: string;
     user_id: number;
@@ -51,7 +52,8 @@ export function updateClient(
 // Create a client
 export function createClient(
   _client: {
-    full_name: string;
+    first_name: string;
+    last_name: string;
     phone: string;
     email: string;
     user_id: number;

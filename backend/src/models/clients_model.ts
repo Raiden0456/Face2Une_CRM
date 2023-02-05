@@ -5,7 +5,8 @@ import p_validator from "validate-phone-number-node-js";
 // Constructor
 const client = function (client) {
   this.id = client.id;
-  this.full_name = client.full_name;
+  this.first_name = client.first_name;
+  this.last_name = client.last_name;
   this.phone = client.phone;
   this.email = client.email;
   this.user_id = client.user_id;
@@ -32,7 +33,8 @@ client.getClients = async (
 
 client.createClient = async (
   client: {
-    full_name: string;
+    first_name: string;
+    last_name: string;
     phone: string;
     email: string;
     user_id: number;
@@ -48,7 +50,7 @@ client.createClient = async (
       .from("clients")
       .insert([
         {
-          full_name: client.full_name,
+          full_name: client.first_name + " " + client.last_name,
           phone: client.phone,
           email: client.email,
           user_id: client.user_id,
@@ -64,7 +66,8 @@ client.createClient = async (
 client.updateClientById = async (
   client: {
     id: number;
-    full_name: string;
+    first_name: string;
+    last_name: string;
     phone: string;
     email: string;
     user_id: number;
@@ -85,7 +88,7 @@ client.updateClientById = async (
         .from("clients")
         .update([
           {
-            full_name: client.full_name,
+            full_name: client.first_name + " " + client.last_name,
             phone: client.phone,
             email: client.email,
             user_id: client.user_id,
