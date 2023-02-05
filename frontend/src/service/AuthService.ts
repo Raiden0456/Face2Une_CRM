@@ -23,11 +23,20 @@ export class AuthService {
     }
   }
 
-  async signIn() {
-    AuthStore.setupAuthData({
-      email: 'test@gmail.com',
-      authorized: 'auth',
+  async signIn({ email, password }: { email: string; password: string }) {
+    const r = await JSONFetch('sign_in', {
+      email,
+      password,
     });
+
+    if (r.success) {
+      AuthStore.setupAuthData({
+        email: r.data.email,
+        authorized: 'auth',
+      });
+    } else {
+      return r;
+    }
   }
 
   /* async signUp(authInfo: NewUser) {

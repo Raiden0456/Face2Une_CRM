@@ -16,11 +16,21 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
     password: '',
   });
   const [hidePassword, setHidePassword] = useState(false);
+  const [err, setError] = useState({ status: false, message: true });
+  const [loader, setLoader] = useState(false);
   const authService = new AuthService();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setLoader(true);
+    setError({ status: false, message: true });
     console.log(inputs);
+    authService.signIn(inputs).then((r) => {
+      setLoader(false);
+      if (!r.success) {
+        setError({ status: true, message: r.message });
+      }
+    });
   };
 
   const handlePassword = () => {
@@ -35,6 +45,7 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
         content={
           <form id="myform" className={s.SignIn__content} onSubmit={onSubmit}>
             <h2>Welcome back!</h2>
+            {err.status && <p className={s.SignIn_content_error}>{err.message}</p>}
             <Input
               required
               className={s.Input}
@@ -56,7 +67,14 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
               onChange={handleChange}
             />
 
-            <ButtonContained width="35%" className={s.SignIn__bottom} type="submit" form="myform" value="Update">
+            <ButtonContained
+              disabled={loader}
+              width="35%"
+              className={s.SignIn__bottom}
+              type="submit"
+              form="myform"
+              value="Update"
+            >
               Sign In
             </ButtonContained>
           </form>
