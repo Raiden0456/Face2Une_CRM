@@ -69,7 +69,8 @@ export function updateUser(
       if (client_same_user) {
         const client = {
           id: client_same_user[0].id,
-          full_name: _user.first_name + " " + _user.last_name,
+          first_name: _user.first_name,
+          last_name: _user.last_name,
           phone: _user.phone,
           email: _user.email,
           user_id: _user.id,
@@ -86,7 +87,8 @@ export function updateUser(
       else if (client_same_email && !client_same_email[0].user_id) {
         const client = {
           id: client_same_email[0].id,
-          full_name: _user.first_name + " " + _user.last_name,
+          first_name: _user.first_name,
+          last_name: _user.last_name,
           phone: _user.phone,
           email: _user.email,
           user_id: _user.id,
@@ -138,7 +140,8 @@ export function createUser(
       )) as any;
       if (client.length == 0) {
         const client = {
-          full_name: _user.first_name + " " + _user.last_name,
+          first_name: _user.first_name,
+          last_name: _user.last_name,
           phone: _user.phone,
           email: _user.email,
           user_id: data[0].id,
@@ -154,7 +157,8 @@ export function createUser(
         //update client with user_id //
         const client_update = {
           id: client[0].id,
-          full_name: _user.first_name + " " + _user.last_name,
+          first_name: _user.first_name,
+          last_name: _user.last_name,
           phone: _user.phone,
           email: _user.email,
           user_id: data[0].id,
