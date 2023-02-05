@@ -429,6 +429,50 @@
             }
           }
         },
+        "/sign_up": {
+          "post": {
+            "tags": ["Sign In/Up"],
+            "summary": "Register new user",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of user",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Register a user in database using JSON format"
+              }
+            }
+          }
+        },
+        "/sign_in": {
+          "post": {
+            "tags": ["Sign In/Up"],
+            "summary": "Sign in as user",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of email and password",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Login"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Sign in as user using email and password in JSON format"
+              }
+            }
+          }
+        },
          "/appoint": {
           "get": {
             "tags": ["Appointments"],
@@ -600,6 +644,16 @@
               "type": "string"
             },
             "rights": {
+              "type": "string"
+            }
+          }
+        },
+        "Login": {
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "password": {
               "type": "string"
             }
           }

@@ -12,6 +12,7 @@ import ProceduresRouter from './routes/procedures_route.js';
 import UsersRouter from './routes/users_route.js';
 import AppointmentsRouter from './routes/appointments_route.js';
 import ClientsRouter from './routes/clients_route.js';
+import SignInRouter from './routes/sign_in_route.js';
 //////////////////////////
 
 // middleware //
@@ -32,6 +33,7 @@ app.use('/', ProceduresRouter);
 app.use('/', UsersRouter);
 app.use('/', AppointmentsRouter);
 app.use('/', ClientsRouter);
+app.use('/', SignInRouter);
 /////////////
 
 export default app;

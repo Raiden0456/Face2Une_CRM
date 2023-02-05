@@ -65,7 +65,7 @@ export function updateUser(
           }
         }
       )) as any;
-      // update client with if assosiated user was updated //
+      // update client with id assosiated user was updated //
       if (client_same_user) {
         const client = {
           id: client_same_user[0].id,
@@ -105,7 +105,7 @@ export function updateUser(
   });
 }
 
-// Create a user
+// Create a user or register a user on sign in page //
 export function createUser(
   _user: {
     first_name: string;
@@ -125,7 +125,7 @@ export function createUser(
       });
     else {
       // Create a client for the user if client with such email does not exist //
-      // assing client variable to response from getClients //
+      // assigning client variable to response from getClients //
       const client = (await clients.getClients(
         { column: "email", value: _user.email },
         (err, data) => {
@@ -136,7 +136,7 @@ export function createUser(
           }
         }
       )) as any;
-      if (!client) {
+      if (client.length == 0) {
         const client = {
           full_name: _user.first_name + " " + _user.last_name,
           phone: _user.phone,
@@ -172,7 +172,7 @@ export function createUser(
   });
 }
 
-// Delete a user with the specified id in the request
+// Delete a user with the specified id in the request //
 export function deleteUser(id: number, res) {
   user.deleteUserById(id, (err, data) => {
     if (err)
@@ -194,3 +194,26 @@ export function deleteUser(id: number, res) {
     }
   });
 }
+
+// Login a user with the specified email and password in the request //
+export function loginUser(
+  _user: { email: string; password: string },
+  res
+) {
+  user.loginUser(_user, (err, data) => {
+    if (err)
+      res.status(500).json({
+        success: false,
+        message: err.message || "Some error occurred while logging in.",
+      });
+    else if (data == null) {
+      res.status(404).json({
+        success: false,
+        message: err.message || "User with email ${_user.email} not found.",
+      });
+    } else {
+      res.json({ success: true, data: data });
+    }
+  });
+}
+
