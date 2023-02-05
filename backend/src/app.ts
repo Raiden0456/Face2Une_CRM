@@ -5,6 +5,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json' assert { type: "json" };
 import bodyParser from 'body-parser';
+import session from 'express-session';
 var app = express();
 
 // Importing the routes //
@@ -25,6 +26,12 @@ import SignInRouter from './routes/sign_in_route.js';
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
+    // самый тупой сикрет //
+    app.use(session({
+      secret: "KiboVrebaFa2u2023",
+      saveUninitialized: true,
+      resave: true
+  }))
 
 ////////////////
 
