@@ -1,6 +1,5 @@
 import appointment from "../models/appointments_model.js";
 import { join } from "path";
-
 // Retrieve appointments from the database.
 export function loadAppoint(url_params, res) {
   appointment.getAppointments(url_params, (err, data) => {
@@ -22,7 +21,7 @@ export function loadAppoint(url_params, res) {
 }
 
 // Update an appointment identified by the id in the request
-export function updateAppoint(
+export async function updateAppoint(
   appoint: {
     id: number;
     procedure_id: number;
@@ -35,6 +34,9 @@ export function updateAppoint(
   },
   res
 ) {
+  // Get total price of appointment and add it to appoint object //
+  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids);
+  
   appointment.updateAppointById(appoint, (err, data) => {
     if (err)
       res.status(500).json({
@@ -54,7 +56,7 @@ export function updateAppoint(
 }
 
 // Create an appointment
-export function createAppoint(
+export async function createAppoint(
   appoint: {
     procedure_id: number;
     additional_ids: [];
@@ -66,6 +68,9 @@ export function createAppoint(
   },
   res
 ) {
+  // Get total price of appointment and add it to appoint object //
+  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids);
+
   appointment.createAppoint(appoint, (err, data) => {
     if (err)
       res.status(500).json({

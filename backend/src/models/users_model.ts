@@ -2,7 +2,6 @@
 // import client from "./db.js";
 import supabase from "./db.js";
 import bcrypt from "bcrypt";
-import client from "./clients_model.js";
 
 // Constructor
 const user = function (user) {

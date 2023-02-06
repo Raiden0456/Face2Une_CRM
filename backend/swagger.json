@@ -699,9 +699,6 @@
             "master_id": {
               "type": "integer"
             },
-            "total_price": {
-              "type": "number"
-            },
             "saloon_name": {
               "type": "string"
             }

@@ -32,7 +32,7 @@ export function loadProc(add = 0, res) {
 }
 
 // Get total cost of procedures by array of their ids
-export function totalCost(proc_ids: [number], res) {
+export function totalCost(proc_ids: number[], res) {
   procedure.getTotalCost(proc_ids, (data) => {
     // if (err)
     //   res.status(500).json({
