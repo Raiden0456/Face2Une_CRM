@@ -36,7 +36,7 @@ ButtonContained.defaultProps = {
   type: 'button',
 };
 
-/* export const ButtonOutlined: React.FC<IButton> = ({
+export const ButtonOutlined: React.FC<IButton> = ({
   children,
   onClick,
   width,
@@ -59,4 +59,4 @@ ButtonContained.defaultProps = {
 
 ButtonOutlined.defaultProps = {
   type: 'button',
-}; */
+};

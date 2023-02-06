@@ -1,15 +1,18 @@
 import { JSONFetch, JSONFetchGet } from '../api/fetchMethod';
 import { AuthStore } from '../store/Auth.store';
 
-/* interface AuthInfo {
+interface AuthInfo {
   email: string;
   password: string;
-} */
+}
 
-/* interface NewUser {
+interface NewUser {
+  firstName: string;
+  lastName: string;
+  phone: string;
   email: string;
   password: string;
-} */
+}
 
 export class AuthService {
   async getUser() {
@@ -23,7 +26,7 @@ export class AuthService {
     }
   }
 
-  async signIn({ email, password }: { email: string; password: string }) {
+  async signIn({ email, password }: AuthInfo) {
     const r = await JSONFetch('sign_in', {
       email,
       password,
@@ -34,24 +37,24 @@ export class AuthService {
         email: r.data.email,
         authorized: 'auth',
       });
+      return r;
     } else {
       return r;
     }
   }
 
-  /* async signUp(authInfo: NewUser) {
-    const r = await JSONFetch('auth/sign_up', {
-      password_ciphertext: naclCrypt(authInfo.password),
-      email: authInfo.email,
-      personalDataProcessingConsent: true,
-      userAgreement: true,
+  async signUp({ firstName, lastName, phone, email, password }: NewUser) {
+    const r = await JSONFetch('sign_up', {
+      first_name: firstName,
+      last_name: lastName,
+      phone,
+      email,
+      password,
+      rights: 'client',
     });
-    if (!r.error) {
-      window.location.href = `${window.location.origin}/auth/signUp/confirm`;
-    } else {
-      return r
-    }
-  } */
 
-  signOut = async () => AuthStore.setupAuthData({ authorized: 'not_auth' });
+    return r;
+  }
+
+  /* signOut = async () => AuthStore.setupAuthData({ authorized: 'not_auth' }); */
 }
