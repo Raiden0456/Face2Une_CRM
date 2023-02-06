@@ -10,7 +10,7 @@ export function loadClients(url_params, res) {
         message: err.message || "Some error occurred while retrieving client.",
       });
     else if (data.length == 0) {
-      res.status(404).json({
+      res.status(200).json({
         success: true,
         message: `No clients found.`,
       });

@@ -57,7 +57,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
         centeredContent
         content={
           <form id="myform" className={s.SignUp__content} onSubmit={onSubmit}>
-            <h2>Please, register!</h2>
+            <h2>Registration</h2>
             {err.status && <p className={s.SignUp_content_error}>{err.message}</p>}
             {success.status && <p className={s.SignUp_content_success}>{success.message}</p>}
 
