@@ -18,7 +18,25 @@ export const UserInfoForm = ({ inputs, handleChange, handleNumberChange, handleS
         }}
       >
         <div className={s.UserInfoForm__inputs}>
-          <Input required label="Your name:" type="text" name="name" value={inputs?.name} onChange={handleChange} />
+          <Input
+            required
+            className={s.Input}
+            name="firstName"
+            label="First Name:"
+            type="text"
+            value={inputs?.firstName}
+            onChange={handleChange}
+          />
+          <br />
+          <Input
+            required
+            className={s.Input}
+            name="lastName"
+            label="Last Name:"
+            type="text"
+            value={inputs?.lastName}
+            onChange={handleChange}
+          />
           <br />
           <NumberInput
             error={phoneError}

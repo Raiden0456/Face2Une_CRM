@@ -3,6 +3,7 @@ import { Container } from '../components/base/Container';
 import { ButtonContained } from '../components/base/Button';
 import NavBar from '../components/Navbar';
 import { ProceduresService } from '../service/ProceduresService';
+import { AppointmentService } from '../service/AppointmentService';
 import { TailSpinFixed } from '../components/TailSpin';
 import ProcedureBox from '../components/ProcedureBox';
 import { allProcsIds } from '../utils/funcs';
@@ -11,6 +12,7 @@ import s from './Confirmation.scss';
 
 export const Confirmation = () => {
   const proceduresService = new ProceduresService();
+  const appointmentService = new AppointmentService();
   const [mainPassanger, setMainPassanger] = useState<any>(null); // TBD TS
   const [addPassangers, setAddPassangers] = useState<any>(null); // TBD TS
   const [userInfo, setUserInfo] = useState<any>(null); // TBD TS
@@ -35,6 +37,11 @@ export const Confirmation = () => {
 
     let sessionUserInfo: any = sessionStorage.getItem('user_info');
     setUserInfo(JSON.parse(sessionUserInfo));
+
+    /* SESSION STORAGE */
+    console.log('From session mainPassanger', parsedMainPassanger);
+    console.log('From session addPassangers', parsedAddPassangers);
+    console.log('From session userInfo', JSON.parse(sessionUserInfo));
 
     if (sessionMainPassanger && sessionUserInfo) {
       // Fetch MAIN proc for main passanger
@@ -73,9 +80,30 @@ export const Confirmation = () => {
     });
   };
 
-  /* console.log('From session mainPassanger', mainPassanger);
-  console.log('From session addPassangers', addPassangers); */
-  /* console.log('From session userInfo', userInfo);  */
+
+  // IMPORTANT: consider total_price removal/re-design
+  const handleConfirmation = () => {
+    const { proc_id, opt_proc_id, date } = mainPassanger;
+    const { clientId } = userInfo;
+    appointmentService
+      .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId, total_price: total })
+      .then((r) => {
+        if (r.success) {
+          console.log('Apponitment for Main Passenger Created!', r);
+        }
+      });
+
+    for (let passenger of addPassangers) {
+      const { proc_id, opt_proc_id } = passenger;
+      appointmentService
+        .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId, total_price: total })
+        .then((r) => {
+          if (r.success) {
+            console.log('Apponitment for Additional Passenger Created!', r);
+          }
+        });
+    }
+  };
 
   return (
     <Container
@@ -88,7 +116,7 @@ export const Confirmation = () => {
           ) : (
             <div className={s.Confirmation}>
               <div className={s.Confirmation__header}>
-                <h2>Your reservation, {userInfo?.name.split(' ')[0]}:</h2>
+                <h2>Your reservation, {userInfo?.firstName}:</h2>
               </div>
 
               <div className={s.Confirmation__content}>
@@ -97,7 +125,7 @@ export const Confirmation = () => {
                   <h4>Main Passanger:</h4>
                   <ProcedureBox
                     procedure={procedure}
-                    addProcedures={addProcedures.filter((el: any) => mainPassanger.opt_proc_id.includes(String(el.id)))}
+                    addProcedures={addProcedures.filter((el: any) => mainPassanger.opt_proc_id.includes(el.id))}
                   />
                 </div>
 
@@ -118,7 +146,7 @@ export const Confirmation = () => {
                                   mainProcedures.filter((procedure: any) => addPassenger?.proc_id === procedure.id)[0]
                                 }
                                 addProcedures={addProcedures.filter((el: any) =>
-                                  addPassenger.opt_proc_id.includes(String(el.id)),
+                                  addPassenger.opt_proc_id.includes(el.id),
                                 )}
                               />
                             </div>
@@ -145,7 +173,9 @@ export const Confirmation = () => {
                   </p>
                 )}
 
-                <ButtonContained width="35%">Pay Now</ButtonContained>
+                <ButtonContained onClick={handleConfirmation} width="35%">
+                  Pay Now
+                </ButtonContained>
               </div>
             </div>
           )}

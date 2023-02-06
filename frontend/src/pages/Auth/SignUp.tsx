@@ -65,7 +65,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               required
               className={s.Input}
               name="firstName"
-              label="First Name"
+              label="First Name:"
               type="text"
               value={inputs?.firstName}
               onChange={handleChange}
@@ -74,7 +74,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               required
               className={s.Input}
               name="lastName"
-              label="Last Name"
+              label="Last Name:"
               type="text"
               value={inputs?.lastName}
               onChange={handleChange}
@@ -87,7 +87,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               className={s.Input}
               onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
               required
-              label="Phone"
+              label="Phone:"
               name="phone"
               value={inputs?.phone}
               onChange={(e) => handleNumberChange(e, 'phone')}
@@ -96,7 +96,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               required
               className={s.Input}
               name="email"
-              label="Email"
+              label="Email:"
               type="email"
               value={inputs?.email}
               onChange={handleChange}
@@ -105,7 +105,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               required
               className={s.Input}
               name="password"
-              label="Password"
+              label="Password:"
               endIcon={!hidePassword ? <IconEyeClosed /> : <IconEyeOpened />}
               onIconClick={handlePassword}
               type={hidePassword ? 'text' : 'password'}
@@ -118,7 +118,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               error={passwordCompareError}
               helperText={passwordCompareError && 'Passwords must match!'}
               name="confirmPassword"
-              label="Confirm Password"
+              label="Confirm Password:"
               endIcon={!hidePassword ? <IconEyeClosed /> : <IconEyeOpened />}
               onIconClick={handlePassword}
               type={hidePassword ? 'text' : 'password'}

@@ -52,7 +52,7 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
               required
               className={s.Input}
               name="email"
-              label="Email"
+              label="Email:"
               type="text"
               value={inputs?.email}
               onChange={handleChange}
@@ -61,7 +61,7 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
               required
               className={s.Input}
               name="password"
-              label="Password"
+              label="Password:"
               endIcon={!hidePassword ? <IconEyeClosed /> : <IconEyeOpened />}
               onIconClick={handlePassword}
               type={hidePassword ? 'text' : 'password'}

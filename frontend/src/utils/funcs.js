@@ -1,7 +1,7 @@
 export function filterObjectToArray(obj) {
   return Object.entries(obj)
     .filter(([key, value]) => value)
-    .map(([key, value]) => key);
+    .map(([key, value]) => Number(key));
 }
 
 export function filterAddPassengers(arr) {
