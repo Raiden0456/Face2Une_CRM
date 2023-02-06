@@ -81,12 +81,12 @@ export const Confirmation = () => {
   };
 
 
-  // IMPORTANT: consider total_price removal/re-design
+  // IMPORTANT: consider total_price removal/re-design // разъебал, удали потом этот коммент
   const handleConfirmation = () => {
     const { proc_id, opt_proc_id, date } = mainPassanger;
     const { clientId } = userInfo;
     appointmentService
-      .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId, total_price: total })
+      .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId})
       .then((r) => {
         if (r.success) {
           console.log('Apponitment for Main Passenger Created!', r);
@@ -96,7 +96,7 @@ export const Confirmation = () => {
     for (let passenger of addPassangers) {
       const { proc_id, opt_proc_id } = passenger;
       appointmentService
-        .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId, total_price: total })
+        .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId})
         .then((r) => {
           if (r.success) {
             console.log('Apponitment for Additional Passenger Created!', r);

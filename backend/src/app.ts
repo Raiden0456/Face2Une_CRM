@@ -27,9 +27,11 @@ import AuthRouter from './routes/auth.js';
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
     // самый тупой сикрет //
+    let oneYear = 1000 * 60 * 60 * 24 * 365;
     app.use(session({
       secret: "KiboVrebaFa2u2023",
       saveUninitialized: true,
+      cookie: { maxAge: oneYear },
       resave: true
   }))
 
