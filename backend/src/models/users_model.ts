@@ -128,7 +128,7 @@ user.loginUser = async (
   var resp;
   resp = await supabase
     .from("users")
-    .select("*")
+    .select("id, email, password")
     .eq("email", user.email);
     
   if (resp.data.length == 0) {

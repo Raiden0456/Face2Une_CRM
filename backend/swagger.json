@@ -431,7 +431,7 @@
         },
         "/sign_up": {
           "post": {
-            "tags": ["Sign In/Up"],
+            "tags": ["Authintication"],
             "summary": "Register new user",
             "parameters": [
               {
@@ -453,7 +453,7 @@
         },
         "/sign_in": {
           "post": {
-            "tags": ["Sign In/Up"],
+            "tags": ["Authintication"],
             "summary": "Sign in as user",
             "parameters": [
               {
@@ -469,6 +469,17 @@
             "responses": {
               "200": {
                 "description": "Sign in as user using email and password in JSON format"
+              }
+            }
+          }
+        },
+        "/Session_User": {
+          "get": {
+            "tags": ["Authintication"],
+            "summary": "Get current session user details",
+            "responses": {
+              "200": {
+                "description": "Returns details of current session user in JSON format"
               }
             }
           }
