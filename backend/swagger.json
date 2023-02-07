@@ -473,7 +473,18 @@
             }
           }
         },
-        "/Session_User": {
+        "/sign_out": {
+          "get": {
+            "tags": ["Authintication"],
+            "summary": "Sign out",
+            "responses": {
+              "200": {
+                "description": "Destroyes user session"
+              }
+            }
+          }
+        },
+        "/session_user": {
           "get": {
             "tags": ["Authintication"],
             "summary": "Get current session user details",

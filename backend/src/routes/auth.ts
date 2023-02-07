@@ -15,11 +15,18 @@ router.post('/sign_in', function(req, res){
     session.user = req.body;
     /////////////////////
 });
-router.get('/Session_User', function(req, res){
+router.get('/sign_out', function(req, res){
+    // Destroy the session //
+    req.session.destroy(function(err) {
+        console.log('Session destroyed')
+     })
+    /////////////////////////
+    res.json({ success: true, data: "user logged out" });
+});
 
+router.get('/session_user', function(req, res){
     // Set the session //
     let session=req.session;
-
     // Check if the user is in the session //
     if (session.user) {
         auth.loadUsers({column: "email", value: session.user.email}, res);
