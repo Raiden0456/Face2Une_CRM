@@ -18,8 +18,10 @@ export class AuthService {
   async getUser() {
     AuthStore.setupAuthData({ authorized: 'check_auth' });
 
-    const r = AuthStore.authorized;
-    if (!r) {
+    const r = await JSONFetchGet('session_user');
+    console.log(r);
+
+    if (r.success) {
       AuthStore.setupAuthData({ authorized: 'auth', email: 'test@dd.dd' });
     } else {
       AuthStore.setupAuthData({ authorized: 'not_auth' });
@@ -56,5 +58,5 @@ export class AuthService {
     return r;
   }
 
-  /* signOut = async () => AuthStore.setupAuthData({ authorized: 'not_auth' }); */
+  signOut = async () => JSONFetchGet('sign_out');
 }
