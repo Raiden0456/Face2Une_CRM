@@ -13,7 +13,7 @@ import ProceduresRouter from './routes/procedures_route.js';
 import UsersRouter from './routes/users_route.js';
 import AppointmentsRouter from './routes/appointments_route.js';
 import ClientsRouter from './routes/clients_route.js';
-import AuthRouter from './routes/auth.js';
+import AuthRouter from './routes/auth_route.js';
 //////////////////////////
 
 // middleware //
