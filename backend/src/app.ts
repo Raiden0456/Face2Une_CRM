@@ -17,7 +17,12 @@ import AuthRouter from './routes/auth_route.js';
 //////////////////////////
 
 // middleware //
-    app.use(cors());
+    app.use(cors(
+      {
+        origin: 'http://localhost:8000',
+        credentials: true
+      }
+    ));
     app.use(
       '/api-docs',
       swaggerUi.serve, 
