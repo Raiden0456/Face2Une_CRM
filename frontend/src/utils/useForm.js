@@ -57,5 +57,6 @@ export default function useForm(initial) {
     handleNumberChange,
     resetForm,
     clearForm,
+    setInputs,
   };
 }

@@ -15,6 +15,7 @@ import { filterAddPassengers, filterObjectToArray } from '../utils/funcs';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { useNavigate } from 'react-router-dom';
+import { AuthStore } from '../store/Auth.store';
 
 import s from './BookingBox.scss';
 
@@ -173,7 +174,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
                   Book
                 </ButtonContained>
               )}
-              {type === 'main' && (
+              {type === 'main' && AuthStore.rights === 'admin' && (
                 <ButtonContained
                   width="5%"
                   style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}

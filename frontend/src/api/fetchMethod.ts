@@ -27,6 +27,7 @@ export const JSONFetch = async (path: string, body: object) => {
         Language: 'en_US',
       },
       body: JSON.stringify(body),
+      credentials: 'include'
     },
   });
   return r;
@@ -41,5 +42,6 @@ export const JSONFetchGet = async (path: string) =>
         'Content-Type': 'application/json',
         Language: 'en_US',
       },
+      credentials: 'include'
     },
   });

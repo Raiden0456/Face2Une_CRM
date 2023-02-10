@@ -1,29 +1,34 @@
 import { observable } from 'mobx';
 
-export type AuthStatus = 'auth' | 'not_auth' | 'check_auth';
+export type AuthStatus = 'auth' | 'not_auth' | 'check_auth' | null;
 
 export type RestorePasswordStatus = 'init' | 'check' | 'confirm';
 
 export interface IAuthStore {
   email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
   authorized: AuthStatus | null;
-  restorePassword: RestorePasswordStatus | null;
+  rights: string;
 
   setupAuthData: (authData: any) => void;
-  setRestorePasswordStatus: (status: RestorePasswordStatus) => void;
 }
 
 export const AuthStore = observable<IAuthStore>({
   email: '',
-  authorized: "not_auth", // null for prod
-  restorePassword: 'init',
+  firstName: '',
+  lastName: '',
+  phone: '',
+  authorized: null, // null for prod
+  rights: '',
 
   setupAuthData(authInfo: any) {
     this.email = authInfo.email;
+    this.firstName = authInfo.firstName;
+    this.lastName = authInfo.lastName;
+    this.phone = authInfo.phone;
     this.authorized = authInfo.authorized;
-  },
-
-  setRestorePasswordStatus(status: RestorePasswordStatus) {
-    this.restorePassword = status;
+    this.rights = authInfo.rights;
   },
 });

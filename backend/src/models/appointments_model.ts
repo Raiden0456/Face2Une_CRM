@@ -2,59 +2,71 @@
 // import client from "./db.js";
 import supabase from "./db.js";
 import date from "date-and-time";
+import procedure from "./procedures_model.js";
 
 // Constructor
 const appointment = function (appointment) {
   this.id = appointment.id;
   this.procedure_id = appointment.procedure_id;
   this.additional_ids = appointment.additional_ids;
-  this.reservation_date = appointment.reservation_date;
-  this.reservation_time = appointment.reservation_time;
+  this.reservation_date_time = appointment.reservation_date_time;
   this.client_id = appointment.client_id;
   this.master_id = appointment.master_id;
-  this.total_price = appointment.total_price;
   this.reserved_on = appointment.reserved_on;
   this.saloon_name = appointment.saloon_name;
 };
 
 appointment.getAppointments = async (
-  filter: { column: string; value: any } = { column: "", value: false},
+  filter: { column: string; value: any } = { column: "", value: false },
   result
 ) => {
   var resp;
   resp = filter.value
-  ? 
-  await supabase
-    .from("appointments")
-    .select("*")
-    .eq(filter.column, filter.value)
-    .order("reservation_date", { ascending: true })
-  :
-  await supabase
-    .from("appointments")
-    .select("*")
-    .order("reservation_date", { ascending: true });
+    ? await supabase
+        .from("appointments")
+        .select("*")
+        .eq(filter.column, filter.value)
+        .order("reservation_date", { ascending: true })
+    : await supabase
+        .from("appointments")
+        .select("*")
+        .order("reservation_date", { ascending: true });
 
   return result(resp.error, resp.data);
 };
 
+// Calculate total price //
+appointment.getTotalPrice = async (main_proc: number, additional_procs: number[]) => {
+  let all_ids: number[];
+  all_ids = [];
+  all_ids.push(main_proc);
+  all_ids = all_ids.concat(additional_procs);
+  // get total price of procedures by all_ids using procedure.getTotalCost //
+  const resp = (await procedure.getTotalCost(all_ids, (data) => {
+      return data;
+  }
+  ));
+  return resp;
+};
+//////////////////////////
+
 appointment.createAppoint = async (
   appoint: {
     procedure_id: number;
-    additional_ids: [];
+    additional_ids: number[];
     reservation_date_time: Date;
     client_id: number;
     master_id: number;
-    total_price: number;
     saloon_name: string;
+    total_price: number;
   },
   result
 ) => {
-    // Get date and time from reservation_date_time //
-    let date_r_obj = new Date(appoint.reservation_date_time);
-    let date_reserved = date.format(date_r_obj,'YYYY-MM-DD');
-    let time_reserved = date.format(date_r_obj,'HH:mm');
-    //////////////////////////////////////////////////
+  // Get date and time from reservation_date_time //
+  let date_r_obj = new Date(appoint.reservation_date_time);
+  let date_reserved = date.format(date_r_obj, "YYYY-MM-DD");
+  let time_reserved = date.format(date_r_obj, "HH:mm");
+  //////////////////////////////////////////////////
   const { data, error } = await supabase
     .from("appointments")
     .insert([
@@ -77,20 +89,21 @@ appointment.updateAppointById = async (
   appoint: {
     id: number;
     procedure_id: number;
-    additional_ids: [];
+    additional_ids: number[];
     reservation_date_time: Date;
     client_id: number;
     master_id: number;
-    total_price: number;
     saloon_name: string;
+    total_price: number;
   },
   result
 ) => {
   // Get date and time from reservation_date_time //
   let date_r_obj = new Date(appoint.reservation_date_time);
-  let date_reserved = date.format(date_r_obj,'YYYY-MM-DD');
-  let time_reserved = date.format(date_r_obj,'HH:mm');
+  let date_reserved = date.format(date_r_obj, "YYYY-MM-DD");
+  let time_reserved = date.format(date_r_obj, "HH:mm");
   //////////////////////////////////////////////////
+
   const { data, error } = await supabase
     .from("appointments")
     .update([

@@ -3,14 +3,30 @@ import { observer } from 'mobx-react';
 import s from './NavBar.scss';
 import { AuthStore } from '../store/Auth.store';
 import { AuthService } from '../service/AuthService';
+import { Link } from 'react-router-dom';
+import { ButtonContained } from './base/Button';
 
 const NavBar = observer(() => {
   const authService = new AuthService();
+  console.log(AuthStore.authorized);
+
 
   return (
     <div className={s.HeaderWrapper}>
       <div className={s.Navbar}>
-        <div className={s.Navbar__logo}>Face2Une</div>
+        <div className={s.Navbar__header}>
+          <div>{AuthStore.authorized === 'auth' && <p>{AuthStore.email}</p>}</div>
+          <div className={s.Navbar__header_logo}>Face2Une</div>
+          <div>
+            {AuthStore.authorized === 'auth' ? (
+              <button onClick={() => authService.signOut()}>Log Out</button>
+            ) : (
+              <Link to="/auth/Signin" style={{ textAlign: 'center' }}>
+                <p>Log In</p>
+              </Link>
+            )}
+          </div>
+        </div>
 
         <div className={s.Navbar__pageStatus}>
           <div className={window.location.pathname === '/' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el}>

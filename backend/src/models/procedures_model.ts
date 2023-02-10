@@ -52,10 +52,10 @@ procedure.getProcById = async (id: number, result) => {
   return result(error, procedures);
 };
 
-procedure.getTotalCost = async (proc_ids: [number], result) => {
+procedure.getTotalCost = async (proc_ids: number[], result) => {
   let total = 0;
   for (let i = 0; i < proc_ids.length; i++) {
-    let { data: procedure, error } = await supabase
+    let { data: procedure } = await supabase
       .from("procedures")
       .select("price")
       .eq("id", proc_ids[i]);

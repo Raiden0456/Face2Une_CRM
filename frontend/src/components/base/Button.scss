@@ -30,11 +30,11 @@
   cursor: default;
 }
 
-/* .ButtonOutlined {
+.ButtonOutlined {
   height: 44px;
   border-radius: 6px;
   background: #ffffff00;
-  color: #003de6;
+  color: #91a0db;
   padding: 11.5px 24px;
   display: flex;
   flex-direction: row;
@@ -47,12 +47,12 @@
 
   font: inherit;
   cursor: pointer;
-  border: 2px solid #003de6;
+  border: 2px solid #91a0db;
 }
 
 .ButtonOutlined:hover {
-  background: #003de6a2;
-  border: 2px solid #003de6;
+  background: #91a0db3e;
+  border: 2px solid #91a0db;
 }
 
 .ButtonOutlined:active {
@@ -61,4 +61,4 @@
 .ButtonOutlined:disabled,
 .ButtonOutlined[disabled] {
   cursor: default;
-} */
+}

@@ -429,6 +429,72 @@
             }
           }
         },
+        "/sign_up": {
+          "post": {
+            "tags": ["Authintication"],
+            "summary": "Register new user",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of user",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Register a user in database using JSON format"
+              }
+            }
+          }
+        },
+        "/sign_in": {
+          "post": {
+            "tags": ["Authintication"],
+            "summary": "Sign in as user",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of email and password",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Login"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Sign in as user using email and password in JSON format"
+              }
+            }
+          }
+        },
+        "/sign_out": {
+          "get": {
+            "tags": ["Authintication"],
+            "summary": "Sign out",
+            "responses": {
+              "200": {
+                "description": "Destroyes user session"
+              }
+            }
+          }
+        },
+        "/session_user": {
+          "get": {
+            "tags": ["Authintication"],
+            "summary": "Get current session user details",
+            "responses": {
+              "200": {
+                "description": "Returns details of current session user in JSON format"
+              }
+            }
+          }
+        },
          "/appoint": {
           "get": {
             "tags": ["Appointments"],
@@ -604,6 +670,16 @@
             }
           }
         },
+        "Login": {
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
         "Client": {
           "properties": {
             "first_name": {
@@ -644,9 +720,6 @@
             },
             "master_id": {
               "type": "integer"
-            },
-            "total_price": {
-              "type": "number"
             },
             "saloon_name": {
               "type": "string"
