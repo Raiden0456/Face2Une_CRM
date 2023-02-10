@@ -18,6 +18,7 @@ interface IInput extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onCh
   numberFormat?: string;
   maxLength?: number;
   minLength?: number;
+  defaultValue?: string;
 }
 
 interface ITextArea extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange' | 'value'> {
@@ -74,11 +75,13 @@ export const NumberInput: React.FC<IInput> = ({
   error,
   helperText,
   numberFormat,
+  defaultValue,
 }) => {
   return (
     <div className={classNames(s.InputWrapper, className)}>
       <label htmlFor={className}>{label}</label>
       <NumberFormat
+        required
         className={error ? s.Input__Invalid : undefined}
         format={numberFormat}
         onValueChange={(values: any) => (onChange ? onChange(values) : '')}

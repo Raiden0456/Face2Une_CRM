@@ -22,7 +22,14 @@ export class AuthService {
     console.log(r);
 
     if (r.success) {
-      AuthStore.setupAuthData({ authorized: 'auth', email: r.data[0].email });
+      AuthStore.setupAuthData({
+        authorized: 'auth',
+        email: r.data[0].email,
+        firstName: r.data[0].first_name,
+        lastName: r.data[0].last_name,
+        phone: r.data[0].phone,
+        rights: r.data[0].rights,
+      });
     } else {
       AuthStore.setupAuthData({ authorized: 'not_auth' });
     }

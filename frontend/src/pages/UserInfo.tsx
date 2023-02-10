@@ -7,13 +7,14 @@ import { TailSpinFixed } from '../components/TailSpin';
 import useForm from '../utils/useForm';
 import { useNavigate } from 'react-router-dom';
 import { ClientService } from '../service/ClientService';
+import { AuthStore } from '../store/Auth.store';
 
 import s from './UserInfo.scss';
 
 export const UserInfo = () => {
   const clientService = new ClientService();
   const navigate = useNavigate();
-  const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
+  const { inputs, handleChange, handleNumberChange, clearForm, resetForm, setInputs } = useForm({
     firstName: '',
     lastName: '',
     phone: '',
@@ -40,6 +41,7 @@ export const UserInfo = () => {
       }
     });
   };
+  console.log(inputs);
 
   // Look up for booking info in sessionStorage
   // Redirect back if not found
@@ -48,11 +50,17 @@ export const UserInfo = () => {
     let sessionMainPassanger: any = sessionStorage.getItem('main_passanger');
 
     if (sessionMainPassanger) {
+      setInputs({
+        firstName: AuthStore.firstName,
+        lastName: AuthStore.lastName,
+        phone: /* AuthStore?.phone */ '',
+        email: AuthStore.email,
+      });
       setLoading(false);
     } else {
       window.location.href = window.location.origin;
     }
-  }, []);
+  }, [AuthStore.email]);
 
   return (
     <Container
