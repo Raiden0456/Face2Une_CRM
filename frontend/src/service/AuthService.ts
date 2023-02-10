@@ -22,7 +22,7 @@ export class AuthService {
     console.log(r);
 
     if (r.success) {
-      AuthStore.setupAuthData({ authorized: 'auth', email: 'test@dd.dd' });
+      AuthStore.setupAuthData({ authorized: 'auth', email: r.data[0].email });
     } else {
       AuthStore.setupAuthData({ authorized: 'not_auth' });
     }
@@ -58,5 +58,11 @@ export class AuthService {
     return r;
   }
 
-  signOut = async () => JSONFetchGet('sign_out');
+  async signOut() {
+    const r = await JSONFetchGet('sign_out');
+
+    if (r) {
+      window.location.reload();
+    }
+  }
 }
