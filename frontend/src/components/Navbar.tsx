@@ -4,12 +4,11 @@ import s from './NavBar.scss';
 import { AuthStore } from '../store/Auth.store';
 import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
-import { ButtonContained } from './base/Button';
+import { ButtonContained, ButtonOutlined } from './base/Button';
 
 const NavBar = observer(() => {
   const authService = new AuthService();
   console.log(AuthStore.authorized);
-
 
   return (
     <div className={s.HeaderWrapper}>
@@ -46,6 +45,11 @@ const NavBar = observer(() => {
           >
             Confirmation
           </div>
+        </div>
+        <div className={s.Navbar__navigation}>
+          <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none' }}>
+            <ButtonOutlined>Clients</ButtonOutlined>
+          </Link>
         </div>
       </div>
     </div>

@@ -62,6 +62,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 1rem;
 
   .Navbar__pageStatus_el {
     text-align: center;
@@ -83,6 +84,13 @@
     border-radius: 14px;
     margin: 12px;
   }
+}
+
+.Navbar__navigation {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
 }
 
 @media screen and (max-width: 821px) {

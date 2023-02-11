@@ -4,13 +4,14 @@ import { observer } from 'mobx-react';
 import { AuthStore } from '../store/Auth.store';
 
 // Private Route Middleware
-export const PrivateRoute = observer(() => {
+export const PrivateRouteAdmin = observer(() => {
   const location = useLocation();
 
   return (
     <>
       {AuthStore.authorized === 'auth' && <Outlet />}
-      {AuthStore.authorized === 'not_auth' && <Navigate state={{ redirectUrl: location }} to="/auth/signIn" />}
+      {AuthStore.authorized === 'not_auth' ||
+        (AuthStore.rights !== 'admin' && <Navigate state={{ redirectUrl: location }} to="/" />)}
       {!AuthStore.authorized || (AuthStore.authorized === 'check_auth' && 'Loading...')}
     </>
   );
