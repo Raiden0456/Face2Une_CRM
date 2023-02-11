@@ -30,14 +30,19 @@ client.getClients = async (
   result
 ) => {
   var resp;
+  var total;
   if (params.filter_like) {
     console.log("filter like");
     resp = await supabase
       .from("clients")
-      .select()
+      .select("*")
       .or("full_name.ilike.%"+params.filter_like+"%, email.ilike.%"+params.filter_like+"%, phone.ilike.%"+params.filter_like+"%")
-      .range(params.index, params.index + params.per_page);
+      .range(params.index, params.index + params.per_page - 1);
 
+      total = await supabase
+      .from("clients")
+      .select("id")
+      .or("full_name.ilike.%"+params.filter_like+"%, email.ilike.%"+params.filter_like+"%, phone.ilike.%"+params.filter_like+"%")
   }
   else
   {
@@ -47,14 +52,25 @@ client.getClients = async (
       .from("clients")
       .select("*")
       .eq(params.filter_column_eq, params.filter_column_eq_value)
-      .range(params.index, params.index + params.per_page)
+      .range(params.index, params.index + params.per_page - 1)
     :
     await supabase
       .from("clients")
       .select("*")
-      .range(params.index, params.index + params.per_page);
+      .range(params.index, params.index + params.per_page - 1);
+
+    total = params.filter_column_eq_value
+    ? 
+    await supabase
+      .from("clients")
+      .select("id")
+      .eq(params.filter_column_eq, params.filter_column_eq_value)
+    :
+    await supabase
+      .from("clients")
+      .select("id")
   }
-  return result(resp.error, resp.data);
+  return result(resp.error, resp.data, total.data.length);
 };
 
 
