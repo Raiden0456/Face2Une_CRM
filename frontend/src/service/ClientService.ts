@@ -19,6 +19,18 @@ export class ClientService {
     }
   }
 
+  async getClients(index: number, perPage: number, filterLike?: string | boolean) {
+    const r = await JSONFetchGet(
+      `clients?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,
+    );
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
   async createClient({ firstName, lastName, phone, email }: NewClient) {
     const r = await JSONFetch('create_client', {
       first_name: firstName,
