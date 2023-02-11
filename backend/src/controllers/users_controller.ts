@@ -76,7 +76,7 @@ export function updateUser(
         }
       )) as any;
       // update client with id assosiated user was updated //
-      if (client_same_user) {
+      if (client_same_user.length > 0) {
         const client = {
           id: client_same_user[0].id,
           first_name: _user.first_name,
@@ -94,7 +94,7 @@ export function updateUser(
         });
       }
       // connect and update client if user is now connected to it //
-      else if (client_same_email && !client_same_email[0].user_id) {
+      else if (client_same_email.length > 0 && !client_same_email[0].user_id) {
         const client = {
           id: client_same_email[0].id,
           first_name: _user.first_name,
