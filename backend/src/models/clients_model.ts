@@ -32,7 +32,6 @@ client.getClients = async (
   var resp;
   var total;
   if (params.filter_like) {
-    console.log("filter like");
     resp = await supabase
       .from("clients")
       .select("*")
