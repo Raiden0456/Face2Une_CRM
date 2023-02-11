@@ -46,7 +46,12 @@ export function updateUser(
       });
     } else {
       const client_same_user = (await clients.getClients(
-        { column: "user_id", value: _user.id },
+        {
+          filter_column_eq: "user_id", filter_column_eq_value: _user.id,
+          index: 0,
+          per_page: 1,
+          filter_like: ""
+        },
         (err, data) => {
           if (err) {
             console.log(err);
@@ -56,7 +61,12 @@ export function updateUser(
         }
       )) as any;
       const client_same_email = (await clients.getClients(
-        { column: "email", value: _user.email },
+        {
+          filter_column_eq: "email", filter_column_eq_value: _user.email,
+          index: 0,
+          per_page: 1,
+          filter_like: ""
+        },
         (err, data) => {
           if (err) {
             console.log(err);
@@ -129,7 +139,12 @@ export function createUser(
       // Create a client for the user if client with such email does not exist //
       // assigning client variable to response from getClients //
       const client = (await clients.getClients(
-        { column: "email", value: _user.email },
+        {
+          filter_column_eq: "email", filter_column_eq_value: _user.email,
+          index: 0,
+          per_page: 1,
+          filter_like: ""
+        },
         (err, data) => {
           if (err) {
             console.log(err);

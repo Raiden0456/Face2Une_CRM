@@ -304,22 +304,55 @@
             "summary": "Get clients in db",
             "parameters": [
               {
-              "in": "query",
-              "name": "column",
-              "description": "filter column name(id, full_name, phone, email, user_id))",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "index",
+                "description": "starting index",
+                "required": false,
+                "default": 0,
+                "schema": {
+                  "type": "number"
+                }
+                
               },
               {
-              "in": "query",
-              "name": "value",
-              "description": "value of filter column",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "per_page",
+                "description": "max clients per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_like",
+                "description": "multifilter 'like' for all columns",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_column_eq",
+                "description": "'equal' filter column name(id, full_name, phone, email, user_id))",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_column_eq_value",
+                "description": "value of 'equal' filter column",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
               }
             ],
             "responses": {
@@ -666,7 +699,8 @@
               "type": "string"
             },
             "rights": {
-              "type": "string"
+              "type": "string",
+              "default": "client"
             }
           }
         },
@@ -695,7 +729,8 @@
               "type": "string"
             },
             "user_id": {
-              "type": "number"
+              "type": "number",
+              "default": null
             }
           }
         },
@@ -719,10 +754,12 @@
               "type": "integer"
             },
             "master_id": {
-              "type": "integer"
+              "type": "integer",
+              "default": null
             },
             "saloon_name": {
-              "type": "string"
+              "type": "string",
+              "default": "Saloon 1"
             }
           }
         }

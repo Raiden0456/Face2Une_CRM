@@ -13,23 +13,51 @@ const client = function (client) {
 };
 
 client.getClients = async (
-  filter: { column: string; value: any } = { column: "", value: false},
+  params: {
+    index: number;
+    per_page: number;
+    filter_like: string;
+    filter_column_eq: string;
+    filter_column_eq_value: any;
+    
+  } = {
+    index: 0,
+    per_page: 10,
+    filter_like: "",
+    filter_column_eq: "",
+    filter_column_eq_value: false,
+  },
   result
 ) => {
   var resp;
-  resp = filter.value
-  ? 
-  await supabase
-    .from("clients")
-    .select("*")
-    .eq(filter.column, filter.value)
-  :
-  await supabase
-    .from("clients")
-    .select("*");
-  
+  if (params.filter_like) {
+    console.log("filter like");
+    resp = await supabase
+      .from("clients")
+      .select()
+      .or("full_name.ilike.%"+params.filter_like+"%, email.ilike.%"+params.filter_like+"%, phone.ilike.%"+params.filter_like+"%")
+      .range(params.index, params.index + params.per_page);
+
+  }
+  else
+  {
+    resp = params.filter_column_eq_value
+    ? 
+    await supabase
+      .from("clients")
+      .select("*")
+      .eq(params.filter_column_eq, params.filter_column_eq_value)
+      .range(params.index, params.index + params.per_page)
+    :
+    await supabase
+      .from("clients")
+      .select("*")
+      .range(params.index, params.index + params.per_page);
+  }
   return result(resp.error, resp.data);
 };
+
+
 
 client.createClient = async (
   client: {
@@ -58,7 +86,10 @@ client.createClient = async (
       ])
       .select();
   } else {
-    resp = { error: {message: "email in use or invalid phone format" }, data: [] };
+    resp = {
+      error: { message: "email in use or invalid phone format" },
+      data: [],
+    };
   }
   return result(resp.error, resp.data);
 };
