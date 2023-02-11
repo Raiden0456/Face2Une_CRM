@@ -19,24 +19,23 @@ client.getClients = async (
     filter_like: string;
     filter_column_eq: string;
     filter_column_eq_value: any;
-    
-  } = {
-    index: 0,
-    per_page: 10,
-    filter_like: "",
-    filter_column_eq: "",
-    filter_column_eq_value: false,
   },
   result
 ) => {
   var resp;
   var total;
+  
+  // Pagination set where index = page number and per_page = max amount of entries per page //
+  var start_from = (params.index - 1) * params.per_page;
+  var to = (Number(start_from) + Number(params.per_page)) - 1;
+  //******//     
+
   if (params.filter_like) {
     resp = await supabase
       .from("clients")
       .select("*")
       .or("full_name.ilike.%"+params.filter_like+"%, email.ilike.%"+params.filter_like+"%, phone.ilike.%"+params.filter_like+"%")
-      .range(params.index, params.index + params.per_page - 1);
+      .range(start_from, to);
 
       total = await supabase
       .from("clients")
@@ -51,12 +50,12 @@ client.getClients = async (
       .from("clients")
       .select("*")
       .eq(params.filter_column_eq, params.filter_column_eq_value)
-      .range(params.index, params.index + params.per_page - 1)
+      .range(start_from, to)
     :
     await supabase
       .from("clients")
       .select("*")
-      .range(params.index, params.index + params.per_page - 1);
+      .range(start_from, to);
 
     total = params.filter_column_eq_value
     ? 

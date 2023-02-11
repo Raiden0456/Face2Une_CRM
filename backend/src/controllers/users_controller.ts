@@ -48,7 +48,7 @@ export function updateUser(
       const client_same_user = (await clients.getClients(
         {
           filter_column_eq: "user_id", filter_column_eq_value: _user.id,
-          index: 0,
+          index: 1,
           per_page: 1,
           filter_like: ""
         },
@@ -63,7 +63,7 @@ export function updateUser(
       const client_same_email = (await clients.getClients(
         {
           filter_column_eq: "email", filter_column_eq_value: _user.email,
-          index: 0,
+          index: 1,
           per_page: 1,
           filter_like: ""
         },
@@ -141,7 +141,7 @@ export function createUser(
       const client = (await clients.getClients(
         {
           filter_column_eq: "email", filter_column_eq_value: _user.email,
-          index: 0,
+          index: 1,
           per_page: 1,
           filter_like: ""
         },
