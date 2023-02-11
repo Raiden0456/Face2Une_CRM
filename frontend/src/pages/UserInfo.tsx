@@ -8,11 +8,13 @@ import useForm from '../utils/useForm';
 import { useNavigate } from 'react-router-dom';
 import { ClientService } from '../service/ClientService';
 import { AuthStore } from '../store/Auth.store';
+import { AuthService } from '../service/AuthService';
 
 import s from './UserInfo.scss';
 
 export const UserInfo = () => {
   const clientService = new ClientService();
+  const authService = new AuthService();
   const navigate = useNavigate();
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm, setInputs } = useForm({
     firstName: '',
@@ -41,7 +43,13 @@ export const UserInfo = () => {
       }
     });
   };
-  console.log(inputs);
+
+  useEffect(() => {
+    setLoading(true);
+    authService.getUser().then((r) => {
+      setLoading(false);
+    });
+  }, []);
 
   // Look up for booking info in sessionStorage
   // Redirect back if not found
@@ -53,7 +61,7 @@ export const UserInfo = () => {
       setInputs({
         firstName: AuthStore.firstName,
         lastName: AuthStore.lastName,
-        phone: /* AuthStore?.phone */ '',
+        phone: AuthStore?.phone,
         email: AuthStore.email,
       });
       setLoading(false);
