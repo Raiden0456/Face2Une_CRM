@@ -27,7 +27,7 @@ const customTableStyles = {
   },
 };
 
-const ROWS_PER_PAGE = 3;
+const ROWS_PER_PAGE = 10;
 
 const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },

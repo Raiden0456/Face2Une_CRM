@@ -20,8 +20,8 @@ export const AuthStore = observable<IAuthStore>({
   firstName: '',
   lastName: '',
   phone: '',
-  authorized: 'auth', // null for prod
-  rights: 'admin',
+  authorized: null, // null for prod
+  rights: '',
 
   setupAuthData(authInfo: any) {
     this.email = authInfo.email;

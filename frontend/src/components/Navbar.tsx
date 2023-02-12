@@ -15,7 +15,11 @@ const NavBar = observer(() => {
       <div className={s.Navbar}>
         <div className={s.Navbar__header}>
           <div>{AuthStore.authorized === 'auth' && <p>{AuthStore.email}</p>}</div>
-          <div className={s.Navbar__header_logo}>Face2Une</div>
+          <div className={s.Navbar__header_logo}>
+            <Link to="/" style={{ textAlign: 'center', textDecoration: 'none', color: '#000' }}>
+              Face2Une
+            </Link>
+          </div>
           <div>
             {AuthStore.authorized === 'auth' ? (
               <button onClick={() => authService.signOut()}>Log Out</button>
