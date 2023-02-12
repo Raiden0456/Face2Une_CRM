@@ -167,6 +167,117 @@
             }
           }
         },
+        "/pack": {
+          "get": {
+            "tags": ["Packages"],
+            "summary": "Get all packages in db",
+            "responses": {
+              "200": {
+                "description": "Returns all packages in database in JSON format"
+              }
+            }
+          }
+        },
+        "/pack/{packid}": {
+          "get": {
+            "tags": ["Packages"],
+            "summary": "Get a single package by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "packid",
+              "description": "id of package",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single package in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_pack": {
+          "post": {
+            "tags": ["Packages"],
+            "summary": "Create new package",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of package",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Package"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a package in database using JSON format"
+              }
+            }
+          }
+        },
+        "/update_pack": {
+          "post": {
+            "tags": ["Packages"],
+            "summary": "Update package by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of package",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Package"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a package in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_pack/{packid}": {
+          "delete": {
+            "tags": ["Packages"],
+            "summary": "Delete package by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "packid",
+              "description": "id of package",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a package in database by id"
+              }
+            }
+          }
+        },
         "/users": {
           "get": {
             "tags": ["Users"],
@@ -678,6 +789,19 @@
             },
             "additional": {
               "type": "integer"
+            }
+          }
+        },
+        "Package": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number"
+            },
+            "amount": {
+              "type": "number"
             }
           }
         },

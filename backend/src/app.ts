@@ -14,9 +14,11 @@ import UsersRouter from './routes/users_route.js';
 import AppointmentsRouter from './routes/appointments_route.js';
 import ClientsRouter from './routes/clients_route.js';
 import AuthRouter from './routes/auth_route.js';
+import PackagesRouter from './routes/packages_route.js';
 //////////////////////////
 
 // middleware //
+    // CORS with cookies //
     app.use(cors(
       {
         origin: 'http://localhost:8000',
@@ -31,7 +33,7 @@ import AuthRouter from './routes/auth_route.js';
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
-    // самый тупой сикрет //
+    // Конфиг сессии //
     let oneYear = 1000 * 60 * 60 * 24 * 365;
     app.use(session({
       secret: "KiboVrebaFa2u2023",
@@ -48,6 +50,7 @@ app.use('/', UsersRouter);
 app.use('/', AppointmentsRouter);
 app.use('/', ClientsRouter);
 app.use('/', AuthRouter);
+app.use('/', PackagesRouter);
 /////////////
 
 export default app;
