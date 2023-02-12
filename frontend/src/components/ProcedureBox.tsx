@@ -18,7 +18,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ procedure, addProcedures }) => {
           {procedure?.duration} minutes @ {procedure?.price}€
         </p>
       </div>
-      {addProcedures.length > 0 && (
+      {addProcedures?.length > 0 && (
         <div
           className={s.BookingBox__content}
           style={{ margin: '1rem 0 0 0', display: 'flex', flexDirection: 'column' }}

@@ -80,28 +80,22 @@ export const Confirmation = () => {
     });
   };
 
-
-  // IMPORTANT: consider total_price removal/re-design // разъебал, удали потом этот коммент
   const handleConfirmation = () => {
     const { proc_id, opt_proc_id, date } = mainPassanger;
     const { clientId } = userInfo;
-    appointmentService
-      .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId})
-      .then((r) => {
-        if (r.success) {
-          console.log('Apponitment for Main Passenger Created!', r);
-        }
-      });
+    appointmentService.createAppointment({ proc_id, opt_proc_id, date, client_id: clientId }).then((r) => {
+      if (r.success) {
+        console.log('Apponitment for Main Passenger Created!', r);
+      }
+    });
 
     for (let passenger of addPassangers) {
       const { proc_id, opt_proc_id } = passenger;
-      appointmentService
-        .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId})
-        .then((r) => {
-          if (r.success) {
-            console.log('Apponitment for Additional Passenger Created!', r);
-          }
-        });
+      appointmentService.createAppointment({ proc_id, opt_proc_id, date, client_id: clientId }).then((r) => {
+        if (r.success) {
+          console.log('Apponitment for Additional Passenger Created!', r);
+        }
+      });
     }
   };
 
@@ -120,7 +114,6 @@ export const Confirmation = () => {
               </div>
 
               <div className={s.Confirmation__content}>
-                {/* TBD: Display main passenger with additional proc-s */}
                 <div style={{ margin: '0' }}>
                   <h4>Main Passanger:</h4>
                   <ProcedureBox
@@ -129,7 +122,6 @@ export const Confirmation = () => {
                   />
                 </div>
 
-                {/* TBD: Display add-l passenger with additional proc-s */}
                 {addPassangers?.length > 0 && (
                   <div style={{ margin: '0' }}>
                     {isToggled ? (

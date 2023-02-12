@@ -44,16 +44,18 @@ const NavBar = observer(() => {
           </div>
           <div
             className={
-              window.location.pathname === '/confirmation' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el
+              window.location.pathname === '/confirmation' || window.location.pathname === '/confirmation-package' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el
             }
           >
             Confirmation
           </div>
         </div>
         <div className={s.Navbar__navigation}>
-          <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none' }}>
-            <ButtonOutlined>Clients</ButtonOutlined>
-          </Link>
+          {AuthStore.rights === 'admin' && (
+            <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none' }}>
+              <ButtonOutlined>Clients</ButtonOutlined>
+            </Link>
+          )}
         </div>
       </div>
     </div>

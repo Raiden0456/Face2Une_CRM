@@ -1,0 +1,31 @@
+.ConfirmationPackage {
+  width: 100%;
+}
+
+.ConfirmationPackage__header {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.Confirmation__footer {
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  button {
+    margin-top: 1rem;
+    align-self: flex-end;
+  }
+}
+
+.UserInfoForm {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.UserInfoForm__inputs {
+  border: 1px solid #e2e2e2;
+  padding: 33px;
+  border-radius: 16px;
+}
