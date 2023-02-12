@@ -130,3 +130,21 @@ export function deletePack(id: number, res) {
       }
     });
 }
+
+  // Use packages //
+  export function usePackage(
+    client_id: number,
+    package_id: number,
+    res
+  ) {
+    package_p.usePackage(client_id, package_id, (err, data) => {
+      if (err)
+        res.status(500).json({
+          success: false,
+          message: err.message || "Some error occurred while using package.",
+        });
+      else {
+        res.json({ success: true, data: data });
+      }
+    });
+  }

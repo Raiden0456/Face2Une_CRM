@@ -278,6 +278,77 @@
             }
           }
         },
+        "/buy_pack": {
+          "post": {
+            "tags": ["Packages"],
+            "summary": "Buy packages",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "client id and array of package ids",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "integer"
+                  },
+                  "packages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "package_id": {
+                          "type": "integer"
+                        },
+                        "amount_bought": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Buy packages for a client in database using JSON format"
+              }
+            }
+          }
+        },
+        "/use_pack":{
+          "post": {
+            "tags": ["Packages"],
+            "summary": "Use packages",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "client id and package id",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "integer"
+                  },
+                  "package_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Use 1 package of a client, if none left, delete it from database"
+              }
+            }
+          }
+        },
         "/users": {
           "get": {
             "tags": ["Users"],

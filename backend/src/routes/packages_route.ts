@@ -20,9 +20,13 @@ router.delete('/delete_pack/:packid', function(req, res){
     pack.deletePack(req.params.packid, res);
 });
 
-// buy packages //
+// buy and use packages //
 router.post('/buy_pack', function(req, res){
     pack.buyPackages(req.body.client_id, req.body.packages, res);
 });
+router.post('/use_pack', function(req, res){
+    pack.usePackage(req.body.client_id, req.body.package_id, res);
+});
+
 
 export default router;

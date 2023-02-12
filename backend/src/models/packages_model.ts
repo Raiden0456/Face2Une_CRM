@@ -101,7 +101,7 @@ package_p.buyPackages = async (
     // check if client has already bought this package, if so, get current amount//
     let amount_current = await supabase
       .from("client_packages")
-      .select("amount")
+      .select("amount_left_in")
       .eq("client_id", client_id)
       .eq("package_id", packages[i].package_id);
     
@@ -111,7 +111,7 @@ package_p.buyPackages = async (
         .from("client_packages")
         .update([
           {
-            amount_left_in: amount_current.data[0].amount + amount_add,
+            amount_left_in: amount_current.data[0].amount_left_in + amount_add,
           },
         ])
         .eq("client_id", client_id)
@@ -137,6 +137,55 @@ package_p.buyPackages = async (
     }
   }
   return result(null, {message: "Packages bought successfully" });
+};
+
+// Using packages //
+package_p.usePackage = async (
+  client_id: number,
+  package_id: number,
+  result
+) => {
+  // remove one procedure from package //
+  let amount_current = await supabase
+    .from("client_packages")
+    .select("amount_left_in")
+    .eq("client_id", client_id)
+    .eq("package_id", package_id);
+
+  if (amount_current.data.length > 0) {
+    if (amount_current.data[0].amount_left_in > 0) {
+      // update amount of procedures //
+      const { data, error } = await supabase
+        .from("client_packages")
+        .update([
+          {
+            amount_left_in: amount_current.data[0].amount_left_in - 1,
+          },
+        ])
+        .eq("client_id", client_id)
+        .eq("package_id", package_id)
+      if (error) {
+        return result(error, null);
+      }
+    }
+    else {
+      // Delete expired package //
+      const { data, error } = await supabase
+        .from("client_packages")
+        .delete()
+        .eq("client_id", client_id)
+        .eq("package_id", package_id)
+      if (error) {
+        return result(error, null);
+      }
+      
+      return result({message: "Client's package is expired"}, null);
+    }
+  }
+  else {
+    return result({message: "Client did not buy this package"}, null);
+  }
+  return result(null, {message: "Package used successfully" });
 };
 
 export default package_p;
