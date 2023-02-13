@@ -13,6 +13,16 @@ export class ProceduresService {
     }
   }
 
+  async getPackages() {
+    const r = await JSONFetchGet('pack');
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
   async getProcedure(id: number | string | null) {
     const r = await JSONFetchGet(`proc/${id}`);
 
@@ -36,6 +46,17 @@ export class ProceduresService {
   async updateProcedure(procedure: ProcedureData) {
     // const { id, name, description, price, duration, additional } = procedure;
     const r = await JSONFetch('update_proc', procedure);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
+  async updatePackage(packageItem: any) {
+    // const { id, name, description, price, duration, additional } = procedure;
+    const r = await JSONFetch('update_pack', packageItem);
 
     if (r?.success) {
       return r;
