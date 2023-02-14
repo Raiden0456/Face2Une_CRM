@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
 import NavBar from '../components/Navbar';
-import { ProceduresService } from '../service/ProceduresService';
 import UserInfoForm from '../components/UserInfoForm';
 import { TailSpinFixed } from '../components/TailSpin';
 import useForm from '../utils/useForm';

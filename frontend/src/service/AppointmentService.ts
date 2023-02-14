@@ -8,6 +8,12 @@ interface NewAppointment {
   client_id: number;
 }
 
+interface NewPack {
+  client_id: number;
+  package_id: number;
+  amount: number;
+}
+
 export class AppointmentService {
   async createAppointment({ proc_id, opt_proc_id, date, client_id }: NewAppointment) {
     const r = await JSONFetch('create_appoint', {
@@ -21,6 +27,24 @@ export class AppointmentService {
       return r;
     } else {
       ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation' }); // TBD Set Fallback
+    }
+  }
+
+  async createPack({ client_id, package_id, amount }: NewPack) {
+    const r = await JSONFetch('buy_pack', {
+      client_id,
+      packages: [
+        {
+          package_id,
+          amount_bought: amount,
+        },
+      ],
+    });
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation-package' }); // TBD Set Fallback
     }
   }
 }

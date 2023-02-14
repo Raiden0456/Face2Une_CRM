@@ -19,13 +19,14 @@
   }
 }
 
-.UserInfoForm {
+.PackageInfoForm {
   margin-bottom: 2rem;
   width: 100%;
-}
-
-.UserInfoForm__inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
   border: 1px solid #e2e2e2;
   padding: 33px;
   border-radius: 16px;
 }
+

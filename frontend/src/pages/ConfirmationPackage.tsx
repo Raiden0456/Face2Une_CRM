@@ -2,27 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
 import { ButtonContained } from '../components/base/Button';
 import NavBar from '../components/Navbar';
-import { ProceduresService } from '../service/ProceduresService';
 import { AppointmentService } from '../service/AppointmentService';
 import { TailSpinFixed } from '../components/TailSpin';
 import ProcedureBox from '../components/ProcedureBox';
-import { allProcsIds } from '../utils/funcs';
-
-import s from './ConfirmationPackage.scss';
 import useForm from '../utils/useForm';
 import { Input, NumberInput } from '../components/base/Input';
+import { AuthService } from '../service/AuthService';
+import { AuthStore } from '../store/Auth.store';
+import { ClientService } from '../service/ClientService';
 
-const mock = { id: 1, name: 'test package', duration: 24, price: 777 };
+import s from './ConfirmationPackage.scss';
 
 export const ConfirmationPackage = () => {
-  const proceduresService = new ProceduresService();
+  const authService = new AuthService();
   const appointmentService = new AppointmentService();
-  const [mainPassanger, setMainPassanger] = useState<any>(null); // TBD TS
-  const [procedure, setProcedure] = useState(null); // TBD TS
-  const [mainProcedures, setMainProcedures] = useState<any[]>([]); // TBD TS
-  const [addProcedures, setAddProcedures] = useState<any[]>([]); // TBD TS
+  const clientService = new ClientService();
+  const [buyPackage, setBuyPackage] = useState<any>(null);
+
   const [loading, setLoading] = useState({ global: false, local: false });
-  const [total, setTotal] = useState<number | null>(null);
 
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm, setInputs } = useForm({
     firstName: '',
@@ -32,35 +29,66 @@ export const ConfirmationPackage = () => {
   });
   const [phoneError, setPhoneError] = useState<boolean>(false);
 
+  useEffect(() => {
+    setLoading({ ...loading, global: true });
+    authService.getUser().then((r) => {
+      setLoading({ ...loading, global: false });
+    });
+  }, []);
+
   // Look up for booking info in sessionStorage
   // Redirect back if not found
-  /* useEffect(() => {
+  useEffect(() => {
     setLoading({ ...loading, global: true });
-    let sessionMainPassanger: any = sessionStorage.getItem('main_passanger');
-    const parsedMainPassanger = JSON.parse(sessionMainPassanger);
-    setMainPassanger(JSON.parse(sessionMainPassanger));
+    let sessionBuyPackage: any = sessionStorage.getItem('buy_package');
+    const parsedMainPassanger = JSON.parse(sessionBuyPackage);
+    setBuyPackage(JSON.parse(sessionBuyPackage));
 
-    if (sessionMainPassanger) {
-      Fetch MAIN proc for main passanger
-      proceduresService.getProcedure(parsedMainPassanger.proc_id).then((procedure) => {
-        if (procedure?.success) {
-          setProcedure(procedure.data[0]);
-        }
+    if (sessionBuyPackage) {
+      setInputs({
+        firstName: AuthStore.firstName,
+        lastName: AuthStore.lastName,
+        phone: AuthStore?.phone,
+        email: AuthStore.email,
       });
-      Calc total sum
-      proceduresService.calcTotal(allProcsIds(parsedMainPassanger, parsedAddPassangers)).then((total) => {
-        if (total?.success) {
-          setTotal(total.data);
-          setLoading({ ...loading, global: false });
-        }
-      });
+      setLoading({ ...loading, global: false });
     } else {
       window.location.href = window.location.origin;
     }
-  }, []); */
+  }, [AuthStore.email]);
 
   const handleConfirmation = () => {
-    console.log('TBD CONFIRMATION');
+    /* check client */
+    clientService.getClient(inputs.email).then((r) => {
+      if (r.data) {
+        const { id } = r.data[0];
+
+        /* create package buy */
+        appointmentService
+          .createPack({ client_id: id, package_id: buyPackage.package_id, amount: buyPackage.amount })
+          .then((r) => {
+            if (r.success) {
+              console.log('Package for the Passenger Created!', r);
+            }
+          });
+      } else {
+        /* create client */
+        clientService.createClient(inputs, '/confirmation-package').then((r) => {
+          if (r.success && r.data) {
+            const { id } = r.data[0];
+
+            /* create package buy */
+            appointmentService
+              .createPack({ client_id: id, package_id: buyPackage.package_id, amount: buyPackage.amount })
+              .then((r) => {
+                if (r.success) {
+                  console.log('Package for the Passenger Created!', r);
+                }
+              });
+          }
+        });
+      }
+    });
   };
 
   return (
@@ -74,19 +102,19 @@ export const ConfirmationPackage = () => {
           ) : (
             <div className={s.ConfirmationPackage}>
               <div className={s.ConfirmationPackage__header}>
-                <h2>Your reservation, {/* {userInfo?.firstName} */}test:</h2>
+                <h2>Your order:</h2>
               </div>
 
               <div className={s.ConfirmationPackage__content}>
                 <form
-                  className={s.UserInfoForm}
+                  className={s.PackageInfoForm}
                   id="userInfo"
                   onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                     e.preventDefault();
                     !phoneError && handleConfirmation();
                   }}
                 >
-                  <div className={s.UserInfoForm__inputs}>
+                  <div>
                     <Input
                       required
                       className={s.Input}
@@ -106,7 +134,8 @@ export const ConfirmationPackage = () => {
                       value={inputs?.lastName}
                       onChange={handleChange}
                     />
-                    <br />
+                  </div>
+                  <div>
                     <NumberInput
                       error={phoneError}
                       helperText={phoneError && 'Your phone number is not valid!'}
@@ -133,17 +162,13 @@ export const ConfirmationPackage = () => {
                   </div>
                 </form>
 
-                <ProcedureBox procedure={mock} />
+                <ProcedureBox type="pack" procedure={buyPackage} />
               </div>
 
               <div className={s.Confirmation__footer}>
-                <p>
-                  <strong>Date:</strong> {new Date(mainPassanger?.date).toLocaleDateString()} at{' '}
-                  {new Date(mainPassanger?.date).toLocaleTimeString().slice(0, 5)}
-                </p>
-                {total && (
+                {buyPackage && (
                   <p>
-                    <strong>Total:</strong> {total}€
+                    <strong>Total:</strong> {buyPackage?.price}€
                   </p>
                 )}
 

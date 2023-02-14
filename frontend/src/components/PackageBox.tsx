@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ButtonContained, ButtonOutlined } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
-import { Input, TextArea } from './base/Input';
+import { Input } from './base/Input';
 import { TailSpinFixed } from './TailSpin';
 import useForm from '../utils/useForm';
 
@@ -55,26 +55,18 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
     setIsEditing(!isEditing);
   }
 
-  // Open/Submit Modal
   const handleProceed = () => {
-    // Main Passanger
-    console.log('Main Passanger Booked:', {
-      package_id: packageItem.id,
-      amount: packageItem.amount,
-      price: packageItem.price,
-      name: packageItem.name,
-    });
-    /* sessionStorage.setItem(
-      'main_passanger',
+    sessionStorage.setItem(
+      'buy_package',
       JSON.stringify({
-        package_id: packageItem.id,
+        id: packageItem.id,
         amount: packageItem.amount,
         price: packageItem.price,
         name: packageItem.name,
       }),
     );
 
-    navigate('/confirmation-package'); */
+    navigate('/confirmation-package');
   };
 
   return (
