@@ -96,14 +96,14 @@ client.createClient = async (
   let check = await supabase.from("clients").select().eq("email", client.email);
   let phone_check = p_validator.validate(client.phone);
   if (check.data.length == 0 && phone_check) {
-    // if user_id is not provided, get it from users table //
-    client.user_id = client.user_id
-      ? client.user_id
-      : await supabase
-          .from("users")
-          .select()
-          .eq("email", client.email)
-          .then((res) => res.data[0].id);
+    // if user_id is not provided and user with such email exists, get it from users table //
+    if (!client.user_id) {
+      let user = await supabase
+        .from("users")
+        .select("id")
+        .eq("email", client.email);
+      if (user.data.length > 0) client.user_id = user.data[0].id;
+    }
     //******//
     resp = await supabase
       .from("clients")
