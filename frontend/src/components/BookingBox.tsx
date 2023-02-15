@@ -43,7 +43,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
     event.preventDefault();
     setLoading(true);
 
-    console.log('SENDING DATA...', inputs);
+    console.log('UPDATING DATA...', inputs);
     const r = await proceduresService.updateProcedure(inputs);
     if (r.success) {
       console.log('Successfully Updated!');
@@ -102,6 +102,13 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
       navigate('/userInfo');
     }
   };
+
+  // Delete Package Box
+  const deleteHandler = async () => {
+    ModalStore.setDeleteItem({ deleteType: 'procedure', id: procedure.id });
+    ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
+  };
+
   return (
     <div
       id={procedure?.id.toString()}
@@ -158,7 +165,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
           )}
         </form>
       ) : (
-        <div className={type === 'modal' ? s.BookingBox__main : null}>
+        <div className={type === 'modal' ? s.BookingBox__main : null} style={{ width: '100%' }}>
           <div className={s.BookingBox__header}>
             <div className={s.BookingBox__header_column}>
               {ModalStore.modalStatus.open && <h2>Your Cart:</h2>}
@@ -183,7 +190,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
                   >
                     Edit
                   </ButtonContained>
-                  <ButtonOutlined width="75px" onClick={() => 'TBD'}>
+                  <ButtonOutlined width="75px" onClick={deleteHandler}>
                     Delete
                   </ButtonOutlined>
                 </>

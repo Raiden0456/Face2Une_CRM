@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { ModalStore } from '../store/Modal.store';
 import BookingBox from './BookingBox';
 import { StatusContainer } from './StatusContainer';
+import ConfirmDelete from './ConfirmDelete';
 
 export const ModalsCustomStyles: object = {
   content: {
@@ -72,6 +73,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
           window.location.replace(ModalStore.modalStatus.redirectUrl);
         } else if (ModalStore.modalStatus.action !== 'loader') {
           ModalStore.setModalStatus({ open: false, action: null });
+          ModalStore.setDeleteItem({ deleteType: '', id: null });
         }
       }}
       style={!mobile ? ModalsCustomStyles : ModalsCustomStylesMobile}
@@ -83,6 +85,9 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
       )}
       {(ModalStore.modalStatus.action === 'success' || ModalStore.modalStatus.action === 'error') && (
         <StatusContainer />
+      )}
+      {ModalStore.modalStatus.action === 'deleteItem' && (
+        <ConfirmDelete deleteType={ModalStore.deleteItem.deleteType} id={ModalStore.deleteItem.id} />
       )}
       {ModalStore.modalStatus.action === 'loader' && <p>Loading...</p>}
     </Modal>

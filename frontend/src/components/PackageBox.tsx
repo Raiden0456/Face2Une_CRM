@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
 
 import s from './BookingBox.scss';
+import { ModalStore } from '../store/Modal.store';
 
 interface IBookingBox {
   width?: string;
@@ -37,20 +38,6 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
     setIsEditing(false);
   }
 
-  // Delete Button
-  /* async function handleDelete(event: any) {
-    event.preventDefault();
-    setLoading(true);
-
-    const r = await proceduresService.updatePackage(inputs);
-    if (r.success) {
-      console.log('Successfully Deleted!');
-      window.location.reload();
-    }
-
-    setLoading(false);
-  } */
-
   function toggleEdit() {
     setIsEditing(!isEditing);
   }
@@ -67,6 +54,12 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
     );
 
     navigate('/confirmation-package');
+  };
+
+  // Delete Package Box
+  const deleteHandler = async () => {
+    ModalStore.setDeleteItem({ deleteType: 'pack', id: packageItem.id });
+    ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
   };
 
   return (
@@ -133,10 +126,7 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
                   >
                     Edit
                   </ButtonContained>
-                  <ButtonOutlined
-                    width="75px"
-                    onClick={() => 'TBD'}
-                  >
+                  <ButtonOutlined width="75px" onClick={deleteHandler}>
                     Delete
                   </ButtonOutlined>
                 </>
