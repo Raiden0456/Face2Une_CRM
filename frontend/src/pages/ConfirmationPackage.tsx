@@ -18,6 +18,7 @@ export const ConfirmationPackage = () => {
   const appointmentService = new AppointmentService();
   const clientService = new ClientService();
   const [buyPackage, setBuyPackage] = useState<any>(null);
+  console.log(buyPackage);
 
   const [loading, setLoading] = useState({ global: false, local: false });
 
@@ -64,13 +65,11 @@ export const ConfirmationPackage = () => {
         const { id } = r.data[0];
 
         /* create package buy */
-        appointmentService
-          .createPack({ client_id: id, package_id: buyPackage.package_id, amount: buyPackage.amount })
-          .then((r) => {
-            if (r.success) {
-              console.log('Package for the Passenger Created!', r);
-            }
-          });
+        appointmentService.createPack({ client_id: id, package_id: buyPackage.id, amount: 1 }).then((r) => {
+          if (r.success) {
+            console.log('Package for the Passenger Created!', r);
+          }
+        });
       } else {
         /* create client */
         clientService.createClient(inputs, '/confirmation-package').then((r) => {
@@ -78,13 +77,11 @@ export const ConfirmationPackage = () => {
             const { id } = r.data[0];
 
             /* create package buy */
-            appointmentService
-              .createPack({ client_id: id, package_id: buyPackage.package_id, amount: buyPackage.amount })
-              .then((r) => {
-                if (r.success) {
-                  console.log('Package for the Passenger Created!', r);
-                }
-              });
+            appointmentService.createPack({ client_id: id, package_id: buyPackage.id, amount: 1 }).then((r) => {
+              if (r.success) {
+                console.log('Package for the Passenger Created!', r);
+              }
+            });
           }
         });
       }
