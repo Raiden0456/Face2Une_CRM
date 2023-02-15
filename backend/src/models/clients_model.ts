@@ -17,61 +17,70 @@ client.getClients = async (
     index: number;
     per_page: number;
     filter_like: string;
-    filter_column_eq: string;
-    filter_column_eq_value: any;
+    column: string;
+    value: any;
   },
   result
 ) => {
+  // set default values //
   var resp;
-  var total;
-  
+  let total;
+  let start_from = 0;
+  let to = 100;
+  //******//
+
   // Pagination set where index = page number and per_page = max amount of entries per page //
-  var start_from = (params.index - 1) * params.per_page;
-  var to = (Number(start_from) + Number(params.per_page)) - 1;
-  //******//     
+  if(params.index && params.per_page){
+  start_from = (params.index - 1) * params.per_page;
+  to = Number(start_from) + Number(params.per_page) - 1;
+  }
+  //******//
 
   if (params.filter_like) {
     resp = await supabase
       .from("clients")
       .select("*")
-      .or("full_name.ilike.%"+params.filter_like+"%, email.ilike.%"+params.filter_like+"%, phone.ilike.%"+params.filter_like+"%")
+      .or(
+        "full_name.ilike.%" +
+          params.filter_like +
+          "%, email.ilike.%" +
+          params.filter_like +
+          "%, phone.ilike.%" +
+          params.filter_like +
+          "%"
+      )
       .range(start_from, to);
 
-      total = await supabase
+    total = await supabase
       .from("clients")
       .select("id")
-      .or("full_name.ilike.%"+params.filter_like+"%, email.ilike.%"+params.filter_like+"%, phone.ilike.%"+params.filter_like+"%")
-  }
-  else
-  {
-    resp = params.filter_column_eq_value
-    ? 
-    await supabase
-      .from("clients")
-      .select("*")
-      .eq(params.filter_column_eq, params.filter_column_eq_value)
-      .range(start_from, to)
-    :
-    await supabase
-      .from("clients")
-      .select("*")
-      .range(start_from, to);
+      .or(
+        "full_name.ilike.%" +
+          params.filter_like +
+          "%, email.ilike.%" +
+          params.filter_like +
+          "%, phone.ilike.%" +
+          params.filter_like +
+          "%"
+      );
+  } else {
+    resp = params.value
+      ? await supabase
+          .from("clients")
+          .select("*")
+          .eq(params.column, params.value)
+          .range(start_from, to)
+      : await supabase.from("clients").select("*").range(start_from, to);
 
-    total = params.filter_column_eq_value
-    ? 
-    await supabase
-      .from("clients")
-      .select("id")
-      .eq(params.filter_column_eq, params.filter_column_eq_value)
-    :
-    await supabase
-      .from("clients")
-      .select("id")
+    total = params.value
+      ? await supabase
+          .from("clients")
+          .select("id")
+          .eq(params.column, params.value)
+      : await supabase.from("clients").select("id");
   }
   return result(resp.error, resp.data, total.data.length);
 };
-
-
 
 client.createClient = async (
   client: {
@@ -86,8 +95,16 @@ client.createClient = async (
   var resp;
   let check = await supabase.from("clients").select().eq("email", client.email);
   let phone_check = p_validator.validate(client.phone);
-
   if (check.data.length == 0 && phone_check) {
+    // if user_id is not provided, get it from users table //
+    client.user_id = client.user_id
+      ? client.user_id
+      : await supabase
+          .from("users")
+          .select()
+          .eq("email", client.email)
+          .then((res) => res.data[0].id);
+    //******//
     resp = await supabase
       .from("clients")
       .insert([

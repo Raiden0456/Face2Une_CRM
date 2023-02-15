@@ -8,7 +8,7 @@ router.get('/clients', function(req, res){
     client.loadClients(req.query, res);
 });
 router.get('/clients/:clientid', function(req, res){
-    client.loadClients({filter_column_eq: "id", filter_column_eq_value: req.params.clientid}, res);
+    client.loadClients({column: "id", value: req.params.clientid}, res);
 });
 router.post('/create_client', function(req, res){
     client.createClient(req.body, res);

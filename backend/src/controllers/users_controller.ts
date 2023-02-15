@@ -47,7 +47,7 @@ export function updateUser(
     } else {
       const client_same_user = (await clients.getClients(
         {
-          filter_column_eq: "user_id", filter_column_eq_value: _user.id,
+          column: "user_id", value: _user.id,
           index: 1,
           per_page: 1,
           filter_like: ""
@@ -62,7 +62,7 @@ export function updateUser(
       )) as any;
       const client_same_email = (await clients.getClients(
         {
-          filter_column_eq: "email", filter_column_eq_value: _user.email,
+          column: "email", value: _user.email,
           index: 1,
           per_page: 1,
           filter_like: ""
@@ -140,7 +140,7 @@ export function createUser(
       // assigning client variable to response from getClients //
       const client = (await clients.getClients(
         {
-          filter_column_eq: "email", filter_column_eq_value: _user.email,
+          column: "email", value: _user.email,
           index: 1,
           per_page: 1,
           filter_like: ""
