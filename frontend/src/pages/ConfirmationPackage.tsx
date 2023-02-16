@@ -67,7 +67,7 @@ export const ConfirmationPackage = () => {
 
         /* create package buy */
         appointmentService
-          .createPack({ client_id: id, package_id: buyPackage.id, amount: selectQuantity })
+          .createPack({ client_id: id, package_id: buyPackage.id, amount: Number(selectQuantity) })
           .then((r) => {
             if (r.success) {
               console.log('Package for the Passenger Created!', r);
@@ -81,7 +81,7 @@ export const ConfirmationPackage = () => {
 
             /* create package buy */
             appointmentService
-              .createPack({ client_id: id, package_id: buyPackage.id, amount: selectQuantity })
+              .createPack({ client_id: id, package_id: buyPackage.id, amount: Number(selectQuantity) })
               .then((r) => {
                 if (r.success) {
                   console.log('Package for the Passenger Created!', r);

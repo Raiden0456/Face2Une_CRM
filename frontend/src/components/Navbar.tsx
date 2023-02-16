@@ -21,9 +21,10 @@ const NavBar = observer(() => {
             </Link>
           </div>
           <div>
-            {AuthStore.authorized === 'auth' ? (
+            {window.location.pathname === '/' && AuthStore.authorized === 'auth' && (
               <button onClick={() => authService.signOut()}>Log Out</button>
-            ) : (
+            )}
+            {window.location.pathname === '/' && AuthStore.authorized !== 'auth' && (
               <Link to="/auth/Signin" style={{ textAlign: 'center' }}>
                 <p>Log In</p>
               </Link>
@@ -44,7 +45,9 @@ const NavBar = observer(() => {
           </div>
           <div
             className={
-              window.location.pathname === '/confirmation' || window.location.pathname === '/confirmation-package' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el
+              window.location.pathname === '/confirmation' || window.location.pathname === '/confirmation-package'
+                ? s.Navbar__pageStatus_el_focused
+                : s.Navbar__pageStatus_el
             }
           >
             Confirmation

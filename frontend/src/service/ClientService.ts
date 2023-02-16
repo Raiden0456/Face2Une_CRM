@@ -15,7 +15,7 @@ export class ClientService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/userInfo' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
     }
   }
 
@@ -31,7 +31,7 @@ export class ClientService {
     }
   }
 
-  async createClient({ firstName, lastName, phone, email }: NewClient, redirectUrl: string = '/userInfo') {
+  async createClient({ firstName, lastName, phone, email }: NewClient, redirectUrl: string = '/') {
     const r = await JSONFetch('create_client', {
       first_name: firstName,
       last_name: lastName,
