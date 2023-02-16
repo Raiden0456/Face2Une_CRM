@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
 import { ButtonContained } from '../components/base/Button';
+import { NumberDropdown } from '../components/base/SelectField';
 import NavBar from '../components/Navbar';
 import { AppointmentService } from '../service/AppointmentService';
 import { TailSpinFixed } from '../components/TailSpin';
@@ -18,7 +19,7 @@ export const ConfirmationPackage = () => {
   const appointmentService = new AppointmentService();
   const clientService = new ClientService();
   const [buyPackage, setBuyPackage] = useState<any>(null);
-  console.log(buyPackage);
+  const [selectQuantity, setSelectQuantity] = useState<number>(1);
 
   const [loading, setLoading] = useState({ global: false, local: false });
 
@@ -65,11 +66,13 @@ export const ConfirmationPackage = () => {
         const { id } = r.data[0];
 
         /* create package buy */
-        appointmentService.createPack({ client_id: id, package_id: buyPackage.id, amount: 1 }).then((r) => {
-          if (r.success) {
-            console.log('Package for the Passenger Created!', r);
-          }
-        });
+        appointmentService
+          .createPack({ client_id: id, package_id: buyPackage.id, amount: selectQuantity })
+          .then((r) => {
+            if (r.success) {
+              console.log('Package for the Passenger Created!', r);
+            }
+          });
       } else {
         /* create client */
         clientService.createClient(inputs, '/confirmation-package').then((r) => {
@@ -77,11 +80,13 @@ export const ConfirmationPackage = () => {
             const { id } = r.data[0];
 
             /* create package buy */
-            appointmentService.createPack({ client_id: id, package_id: buyPackage.id, amount: 1 }).then((r) => {
-              if (r.success) {
-                console.log('Package for the Passenger Created!', r);
-              }
-            });
+            appointmentService
+              .createPack({ client_id: id, package_id: buyPackage.id, amount: selectQuantity })
+              .then((r) => {
+                if (r.success) {
+                  console.log('Package for the Passenger Created!', r);
+                }
+              });
           }
         });
       }
@@ -163,6 +168,17 @@ export const ConfirmationPackage = () => {
               </div>
 
               <div className={s.Confirmation__footer}>
+                <div className={s.Confirmation__footer_selectWrapper}>
+                  <p>
+                    <strong>Number of packages:</strong>
+                  </p>
+                  <NumberDropdown
+                    min={1}
+                    max={10}
+                    value={selectQuantity}
+                    onChange={(value: number) => setSelectQuantity(value)}
+                  />
+                </div>
                 {buyPackage && (
                   <p>
                     <strong>Total:</strong> {buyPackage?.price}€

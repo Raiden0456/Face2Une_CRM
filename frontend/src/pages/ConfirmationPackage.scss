@@ -14,9 +14,20 @@
   }
 
   button {
-    margin-top: 1rem;
+    margin-top: 2rem;
     align-self: flex-end;
   }
+}
+
+.Confirmation__footer_selectWrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+
+   p {
+    margin-bottom: 0;
+    margin-right: 0.5rem;
+   }
 }
 
 .PackageInfoForm {
