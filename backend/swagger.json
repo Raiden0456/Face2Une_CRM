@@ -718,7 +718,7 @@
               {
               "in": "query",
               "name": "column",
-              "description": "filter column name(id, procedure_id, reservation_date, cient_id, master_id, total_price, reserved_on, saloon_name))",
+              "description": "filter column name(id, procedure_id, reservation_date, client_id, total_price, reserved_on, saloon_id))",
               "required": false,
               "schema": {
                 "type": "string"
@@ -948,13 +948,9 @@
             "client_id": {
               "type": "integer"
             },
-            "master_id": {
-              "type": "integer",
-              "default": null
-            },
-            "saloon_name": {
-              "type": "string",
-              "default": "Saloon 1"
+            "saloon_id": {
+              "type": "int",
+              "default": "1"
             }
           }
         }

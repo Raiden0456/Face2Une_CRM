@@ -11,9 +11,8 @@ const appointment = function (appointment) {
   this.additional_ids = appointment.additional_ids;
   this.reservation_date_time = appointment.reservation_date_time;
   this.client_id = appointment.client_id;
-  this.master_id = appointment.master_id;
   this.reserved_on = appointment.reserved_on;
-  this.saloon_name = appointment.saloon_name;
+  this.saloon_id = appointment.saloon_id;
 };
 
 appointment.getAppointments = async (
@@ -56,8 +55,7 @@ appointment.createAppoint = async (
     additional_ids: number[];
     reservation_date_time: Date;
     client_id: number;
-    master_id: number;
-    saloon_name: string;
+    saloon_id: number;
     total_price: number;
   },
   result
@@ -76,9 +74,8 @@ appointment.createAppoint = async (
         reservation_date: date_reserved,
         reservation_time: time_reserved,
         client_id: appoint.client_id,
-        master_id: appoint.master_id,
         total_price: appoint.total_price,
-        saloon_name: appoint.saloon_name,
+        saloon_id: appoint.saloon_id,
       },
     ])
     .select();
@@ -92,8 +89,7 @@ appointment.updateAppointById = async (
     additional_ids: number[];
     reservation_date_time: Date;
     client_id: number;
-    master_id: number;
-    saloon_name: string;
+    saloon_id: number;
     total_price: number;
   },
   result
@@ -113,9 +109,8 @@ appointment.updateAppointById = async (
         reservation_date: date_reserved,
         reservation_time: time_reserved,
         client_id: appoint.client_id,
-        master_id: appoint.master_id,
         total_price: appoint.total_price,
-        saloon_name: appoint.saloon_name,
+        saloon_id: appoint.saloon_id,
       },
     ])
     .eq("id", appoint.id)
