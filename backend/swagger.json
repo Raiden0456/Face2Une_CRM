@@ -335,8 +335,8 @@
                   "client_id": {
                     "type": "integer"
                   },
-                  "package_id": {
-                    "type": "integer"
+                  "promocode": {
+                    "type": "string"
                   }
                 }
               }

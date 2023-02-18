@@ -25,7 +25,7 @@ router.post('/buy_pack', function(req, res){
     pack.buyPackages(req.body.client_id, req.body.packages, res);
 });
 router.post('/use_pack', function(req, res){
-    pack.usePackage(req.body.client_id, req.body.package_id, res);
+    pack.usePackage(req.body.client_id, req.body.promocode, res);
 });
 
 

@@ -134,10 +134,10 @@ export function deletePack(id: number, res) {
   // Use packages //
   export function usePackage(
     client_id: number,
-    package_id: number,
+    promocode: string,
     res
   ) {
-    package_p.usePackage(client_id, package_id, (err, data) => {
+    package_p.usePackage(client_id, promocode, (err, data) => {
       if (err)
         res.status(500).json({
           success: false,
