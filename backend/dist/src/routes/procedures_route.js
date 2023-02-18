@@ -1,7 +1,7 @@
 import { Router } from 'express';
 var router = Router();
 import * as proc from '../controllers/procedures_controller.js';
-//Routing for the procedures page//
+//Routing for the procedures//
 router.get('/main_proc', function (req, res) {
     proc.loadProc(0, res);
 });
@@ -19,6 +19,10 @@ router.post('/update_proc', function (req, res) {
 });
 router.delete('/delete_proc/:procid', function (req, res) {
     proc.deleteProc(req.params.procid, res);
+});
+router.get('/proc_total', function (req, res) {
+    var proc_ids_array = req.query.proc_array.split(',');
+    proc.totalCost(proc_ids_array, res);
 });
 export default router;
 //# sourceMappingURL=procedures_route.js.map

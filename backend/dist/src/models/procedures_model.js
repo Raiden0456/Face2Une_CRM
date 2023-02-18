@@ -58,29 +58,32 @@ procedure.getAllproc = function (additional, result) { return __awaiter(void 0, 
                 }
                 return [3 /*break*/, 5];
             case 1: return [4 /*yield*/, supabase
-                    .from('procedures')
-                    .select('*')
-                    .eq('additional', 0)];
+                    .from("procedures")
+                    .select("*")
+                    .eq("additional", 0)
+                    .order("price", { ascending: true })];
             case 2:
                 _b = _e.sent(), procedures = _b.data, error = _b.error;
                 result(error, procedures);
                 return [3 /*break*/, 7];
             case 3: return [4 /*yield*/, supabase
-                    .from('procedures')
-                    .select('*')
-                    .eq('additional', 1)];
+                    .from("procedures")
+                    .select("*")
+                    .eq("additional", 1)
+                    .order("price", { ascending: true })];
             case 4:
                 _c = _e.sent(), procedures = _c.data, error = _c.error;
                 result(error, procedures);
                 return [3 /*break*/, 7];
             case 5: return [4 /*yield*/, supabase
-                    .from('procedures')
-                    .select('*')];
+                    .from("procedures")
+                    .select("*")
+                    .order("price", { ascending: true })];
             case 6:
                 _d = _e.sent(), procedures = _d.data, error = _d.error;
                 result(error, procedures);
                 return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+            case 7: return [2 /*return*/, result];
         }
     });
 }); };
@@ -89,13 +92,37 @@ procedure.getProcById = function (id, result) { return __awaiter(void 0, void 0,
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0: return [4 /*yield*/, supabase
-                    .from('procedures')
-                    .select('*')
-                    .eq('id', id)];
+                    .from("procedures")
+                    .select("*")
+                    .eq("id", id)];
             case 1:
                 _a = _b.sent(), procedures = _a.data, error = _a.error;
-                result(error, procedures);
-                return [2 /*return*/];
+                return [2 /*return*/, result(error, procedures)];
+        }
+    });
+}); };
+procedure.getTotalCost = function (proc_ids, result) { return __awaiter(void 0, void 0, void 0, function () {
+    var total, i, procedure_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                total = 0;
+                i = 0;
+                _a.label = 1;
+            case 1:
+                if (!(i < proc_ids.length)) return [3 /*break*/, 4];
+                return [4 /*yield*/, supabase
+                        .from("procedures")
+                        .select("price")
+                        .eq("id", proc_ids[i])];
+            case 2:
+                procedure_1 = (_a.sent()).data;
+                total += procedure_1[0].price;
+                _a.label = 3;
+            case 3:
+                i++;
+                return [3 /*break*/, 1];
+            case 4: return [2 /*return*/, result(total)];
         }
     });
 }); };
@@ -104,15 +131,20 @@ procedure.createProc = function (proc, result) { return __awaiter(void 0, void 0
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0: return [4 /*yield*/, supabase
-                    .from('procedures')
+                    .from("procedures")
                     .insert([
-                    { name: proc.name, description: proc.description, price: proc.price, duration: proc.duration, additional: proc.additional },
+                    {
+                        name: proc.name,
+                        description: proc.description,
+                        price: proc.price,
+                        duration: proc.duration,
+                        additional: proc.additional,
+                    },
                 ])
                     .select()];
             case 1:
                 _a = _b.sent(), data = _a.data, error = _a.error;
-                result(error, data);
-                return [2 /*return*/];
+                return [2 /*return*/, result(error, data)];
         }
     });
 }); };
@@ -121,16 +153,21 @@ procedure.updateProcById = function (proc, result) { return __awaiter(void 0, vo
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0: return [4 /*yield*/, supabase
-                    .from('procedures')
+                    .from("procedures")
                     .update([
-                    { name: proc.name, description: proc.description, price: proc.price, duration: proc.duration, additional: proc.additional },
+                    {
+                        name: proc.name,
+                        description: proc.description,
+                        price: proc.price,
+                        duration: proc.duration,
+                        additional: proc.additional,
+                    },
                 ])
-                    .eq('id', proc.id)
+                    .eq("id", proc.id)
                     .select()];
             case 1:
                 _a = _b.sent(), data = _a.data, error = _a.error;
-                result(error, data);
-                return [2 /*return*/];
+                return [2 /*return*/, result(error, data)];
         }
     });
 }); };
@@ -139,13 +176,12 @@ procedure.deleteProcById = function (id, result) { return __awaiter(void 0, void
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0: return [4 /*yield*/, supabase
-                    .from('procedures')
+                    .from("procedures")
                     .delete()
-                    .eq('id', id)];
+                    .eq("id", id)];
             case 1:
                 _a = _b.sent(), data = _a.data, error = _a.error;
-                result(error, data);
-                return [2 /*return*/];
+                return [2 /*return*/, result(error, data)];
         }
     });
 }); };

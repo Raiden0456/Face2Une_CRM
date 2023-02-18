@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 // import { QueryResult } from "pg";
 // import client from "./db.js";
 import supabase from "./db.js";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 // Constructor
 var user = function (user) {
     this.id = user.id;
@@ -47,76 +47,136 @@ var user = function (user) {
     this.email = user.email;
     this.password = user.password;
 };
-user.getAllusers = function (result) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, users, error;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0: return [4 /*yield*/, supabase
-                    .from('users')
-                    .select('*')];
-            case 1:
-                _a = _b.sent(), users = _a.data, error = _a.error;
-                result(error, users);
-                return [2 /*return*/];
-        }
+user.getUsers = function (filter, result) {
+    if (filter === void 0) { filter = { column: "", value: false }; }
+    return __awaiter(void 0, void 0, void 0, function () {
+        var resp, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    if (!filter.value) return [3 /*break*/, 2];
+                    return [4 /*yield*/, supabase
+                            .from("users")
+                            .select("*")
+                            .eq(filter.column, filter.value)];
+                case 1:
+                    _a = _b.sent();
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, supabase
+                        .from("users")
+                        .select("*")];
+                case 3:
+                    _a = _b.sent();
+                    _b.label = 4;
+                case 4:
+                    resp = _a;
+                    return [2 /*return*/, result(resp.error, resp.data)];
+            }
+        });
     });
-}); };
-user.getUserById = function (id, result) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, users, error;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0: return [4 /*yield*/, supabase
-                    .from('users')
-                    .select('*')
-                    .eq('id', id)];
-            case 1:
-                _a = _b.sent(), users = _a.data, error = _a.error;
-                result(error, users);
-                return [2 /*return*/];
-        }
-    });
-}); };
+};
+// Section may be used to register a new user`as well as create a new user as an admin //
 user.createUser = function (user, result) { return __awaiter(void 0, void 0, void 0, function () {
-    var hash_password, _a, data, error;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
+    var resp, check, hash_password;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, supabase.from("users").select("id").eq("email", user.email)];
+            case 1:
+                check = _a.sent();
+                if (!(check.data.length == 0)) return [3 /*break*/, 3];
                 hash_password = bcrypt.hashSync(user.password, 10);
                 return [4 /*yield*/, supabase
-                        .from('users')
+                        .from("users")
                         .insert([
-                        { first_name: user.first_name, last_name: user.last_name, phone: user.phone, email: user.email, password: hash_password, salt: 10 },
+                        {
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            phone: user.phone,
+                            email: user.email,
+                            password: hash_password,
+                            salt: 10,
+                            rights: user.rights,
+                        },
                     ])
                         .select()];
-            case 1:
-                _a = _b.sent(), data = _a.data, error = _a.error;
-                result(error, data);
-                return [2 /*return*/];
+            case 2:
+                resp = _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                resp = { error: { message: "email is already used" }, data: [] };
+                _a.label = 4;
+            case 4: return [2 /*return*/, result(resp.error, resp.data)];
         }
     });
 }); };
-// user.updateProcById = async (proc: {id: number, name: string, description: string, price: number, duration: number, additional: number }, result)  => {
-//   const { data, error } = await supabase
-//   .from('users')
-//   .update([
-//     {name: proc.name,description: proc.description,price: proc.price,duration: proc.duration,additional: proc.additional},
-//   ])
-//   .eq('id', proc.id)
-//   .select();
-//   result(error, data);
-// };
+user.updateUserById = function (user, result) { return __awaiter(void 0, void 0, void 0, function () {
+    var resp, check, hash_password;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, supabase.from("users").select("id").eq("email", user.email)];
+            case 1:
+                check = _a.sent();
+                if (!(check.data.length == 0 || check.data[0].id == user.id)) return [3 /*break*/, 3];
+                hash_password = bcrypt.hashSync(user.password, 10);
+                return [4 /*yield*/, supabase
+                        .from("users")
+                        .update([
+                        {
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            phone: user.phone,
+                            email: user.email,
+                            password: hash_password,
+                            salt: 10,
+                            rights: user.rights,
+                        },
+                    ])
+                        .eq("id", user.id)
+                        .select()];
+            case 2:
+                resp = _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                resp = { error: { message: "email is already used" }, data: [] };
+                _a.label = 4;
+            case 4: return [2 /*return*/, result(resp.error, resp.data)];
+        }
+    });
+}); };
 user.deleteUserById = function (id, result) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, data, error;
     return __generator(this, function (_b) {
         switch (_b.label) {
-            case 0: return [4 /*yield*/, supabase
-                    .from('users')
-                    .delete()
-                    .eq('id', id)];
+            case 0: return [4 /*yield*/, supabase.from("users").delete().eq("id", id)];
             case 1:
                 _a = _b.sent(), data = _a.data, error = _a.error;
-                result(error, data);
-                return [2 /*return*/];
+                return [2 /*return*/, result(error, data)];
+        }
+    });
+}); };
+// Login for sign in page //
+user.loginUser = function (user, result) { return __awaiter(void 0, void 0, void 0, function () {
+    var resp;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, supabase
+                    .from("users")
+                    .select("id, email, password")
+                    .eq("email", user.email)];
+            case 1:
+                resp = _a.sent();
+                if (resp.data.length == 0) {
+                    resp = { error: { message: "email or password is incorrect" }, data: [] };
+                }
+                else {
+                    if (bcrypt.compareSync(user.password, resp.data[0].password)) {
+                        resp = { error: null, data: resp.data[0] };
+                    }
+                    else {
+                        resp = { error: { message: "email or password is incorrect" }, data: [] };
+                    }
+                }
+                return [2 /*return*/, result(resp.error, resp.data)];
         }
     });
 }); };
