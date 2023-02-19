@@ -79,7 +79,7 @@ export const Home = () => {
               {ProceduresStore.proceduresStatus.proceduresData?.map((procedure, i) => {
                 return <BookingBox key={procedure.id} procedure={procedure} />;
               })}
-              <hr style={{ borderTop: '2px solid #e2e2e2', width: '100%', marginBottom: '2rem' }} />
+              {/* <hr style={{ borderTop: '2px solid #e2e2e2', width: '100%', marginBottom: '2rem' }} /> */}
               <div className={s.Home__divider}>
                 <h2>Packages</h2>
               </div>
