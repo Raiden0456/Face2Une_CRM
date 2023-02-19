@@ -75,6 +75,7 @@ export function updateProc(
     price: number;
     duration: number;
     additional: number;
+    saloon_ids: number[];
   },
   res
 ) {
@@ -103,6 +104,7 @@ export function createProc(
     price: number;
     duration: number;
     additional: number;
+    saloon_ids: number[];
   },
   res
 ) {
