@@ -33,8 +33,9 @@ export const ModalsCustomStyles: object = {
 
 export const ModalsCustomStylesMobile: object = {
   content: {
+    maxHeight: '550px', //test
     padding: '0',
-    top: '60%',
+    top: '50%',
     left: '50%',
     right: 'auto',
     bottom: 'auto',

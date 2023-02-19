@@ -54,7 +54,7 @@ export const UserInfo = () => {
   // Redirect back if not found
   useEffect(() => {
     setLoading(true);
-    let sessionMainPassanger: any = sessionStorage.getItem('main_passanger');
+    let sessionMainPassanger = sessionStorage.getItem('main_passanger');
 
     if (sessionMainPassanger) {
       setInputs({

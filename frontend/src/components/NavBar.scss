@@ -98,6 +98,7 @@
     padding: 0 1em;
     margin-bottom: 0;
 
+
     .Navbar__left {
 
       .Navbar__logo {
@@ -113,6 +114,10 @@
           display: none;
         }
       }
+    }
+
+    .Navbar__pageStatus {
+      flex-wrap: wrap;
     }
   }
 }

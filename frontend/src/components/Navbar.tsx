@@ -4,11 +4,10 @@ import s from './NavBar.scss';
 import { AuthStore } from '../store/Auth.store';
 import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
-import { ButtonContained, ButtonOutlined } from './base/Button';
+import { ButtonOutlined } from './base/Button';
 
 const NavBar = observer(() => {
   const authService = new AuthService();
-  console.log(AuthStore.authorized);
 
   return (
     <div className={s.HeaderWrapper}>

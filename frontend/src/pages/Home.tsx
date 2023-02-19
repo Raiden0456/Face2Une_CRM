@@ -9,11 +9,12 @@ import { ProceduresService } from '../service/ProceduresService';
 import { TailSpinFixed } from '../components/TailSpin';
 import { ProceduresStore } from '../store/Procedures.store';
 import PackageBox from '../components/PackageBox';
+import useForm from '../utils/useForm';
 
 export const Home = () => {
   const proceduresService = new ProceduresService();
+  const { inputs, handleChange, clearForm, resetForm } = useForm({ email: '', promo: '' });
   const [displayInput, setDisplayInput] = useState(false);
-  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [packages, setPackages] = useState([]);
 
@@ -37,7 +38,6 @@ export const Home = () => {
         }
 
         proceduresService.getPackages().then((packages) => {
-          console.log(packages);
           if (packages?.success) {
             setPackages(packages.data);
             setLoading(false);
@@ -53,7 +53,7 @@ export const Home = () => {
       width="100%"
       content={
         <>
-          <div style={{ margin: '25px 0', alignSelf: 'start', width: '25%' }}>
+          <div style={{ margin: '25px 0', alignSelf: 'start', minWidth: '200px' }}>
             <ButtonContained
               onClick={() => {
                 setDisplayInput(!displayInput);
@@ -62,22 +62,28 @@ export const Home = () => {
               Use My Code
             </ButtonContained>
             {displayInput && (
-              <Input
-                value={input}
-                onChange={(value) => {
-                  setInput(value);
-                }}
-              />
+              <>
+                <Input name="email" value={inputs.email} placeholder="Email:" onChange={handleChange} />
+                <Input name="promo" value={inputs.promo} placeholder="Promocode:" onChange={handleChange} />
+              </>
             )}
           </div>
           {loading ? (
             <TailSpinFixed />
           ) : (
             <>
+              <div className={s.Home__divider}>
+                <h2>Procedures</h2>
+              </div>
+
               {ProceduresStore.proceduresStatus.proceduresData?.map((procedure, i) => {
                 return <BookingBox key={procedure.id} procedure={procedure} />;
               })}
               <hr style={{ borderTop: '2px solid #e2e2e2', width: '100%', marginBottom: '2rem' }} />
+              <div className={s.Home__divider}>
+                <h2>Packages</h2>
+              </div>
+
               {packages?.map((packageItem, i) => {
                 return <PackageBox key={i} packageItem={packageItem} />;
               })}
