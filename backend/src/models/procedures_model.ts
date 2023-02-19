@@ -70,6 +70,7 @@ procedure.createProc = async (
     name: string;
     description: string;
     price: number;
+    price_gbp: number;
     duration: number;
     additional: number;
     saloon_ids: number[];
@@ -83,6 +84,7 @@ procedure.createProc = async (
         name: proc.name,
         description: proc.description,
         price: proc.price,
+        price_gbp: proc.price_gbp,
         duration: proc.duration,
         additional: proc.additional,
         saloon_ids: proc.saloon_ids,
@@ -98,6 +100,7 @@ procedure.updateProcById = async (
     name: string;
     description: string;
     price: number;
+    price_gbp: number;
     duration: number;
     additional: number;
     saloon_ids: number[];
@@ -111,6 +114,7 @@ procedure.updateProcById = async (
         name: proc.name,
         description: proc.description,
         price: proc.price,
+        price_gbp: proc.price_gbp,
         duration: proc.duration,
         additional: proc.additional,
         saloon_ids: proc.saloon_ids,
