@@ -4,8 +4,11 @@
   "description": "CRM System for Face2Une beaty salon  https://www.face2une.com/",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
-    "build": "npm install && npx tsc",
+    "build": "npm install && npm tsc",
     "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts"
   },
