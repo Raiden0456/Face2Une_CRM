@@ -46,6 +46,7 @@ export class AuthService {
         email: r.data.email,
         authorized: 'auth',
       });
+      window.location.href = window.location.origin;
       return r;
     } else {
       return r;

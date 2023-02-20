@@ -76,7 +76,7 @@
                         "description": "object of procedure",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/newProcedure"
+                            "$ref": "#/definitions/Procedure"
                         }
                     }
                 ],
@@ -98,7 +98,19 @@
                         "description": "object of procedure",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Procedure"
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$ref": "#/definitions/Procedure"
+                                }
+                            ]
                         }
                     }
                 ],
@@ -131,13 +143,239 @@
                 }
             }
         },
+        "/proc_total": {
+            "get": {
+                "tags": ["Procedures"],
+                "summary": "Get total cost of procedures in db by array of their ids",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "proc_array",
+                        "description": "ids of procedures",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "uniqueItems": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns total cost of all procedures in database as number"
+                    }
+                }
+            }
+        },
+        "/pack": {
+            "get": {
+                "tags": ["Packages"],
+                "summary": "Get all packages in db",
+                "responses": {
+                    "200": {
+                        "description": "Returns all packages in database in JSON format"
+                    }
+                }
+            }
+        },
+        "/pack/{packid}": {
+            "get": {
+                "tags": ["Packages"],
+                "summary": "Get a single package by id in db",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "packid",
+                        "description": "id of package",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a single package in database in JSON format"
+                    }
+                }
+            }
+        },
+        "/create_pack": {
+            "post": {
+                "tags": ["Packages"],
+                "summary": "Create new package",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of package",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Package"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create a package in database using JSON format"
+                    }
+                }
+            }
+        },
+        "/update_pack": {
+            "post": {
+                "tags": ["Packages"],
+                "summary": "Update package by id",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of package",
+                        "required": true,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$ref": "#/definitions/Package"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update a package in database using JSON format"
+                    }
+                }
+            }
+        },
+        "/delete_pack/{packid}": {
+            "delete": {
+                "tags": ["Packages"],
+                "summary": "Delete package by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "packid",
+                        "description": "id of package",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete a package in database by id"
+                    }
+                }
+            }
+        },
+        "/buy_pack": {
+            "post": {
+                "tags": ["Packages"],
+                "summary": "Buy packages",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "client id and array of package ids",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "client_id": {
+                                    "type": "integer"
+                                },
+                                "packages": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "package_id": {
+                                                "type": "integer"
+                                            },
+                                            "amount_bought": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Buy packages for a client in database using JSON format"
+                    }
+                }
+            }
+        },
+        "/use_pack": {
+            "post": {
+                "tags": ["Packages"],
+                "summary": "Use packages",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "client id and package id",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "client_id": {
+                                    "type": "integer"
+                                },
+                                "promocode": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Use 1 package of a client, if none left, delete it from database"
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "tags": ["Users"],
-                "summary": "Get all users in db",
+                "summary": "Get users in db",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "column",
+                        "description": "filter column name(id, first_name, last_name, email, phone, rights))",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "value",
+                        "description": "value of filter column",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Returns all users in database in JSON format"
+                        "description": "Returns users in database in JSON format"
                     }
                 }
             }
@@ -175,13 +413,47 @@
                         "description": "object of user",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/newUser"
+                            "$ref": "#/definitions/User"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "Create a user in database using JSON format"
+                    }
+                }
+            }
+        },
+        "/update_user": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Update user by id",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of user",
+                        "required": true,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$ref": "#/definitions/User"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update a user in database using JSON format"
                     }
                 }
             }
@@ -207,34 +479,371 @@
                     }
                 }
             }
+        },
+        "/clients": {
+            "get": {
+                "tags": ["Clients"],
+                "summary": "Get clients in db",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "index",
+                        "description": "starting index(starting from 1)",
+                        "required": false,
+                        "default": 1,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "per_page",
+                        "description": "max clients per page",
+                        "required": false,
+                        "default": 10,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "filter_like",
+                        "description": "multifilter 'like' for all columns",
+                        "required": false,
+                        "default": "",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "filter_column_eq",
+                        "description": "'equal' filter column name(id, full_name, phone, email, user_id))",
+                        "required": false,
+                        "default": "",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "filter_column_eq_value",
+                        "description": "value of 'equal' filter column",
+                        "required": false,
+                        "default": "",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns clients in database in JSON format"
+                    }
+                }
+            }
+        },
+        "/clients/{clientid}": {
+            "get": {
+                "tags": ["Clients"],
+                "summary": "Get a single client by id in db",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "clientid",
+                        "description": "client id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns client in database in JSON format"
+                    }
+                }
+            }
+        },
+        "/create_client": {
+            "post": {
+                "tags": ["Clients"],
+                "summary": "Create new client",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of client",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Client"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create a client in database using JSON format"
+                    }
+                }
+            }
+        },
+        "/update_client": {
+            "post": {
+                "tags": ["Clients"],
+                "summary": "Update client by id",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of client",
+                        "required": true,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$ref": "#/definitions/Client"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update a client in database using JSON format"
+                    }
+                }
+            }
+        },
+        "/delete_client/{clientid}": {
+            "delete": {
+                "tags": ["Clients"],
+                "summary": "Delete client by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "clientsid",
+                        "description": "id of client",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete a client in database by id"
+                    }
+                }
+            }
+        },
+        "/sign_up": {
+            "post": {
+                "tags": ["Authintication"],
+                "summary": "Register new user",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Register a user in database using JSON format"
+                    }
+                }
+            }
+        },
+        "/sign_in": {
+            "post": {
+                "tags": ["Authintication"],
+                "summary": "Sign in as user",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of email and password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sign in as user using email and password in JSON format"
+                    }
+                }
+            }
+        },
+        "/sign_out": {
+            "get": {
+                "tags": ["Authintication"],
+                "summary": "Sign out",
+                "responses": {
+                    "200": {
+                        "description": "Destroyes user session"
+                    }
+                }
+            }
+        },
+        "/session_user": {
+            "get": {
+                "tags": ["Authintication"],
+                "summary": "Get current session user details",
+                "responses": {
+                    "200": {
+                        "description": "Returns details of current session user in JSON format"
+                    }
+                }
+            }
+        },
+        "/appoint": {
+            "get": {
+                "tags": ["Appointments"],
+                "summary": "Get Appointments in db",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "column",
+                        "description": "filter column name(id, procedure_id, reservation_date, client_id, total_price, reserved_on, saloon_id))",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "value",
+                        "description": "value of filter column",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns Appointments in database in JSON format"
+                    }
+                }
+            }
+        },
+        "/appoint/{appointid}": {
+            "get": {
+                "tags": ["Appointments"],
+                "summary": "Get a single appointment by id in db",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "appointid",
+                        "description": "id of appointment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a single appointment in database in JSON format"
+                    }
+                }
+            }
+        },
+        "/create_appoint": {
+            "post": {
+                "tags": ["Appointments"],
+                "summary": "Create new appointment",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of appointment",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Appointment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create an user in appointment using JSON format"
+                    }
+                }
+            }
+        },
+        "/update_appoint": {
+            "post": {
+                "tags": ["Appointments"],
+                "summary": "Update appointment by id",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "object of appointment",
+                        "required": true,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$ref": "#/definitions/Appointment"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update an appointment in database using JSON format"
+                    }
+                }
+            }
+        },
+        "/delete_appoint/{appointid}": {
+            "delete": {
+                "tags": ["Appointments"],
+                "summary": "Delete appointment by id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "appointid",
+                        "description": "id of appointment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete an appointment in database by id"
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "newProcedure": {
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "duration": {
-                    "type": "integer"
-                },
-                "additional": {
-                    "type": "integer"
-                }
-            }
-        },
         "Procedure": {
             "properties": {
-                "id": {
-                    "type": "integer",
-                    "uniqueItems": true
-                },
                 "name": {
                     "type": "string"
                 },
@@ -252,31 +861,21 @@
                 }
             }
         },
-        "newUser": {
+        "Package": {
             "properties": {
-                "first_name": {
+                "name": {
                     "type": "string"
                 },
-                "last_name": {
-                    "type": "string"
+                "price": {
+                    "type": "number"
                 },
-                "phone": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
+                "amount": {
+                    "type": "number"
                 }
             }
         },
         "User": {
             "properties": {
-                "id": {
-                    "type": "integer",
-                    "uniqueItems": true
-                },
                 "first_name": {
                     "type": "string"
                 },
@@ -291,6 +890,65 @@
                 },
                 "password": {
                     "type": "string"
+                },
+                "rights": {
+                    "type": "string",
+                    "default": "client"
+                }
+            }
+        },
+        "Login": {
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Client": {
+            "properties": {
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "number",
+                    "default": null
+                }
+            }
+        },
+        "Appointment": {
+            "properties": {
+                "procedure_id": {
+                    "type": "integer"
+                },
+                "additional_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "uniqueItems": true
+                    }
+                },
+                "reservation_date_time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "client_id": {
+                    "type": "integer"
+                },
+                "saloon_id": {
+                    "type": "int",
+                    "default": "1"
                 }
             }
         }

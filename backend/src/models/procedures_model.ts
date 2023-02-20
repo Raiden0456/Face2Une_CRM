@@ -10,6 +10,7 @@ const procedure = function (procedure) {
   this.price = procedure.price;
   this.duration = procedure.duration;
   this.additional = procedure.additional;
+  this.saloon_ids = procedure.saloon_ids;
 };
 
 procedure.getAllproc = async (additional: number, result) => {
@@ -69,8 +70,10 @@ procedure.createProc = async (
     name: string;
     description: string;
     price: number;
+    price_gbp: number;
     duration: number;
     additional: number;
+    saloon_ids: number[];
   },
   result
 ) => {
@@ -81,8 +84,10 @@ procedure.createProc = async (
         name: proc.name,
         description: proc.description,
         price: proc.price,
+        price_gbp: proc.price_gbp,
         duration: proc.duration,
         additional: proc.additional,
+        saloon_ids: proc.saloon_ids,
       },
     ])
     .select();
@@ -95,8 +100,10 @@ procedure.updateProcById = async (
     name: string;
     description: string;
     price: number;
+    price_gbp: number;
     duration: number;
     additional: number;
+    saloon_ids: number[];
   },
   result
 ) => {
@@ -107,8 +114,10 @@ procedure.updateProcById = async (
         name: proc.name,
         description: proc.description,
         price: proc.price,
+        price_gbp: proc.price_gbp,
         duration: proc.duration,
         additional: proc.additional,
+        saloon_ids: proc.saloon_ids,
       },
     ])
     .eq("id", proc.id)

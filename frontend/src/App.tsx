@@ -4,13 +4,15 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import MainAuth from './pages/Auth/MainAuth';
 import MainLayout from './layer/MainLayout';
-import { PrivateRoute } from './layer/PrivateRoute';
+import { PrivateRouteAdmin } from './layer/PrivateRoute';
 import { AuthService } from './service/AuthService';
 import { AuthStore } from './store/Auth.store';
 import { WIDTH_QUERY } from './const/widthQuery';
 import { Home } from './pages/Home';
 import { UserInfo } from './pages/UserInfo';
 import { Confirmation } from './pages/Confirmation';
+import { Clients } from './pages/Clients';
+import { ConfirmationPackage } from './pages/ConfirmationPackage';
 
 require('./App.scss');
 
@@ -45,11 +47,14 @@ const App = observer(() => {
           <Routes>
             <Route path="/auth/*" element={<MainAuth mobile={mobile} />} />
             <Route path="*" element={<div>404 :(</div>} />
-            {/* <Route element={<PrivateRoute />}> */}
+
             <Route path="/" element={<Home />} />
             <Route path="/userInfo" element={<UserInfo />} />
             <Route path="/confirmation" element={<Confirmation />} />
-            {/* </Route> */}
+            <Route path="/confirmation-package" element={<ConfirmationPackage />} />
+            <Route element={<PrivateRouteAdmin />}>
+              <Route path="/clients" element={<Clients />} />
+            </Route>
           </Routes>
         </MainLayout>
       </BrowserRouter>

@@ -167,6 +167,188 @@
             }
           }
         },
+        "/pack": {
+          "get": {
+            "tags": ["Packages"],
+            "summary": "Get all packages in db",
+            "responses": {
+              "200": {
+                "description": "Returns all packages in database in JSON format"
+              }
+            }
+          }
+        },
+        "/pack/{packid}": {
+          "get": {
+            "tags": ["Packages"],
+            "summary": "Get a single package by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "packid",
+              "description": "id of package",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single package in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_pack": {
+          "post": {
+            "tags": ["Packages"],
+            "summary": "Create new package",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of package",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Package"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a package in database using JSON format"
+              }
+            }
+          }
+        },
+        "/update_pack": {
+          "post": {
+            "tags": ["Packages"],
+            "summary": "Update package by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of package",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Package"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a package in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_pack/{packid}": {
+          "delete": {
+            "tags": ["Packages"],
+            "summary": "Delete package by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "packid",
+              "description": "id of package",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a package in database by id"
+              }
+            }
+          }
+        },
+        "/buy_pack": {
+          "post": {
+            "tags": ["Packages"],
+            "summary": "Buy packages",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "client id and array of package ids",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "integer"
+                  },
+                  "packages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "package_id": {
+                          "type": "integer"
+                        },
+                        "amount_bought": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Buy packages for a client in database using JSON format"
+              }
+            }
+          }
+        },
+        "/use_pack":{
+          "post": {
+            "tags": ["Packages"],
+            "summary": "Use packages",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "client id and package id",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "integer"
+                  },
+                  "promocode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Use 1 package of a client, if none left, delete it from database"
+              }
+            }
+          }
+        },
         "/users": {
           "get": {
             "tags": ["Users"],
@@ -304,22 +486,55 @@
             "summary": "Get clients in db",
             "parameters": [
               {
-              "in": "query",
-              "name": "column",
-              "description": "filter column name(id, full_name, phone, email, user_id))",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
               },
               {
-              "in": "query",
-              "name": "value",
-              "description": "value of filter column",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "per_page",
+                "description": "max clients per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_like",
+                "description": "multifilter 'like' for all columns",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_column_eq",
+                "description": "'equal' filter column name(id, full_name, phone, email, user_id))",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_column_eq_value",
+                "description": "value of 'equal' filter column",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
               }
             ],
             "responses": {
@@ -503,7 +718,7 @@
               {
               "in": "query",
               "name": "column",
-              "description": "filter column name(id, procedure_id, reservation_date, cient_id, master_id, total_price, reserved_on, saloon_name))",
+              "description": "filter column name(id, procedure_id, reservation_date, client_id, total_price, reserved_on, saloon_id))",
               "required": false,
               "schema": {
                 "type": "string"
@@ -640,11 +855,35 @@
             "price": {
               "type": "number"
             },
+            "price_gbp": {
+              "type": "number"
+            },
             "duration": {
               "type": "integer"
             },
             "additional": {
               "type": "integer"
+            },
+            "saloon_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "uniqueItems": true
+              },
+              "default": [1]
+            }
+          }
+        },
+        "Package": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number"
+            },
+            "amount": {
+              "type": "number"
             }
           }
         },
@@ -666,7 +905,8 @@
               "type": "string"
             },
             "rights": {
-              "type": "string"
+              "type": "string",
+              "default": "client"
             }
           }
         },
@@ -695,7 +935,8 @@
               "type": "string"
             },
             "user_id": {
-              "type": "number"
+              "type": "number",
+              "default": null
             }
           }
         },
@@ -718,11 +959,9 @@
             "client_id": {
               "type": "integer"
             },
-            "master_id": {
-              "type": "integer"
-            },
-            "saloon_name": {
-              "type": "string"
+            "saloon_id": {
+              "type": "int",
+              "default": "1"
             }
           }
         }

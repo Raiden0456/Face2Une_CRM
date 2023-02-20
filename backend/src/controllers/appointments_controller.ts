@@ -28,9 +28,8 @@ export async function updateAppoint(
     additional_ids: [];
     reservation_date_time: Date;
     client_id: number;
-    master_id: number;
     total_price: number;
-    saloon_name: string;
+    saloon_id: number;
   },
   res
 ) {
@@ -62,9 +61,8 @@ export async function createAppoint(
     additional_ids: [];
     reservation_date_time: Date;
     client_id: number;
-    master_id: number;
     total_price: number;
-    saloon_name: string;
+    saloon_id: number;
   },
   res
 ) {

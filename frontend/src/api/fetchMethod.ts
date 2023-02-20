@@ -1,5 +1,6 @@
 // To Be Changed
-const buildUrl = (path: string) => (process.env.NODE_ENV === 'production' ? `/api/v1/${path}` : `http://localhost:3000/${path}`);
+const buildUrl = (path: string) =>
+  process.env.NODE_ENV === 'production' ? `/api/v1/${path}` : `http://localhost:3000/${path}`;
 
 interface ISafeFetch {
   path: string;
@@ -27,7 +28,7 @@ export const JSONFetch = async (path: string, body: object) => {
         Language: 'en_US',
       },
       body: JSON.stringify(body),
-      credentials: 'include'
+      credentials: 'include',
     },
   });
   return r;
@@ -42,6 +43,19 @@ export const JSONFetchGet = async (path: string) =>
         'Content-Type': 'application/json',
         Language: 'en_US',
       },
-      credentials: 'include'
+      credentials: 'include',
+    },
+  });
+
+export const JSONFetchDelete = async (path: string) =>
+  safeFetch({
+    path,
+    defaultConf: {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Language: 'en_US',
+      },
+      credentials: 'include',
     },
   });

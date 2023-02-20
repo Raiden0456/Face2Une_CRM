@@ -1,0 +1,43 @@
+.ConfirmationPackage {
+  width: 100%;
+}
+
+.ConfirmationPackage__header {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.Confirmation__footer {
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  button {
+    margin-top: 2rem;
+    align-self: flex-end;
+  }
+}
+
+.Confirmation__footer_selectWrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+
+   p {
+    margin-bottom: 0;
+    margin-right: 0.5rem;
+   }
+}
+
+.PackageInfoForm {
+  margin-bottom: 2rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  border: 1px solid #e2e2e2;
+  padding: 33px;
+  border-radius: 16px;
+}
+

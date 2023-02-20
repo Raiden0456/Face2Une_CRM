@@ -13,22 +13,73 @@ const client = function (client) {
 };
 
 client.getClients = async (
-  filter: { column: string; value: any } = { column: "", value: false},
+  params: {
+    index: number;
+    per_page: number;
+    filter_like: string;
+    column: string;
+    value: any;
+  },
   result
 ) => {
+  // set default values //
   var resp;
-  resp = filter.value
-  ? 
-  await supabase
-    .from("clients")
-    .select("*")
-    .eq(filter.column, filter.value)
-  :
-  await supabase
-    .from("clients")
-    .select("*");
-  
-  return result(resp.error, resp.data);
+  let total;
+  let start_from = 0;
+  let to = 100;
+  //******//
+
+  // Pagination set where index = page number and per_page = max amount of entries per page //
+  if(params.index && params.per_page){
+  start_from = (params.index - 1) * params.per_page;
+  to = Number(start_from) + Number(params.per_page) - 1;
+  }
+  //******//
+
+  if (params.filter_like) {
+    resp = await supabase
+      .from("clients")
+      .select("*")
+      .or(
+        "full_name.ilike.%" +
+          params.filter_like +
+          "%, email.ilike.%" +
+          params.filter_like +
+          "%, phone.ilike.%" +
+          params.filter_like +
+          "%"
+      )
+      .range(start_from, to);
+
+    total = await supabase
+      .from("clients")
+      .select("id")
+      .or(
+        "full_name.ilike.%" +
+          params.filter_like +
+          "%, email.ilike.%" +
+          params.filter_like +
+          "%, phone.ilike.%" +
+          params.filter_like +
+          "%"
+      );
+  } else {
+    resp = params.value
+      ? await supabase
+          .from("clients")
+          .select("*")
+          .eq(params.column, params.value)
+          .range(start_from, to)
+      : await supabase.from("clients").select("*").range(start_from, to);
+
+    total = params.value
+      ? await supabase
+          .from("clients")
+          .select("id")
+          .eq(params.column, params.value)
+      : await supabase.from("clients").select("id");
+  }
+  return result(resp.error, resp.data, total.data.length);
 };
 
 client.createClient = async (
@@ -44,8 +95,16 @@ client.createClient = async (
   var resp;
   let check = await supabase.from("clients").select().eq("email", client.email);
   let phone_check = p_validator.validate(client.phone);
-
   if (check.data.length == 0 && phone_check) {
+    // if user_id is not provided and user with such email exists, get it from users table //
+    if (!client.user_id) {
+      let user = await supabase
+        .from("users")
+        .select("id")
+        .eq("email", client.email);
+      if (user.data.length > 0) client.user_id = user.data[0].id;
+    }
+    //******//
     resp = await supabase
       .from("clients")
       .insert([
@@ -58,7 +117,10 @@ client.createClient = async (
       ])
       .select();
   } else {
-    resp = { error: {message: "email in use or invalid phone format" }, data: [] };
+    resp = {
+      error: { message: "email in use or invalid phone format" },
+      data: [],
+    };
   }
   return result(resp.error, resp.data);
 };

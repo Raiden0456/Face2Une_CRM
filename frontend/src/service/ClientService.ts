@@ -15,11 +15,23 @@ export class ClientService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/userInfo' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
     }
   }
 
-  async createClient({ firstName, lastName, phone, email }: NewClient) {
+  async getClients(index: number, perPage: number, filterLike?: string | boolean) {
+    const r = await JSONFetchGet(
+      `clients?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,
+    );
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
+  async createClient({ firstName, lastName, phone, email }: NewClient, redirectUrl: string = '/') {
     const r = await JSONFetch('create_client', {
       first_name: firstName,
       last_name: lastName,
@@ -30,7 +42,7 @@ export class ClientService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/userInfo' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl }); // TBD Set Fallback
     }
   }
 }

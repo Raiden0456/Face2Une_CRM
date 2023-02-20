@@ -73,8 +73,10 @@ export function updateProc(
     name: string;
     description: string;
     price: number;
+    price_gbp: number;
     duration: number;
     additional: number;
+    saloon_ids: number[];
   },
   res
 ) {
@@ -101,8 +103,10 @@ export function createProc(
     name: string;
     description: string;
     price: number;
+    price_gbp: number;
     duration: number;
     additional: number;
+    saloon_ids: number[];
   },
   res
 ) {

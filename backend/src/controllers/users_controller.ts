@@ -46,7 +46,12 @@ export function updateUser(
       });
     } else {
       const client_same_user = (await clients.getClients(
-        { column: "user_id", value: _user.id },
+        {
+          column: "user_id", value: _user.id,
+          index: 1,
+          per_page: 1,
+          filter_like: ""
+        },
         (err, data) => {
           if (err) {
             console.log(err);
@@ -56,7 +61,12 @@ export function updateUser(
         }
       )) as any;
       const client_same_email = (await clients.getClients(
-        { column: "email", value: _user.email },
+        {
+          column: "email", value: _user.email,
+          index: 1,
+          per_page: 1,
+          filter_like: ""
+        },
         (err, data) => {
           if (err) {
             console.log(err);
@@ -66,7 +76,7 @@ export function updateUser(
         }
       )) as any;
       // update client with id assosiated user was updated //
-      if (client_same_user) {
+      if (client_same_user.length > 0) {
         const client = {
           id: client_same_user[0].id,
           first_name: _user.first_name,
@@ -84,7 +94,7 @@ export function updateUser(
         });
       }
       // connect and update client if user is now connected to it //
-      else if (client_same_email && !client_same_email[0].user_id) {
+      else if (client_same_email.length > 0 && !client_same_email[0].user_id) {
         const client = {
           id: client_same_email[0].id,
           first_name: _user.first_name,
@@ -129,7 +139,12 @@ export function createUser(
       // Create a client for the user if client with such email does not exist //
       // assigning client variable to response from getClients //
       const client = (await clients.getClients(
-        { column: "email", value: _user.email },
+        {
+          column: "email", value: _user.email,
+          index: 1,
+          per_page: 1,
+          filter_like: ""
+        },
         (err, data) => {
           if (err) {
             console.log(err);

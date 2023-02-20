@@ -14,6 +14,13 @@ interface SelectFieldProps {
   onChange?: (value: any) => void;
 }
 
+interface SelectNumberProps {
+  max: number;
+  min: number;
+  value: number;
+  onChange: (value: number) => void;
+}
+
 export const SelectField = ({
   name = 'baseSelect',
   options,
@@ -50,3 +57,22 @@ export const SelectField = ({
     </div>
   );
 };
+
+export function NumberDropdown(props: SelectNumberProps) {
+  const { min, max, value, onChange } = props;
+  const options = [];
+
+  for (let i = min; i <= max; i++) {
+    options.push(
+      <option key={i} value={i}>
+        {i}
+      </option>,
+    );
+  }
+
+  return (
+    <select value={value} onChange={(event: any) => onChange(event.target.value)}>
+      {options}
+    </select>
+  );
+}

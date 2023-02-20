@@ -63,6 +63,6 @@ export default class ErrorBoundary extends React.Component {
     // Normally, just render children
     // eslint-disable-next-line react/destructuring-assignment
     // @ts-ignore
-    return this?.props?.children;
+    return <>{this.props.children}</>;
   }
 }

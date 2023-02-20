@@ -3,7 +3,7 @@ import { join } from "path";
 
 // Retrieve clients from the database with filter.
 export function loadClients(url_params, res) {
-  client.getClients(url_params, (err, data) => {
+  client.getClients(url_params, (err, data, total) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -15,7 +15,7 @@ export function loadClients(url_params, res) {
         message: `No clients found.`,
       });
     } else {
-      res.json({ success: true, data: data });
+      res.json({ success: true, total: total, data: data });
     }
   });
 }

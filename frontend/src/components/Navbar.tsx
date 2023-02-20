@@ -4,23 +4,26 @@ import s from './NavBar.scss';
 import { AuthStore } from '../store/Auth.store';
 import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
-import { ButtonContained } from './base/Button';
+import { ButtonOutlined } from './base/Button';
 
 const NavBar = observer(() => {
   const authService = new AuthService();
-  console.log(AuthStore.authorized);
-
 
   return (
     <div className={s.HeaderWrapper}>
       <div className={s.Navbar}>
         <div className={s.Navbar__header}>
           <div>{AuthStore.authorized === 'auth' && <p>{AuthStore.email}</p>}</div>
-          <div className={s.Navbar__header_logo}>Face2Une</div>
+          <div className={s.Navbar__header_logo}>
+            <Link to="/" style={{ textAlign: 'center', textDecoration: 'none', color: '#000' }}>
+              Face2Une
+            </Link>
+          </div>
           <div>
-            {AuthStore.authorized === 'auth' ? (
+            {window.location.pathname === '/' && AuthStore.authorized === 'auth' && (
               <button onClick={() => authService.signOut()}>Log Out</button>
-            ) : (
+            )}
+            {window.location.pathname === '/' && AuthStore.authorized !== 'auth' && (
               <Link to="/auth/Signin" style={{ textAlign: 'center' }}>
                 <p>Log In</p>
               </Link>
@@ -41,11 +44,20 @@ const NavBar = observer(() => {
           </div>
           <div
             className={
-              window.location.pathname === '/confirmation' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el
+              window.location.pathname === '/confirmation' || window.location.pathname === '/confirmation-package'
+                ? s.Navbar__pageStatus_el_focused
+                : s.Navbar__pageStatus_el
             }
           >
             Confirmation
           </div>
+        </div>
+        <div className={s.Navbar__navigation}>
+          {AuthStore.rights === 'admin' && (
+            <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none' }}>
+              <ButtonOutlined>Clients</ButtonOutlined>
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
-import { ButtonContained } from './base/Button';
+import { ButtonContained, ButtonOutlined } from './base/Button';
 import { Checkbox } from './base/Checkbox';
 import { ModalStore } from '../store/Modal.store';
 import { ProceduresStore } from '../store/Procedures.store';
@@ -43,7 +43,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
     event.preventDefault();
     setLoading(true);
 
-    console.log('SENDING DATA...', inputs);
+    console.log('UPDATING DATA...', inputs);
     const r = await proceduresService.updateProcedure(inputs);
     if (r.success) {
       console.log('Successfully Updated!');
@@ -102,6 +102,13 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
       navigate('/userInfo');
     }
   };
+
+  // Delete Package Box
+  const deleteHandler = async () => {
+    ModalStore.setDeleteItem({ deleteType: 'procedure', id: procedure.id });
+    ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
+  };
+
   return (
     <div
       id={procedure?.id.toString()}
@@ -158,7 +165,7 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
           )}
         </form>
       ) : (
-        <div className={type === 'modal' ? s.BookingBox__main : null}>
+        <div className={type === 'modal' ? s.BookingBox__main : null} style={{ width: '100%' }}>
           <div className={s.BookingBox__header}>
             <div className={s.BookingBox__header_column}>
               {ModalStore.modalStatus.open && <h2>Your Cart:</h2>}
@@ -170,18 +177,23 @@ const BookingBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', proc
             </div>
             <div className={s.BookingBox__header_btns}>
               {type === 'main' && (
-                <ButtonContained width="20%" onClick={handleModal}>
+                <ButtonContained width="100px" onClick={handleModal}>
                   Book
                 </ButtonContained>
               )}
               {type === 'main' && AuthStore.rights === 'admin' && (
-                <ButtonContained
-                  width="5%"
-                  style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
-                  onClick={toggleEdit}
-                >
-                  Edit
-                </ButtonContained>
+                <>
+                  <ButtonContained
+                    width="75px"
+                    style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
+                    onClick={toggleEdit}
+                  >
+                    Edit
+                  </ButtonContained>
+                  <ButtonOutlined width="75px" onClick={deleteHandler}>
+                    Delete
+                  </ButtonOutlined>
+                </>
               )}
             </div>
           </div>

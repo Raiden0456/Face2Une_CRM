@@ -47,6 +47,7 @@ export const UserInfoForm = ({ inputs, handleChange, handleNumberChange, handleS
             onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
             label="Phone:"
             name="phone"
+            defaultValue={inputs?.phone}
             value={inputs?.phone}
             onChange={(e) => handleNumberChange(e, 'phone')}
           />
