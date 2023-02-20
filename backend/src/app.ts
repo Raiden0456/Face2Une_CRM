@@ -22,10 +22,11 @@ import dotenv from "dotenv";
     // CORS with cookies //
     app.use(cors(
       {
-        origin: 'http://localhost:8000',
+        origin: process.env.CORS_ORIGIN,
         credentials: true
       }
     ));
+    swaggerDocument.host = process.env.SWAGGER_HOST;
     app.use(
       '/api-docs',
       swaggerUi.serve, 
