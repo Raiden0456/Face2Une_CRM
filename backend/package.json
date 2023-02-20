@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "prod": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
-    "build": "tsc"
+    "build": "npx tsc",
+    "start": "node dist/src/index.js",
+    "dev": "nodemon src/index.ts"
   },
   "repository": {
     "type": "git",

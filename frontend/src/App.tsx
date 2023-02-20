@@ -13,7 +13,7 @@ import { UserInfo } from './pages/UserInfo';
 import { Confirmation } from './pages/Confirmation';
 import { Clients } from './pages/Clients';
 import { ConfirmationPackage } from './pages/ConfirmationPackage';
-
+//
 require('./App.scss');
 
 const App = observer(() => {

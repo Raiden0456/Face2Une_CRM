@@ -853,11 +853,22 @@
                 "price": {
                     "type": "number"
                 },
+                "price_gbp": {
+                    "type": "number"
+                },
                 "duration": {
                     "type": "integer"
                 },
                 "additional": {
                     "type": "integer"
+                },
+                "saloon_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "uniqueItems": true
+                    },
+                    "default": [1]
                 }
             }
         },

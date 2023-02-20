@@ -16,7 +16,7 @@ import ClientsRouter from './routes/clients_route.js';
 import AuthRouter from './routes/auth_route.js';
 import PackagesRouter from './routes/packages_route.js';
 import dotenv from "dotenv";
-//////////////////////////
+///////////////////////////
 
 // middleware //
     // CORS with cookies //
