@@ -17,7 +17,7 @@ import PackagesRouter from './routes/packages_route.js';
 // middleware //
 // CORS with cookies //
 app.use(cors({
-    origin: 'http://localhost:8000',
+    origin: 'https://face2une-crm-master.herokuapp.com/',
     credentials: true
 }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
