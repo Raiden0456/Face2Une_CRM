@@ -13,7 +13,7 @@ import AppointmentsRouter from './routes/appointments_route.js';
 import ClientsRouter from './routes/clients_route.js';
 import AuthRouter from './routes/auth_route.js';
 import PackagesRouter from './routes/packages_route.js';
-//////////////////////////
+///////////////////////////
 // middleware //
 // CORS with cookies //
 app.use(cors({
@@ -27,7 +27,7 @@ app.use(cookieParser());
 // Конфиг сессии //
 var oneYear = 1000 * 60 * 60 * 24 * 365;
 app.use(session({
-    secret: "KiboVrebaFa2u2023",
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
     cookie: { maxAge: oneYear },
     resave: true

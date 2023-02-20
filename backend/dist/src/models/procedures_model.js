@@ -45,6 +45,7 @@ var procedure = function (procedure) {
     this.price = procedure.price;
     this.duration = procedure.duration;
     this.additional = procedure.additional;
+    this.saloon_ids = procedure.saloon_ids;
 };
 procedure.getAllproc = function (additional, result) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, _b, procedures, error, _c, procedures, error, _d, procedures, error;
@@ -137,8 +138,10 @@ procedure.createProc = function (proc, result) { return __awaiter(void 0, void 0
                         name: proc.name,
                         description: proc.description,
                         price: proc.price,
+                        price_gbp: proc.price_gbp,
                         duration: proc.duration,
                         additional: proc.additional,
+                        saloon_ids: proc.saloon_ids,
                     },
                 ])
                     .select()];
@@ -159,8 +162,10 @@ procedure.updateProcById = function (proc, result) { return __awaiter(void 0, vo
                         name: proc.name,
                         description: proc.description,
                         price: proc.price,
+                        price_gbp: proc.price_gbp,
                         duration: proc.duration,
                         additional: proc.additional,
+                        saloon_ids: proc.saloon_ids,
                     },
                 ])
                     .eq("id", proc.id)
