@@ -8,7 +8,7 @@
     "node": "18.x"
   },
   "scripts": {
-    "build": "npm install && npx tsc",
+    "build": "npx tsc",
     "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts"
   },
