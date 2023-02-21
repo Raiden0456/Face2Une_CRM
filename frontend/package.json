@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --port 8000 --env development --mode development --open",
+    "dev": "webpack-dev-server --port 8000 --env development --mode development --open",
+    "start": "node server.js",
     "local": "cross-env NODE_ENV=development webpack --watch",
     "build": "webpack --config webpack.config.js",
     "build-demo": "cross-env NODE_ENV=demo webpack",
