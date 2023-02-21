@@ -54,7 +54,7 @@ export async function updateAppoint(
   });
 }
 
-// Create an appointment
+// Create an appointment // TODO: add new_client boolean
 export async function createAppoint(
   appoint: {
     procedure_id: number;
@@ -68,6 +68,8 @@ export async function createAppoint(
 ) {
   // Get total price of appointment and add it to appoint object //
   appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids);
+  
+  // TODO: if new_client is true, create new client and add client_id to appoint object //
 
   appointment.createAppoint(appoint, (err, data) => {
     if (err)
