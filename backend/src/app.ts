@@ -20,9 +20,10 @@ import dotenv from "dotenv";
 
 // middleware //
     // CORS with cookies //
+
     app.use(cors(
       {
-        origin: "https://face2une-client-master.herokuapp.com/",
+        origin: process.env.CORS_ORIGIN,
         credentials: true
       }
     ));
