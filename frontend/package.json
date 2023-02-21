@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --port 8000 --env development --mode development --open",
+    "start": "webpack-dev-server --port 8000 --env development --mode development --open --optimize_for_size --max_old_space_size=460 dist/main.js",
     "local": "cross-env NODE_ENV=development webpack --watch",
     "build": "webpack --config webpack.config.js",
     "build-demo": "cross-env NODE_ENV=demo webpack",
