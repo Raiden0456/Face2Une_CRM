@@ -14,7 +14,9 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
 # Run setup script
 RUN bash nodesource_setup.sh
 # install nodejs and npm
-RUN apt install nodejs -y
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y nodejs \
+    npm 
 
 # Copy everything
 COPY . .
