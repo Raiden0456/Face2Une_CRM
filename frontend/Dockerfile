@@ -10,7 +10,7 @@ RUN apt-get update
 # Install curl cmd line tool
 RUN apt-get install curl -y
 # Fetch latest node v10.x from nodesource
-RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
+RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
 # Run setup script
 RUN bash nodesource_setup.sh
 # install nodejs and npm
