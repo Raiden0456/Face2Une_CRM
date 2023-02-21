@@ -21,7 +21,7 @@ RUN apt-get update && apt-get upgrade -y && \
 # Copy everything
 COPY . .
 # Do a clean install based on package-lock file
-RUN npm install
+RUN npm ci
 # Build frontend
 RUN npm run build
 # Expose port picked by Heroku. Otherwise we couldn't connect to the server running inside a docker container
