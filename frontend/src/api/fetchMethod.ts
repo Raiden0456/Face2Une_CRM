@@ -1,6 +1,6 @@
 // To Be Changed
 const buildUrl = (path: string) =>
-  process.env.NODE_ENV === 'production' ? `/api/${path}` : `http://localhost:3000/${path}`;
+  process.env.NODE_ENV === 'production' ? `/${path}` : `http://localhost:3000/${path}`;
 
 interface ISafeFetch {
   path: string;
