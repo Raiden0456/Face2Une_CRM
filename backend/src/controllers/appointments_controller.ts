@@ -94,7 +94,7 @@ export function deleteAppoint(id: number, res) {
     // else if (data == null) {
     //   res.status(404).json({
     //     success: false,
-    // /    message: `appointment with id ${id} not found.`
+    //    message: `appointment with id ${id} not found.`
     //   });
     // }
     else {
