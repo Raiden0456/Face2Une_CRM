@@ -5,7 +5,7 @@ import { NumberDropdown } from '../components/base/SelectField';
 import NavBar from '../components/Navbar';
 import { AppointmentService } from '../service/AppointmentService';
 import { TailSpinFixed } from '../components/TailSpin';
-import ProcedureBox from '../components/ProcedureBox';
+import ProductBox from '../components/ProductBox';
 import useForm from '../utils/useForm';
 import { Input, NumberInput } from '../components/base/Input';
 import { AuthService } from '../service/AuthService';
@@ -164,7 +164,7 @@ export const ConfirmationPackage = () => {
                   </div>
                 </form>
 
-                <ProcedureBox type="pack" procedure={buyPackage} />
+                <ProductBox type="pack" procedure={buyPackage} />
               </div>
 
               <div className={s.Confirmation__footer}>

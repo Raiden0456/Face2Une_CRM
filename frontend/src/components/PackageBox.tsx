@@ -8,7 +8,7 @@ import useForm from '../utils/useForm';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
 
-import s from './BookingBox.scss';
+import s from './ProcedureBox.scss';
 import { ModalStore } from '../store/Modal.store';
 
 interface IBookingBox {

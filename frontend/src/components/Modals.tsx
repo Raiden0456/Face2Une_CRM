@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { observer } from 'mobx-react';
 import { ModalStore } from '../store/Modal.store';
-import BookingBox from './BookingBox';
+import ProcedureBox from './ProcedureBox';
 import { StatusContainer } from './StatusContainer';
 import ConfirmDelete from './ConfirmDelete';
 
@@ -82,7 +82,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
       ariaHideApp={false}
     >
       {ModalStore.modalStatus.action === 'complete_booking' && (
-        <BookingBox procedure={ModalStore.modalStatus.procedure} type="modal" />
+        <ProcedureBox procedure={ModalStore.modalStatus.procedure} type="modal" />
       )}
       {(ModalStore.modalStatus.action === 'success' || ModalStore.modalStatus.action === 'error') && (
         <StatusContainer />
