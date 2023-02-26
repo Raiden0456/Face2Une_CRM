@@ -20,17 +20,21 @@ import dotenv from "dotenv";
 
 // middleware //
     // CORS with cookies //
+
     app.use(cors(
       {
-        origin: 'http://localhost:8000',
+        origin: process.env.CORS_ORIGIN,
         credentials: true
       }
     ));
-    app.use(
-      '/api-docs',
-      swaggerUi.serve, 
-      swaggerUi.setup(swaggerDocument)
-    );
+    if(process.env.NODE_ENV === 'development') {
+      swaggerDocument.host = process.env.SWAGGER_HOST;
+      app.use(
+        '/api-docs',
+        swaggerUi.serve, 
+        swaggerUi.setup(swaggerDocument)
+      );
+    }
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());

@@ -54,7 +54,7 @@ export async function updateAppoint(
   });
 }
 
-// Create an appointment
+// Create an appointment //
 export async function createAppoint(
   appoint: {
     procedure_id: number;
@@ -63,6 +63,7 @@ export async function createAppoint(
     client_id: number;
     total_price: number;
     saloon_id: number;
+    new_client: boolean;
   },
   res
 ) {
@@ -94,7 +95,7 @@ export function deleteAppoint(id: number, res) {
     // else if (data == null) {
     //   res.status(404).json({
     //     success: false,
-    //     message: `appointment with id ${id} not found.`
+    //    message: `appointment with id ${id} not found.`
     //   });
     // }
     else {
