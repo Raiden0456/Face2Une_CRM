@@ -8,11 +8,9 @@
     "node": "18.x"
   },
   "scripts": {
-    "build-local": "npx tsc",
-    "heroku-prebuild": "npx tsc",
+    "build": "npx tsc",
     "start": "node dist/src/index.js",
-    "dev": "nodemon src/index.ts",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "dev": "nodemon src/index.ts"
   },
   "repository": {
     "type": "git",

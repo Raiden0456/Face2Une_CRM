@@ -7,8 +7,10 @@ import swaggerDocument from '../swagger.json' assert { type: "json" };
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import path from 'path';
+import { fileURLToPath } from 'url';
 var app = express();
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Importing the routes //
 import ProceduresRouter from './routes/procedures_route.js';
 import UsersRouter from './routes/users_route.js';
