@@ -1,6 +1,6 @@
 // To Be Changed
 const buildUrl = (path: string) =>
-  process.env.NODE_ENV === 'production' ? `https://face2une-crm-testing-pr-x4qo7z.herokuapp.com/${path}` : `http://localhost:3000/${path}`;
+  process.env.NODE_ENV === 'production' ? `https://`+process.env.HEROKU_APP_NAME+`.herokuapp.com/${path}` : `http://localhost:3000/${path}`;
 
 interface ISafeFetch {
   path: string;

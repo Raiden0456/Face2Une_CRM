@@ -26,7 +26,7 @@ import dotenv from "dotenv";
 
     app.use(cors(
       {
-        origin: process.env.CORS_ORIGIN,
+        origin: process.env.CORS_ORIGIN || 'https://'+process.env.HEROKU_APP_NAME+'.herokuapp.com',
         credentials: true
       }
     ));
