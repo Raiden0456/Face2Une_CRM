@@ -10,6 +10,6 @@
     "scripts": {
       "heroku-prebuild": "cd backend && npx tsc",
       "start": "cd backend && node dist/src/index.js",
-      "heroku-postbuild": "cd .. && cd frontend && npm install && npm run build"
+      "heroku-postbuild": "cd frontend && npm install && npm run build"
     }
 }
