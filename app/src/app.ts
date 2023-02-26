@@ -36,7 +36,7 @@ import dotenv from "dotenv";
         swaggerUi.setup(swaggerDocument)
       );
     }
-    app.use(express.static(path.join(__dirname, 'build')));
+    app.use(express.static(path.join('client', 'build')));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
