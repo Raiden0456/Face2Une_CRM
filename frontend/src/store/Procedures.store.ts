@@ -7,6 +7,7 @@ export type ProcedureData = {
   price: number;
   duration: number;
   additional: number;
+  price_gbp?: number;
   saloon_ids?: number[];
 };
 

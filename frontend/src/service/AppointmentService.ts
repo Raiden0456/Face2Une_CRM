@@ -30,7 +30,7 @@ export class AppointmentService {
     }
   }
 
-  async createPack({ client_id, package_id, amount }: NewPack) {
+  async buyPack({ client_id, package_id, amount }: NewPack) {
     const r = await JSONFetch('buy_pack', {
       client_id,
       packages: [

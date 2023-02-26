@@ -16,6 +16,7 @@ import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
+import { saloon_ids } from './AddProductForms';
 
 import s from './ProcedureBox.scss';
 
@@ -33,6 +34,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
   const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 30), 16));
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [saloonIds, setSaloonIds] = useState<number[]>([]);
 
   // Add Passengers State
   const [procedures, setProcedures] = useState<any>(() => ProceduresStore.proceduresStatus.proceduresData || null); // TBD TS
@@ -44,7 +46,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
     setLoading(true);
 
     console.log('UPDATING DATA...', inputs);
-    const r = await proceduresService.updateProcedure(inputs);
+    const r = await proceduresService.updateProcedure({ ...inputs, saloon_ids: saloonIds });
     if (r.success) {
       console.log('Successfully Updated!');
       window.location.reload();
@@ -116,52 +118,88 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
       style={{ width: width }}
     >
       {isEditing ? (
-        <form onSubmit={handleSubmit} style={{ width: '50%' }}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {loading ? (
             <TailSpinFixed />
           ) : (
-            <>
-              <Input required label="Name:" type="text" name="name" value={inputs?.name} onChange={handleChange} />
-              <br />
-              <Input
-                required
-                min="0"
-                label="Duration:"
-                type="number"
-                name="duration"
-                value={inputs?.duration}
-                onChange={handleChange}
-              />
-              <br />
-              <Input
-                required
-                min="0"
-                label="Price:"
-                type="number"
-                name="price"
-                value={inputs?.price}
-                onChange={handleChange}
-              />
-              <br />
-              <TextArea
-                required
-                value={inputs?.description}
-                label="Description:"
-                name="description"
-                rows={5}
-                onChange={handleChange}
-              />
-              <br />
-              <div style={{ display: 'flex' }}>
-                <ButtonContained type="submit">Save</ButtonContained>
+            <div>
+              <div className={s.BookingBoxForm__inputs}>
+                <div>
+                  <Input required label="Name:" type="text" name="name" value={inputs?.name} onChange={handleChange} />
+                  <br />
+                  <Input
+                    required
+                    min="0"
+                    label="Price (EUR):"
+                    type="number"
+                    name="price"
+                    value={inputs?.price}
+                    onChange={handleChange}
+                  />
+                  <br />
+                  <Input
+                    required
+                    min="0"
+                    label="Price (GBP):"
+                    type="number"
+                    name="price_gbp"
+                    value={inputs?.price_gbp}
+                    onChange={handleChange}
+                  />
+                  <br />
+                  <Input
+                    required
+                    min="0"
+                    label="Duration:"
+                    type="number"
+                    name="duration"
+                    value={inputs?.duration}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div>
+                  <TextArea
+                    required
+                    value={inputs?.description}
+                    label="Description:"
+                    name="description"
+                    rows={5}
+                    onChange={handleChange}
+                  />
+                  <br />
+                  <div className={s.BookingBoxForm__saloons}>
+                    <h3>Available Saloons:</h3>
+                    {saloon_ids.map((saloon) => (
+                      <Checkbox
+                        style={{ marginRight: '0.5rem' }}
+                        onChange={(e: boolean) =>
+                          e === true
+                            ? setSaloonIds([...saloonIds, saloon.value])
+                            : setSaloonIds([...saloonIds].filter((el) => el !== saloon.value))
+                        }
+                        key={saloon.id}
+                      >
+                        {saloon.text}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', width: '100%' }}>
+                <ButtonContained width="200px" type="submit">
+                  Save
+                </ButtonContained>
                 <ButtonContained
-                  style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)', marginLeft: '15px', minWidth: '35%' }}
+                  style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)', marginLeft: '15px' }}
                   onClick={toggleEdit}
+                  width="200px"
                 >
                   Cancel
                 </ButtonContained>
               </div>
-            </>
+            </div>
           )}
         </form>
       ) : (
