@@ -1,0 +1,15 @@
+{
+    "name": "face2une_crm",
+    "version": "1.0.0",
+    "description": "CRM System for Face2Une beaty salon  https://www.face2une.com/",
+    "main": "index.js",
+    "type": "module",
+    "engines": {
+      "node": "18.x"
+    },
+    "scripts": {
+      "heroku-prebuild": "cd backend && npx tsc",
+      "start": "cd backend && node dist/src/index.js",
+      "heroku-postbuild": "cd .. && cd frontend && npm install && npm run build"
+    }
+}
