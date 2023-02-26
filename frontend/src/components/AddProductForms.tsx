@@ -17,7 +17,8 @@ export function AddProcedure() {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [saloonIds, setSaloonIds] = useState<number[]>([]);
   const [additional, setAdditional] = useState<0 | 1>(0);
-  const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
+  const [loader, setLoader] = useState<boolean>(false);
+  const { inputs, handleChange, clearForm, resetForm } = useForm({
     name: '',
     description: '',
     price: '',
@@ -27,22 +28,26 @@ export function AddProcedure() {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log('New product:', inputs, saloonIds, additional);
     const createProcedure = { ...inputs, additional, saloon_ids: saloonIds };
-    proceduresService.createProcedure(createProcedure).then((r) => console.log(r));
-    setShowForm(false);
+
+    proceduresService.createProcedure(createProcedure).then((r) => {
+      console.log(r);
+      setLoader(false);
+      setShowForm(false);
+    });
+
     window.location.reload();
   };
 
   return (
-    <div className={s.AddProcedureWrapper}>
+    <div className={s.AddProductWrapper}>
       <ButtonOutlined width="200px" onClick={() => setShowForm(!showForm)}>
-        Create Product
+        Create Procedure
       </ButtonOutlined>
       {showForm && (
-        <form id="addProcedure" onSubmit={handleSubmit} className={s.AddProcedureForm}>
-          <h2>Create a New Product</h2>
-          <div className={s.AddProcedureForm__inputs}>
+        <form id="addProcedure" onSubmit={handleSubmit} className={s.AddProductForm}>
+          <h2>Create a New Procedure</h2>
+          <div className={s.AddProductForm__inputs}>
             <div>
               <Input
                 required
@@ -102,7 +107,7 @@ export function AddProcedure() {
                 Additional Procedure
               </Checkbox>
             </div>
-            <div className={s.AddProcedureForm__saloons}>
+            <div className={s.AddProductForm__saloons}>
               <h3>Available Saloons:</h3>
               {saloon_ids.map((saloon) => (
                 <Checkbox
@@ -120,7 +125,84 @@ export function AddProcedure() {
             </div>
           </div>
 
-          <ButtonContained type="submit">Add Procedure</ButtonContained>
+          <ButtonContained disabled={loader} type="submit">
+            Add Procedure
+          </ButtonContained>
+        </form>
+      )}
+    </div>
+  );
+}
+
+export function AddPackage() {
+  const proceduresService = new ProceduresService();
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(false);
+  const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
+    name: '',
+    price: '',
+    amount: '',
+  });
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setLoader(true);
+
+    proceduresService.createPackage(inputs).then((r) => {
+      console.log(r);
+      setLoader(false);
+      setShowForm(false);
+    });
+
+    window.location.reload();
+  };
+
+  return (
+    <div className={s.AddProductWrapper}>
+      <ButtonOutlined width="200px" onClick={() => setShowForm(!showForm)}>
+        Create Package
+      </ButtonOutlined>
+      {showForm && (
+        <form id="addProcedure" onSubmit={handleSubmit} className={s.AddProductForm}>
+          <h2>Create a New Package</h2>
+          <div>
+            <Input
+              required
+              className={s.Input}
+              name="name"
+              label="Name:"
+              type="text"
+              value={inputs?.name}
+              onChange={handleChange}
+            />
+            <br />
+            <Input
+              required
+              className={s.Input}
+              name="price"
+              label="Price:"
+              type="number"
+              min="0"
+              value={inputs?.price}
+              onChange={handleChange}
+            />
+            <br />
+            <Input
+              required
+              className={s.Input}
+              name="amount"
+              label="Amount:"
+              type="number"
+              min="0"
+              value={inputs?.description}
+              onChange={handleChange}
+            />
+            <br />
+          </div>
+
+          <ButtonContained disabled={loader} type="submit">
+            Add Package
+          </ButtonContained>
         </form>
       )}
     </div>

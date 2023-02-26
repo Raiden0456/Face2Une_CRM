@@ -1,4 +1,4 @@
-.AddProcedureWrapper {
+.AddProductWrapper {
   width: 100%;
   display: flex;
   justify-content: flex-start;
@@ -11,7 +11,7 @@
   }
 }
 
-.AddProcedureForm {
+.AddProductForm {
   width: 100%;
 
   h2 {
@@ -19,7 +19,7 @@
   }
 }
 
-.AddProcedureForm__inputs {
+.AddProductForm__inputs {
   margin-bottom: 2rem;
   width: 100%;
   display: grid;
@@ -30,7 +30,7 @@
   border-radius: 16px;
 }
 
-.AddProcedureForm__saloons {
+.AddProductForm__saloons {
   h3 {
     margin-bottom: 1rem;
   }

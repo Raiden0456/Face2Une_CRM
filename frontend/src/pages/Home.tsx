@@ -9,7 +9,7 @@ import { TailSpinFixed } from '../components/TailSpin';
 import { ProceduresStore } from '../store/Procedures.store';
 import PackageBox from '../components/PackageBox';
 import useForm from '../utils/useForm';
-import { AddProcedure } from '../components/AddProductForms';
+import { AddPackage, AddProcedure } from '../components/AddProductForms';
 
 import s from './Home.scss';
 
@@ -94,6 +94,9 @@ export const Home = () => {
               {packages?.map((packageItem, i) => {
                 return <PackageBox key={i} packageItem={packageItem} />;
               })}
+
+              {/* Add new package */}
+              <AddPackage />
             </>
           )}
         </>
