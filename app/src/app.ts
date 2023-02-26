@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json' assert { type: "json" };
 import bodyParser from 'body-parser';
 import session from 'express-session';
+import path from 'path';
 var app = express();
 
 // Importing the routes //
@@ -35,6 +36,7 @@ import dotenv from "dotenv";
         swaggerUi.setup(swaggerDocument)
       );
     }
+    app.use(express.static(path.join(__dirname, 'build')));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
