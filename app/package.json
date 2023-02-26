@@ -8,7 +8,7 @@
     "node": "18.x"
   },
   "scripts": {
-    "build": "npx tsc",
+    "build-local": "npx tsc",
     "heroku-prebuild": "npx tsc",
     "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts",
