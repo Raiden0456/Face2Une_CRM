@@ -8,7 +8,7 @@
       "node": "18.x"
     },
     "scripts": {
-      "heroku-prebuild": "cd backend && npx tsc",
+      "heroku-prebuild": "cd backend && npm install && npx tsc",
       "start": "cd backend && node dist/src/index.js",
       "heroku-postbuild": "cd frontend && npm install && npm run build"
     }
