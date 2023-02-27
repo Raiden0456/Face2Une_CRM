@@ -6,8 +6,11 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json' assert { type: "json" };
 import bodyParser from 'body-parser';
 import session from 'express-session';
+import path from 'path';
+import { fileURLToPath } from 'url';
 var app = express();
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Importing the routes //
 import ProceduresRouter from './routes/procedures_route.js';
 import UsersRouter from './routes/users_route.js';
@@ -23,7 +26,7 @@ import dotenv from "dotenv";
 
     app.use(cors(
       {
-        origin: process.env.CORS_ORIGIN,
+        origin: process.env.CORS_ORIGIN || 'https://'+process.env.HEROKU_APP_NAME+'.herokuapp.com',
         credentials: true
       }
     ));
@@ -35,6 +38,7 @@ import dotenv from "dotenv";
         swaggerUi.setup(swaggerDocument)
       );
     }
+    app.use(express.static(path.join(__dirname, 'public', 'build')));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
