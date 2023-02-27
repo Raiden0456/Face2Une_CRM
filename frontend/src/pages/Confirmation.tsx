@@ -5,7 +5,7 @@ import NavBar from '../components/Navbar';
 import { ProceduresService } from '../service/ProceduresService';
 import { AppointmentService } from '../service/AppointmentService';
 import { TailSpinFixed } from '../components/TailSpin';
-import ProcedureBox from '../components/ProcedureBox';
+import ProductBox from '../components/ProductBox';
 import { allProcsIds } from '../utils/funcs';
 
 import s from './Confirmation.scss';
@@ -116,7 +116,7 @@ export const Confirmation = () => {
               <div className={s.Confirmation__content}>
                 <div style={{ margin: '0' }}>
                   <h4>Main Passanger:</h4>
-                  <ProcedureBox
+                  <ProductBox
                     procedure={procedure}
                     addProcedures={addProcedures.filter((el: any) => mainPassanger.opt_proc_id.includes(el.id))}
                   />
@@ -133,7 +133,7 @@ export const Confirmation = () => {
                           {addPassangers.map((addPassenger: any, i: number) => (
                             <div key={i}>
                               <p style={{ color: '#777' }}>Passenger {i + 1}</p>
-                              <ProcedureBox
+                              <ProductBox
                                 procedure={
                                   mainProcedures.filter((procedure: any) => addPassenger?.proc_id === procedure.id)[0]
                                 }
