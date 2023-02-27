@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import classNames from 'classnames';
 import Select from 'react-select';
@@ -12,6 +12,12 @@ interface SelectFieldProps {
   disabled?: boolean;
   defaultValue?: any;
   onChange?: (value: any) => void;
+}
+
+interface SelectProps {
+  options: any[];
+  value: any;
+  onChange: (value: any) => void;
 }
 
 interface SelectNumberProps {
@@ -57,6 +63,18 @@ export const SelectField = ({
     </div>
   );
 };
+
+export function Dropdown({ options, value, onChange }: SelectProps) {
+  return (
+    <select value={value} onChange={(event) => onChange(event.target.value)}>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.text}
+        </option>
+      ))}
+    </select>
+  );
+}
 
 export function NumberDropdown(props: SelectNumberProps) {
   const { min, max, value, onChange } = props;

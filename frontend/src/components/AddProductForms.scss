@@ -1,0 +1,44 @@
+.AddProductWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: start;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+
+  button {
+    margin-bottom: 1rem;
+  }
+}
+
+.AddProductForm {
+  width: 100%;
+
+  h2 {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.AddProductForm__inputs {
+  margin-bottom: 2rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  border: 1px solid #e2e2e2;
+  padding: 33px;
+  border-radius: 16px;
+}
+
+.AddProductForm__saloons {
+  h3 {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    margin-bottom: 0.5rem;
+  }
+
+  display: flex;
+  flex-direction: column;
+}
