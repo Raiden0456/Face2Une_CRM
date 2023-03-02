@@ -65,7 +65,7 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
   return (
     <div id={packageItem?.id.toString()} className={s.BookingBox} style={{ width: width }}>
       {isEditing ? (
-        <form onSubmit={handleSubmit} style={{ width: '50%' }}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {loading ? (
             <TailSpinFixed />
           ) : (

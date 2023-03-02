@@ -70,13 +70,16 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
             />
 
             <div className={s.SignIn__bottom}>
-              <ButtonContained disabled={loader} width="35%" type="submit" form="myform" value="Update">
+              <ButtonContained disabled={loader} width="200px" type="submit" form="myform" value="Update">
                 Sign In
               </ButtonContained>
-              <Link to="/auth/Signup" style={{ textDecoration: 'none', textAlign: 'center', width: '35%' }}>
+              <Link to="/auth/Signup" style={{ textDecoration: 'none', textAlign: 'center', width: '200px' }}>
                 <ButtonOutlined disabled={loader} width="100%" type="button">
                   Not registered yet?
                 </ButtonOutlined>
+              </Link>
+              <Link to="/" style={{ textAlign: 'center', width: '200px', color: '#8e8e93' }}>
+                Home page
               </Link>
             </div>
           </form>

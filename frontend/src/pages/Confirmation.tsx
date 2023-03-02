@@ -146,8 +146,8 @@ export const Confirmation = () => {
                         </>
                       )
                     ) : (
-                      <ButtonContained width="35%" onClick={handleAddPassengers}>
-                        + Load additional passengers +
+                      <ButtonContained width="200px" onClick={handleAddPassengers}>
+                        Load all passengers
                       </ButtonContained>
                     )}
                   </div>

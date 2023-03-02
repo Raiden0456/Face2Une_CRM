@@ -41,3 +41,9 @@
   border-radius: 16px;
 }
 
+@media screen and (max-width: 821px) {
+  .PackageInfoForm {
+    display: flex;
+    flex-direction: column;
+  }
+}
