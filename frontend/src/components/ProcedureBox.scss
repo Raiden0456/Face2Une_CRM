@@ -83,7 +83,7 @@
   width: 100%;
   justify-content: flex-end;
   button {
-    margin: 0 5px
+    margin-right: 0.75rem;
   }
 }
 
@@ -161,5 +161,21 @@
     margin-right: 15px;
     margin-bottom: 15px;
     width: 200px;
+  }
+}
+
+@media screen and (max-width: 821px) {
+  .BookingBox__header {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .BookingBox__header_btns {
+    justify-content: start;
+  }
+
+  .BookingBoxForm__inputs {
+    display: flex;
+    flex-direction: column;
   }
 }

@@ -42,3 +42,10 @@
   display: flex;
   flex-direction: column;
 }
+
+@media screen and (max-width: 821px) {
+  .AddProductForm__inputs {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -175,7 +175,7 @@ export function AddPackage() {
           {showForm && (
             <form id="addProcedure" onSubmit={handleSubmit} className={s.AddProductForm}>
               <h2>Create a New Package</h2>
-              <div>
+              <div className={s.AddProductForm__inputs} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
                 <Input
                   required
                   className={s.Input}
