@@ -929,14 +929,17 @@
               "type": "string"
             },
             "phone": {
-              "type": "string"
+              "type": "string",
+              "required": false
             },
             "email": {
-              "type": "string"
+              "type": "string",
+              "required": false
             },
             "user_id": {
               "type": "number",
-              "default": null
+              "default": null,
+              "required": false
             }
           }
         },

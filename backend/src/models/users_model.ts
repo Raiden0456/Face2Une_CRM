@@ -113,6 +113,11 @@ user.updateUserById = async (
 };
 
 user.deleteUserById = async (id: number, result) => {
+  await supabase
+    .from("clients")
+    .update({ user_id: null })
+    .eq("user_id", id);
+
   const { data, error } = await supabase.from("users").delete().eq("id", id);
   return result(error, data);
 };
