@@ -629,7 +629,7 @@
             "parameters": [
               {
               "in": "path",
-              "name": "clientsid",
+              "name": "clientid",
               "description": "id of client",
               "required": true,
               "schema": {

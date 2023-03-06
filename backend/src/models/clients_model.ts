@@ -201,6 +201,18 @@ client.updateClientById = async (
 };
 
 client.deleteClientById = async (id: number, result) => {
+  // if client is connected to user, block ability to delete //
+  let user = await supabase
+    .from("clients")
+    .select("user_id")
+    .eq("id", id)
+    .then((res) => res.data[0]);
+  if (typeof user != "undefined") {
+    if (user.user_id != null) {
+      let resp = { error: { message: "Delete impossible, client connected to existing user" }, data: [] };
+      return result(resp.error, resp.data);
+    }
+  }
   const { data, error } = await supabase.from("clients").delete().eq("id", id);
   return result(error, data);
 };
