@@ -15,7 +15,7 @@ import { filterObjectToArray } from '../utils/funcs';
 import s from './AddAppointment.scss';
 import { SelectField } from './base/SelectField';
 
-type AppointmentStatus = 'checkClient' | 'clientExists' | 'noClient';
+type AppointmentStatus = 'checkClient' | 'clientExists' | 'noClient' | 'success';
 
 export const AddAppointment = () => {
   const clientService = new ClientService();
@@ -32,7 +32,7 @@ export const AddAppointment = () => {
     ProceduresStore.proceduresStatus.proceduresData ? ProceduresStore.proceduresStatus.proceduresData[0].id : null,
   );
   const [procedures, setProcedures] = useState<any>(() => ProceduresStore.proceduresStatus.proceduresData || null);
-  const [pickedOptProcedures, setPickedOptProcedures] = useState<number[]>([]);
+  const [pickedOptProcedures, setPickedOptProcedures] = useState({});
   const [optProcedures, setOptProcedures] = useState<any>(
     () => ProceduresStore.proceduresStatus.optionalProceduresData || null,
   );
@@ -48,15 +48,8 @@ export const AddAppointment = () => {
 
   // Pick additional_proc
   const handleCheckBoxes = (e: any, id: number) => {
-    setPickedOptProcedures(filterObjectToArray({ ...pickedOptProcedures, [id]: e }));
+    setPickedOptProcedures({ ...pickedOptProcedures, [id]: e });
   };
-
-  // Update Procedure
-  /* function handleUpdate(updatedItem: any, index: number) {
-    let newItems = [...items];
-    newItems[index] = updatedItem;
-    setItems(newItems);
-  } */
 
   //Check if client exists
   const handleCheckClient = (e: React.SyntheticEvent) => {
@@ -107,7 +100,7 @@ export const AddAppointment = () => {
     appointmentService
       .createAppointment({
         proc_id: pickedProcedure as number,
-        opt_proc_id: pickedOptProcedures,
+        opt_proc_id: filterObjectToArray(pickedOptProcedures),
         date: startDate,
         client_id: clientID as number,
         saloon_id: saloonID as number,
@@ -116,7 +109,7 @@ export const AddAppointment = () => {
         setLoader(false);
         clearForm();
         if (r.success) {
-          setAppointmentStatus('clientExists');
+          setAppointmentStatus('success');
         }
       });
   };
@@ -256,85 +249,7 @@ export const AddAppointment = () => {
           </ButtonContained>
         </form>
       )}
-      {appointmentStatus === 'clientExists' && <div className={s.Success}>Success!</div>}
-      {/* <form id="addAppointment" onSubmit={handleSubmit} className={s.AddAppointmentForm}>
-        <h2>Create a New Appointment</h2>
-        <div>
-          <div className={s.AddAppointmentForm__inputs}>
-            <div>
-              <Input
-                required
-                className={s.Input}
-                name="firstName"
-                label="First Name:"
-                type="text"
-                value={inputs?.firstName}
-                onChange={handleChange}
-              />
-              <br />
-              <Input
-                required
-                className={s.Input}
-                name="lastName"
-                label="Last Name:"
-                type="text"
-                value={inputs?.lastName}
-                onChange={handleChange}
-              />
-              <br />
-              <Input
-                autoComplete="email"
-                required
-                label="Client's Email:"
-                type="email"
-                name="email"
-                value={inputs?.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Checkbox name="newClient" onChange={(e: boolean) => setNewClient(e)}>
-                New Client
-              </Checkbox>
-            </div>
-          </div>
-          <div className={s.AddAppointmentForm__saloons}>
-            <h3>Available Saloons:</h3>
-            {saloon_ids.map((saloon) => (
-              <Checkbox
-                style={{ marginRight: '0.5rem' }}
-                onChange={(e: boolean) =>
-                  e === true
-                    ? setSaloonIds([...saloonIds, saloon.value])
-                    : setSaloonIds([...saloonIds].filter((el) => el !== saloon.value))
-                }
-                key={saloon.id}
-              >
-                {saloon.text}
-              </Checkbox>
-            ))}
-          </div>
-          <div className={s.AddAppointmentForm__datepicker}>
-            <p style={{ marginBottom: '5px' }}>Choose Date:</p>
-            <DatePicker
-              selected={startDate}
-              onChange={(date: Date) => setStartDate(date)}
-              showTimeSelect
-              timeFormat="HH:mm"
-              minDate={new Date()}
-              minTime={setHours(setMinutes(new Date(), 0), 10)}
-              maxTime={setHours(setMinutes(new Date(), 0), 20)}
-              timeIntervals={5}
-              dateFormat="MMMM d, yyyy HH:mm"
-              inline
-            />
-          </div>
-        </div>
-
-        <ButtonContained disabled={loader} type="submit">
-          Add Appointment
-        </ButtonContained>
-      </form> */}
+      {appointmentStatus === 'success' && <div className={s.Success}>Success!</div>}
     </div>
   );
 };
