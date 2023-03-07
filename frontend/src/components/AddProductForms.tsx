@@ -5,13 +5,9 @@ import useForm from '../utils/useForm';
 import { ButtonContained, ButtonOutlined } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
 import { AuthStore } from '../store/Auth.store';
+import { saloon_ids } from '../utils/staticData';
 
 import s from './AddProductForms.scss';
-
-export const saloon_ids = [
-  { id: 1, text: '46 Rue De Richelieu', value: 1 },
-  { id: 2, text: '61 Rue de Caumartin', value: 2 },
-];
 
 export function AddProcedure() {
   const proceduresService = new ProceduresService();

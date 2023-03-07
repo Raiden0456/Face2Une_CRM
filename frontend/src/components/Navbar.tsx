@@ -54,9 +54,14 @@ const NavBar = observer(() => {
         </div>
         <div className={s.Navbar__navigation}>
           {AuthStore.rights === 'admin' && (
-            <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none' }}>
-              <ButtonOutlined>Clients</ButtonOutlined>
-            </Link>
+            <>
+              <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none', marginRight: "1rem" }}>
+                <ButtonOutlined>Clients</ButtonOutlined>
+              </Link>
+              <Link to="/calendar" style={{ textAlign: 'center', textDecoration: 'none' }}>
+                <ButtonOutlined>Calendar</ButtonOutlined>
+              </Link>
+            </>
           )}
         </div>
       </div>
