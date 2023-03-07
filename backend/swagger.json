@@ -518,7 +518,7 @@
               },
               {
                 "in": "query",
-                "name": "filter_column_eq",
+                "name": "column",
                 "description": "'equal' filter column name(id, full_name, phone, email, user_id))",
                 "required": false,
                 "default": "",
@@ -528,7 +528,7 @@
               },
               {
                 "in": "query",
-                "name": "filter_column_eq_value",
+                "name": "value",
                 "description": "value of 'equal' filter column",
                 "required": false,
                 "default": "",
