@@ -6,6 +6,7 @@ interface NewAppointment {
   opt_proc_id: number[];
   date: Date;
   client_id: number;
+  saloon_id?: number;
 }
 
 interface NewPack {
@@ -15,12 +16,13 @@ interface NewPack {
 }
 
 export class AppointmentService {
-  async createAppointment({ proc_id, opt_proc_id, date, client_id }: NewAppointment) {
+  async createAppointment({ proc_id, opt_proc_id, date, client_id, saloon_id = 1 }: NewAppointment) {
     const r = await JSONFetch('create_appoint', {
       procedure_id: proc_id,
       additional_ids: opt_proc_id,
       reservation_date_time: date,
       client_id,
+      saloon_id,
     });
 
     if (r?.success) {
