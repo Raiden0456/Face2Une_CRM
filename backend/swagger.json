@@ -946,12 +946,14 @@
         "Appointment": {
           "properties": {
             "procedure_id": {
-              "type": "integer"
+              "type": "integer",
+              "default": "1"
             },
             "additional_ids": {
               "type": "array",
               "items": {
                 "type": "integer",
+                "default": 7,
                 "uniqueItems": true
               }
             },
