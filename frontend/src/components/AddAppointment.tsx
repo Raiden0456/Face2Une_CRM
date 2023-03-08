@@ -139,7 +139,9 @@ export const AddAppointment = () => {
       {appointmentStatus === 'noClient' && (
         <form id="checkClient" onSubmit={handleCreateClient} className={s.AddAppointmentForm}>
           <div>
-            <h2>Create a new client</h2>
+            <h2>Client not found :(</h2>
+            <h3>Create a new client:</h3>
+
             <Input
               required
               className={s.Input}
@@ -191,9 +193,15 @@ export const AddAppointment = () => {
         </form>
       )}
       {appointmentStatus === 'clientExists' && (
-        <form id="checkClient" onSubmit={handleCreateAppoint} className={s.AddAppointmentForm}>
+        <form
+          id="checkClient"
+          onSubmit={handleCreateAppoint}
+          className={s.AddAppointmentForm}
+          style={{ height: 'auto' }}
+        >
           <div>
-            <h2>Create an appointment</h2>
+            <h2>Client found!</h2>
+            <h3>Create an appointment:</h3>
 
             <div className={s.AddAppointmentForm_procs}>
               <SelectField
@@ -249,7 +257,11 @@ export const AddAppointment = () => {
           </ButtonContained>
         </form>
       )}
-      {appointmentStatus === 'success' && <div className={s.Success}>Success!</div>}
+      {appointmentStatus === 'success' && (
+        <div className={s.Success}>
+          <h2>Success!</h2>
+        </div>
+      )}
     </div>
   );
 };

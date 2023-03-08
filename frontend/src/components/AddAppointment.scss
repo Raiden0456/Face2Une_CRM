@@ -6,22 +6,23 @@
   align-items: flex-start;
   min-width: 350px;
   max-width: 100%;
-  height: 615px;
+  height: 100%;
 }
 
 .AddAppointmentForm {
   width: 100%;
-  height: 100%;
+  height: 525px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   h2 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    color: #91a0db;
   }
 
-  button {
-    margin-bottom: 1rem
+  h3 {
+    margin-bottom: 1rem;
   }
 }
 
@@ -114,10 +115,14 @@
 
 .Success {
   width: 100%;
-  height: 100%;
+  height: 225px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  h2 {
+    color: #91a0db;
+  }
 }
 
 @media screen and (max-width: 821px) {
