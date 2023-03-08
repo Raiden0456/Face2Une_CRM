@@ -1,28 +1,15 @@
-.Clients {
+.AddAppointmentBtn_wrapper{
   width: 100%;
-}
-
-.Clients__header {
-  margin-bottom: 1rem;
-
-  h2 {
-    font-weight: 700;
-    text-transform: uppercase;
-    text-align: center;
-  }
-}
-
-.Clients__table_searchFieldWrapper {
   display: flex;
-  align-items: flex-end;
-
-  button {
-    margin-left: 1rem;
-  }
+  justify-content: flex-start;
+  margin-bottom: 1.75rem;
 }
 
-.Clients__table {
-  border: 2px solid #91a0db;
-  border-radius: 16px;
-  margin: 2rem 0;
+.css-96e9fn {
+  width: 100%;
+  z-index: 0;
+
+  .css-12aktbw {
+    margin-top: 1rem;
+  }
 }
