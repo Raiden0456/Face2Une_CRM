@@ -16,7 +16,10 @@ interface NewPack {
 }
 
 export class AppointmentService {
-  async createAppointment({ proc_id, opt_proc_id, date, client_id, saloon_id = 1 }: NewAppointment) {
+  async createAppointment(
+    { proc_id, opt_proc_id, date, client_id, saloon_id = 1 }: NewAppointment,
+    redirectUrl = '/confirmation',
+  ) {
     const r = await JSONFetch('create_appoint', {
       procedure_id: proc_id,
       additional_ids: opt_proc_id,
@@ -28,7 +31,17 @@ export class AppointmentService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl }); // TBD Set Fallback
+    }
+  }
+
+  async getAppointments() {
+    const r = await JSONFetchGet('appoint');
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' }); // TBD Set Fallback
     }
   }
 

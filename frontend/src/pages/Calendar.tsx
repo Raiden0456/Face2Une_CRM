@@ -4,11 +4,25 @@ import { Container } from '../components/base/Container';
 import { ModalStore } from '../store/Modal.store';
 import NavBar from '../components/Navbar';
 import { Scheduler } from '@aldabil/react-scheduler';
+import { AppointmentService } from '../service/AppointmentService';
+import { renameArrayObjects } from '../utils/funcs';
 
 import './Calendar.scss';
 
 export const Calendar = () => {
+  const appointmentService = new AppointmentService();
   const [loading, setLoading] = useState<boolean>(false);
+  const [appointments, setAppointments] = useState<any[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    appointmentService.getAppointments().then((r: any) => {
+      setAppointments(renameArrayObjects(r.data, { id: 'event_id', reserved_on: 'start' }));
+      setLoading(false);
+    });
+  }, []);
+
+  console.log(appointments);
 
   return (
     <Container
@@ -42,20 +56,7 @@ export const Calendar = () => {
               console.log(id);
               return Promise.resolve(id);
             }}
-            events={[
-              {
-                event_id: 1,
-                title: 'Event 1',
-                start: new Date('2023/3/10 09:30'),
-                end: new Date('2023/3/10 10:30'),
-              },
-              {
-                event_id: 2,
-                title: 'Event 2',
-                start: new Date('2023/3/8 09:30'),
-                end: new Date('2023/3/8 10:30'),
-              },
-            ]}
+            events={appointments}
           />
         </>
       }

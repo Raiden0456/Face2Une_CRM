@@ -98,13 +98,16 @@ export const AddAppointment = () => {
     setLoader(true);
 
     appointmentService
-      .createAppointment({
-        proc_id: pickedProcedure as number,
-        opt_proc_id: filterObjectToArray(pickedOptProcedures),
-        date: startDate,
-        client_id: clientID as number,
-        saloon_id: saloonID as number,
-      })
+      .createAppointment(
+        {
+          proc_id: pickedProcedure as number,
+          opt_proc_id: filterObjectToArray(pickedOptProcedures),
+          date: startDate,
+          client_id: clientID as number,
+          saloon_id: saloonID as number,
+        },
+        '/calendar',
+      )
       .then((r) => {
         setLoader(false);
         clearForm();

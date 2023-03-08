@@ -33,3 +33,15 @@ export function allProcsIds(mainPassanger, addPassengers = null) {
 
   return mainPassangerIds;
 }
+
+export function renameArrayObjects(arr, obj) {
+  let result = arr.map((elem) => {
+    let newElem = {};
+    for (let key in elem) {
+      let newKey = obj[key] || key;
+      newElem[newKey] = elem[key];
+    }
+    return newElem;
+  });
+  return result;
+}
