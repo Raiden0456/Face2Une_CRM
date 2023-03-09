@@ -22,6 +22,30 @@ export const Calendar = () => {
     });
   }, []);
 
+  // Fetch and Store Main & Optional Procedures [IF EMPTY]
+  // TBD + Fix Bug with routing
+  /* useEffect(() => {
+    setLoading(true);
+    if()
+    proceduresService.getOptionalProcedures().then((optionalProcedures) => {
+      if (optionalProcedures?.success) {
+        ProceduresStore.setProceduresStatus({
+          ...ProceduresStore.proceduresStatus,
+          optionalProceduresData: optionalProcedures.data,
+        });
+      }
+
+      proceduresService.getProcedures().then((procedures) => {
+        if (procedures?.success) {
+          ProceduresStore.setProceduresStatus({
+            ...ProceduresStore.proceduresStatus,
+            proceduresData: procedures.data,
+          });
+        }
+      });
+    });
+  }, []); */
+
   console.log(appointments);
 
   return (
