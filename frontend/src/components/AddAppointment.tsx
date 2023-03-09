@@ -11,9 +11,9 @@ import DatePicker from 'react-datepicker';
 import { ClientService } from '../service/ClientService';
 import { AppointmentService } from '../service/AppointmentService';
 import { filterObjectToArray } from '../utils/funcs';
+import { SelectField } from './base/SelectField';
 
 import s from './AddAppointment.scss';
-import { SelectField } from './base/SelectField';
 
 type AppointmentStatus = 'checkClient' | 'clientExists' | 'noClient' | 'success';
 
@@ -26,7 +26,7 @@ export const AddAppointment = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [saloonID, setSaloonID] = useState<number | null>(null);
   const [phoneError, setPhoneError] = useState<boolean>(false);
-  const [saloonIds, setSaloonIds] = useState<number[]>([]);
+  const [clientInfo, setClientInfo] = useState<any>(null);
   const [clientID, setClientID] = useState<number | null>(null);
   const [pickedProcedure, setPickedProcedure] = useState(() =>
     ProceduresStore.proceduresStatus.proceduresData ? ProceduresStore.proceduresStatus.proceduresData[0].id : null,
@@ -60,11 +60,13 @@ export const AddAppointment = () => {
       setLoader(false);
       clearForm();
       if (r.data) {
-        const { id } = r.data[0];
+        const { id, full_name, phone } = r.data[0];
         setClientID(id);
-        setAppointmentStatus('clientExists');
+        setClientInfo({ full_name, phone });
+        /* setAppointmentStatus('clientExists'); */
       } else {
-        setAppointmentStatus('noClient');
+        /* setAppointmentStatus('noClient'); */
+        setClientInfo('not_found');
       }
     });
   };
@@ -123,6 +125,12 @@ export const AddAppointment = () => {
         <form id="checkClient" onSubmit={handleCheckClient} className={s.AddAppointmentForm}>
           <div>
             <h2>Find a client</h2>
+            {clientInfo && clientInfo !== 'not_found' && (
+              <h3>
+                Found a client: <span>{clientInfo?.full_name}</span> with phone number <span>{clientInfo?.phone}</span>
+              </h3>
+            )}
+            {clientInfo === 'not_found' && <h3>Client not found :(</h3>}
             <Input
               autoComplete="email"
               required
@@ -134,16 +142,27 @@ export const AddAppointment = () => {
             />
           </div>
 
-          <ButtonContained disabled={loader} type="submit">
-            Submit
-          </ButtonContained>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {clientInfo && clientInfo !== 'not_found' && (
+              <ButtonContained width="100%" disabled={loader} onClick={() => setAppointmentStatus('clientExists')}>
+                Create Appointment
+              </ButtonContained>
+            )}
+            {clientInfo === 'not_found' && (
+              <ButtonContained width="100%" disabled={loader} onClick={() => setAppointmentStatus('noClient')}>
+                Create a Client
+              </ButtonContained>
+            )}
+            <ButtonContained width="100%" style={{ marginTop: '0.75rem' }} disabled={loader} type="submit">
+              Submit
+            </ButtonContained>
+          </div>
         </form>
       )}
       {appointmentStatus === 'noClient' && (
         <form id="checkClient" onSubmit={handleCreateClient} className={s.AddAppointmentForm}>
           <div>
-            <h2>Client not found :(</h2>
-            <h3>Create a new client:</h3>
+            <h2>Create a new client:</h2>
 
             <Input
               required
@@ -203,8 +222,7 @@ export const AddAppointment = () => {
           style={{ height: 'auto' }}
         >
           <div>
-            <h2>Client found!</h2>
-            <h3>Create an appointment:</h3>
+            <h2>Create an appointment:</h2>
 
             <div className={s.AddAppointmentForm_procs}>
               <SelectField
