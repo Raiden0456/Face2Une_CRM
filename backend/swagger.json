@@ -349,6 +349,117 @@
             }
           }
         },
+        "/promo": {
+          "get": {
+            "tags": ["Promocodes"],
+            "summary": "Get all promocodes in db",
+            "responses": {
+              "200": {
+                "description": "Returns all promocodes in database in JSON format"
+              }
+            }
+          }
+        },
+        "/promo/{promoid}": {
+          "get": {
+            "tags": ["Promocodes"],
+            "summary": "Get a single promocode by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "promoid",
+              "description": "id of promocode",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single promocode in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_promo": {
+          "post": {
+            "tags": ["Promocodes"],
+            "summary": "Create new promocode",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of promocode",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Promocode"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a package in database using JSON format"
+              }
+            }
+          }
+        },
+        "/update_promo": {
+          "post": {
+            "tags": ["Promocodes"],
+            "summary": "Update promocode by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of promocode",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Promocode"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a promocode in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_promo/{promoid}": {
+          "delete": {
+            "tags": ["Promocodes"],
+            "summary": "Delete promocode by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "promoid",
+              "description": "id of promocode",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a promocode in database by id"
+              }
+            }
+          }
+        },
         "/users": {
           "get": {
             "tags": ["Users"],
@@ -928,6 +1039,30 @@
             },
             "amount": {
               "type": "number"
+            }
+          }
+        },
+        "Promocode": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "code": {
+              "type": "string"
+            },
+            "procedure_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "uniqueItems": true
+              }
+            },
+            "discount": {
+              "type": "number"
+            },
+            "expiry_date": {
+              "type": "string",
+              "format": "date-time"
             }
           }
         },

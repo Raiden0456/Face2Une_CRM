@@ -18,6 +18,7 @@ import AppointmentsRouter from './routes/appointments_route.js';
 import ClientsRouter from './routes/clients_route.js';
 import AuthRouter from './routes/auth_route.js';
 import PackagesRouter from './routes/packages_route.js';
+import PromocodesRouter from './routes/promocodes_route.js';
 import dotenv from "dotenv";
 ///////////////////////////
 
@@ -34,10 +35,10 @@ import dotenv from "dotenv";
       swaggerDocument.host = process.env.SWAGGER_HOST;
       app.use(
         '/api-docs',
-        swaggerUi.serve, 
+        swaggerUi.serve,
         swaggerUi.setup(swaggerDocument)
       );
-      
+
     }
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,7 +51,7 @@ import dotenv from "dotenv";
       cookie: { maxAge: oneYear },
       resave: true
     }))
-    
+
 
 ////////////////
 
@@ -71,6 +72,7 @@ if(process.env.NODE_ENV === 'production') {
 }
 /////////////////////
 
+app.use('/', PromocodesRouter);
 /////////////
 
 export default app;
