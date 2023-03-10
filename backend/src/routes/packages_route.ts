@@ -2,7 +2,7 @@ import { Router } from 'express';
 var router = Router();
 import * as pack from '../controllers/packages_controller.js';
 
-//Routing for the procedures//
+//Routing for the packages//
 
 router.get('/pack', function(req, res){
     pack.loadPack(req, res);

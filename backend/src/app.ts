@@ -18,6 +18,7 @@ import AppointmentsRouter from './routes/appointments_route.js';
 import ClientsRouter from './routes/clients_route.js';
 import AuthRouter from './routes/auth_route.js';
 import PackagesRouter from './routes/packages_route.js';
+import PromocodesRouter from './routes/promocodes_route.js';
 import dotenv from "dotenv";
 ///////////////////////////
 
@@ -60,6 +61,7 @@ app.use('/', AppointmentsRouter);
 app.use('/', ClientsRouter);
 app.use('/', AuthRouter);
 app.use('/', PackagesRouter);
+app.use('/', PromocodesRouter);
 /////////////
 
 export default app;
