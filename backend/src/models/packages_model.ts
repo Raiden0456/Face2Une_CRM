@@ -7,6 +7,7 @@ import voucher_codes from "voucher-code-generator";
 const package_p = function (package_p) {
   this.id = package_p.id;
   this.name = package_p.name;
+  this.procedure_ids = package_p.procedure_ids;
   this.price = package_p.price;
   this.amount = package_p.amount;
 };
@@ -30,6 +31,7 @@ package_p.getPackById = async (id: number, result) => {
 package_p.createPack = async (
   proc: {
     name: string;
+    procedure_ids: [number];
     price: number;
     amount: number;
   },
@@ -40,6 +42,7 @@ package_p.createPack = async (
     .insert([
       {
         name: proc.name,
+        procedure_ids: proc.procedure_ids,
         price: proc.price,
         amount: proc.amount,
       },
@@ -52,6 +55,7 @@ package_p.updatePackById = async (
   proc: {
     id: number;
     name: string;
+    procedure_ids: [number];
     price: number;
     amount: number;
   },
@@ -62,6 +66,7 @@ package_p.updatePackById = async (
     .update([
       {
         name: proc.name,
+        procedure_ids: proc.procedure_ids,
         price: proc.price,
         amount: proc.amount,
       },

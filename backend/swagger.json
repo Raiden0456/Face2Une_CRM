@@ -887,6 +887,13 @@
             "name": {
               "type": "string"
             },
+            "procedure_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "uniqueItems": true
+              }
+            },
             "price": {
               "type": "number"
             },
