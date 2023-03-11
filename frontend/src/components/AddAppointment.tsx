@@ -65,8 +65,19 @@ export const AddAppointment = () => {
         setClientInfo({ full_name, phone });
         /* setAppointmentStatus('clientExists'); */
       } else {
-        /* setAppointmentStatus('noClient'); */
-        setClientInfo('not_found');
+        clientService.getClient_n(inputs.phone).then((r) => {
+          setLoader(false);
+          clearForm();
+          if (r.data) {
+            const { id, full_name, phone } = r.data[0];
+            setClientID(id);
+            setClientInfo({ full_name, phone });
+            /* setAppointmentStatus('clientExists'); */
+          } else {
+            /* setAppointmentStatus('noClient'); */
+            setClientInfo('not_found');
+          }
+        });
       }
     });
   };
@@ -133,12 +144,25 @@ export const AddAppointment = () => {
             {clientInfo === 'not_found' && <h3>Client not found :(</h3>}
             <Input
               autoComplete="email"
-              required
               label="Client's Email:"
               type="email"
+              className={s.Input}
               name="email"
               value={inputs?.email}
               onChange={handleChange}
+            />
+            <NumberInput
+              error={phoneError}
+              helperText={phoneError && 'Your phone number is not valid!'}
+              numberFormat="+# (###) ###-##-##"
+              type="tel"
+              className={s.Input}
+              onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
+              label="Phone:"
+              name="phone"
+              defaultValue={inputs?.phone}
+              value={inputs?.phone}
+              onChange={(e) => handleNumberChange(e, 'phone')}
             />
           </div>
 
@@ -193,6 +217,7 @@ export const AddAppointment = () => {
               onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
               label="Phone:"
               name="phone"
+              required
               defaultValue={inputs?.phone}
               value={inputs?.phone}
               onChange={(e) => handleNumberChange(e, 'phone')}
@@ -200,7 +225,6 @@ export const AddAppointment = () => {
             <br />
             <Input
               autoComplete="email"
-              required
               label="Email:"
               type="email"
               name="email"
@@ -250,6 +274,7 @@ export const AddAppointment = () => {
                   style={{ marginRight: '0.5rem' }}
                   onChange={(e) => setSaloonID(Number(e))}
                   key={saloon.id}
+                  required
                 >
                   {saloon.text}
                 </Radio>

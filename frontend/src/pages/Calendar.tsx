@@ -37,7 +37,7 @@ export const Calendar = () => {
         const result = renameAndDeleteArrayObjects(r.data, {
           id: 'event_id',
           reservation_date_time: 'start',
-          date_end: 'end',
+          reservation_date_time_end: 'end',
           procedure_name: 'title',
         });
 

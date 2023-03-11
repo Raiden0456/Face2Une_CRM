@@ -129,6 +129,10 @@
   }
 }
 
+.InputWrapper {
+  margin-bottom: 1rem;
+}
+
 @media screen and (max-width: 821px) {
   .AddAppointmentForm__inputs {
     display: flex;
