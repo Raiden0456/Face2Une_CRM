@@ -46,7 +46,7 @@ export function updatePromo(
     id: number;
     name: string;
     code: string;
-    procedure_ids: [number];
+    procedure_ids: number[];
     discount: number;
     expiry_date: Date;
   },
@@ -74,7 +74,7 @@ export function createPromo(
   promo: {
     name: string;
     code: string;
-    procedure_ids: [number];
+    procedure_ids: number[];
     discount: number;
     expiry_date: Date;
   },

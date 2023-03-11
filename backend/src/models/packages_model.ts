@@ -31,7 +31,7 @@ package_p.getPackById = async (id: number, result) => {
 package_p.createPack = async (
   proc: {
     name: string;
-    procedure_id: number;
+    procedure_ids: number[];
     price: number;
     amount: number;
   },
@@ -55,7 +55,7 @@ package_p.updatePackById = async (
   proc: {
     id: number;
     name: string;
-    procedure_id: number;
+    procedure_ids: number[];
     price: number;
     amount: number;
   },
@@ -170,7 +170,7 @@ package_p.usePackage = async (
       if (error) {
         return result(error, null);
       }
-      
+
       return result({message: "Ivalid or expired promocode"}, null);
     }
   }
