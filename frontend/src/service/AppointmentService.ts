@@ -36,7 +36,7 @@ export class AppointmentService {
   }
 
   async getAppointments() {
-    const r = await JSONFetchGet('appoint');
+    const r = await JSONFetchGet('appoint?details=true');
 
     if (r?.success) {
       return r;

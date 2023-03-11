@@ -17,7 +17,7 @@ export const Calendar = () => {
   useEffect(() => {
     setLoading(true);
     appointmentService.getAppointments().then((r: any) => {
-      setAppointments(renameArrayObjects(r.data, { id: 'event_id', reserved_on: 'start' }));
+      setAppointments(renameArrayObjects(r.data, { id: 'event_id', reserved_on: 'start', date_end: 'end' }));
       setLoading(false);
     });
   }, []);
