@@ -5,22 +5,48 @@ import { ModalStore } from '../store/Modal.store';
 import NavBar from '../components/Navbar';
 import { Scheduler } from '@aldabil/react-scheduler';
 import { AppointmentService } from '../service/AppointmentService';
-import { renameArrayObjects } from '../utils/funcs';
+import { renameAndDeleteArrayObjects } from '../utils/funcs';
+import { Button } from '@mui/material';
 
 import './Calendar.scss';
+
+const CalendarAlert = () => (
+  <Button
+    style={{
+      height: '100%',
+      background: 'transparent',
+      cursor: 'pointer',
+    }}
+    onClick={() => {
+      return alert('Use "Add Appointment Manually" button');
+    }}
+  ></Button>
+);
 
 export const Calendar = () => {
   const appointmentService = new AppointmentService();
   const [loading, setLoading] = useState<boolean>(false);
-  const [appointments, setAppointments] = useState<any[]>([]);
 
-  useEffect(() => {
+  function handleRemoteEvents() {
     setLoading(true);
-    appointmentService.getAppointments().then((r: any) => {
-      setAppointments(renameArrayObjects(r.data, { id: 'event_id', reserved_on: 'start', date_end: 'end' }));
-      setLoading(false);
+    return new Promise<void>((res) => {
+      appointmentService.getAppointments().then((r: any) => {
+        console.log(r.data);
+        setLoading(false);
+
+        const result = renameAndDeleteArrayObjects(r.data, {
+          id: 'event_id',
+          reservation_date_time: 'start',
+          date_end: 'end',
+          procedure_name: 'title',
+        });
+
+        console.log(result);
+
+        res(result);
+      });
     });
-  }, []);
+  }
 
   // Fetch and Store Main & Optional Procedures [IF EMPTY]
   // TBD + Fix Bug with routing
@@ -46,8 +72,6 @@ export const Calendar = () => {
     });
   }, []); */
 
-  console.log(appointments);
-
   return (
     <Container
       header={<NavBar />}
@@ -69,18 +93,31 @@ export const Calendar = () => {
           </div>
 
           <Scheduler
-            view="month"
+            view="week"
             hourFormat="24"
+            editable={false}
+            deletable={false}
+            draggable={false}
             loading={loading}
-            onConfirm={(e, action) => {
-              console.log(e, action);
-              return Promise.resolve(e);
+            getRemoteEvents={handleRemoteEvents}
+            day={null}
+            month={{
+              weekDays: [0, 1, 2, 3, 4, 5, 6],
+              weekStartOn: 1,
+              startHour: 10,
+              endHour: 20,
+              navigation: true,
+              disableGoToDay: false,
+              cellRenderer: ({ height, start, onClick, ...props }) => <CalendarAlert />,
             }}
-            onDelete={(id) => {
-              console.log(id);
-              return Promise.resolve(id);
+            week={{
+              weekDays: [0, 1, 2, 3, 4, 5, 6],
+              weekStartOn: 1,
+              startHour: 10,
+              endHour: 20,
+              step: 60,
+              cellRenderer: ({ height, start, onClick, ...props }) => <CalendarAlert />,
             }}
-            events={appointments}
           />
         </>
       }

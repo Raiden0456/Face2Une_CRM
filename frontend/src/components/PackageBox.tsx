@@ -4,12 +4,14 @@ import { ProceduresService } from '../service/ProceduresService';
 import { Input } from './base/Input';
 import { TailSpinFixed } from './TailSpin';
 import useForm from '../utils/useForm';
-
+import { ModalStore } from '../store/Modal.store';
+import { filterObjectToArray } from '../utils/funcs';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
+import { Checkbox } from './base/Checkbox';
+import { ProceduresStore } from '../store/Procedures.store';
 
 import s from './ProcedureBox.scss';
-import { ModalStore } from '../store/Modal.store';
 
 interface IBookingBox {
   width?: string;
@@ -20,6 +22,7 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
   const navigate = useNavigate();
   const proceduresService = new ProceduresService();
   const { inputs, handleChange, clearForm, resetForm } = useForm(packageItem);
+  const [procedures, setProcedures] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +31,7 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
     event.preventDefault();
     setLoading(true);
 
-    const r = await proceduresService.updatePackage(inputs);
+    const r = await proceduresService.updatePackage({ ...inputs, procedure_ids: filterObjectToArray(procedures) });
     if (r.success) {
       console.log('Successfully Updated!');
       window.location.reload();
@@ -62,6 +65,10 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
     ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
   };
 
+  const handleProcCheckBoxes = (e: any, id: number) => {
+    setProcedures({ ...procedures, [id]: e });
+  };
+
   return (
     <div id={packageItem?.id.toString()} className={s.BookingBox} style={{ width: width }}>
       {isEditing ? (
@@ -92,6 +99,16 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
                 onChange={handleChange}
               />
               <br />
+              <div className={s.BookingBox__optionalProcedures}>
+                <h4>Select Procedure(s):</h4>
+                <div>
+                  {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
+                    <Checkbox onChange={(e) => handleProcCheckBoxes(e, proc.id)} key={proc.id}>
+                      {proc.name}
+                    </Checkbox>
+                  ))}
+                </div>
+              </div>
               <div style={{ display: 'flex' }}>
                 <ButtonContained type="submit">Save</ButtonContained>
                 <ButtonContained

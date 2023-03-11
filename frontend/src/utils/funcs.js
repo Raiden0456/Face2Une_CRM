@@ -34,12 +34,28 @@ export function allProcsIds(mainPassanger, addPassengers = null) {
   return mainPassangerIds;
 }
 
-export function renameArrayObjects(arr, obj) {
+function roundToNearestMinute(date) {
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  date.setMinutes(Math.round(date.getMinutes()));
+  return date;
+}
+
+export function renameAndDeleteArrayObjects(arr, obj) {
   let result = arr.map((elem) => {
     let newElem = {};
     for (let key in elem) {
-      let newKey = obj[key] || key;
-      newElem[newKey] = elem[key];
+      let newKey = obj[key];
+
+      if (newKey) {
+        newElem[newKey] = elem[key];
+
+        if (newKey === 'start' || newKey === 'end') {
+          newElem[newKey] = roundToNearestMinute(new Date(elem[key]));
+        }
+      }
+
+      newElem['color'] = '#91a0db';
     }
     return newElem;
   });
