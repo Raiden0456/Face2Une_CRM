@@ -12,6 +12,7 @@ import { Home } from './pages/Home';
 import { UserInfo } from './pages/UserInfo';
 import { Confirmation } from './pages/Confirmation';
 import { Clients } from './pages/Clients';
+import { Promocodes } from './pages/Promocodes';
 import { ConfirmationPackage } from './pages/ConfirmationPackage';
 //
 require('./App.scss');
@@ -54,6 +55,7 @@ const App = observer(() => {
             <Route path="/confirmation-package" element={<ConfirmationPackage />} />
             <Route element={<PrivateRouteAdmin />}>
               <Route path="/clients" element={<Clients />} />
+              <Route path="/promocodes" element={<Promocodes />} />
             </Route>
           </Routes>
         </MainLayout>

@@ -31,7 +31,7 @@ package_p.getPackById = async (id: number, result) => {
 package_p.createPack = async (
   proc: {
     name: string;
-    procedure_ids: [number];
+    procedure_ids: number[];
     price: number;
     amount: number;
   },
@@ -55,7 +55,7 @@ package_p.updatePackById = async (
   proc: {
     id: number;
     name: string;
-    procedure_ids: [number];
+    procedure_ids: number[];
     price: number;
     amount: number;
   },

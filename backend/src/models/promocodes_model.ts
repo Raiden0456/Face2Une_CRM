@@ -33,7 +33,7 @@ promocode.createPromo = async (
   proc: {
     name: string;
     code: string;
-    procedure_ids: [number];
+    procedure_ids: number[];
     discount: number;
     expiry_date: Date;
   },
@@ -59,7 +59,7 @@ promocode.updatePromoById = async (
     id: number;
     name: string;
     code: string;
-    procedure_ids: [number];
+    procedure_ids: number[];
     discount: number;
     expiry_date: Date;
   },
