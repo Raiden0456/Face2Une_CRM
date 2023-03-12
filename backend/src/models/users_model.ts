@@ -14,25 +14,6 @@ const user = function (user) {
 };
 
 user.getUsers = async (
-  filter: { column: string; value: any } = { column: "", value: false},
-  result
-) => {
-  var resp;
-  resp = filter.value
-  ? 
-  await supabase
-    .from("users")
-    .select("*")
-    .eq(filter.column, filter.value)
-  :
-  await supabase
-    .from("users")
-    .select("*");
-
-  return result(resp.error, resp.data);
-};
-
-user.getUsers = async (
   params: {
     index: number;
     per_page: number;
