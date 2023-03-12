@@ -31,45 +31,79 @@ user.getUsers = async (
   //******//
 
   // Pagination set where index = page number and per_page = max amount of entries per page //
-  if(params.index && params.per_page){
-  start_from = (params.index - 1) * params.per_page;
-  to = Number(start_from) + Number(params.per_page) - 1;
+  if (params.index && params.per_page) {
+    start_from = (params.index - 1) * params.per_page;
+    to = Number(start_from) + Number(params.per_page) - 1;
   }
   //******//
 
   if (params.filter_like) {
-    resp = await supabase
-      .from("users")
-      .select("*")
-      .or(
-        "first_name.ilike.%" +
-          params.filter_like +
-          "%, last_name.ilike.%" +
-          params.filter_like +
-          "%, email.ilike.%" +
-          params.filter_like +
-          "%, phone.ilike.%" +
-          params.filter_like +
-          "%"
-      )
-      .range(start_from, to);
+    resp =
+      params.column == "employee"
+        ? await supabase
+            .from("users")
+            .select("*")
+            .or(
+              "first_name.ilike.%" +
+                params.filter_like +
+                "%, last_name.ilike.%" +
+                params.filter_like +
+                "%, email.ilike.%" +
+                params.filter_like +
+                "%, phone.ilike.%" +
+                params.filter_like +
+                "%"
+            )
+            .eq("rights", "employee")
+            .range(start_from, to)
+        : await supabase
+            .from("users")
+            .select("*")
+            .or(
+              "first_name.ilike.%" +
+                params.filter_like +
+                "%, last_name.ilike.%" +
+                params.filter_like +
+                "%, email.ilike.%" +
+                params.filter_like +
+                "%, phone.ilike.%" +
+                params.filter_like +
+                "%"
+            )
+            .range(start_from, to);
 
-    total = await supabase
-      .from("users")
-      .select("id")
-      .or(
-        "first_name.ilike.%" +
-          params.filter_like +
-          "%, last_name.ilike.%" +
-          params.filter_like +
-          "%, email.ilike.%" +
-          params.filter_like +
-          "%, phone.ilike.%" +
-          params.filter_like +
-          "%"
-      );
+    total =
+      params.column == "employee"
+        ? await supabase
+            .from("users")
+            .select("id")
+            .or(
+              "first_name.ilike.%" +
+                params.filter_like +
+                "%, last_name.ilike.%" +
+                params.filter_like +
+                "%, email.ilike.%" +
+                params.filter_like +
+                "%, phone.ilike.%" +
+                params.filter_like +
+                "%"
+            )
+        : await supabase
+            .from("users")
+            .select("id")
+            .or(
+              "first_name.ilike.%" +
+                params.filter_like +
+                "%, last_name.ilike.%" +
+                params.filter_like +
+                "%, email.ilike.%" +
+                params.filter_like +
+                "%, phone.ilike.%" +
+                params.filter_like +
+                "%"
+            );
   } else {
-    if((params.column && !params.value) || (!params.column && params.value))
+    if ((params.column && !params.value) || (!params.column && params.value))
       return result(null, [], 0);
     resp = params.value
       ? await supabase
@@ -104,8 +138,7 @@ user.createUser = async (
   var resp;
   let check = await supabase.from("users").select("id").eq("email", user.email);
 
-  if (check.data.length == 0) 
-  {
+  if (check.data.length == 0) {
     const hash_password = bcrypt.hashSync(user.password, 10);
     resp = await supabase
       .from("users")
@@ -121,9 +154,8 @@ user.createUser = async (
         },
       ])
       .select();
-  }
-  else {
-    resp = { error: {message: "email is already used"}, data: [] };
+  } else {
+    resp = { error: { message: "email is already used" }, data: [] };
   }
   return result(resp.error, resp.data);
 };
@@ -144,8 +176,7 @@ user.updateUserById = async (
 
   let check = await supabase.from("users").select("id").eq("email", user.email);
 
-  if (check.data.length == 0 || check.data[0].id == user.id) 
-  {
+  if (check.data.length == 0 || check.data[0].id == user.id) {
     const hash_password = bcrypt.hashSync(user.password, 10);
     resp = await supabase
       .from("users")
@@ -162,18 +193,14 @@ user.updateUserById = async (
       ])
       .eq("id", user.id)
       .select();
-  }
-  else {
-    resp = { error: {message: "email is already used"}, data: [] };
+  } else {
+    resp = { error: { message: "email is already used" }, data: [] };
   }
   return result(resp.error, resp.data);
 };
 
 user.deleteUserById = async (id: number, result) => {
-  await supabase
-    .from("clients")
-    .update({ user_id: null })
-    .eq("user_id", id);
+  await supabase.from("clients").update({ user_id: null }).eq("user_id", id);
 
   const { data, error } = await supabase.from("users").delete().eq("id", id);
   return result(error, data);
@@ -192,16 +219,14 @@ user.loginUser = async (
     .from("users")
     .select("id, email, password")
     .eq("email", user.email);
-    
+
   if (resp.data.length == 0) {
-    resp = { error: {message: "email or password is incorrect"}, data: [] };
-  }
-  else {
+    resp = { error: { message: "email or password is incorrect" }, data: [] };
+  } else {
     if (bcrypt.compareSync(user.password, resp.data[0].password)) {
       resp = { error: null, data: resp.data[0] };
-    }
-    else {
-      resp = { error: {message: "email or password is incorrect"}, data: [] };
+    } else {
+      resp = { error: { message: "email or password is incorrect" }, data: [] };
     }
   }
   return result(resp.error, resp.data);
