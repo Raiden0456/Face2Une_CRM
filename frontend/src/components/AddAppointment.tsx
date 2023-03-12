@@ -12,6 +12,7 @@ import { ClientService } from '../service/ClientService';
 import { AppointmentService } from '../service/AppointmentService';
 import { filterObjectToArray } from '../utils/funcs';
 import { SelectField } from './base/SelectField';
+import { formatPhoneNumber } from '../utils/formatPhone';
 
 import s from './AddAppointment.scss';
 
@@ -52,34 +53,34 @@ export const AddAppointment = () => {
   };
 
   //Check if client exists
-  const handleCheckClient = (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const handleCheckClient = () => {
     setLoader(true);
 
-    clientService.getClient(inputs.email).then((r) => {
-      setLoader(false);
-      clearForm();
-      if (r.data) {
-        const { id, full_name, phone } = r.data[0];
-        setClientID(id);
-        setClientInfo({ full_name, phone });
-        /* setAppointmentStatus('clientExists'); */
-      } else {
-        clientService.getClient_n(inputs.phone).then((r) => {
-          setLoader(false);
-          clearForm();
-          if (r.data) {
-            const { id, full_name, phone } = r.data[0];
-            setClientID(id);
-            setClientInfo({ full_name, phone });
-            /* setAppointmentStatus('clientExists'); */
-          } else {
-            /* setAppointmentStatus('noClient'); */
-            setClientInfo('not_found');
-          }
-        });
-      }
-    });
+    if (inputs.email) {
+      clientService.getClient(inputs.email).then((r) => {
+        setLoader(false);
+        clearForm();
+        if (r.data) {
+          const { id, full_name, phone } = r.data[0];
+          setClientID(id);
+          setClientInfo({ full_name, phone });
+        } else {
+          setClientInfo('not_found');
+        }
+      });
+    } else if (inputs.phone) {
+      clientService.getClient_n(inputs.phone).then((r) => {
+        setLoader(false);
+        clearForm();
+        if (r.data) {
+          const { id, full_name, phone } = r.data[0];
+          setClientID(id);
+          setClientInfo({ full_name, phone });
+        } else {
+          setClientInfo('not_found');
+        }
+      });
+    }
   };
 
   //Create a new client with
@@ -133,12 +134,20 @@ export const AddAppointment = () => {
   return (
     <div className={s.AddAppointmentModal}>
       {appointmentStatus === 'checkClient' && (
-        <form id="checkClient" onSubmit={handleCheckClient} className={s.AddAppointmentForm}>
+        <form
+          id="checkClient"
+          onSubmit={(e) => {
+            e.preventDefault();
+            (inputs.email || (inputs.phone && !phoneError)) && handleCheckClient();
+          }}
+          className={s.AddAppointmentForm}
+        >
           <div>
             <h2>Find a client</h2>
             {clientInfo && clientInfo !== 'not_found' && (
               <h3>
-                Found a client: <span>{clientInfo?.full_name}</span> with phone number <span>{clientInfo?.phone}</span>
+                Found a client: <span>{clientInfo?.full_name}</span> with phone{' '}
+                <span>{formatPhoneNumber(clientInfo?.phone)}</span>
               </h3>
             )}
             {clientInfo === 'not_found' && <h3>Client not found :(</h3>}
