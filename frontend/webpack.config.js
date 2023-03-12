@@ -1,15 +1,13 @@
 const path = require('path'),
-      MiniCssExtractPlugin = require('mini-css-extract-plugin'),
-      { CleanWebpackPlugin } = require('clean-webpack-plugin'),
-      Dotenv = require('dotenv-webpack'),
-      HtmlWebpackPlugin = require('html-webpack-plugin');
-      require('webpack');
+  MiniCssExtractPlugin = require('mini-css-extract-plugin'),
+  { CleanWebpackPlugin } = require('clean-webpack-plugin'),
+  Dotenv = require('dotenv-webpack'),
+  HtmlWebpackPlugin = require('html-webpack-plugin');
+require('webpack');
 
-const
-    isDevelopmentMode = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'local',
-    isProductionMode = process.env.NODE_ENV === 'production',
-    isDebugMode = process.env.NODE_ENV === 'debug';
-
+const isDevelopmentMode = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'local',
+  isProductionMode = process.env.NODE_ENV === 'production',
+  isDebugMode = process.env.NODE_ENV === 'debug';
 
 module.exports = {
   entry: './src/index.tsx',
@@ -17,7 +15,7 @@ module.exports = {
   mode: isProductionMode || isDebugMode ? 'production' : 'development',
   output: {
     filename: 'app.js',
-    path: path.resolve('..','backend', 'dist', 'src', 'public', 'build'),
+    path: path.resolve('..', 'backend', 'dist', 'src', 'public', 'build'),
     publicPath: '/',
   },
   resolve: {
@@ -38,6 +36,19 @@ module.exports = {
   devtool: isDevelopmentMode ? 'eval-cheap-source-map' : false,
   module: {
     rules: [
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
+          },
+        ],
+      },
       {
         test: /\.(gif|png|jpe?g)$/i,
         use: [
@@ -97,8 +108,8 @@ module.exports = {
       },
       {
         test: /\.svg/,
-        exclude: [path.resolve(__dirname, "src/assets/image")],
-        loader: 'svg-url-loader'
+        exclude: [path.resolve(__dirname, 'src/assets/image')],
+        loader: 'svg-url-loader',
       },
     ],
   },

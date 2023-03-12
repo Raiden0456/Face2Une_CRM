@@ -843,6 +843,14 @@
               "schema": {
                 "type": "string"
               }
+              },
+              {
+                "in": "query",
+                "name": "details",
+                "description": "get details boolean",
+                "required": false,
+                "type": "boolean",
+                "default": false
               }
             ],
             "responses": {

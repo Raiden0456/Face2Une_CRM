@@ -139,6 +139,7 @@ export const ConfirmationPackage = () => {
                   </div>
                   <div>
                     <NumberInput
+                      required
                       error={phoneError}
                       helperText={phoneError && 'Your phone number is not valid!'}
                       numberFormat="+# (###) ###-##-##"

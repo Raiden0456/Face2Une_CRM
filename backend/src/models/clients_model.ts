@@ -64,6 +64,8 @@ client.getClients = async (
           "%"
       );
   } else {
+    if((params.column && !params.value) || (!params.column && params.value))
+      return result(null, [], 0);
     resp = params.value
       ? await supabase
           .from("clients")

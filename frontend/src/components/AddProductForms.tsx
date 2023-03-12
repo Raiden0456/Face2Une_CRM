@@ -5,13 +5,11 @@ import useForm from '../utils/useForm';
 import { ButtonContained, ButtonOutlined } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
 import { AuthStore } from '../store/Auth.store';
+import { saloon_ids } from '../utils/staticData';
+import { ProceduresStore } from '../store/Procedures.store';
+import { filterObjectToArray } from '../utils/funcs';
 
 import s from './AddProductForms.scss';
-
-export const saloon_ids = [
-  { id: 1, text: '46 Rue De Richelieu', value: 1 },
-  { id: 2, text: '61 Rue de Caumartin', value: 2 },
-];
 
 export function AddProcedure() {
   const proceduresService = new ProceduresService();
@@ -146,6 +144,7 @@ export function AddPackage() {
   const proceduresService = new ProceduresService();
   const [showForm, setShowForm] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
+  const [procedures, setProcedures] = useState({});
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
     name: '',
     price: '',
@@ -156,13 +155,16 @@ export function AddPackage() {
     e.preventDefault();
     setLoader(true);
 
-    proceduresService.createPackage(inputs).then((r) => {
-      console.log(r);
+    proceduresService.createPackage({ ...inputs, procedure_ids: filterObjectToArray(procedures) }).then((r) => {
       setLoader(false);
       setShowForm(false);
     });
 
     window.location.reload();
+  };
+
+  const handleCheckBoxes = (e: any, id: number) => {
+    setProcedures({ ...procedures, [id]: e });
   };
 
   return (
@@ -208,6 +210,16 @@ export function AddPackage() {
                   onChange={handleChange}
                 />
                 <br />
+                <div className={s.AddProductForm__procedures}>
+                  <h4>Select Procedure(s):</h4>
+                  <div>
+                    {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
+                      <Checkbox onChange={(e) => handleCheckBoxes(e, proc.id)} key={proc.id}>
+                        {proc.name}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <ButtonContained disabled={loader} type="submit">

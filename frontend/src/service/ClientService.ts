@@ -19,6 +19,16 @@ export class ClientService {
     }
   }
 
+  async getClient_n(phone: string) {
+    const r = await JSONFetchGet(`clients?column=phone&value=${phone}`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
   async getClients(index: number, perPage: number, filterLike?: string | boolean) {
     const r = await JSONFetchGet(
       `clients?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,

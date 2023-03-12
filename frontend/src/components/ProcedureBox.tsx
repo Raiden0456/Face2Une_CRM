@@ -16,7 +16,7 @@ import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
-import { saloon_ids } from './AddProductForms';
+import { saloon_ids } from '../utils/staticData';
 
 import s from './ProcedureBox.scss';
 

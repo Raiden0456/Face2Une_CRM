@@ -36,23 +36,29 @@
     margin-top: 25px;
     display: flex;
     width: 75%;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
 
-    button {
-      margin-right: 0.75rem;
+    .SignIn__bottom_btns {
+      display: flex;
+      margin-bottom: 1.5rem;
+
+      button {
+        margin-right: 0.75rem;
+      }
     }
   }
 
   @media screen and (max-width: 821px) {
     .SignIn__bottom {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      button {
-        margin-bottom: 0.75rem;
-        margin-right: 0;
-        width: 100%;
+      .SignIn__bottom_btns {
+        button {
+          margin-bottom: 0.75rem;
+          margin-right: 0;
+          width: 100%;
+        }
       }
+
     }
   }

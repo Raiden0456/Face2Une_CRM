@@ -39,6 +39,7 @@ export const UserInfoForm = ({ inputs, handleChange, handleNumberChange, handleS
           />
           <br />
           <NumberInput
+            required
             error={phoneError}
             helperText={phoneError && 'Your phone number is not valid!'}
             numberFormat="+# (###) ###-##-##"

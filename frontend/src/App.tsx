@@ -14,6 +14,7 @@ import { Confirmation } from './pages/Confirmation';
 import { Clients } from './pages/Clients';
 import { Promocodes } from './pages/Promocodes';
 import { ConfirmationPackage } from './pages/ConfirmationPackage';
+import { Calendar } from './pages/Calendar';
 //
 require('./App.scss');
 
@@ -56,6 +57,7 @@ const App = observer(() => {
             <Route element={<PrivateRouteAdmin />}>
               <Route path="/clients" element={<Clients />} />
               <Route path="/promocodes" element={<Promocodes />} />
+              <Route path="/calendar" element={<Calendar />} />
             </Route>
           </Routes>
         </MainLayout>
