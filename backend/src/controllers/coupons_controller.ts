@@ -1,38 +1,38 @@
-import promocodes from "../models/promocodes_model.js";
+import coupons from "../models/coupons_model.js";
 import { join } from "path";
 
-// Retrieve promocodes from the database.
-export function loadPromo(req, res) {
-  promocodes.getAllpromo((err, data) => {
+// Retrieve coupons from the database.
+export function loadCoupon(req, res) {
+  coupons.getAllcoupon((err, data) => {
     if (err)
       res.status(500).json({
         success: false,
         message:
-          err.message || "Some error occurred while retrieving promocodes.",
+          err.message || "Some error occurred while retrieving coupons.",
       });
     else if (data.length == 0) {
       res.status(404).json({
         success: false,
-        message: `No promocodes found.`,
+        message: `No coupons found.`,
       });
     } else {
       res.json({ success: true, data: data });
     }
   });
 }
-// Find a single promocode by an id
-export function findOnePromo(id: number, res) {
-  promocodes.getPromoById(id, (err, data) => {
+// Find a single coupon by an id
+export function findOneCoupon(id: number, res) {
+  coupons.getCouponById(id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
         message:
-          err.message || "Some error occurred while retrieving promocode.",
+          err.message || "Some error occurred while retrieving coupons.",
       });
     else if (data.length == 0) {
       res.status(404).json({
         success: true,
-        message: `Promocode with id ${id} not found.`,
+        message: `Coupon with id ${id} not found.`,
       });
     } else {
       res.json({ success: true, data: data });
@@ -40,9 +40,9 @@ export function findOnePromo(id: number, res) {
   });
 }
 
-// Update a promocodes identified by the id in the request
-export function updatePromo(
-  promo: {
+// Update a coupon identified by the id in the request
+export function updateCoupon(
+  coupon: {
     id: number;
     name: string;
     code: string;
@@ -52,16 +52,16 @@ export function updatePromo(
   },
   res
 ) {
-  promocodes.updatePromoById(promo, (err, data) => {
+  coupons.updateCouponById(coupon, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
-        message: err.message || "Some error occurred while updating promocodes.",
+        message: err.message || "Some error occurred while updating coupons.",
       });
     else if (data.length == 0) {
       res.status(404).json({
         success: true,
-        message: `Promocode with id ${promo.id} not found.`,
+        message: `Coupon with id ${coupon.id} not found.`,
       });
     } else {
       res.json({ success: true, data: data });
@@ -69,9 +69,9 @@ export function updatePromo(
   });
 }
 
-// Create a Promoage
-export function createPromo(
-  promo: {
+// Create a Coupon
+export function createCoupon(
+  coupon: {
     name: string;
     code: string;
     procedure_ids: number[];
@@ -80,11 +80,11 @@ export function createPromo(
   },
   res
 ) {
-  promocodes.createPromo(promo, (err, data) => {
+  coupons.createCoupon(coupon, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
-        message: err.message || "Some error occurred while creating promocode.",
+        message: err.message || "Some error occurred while creating coupon.",
       });
     else {
       res.json({ success: true, data: data });
@@ -92,18 +92,18 @@ export function createPromo(
   });
 }
 
-// Delete a promocodes with the specified id in the request
-export function deletePromo(id: number, res) {
-  promocodes.deletePromoById(id, (err, data) => {
+// Delete a coupon with the specified id in the request
+export function deleteCoupon(id: number, res) {
+  coupons.deleteCouponById(id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
-        message: err.message || "Some error occurred while deleting promocode.",
+        message: err.message || "Some error occurred while deleting coupon.",
       });
     else {
       res.json({
         success: true,
-        message: "deleted promocode with id: " + id + ", successfully!",
+        message: "deleted coupon with id: " + id + ", successfully!",
       });
     }
   });
