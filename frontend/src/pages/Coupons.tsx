@@ -5,6 +5,7 @@ import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import { CouponsService } from '../service/CouponsService';
 import DataTable from 'react-data-table-component';
+import Moment from 'moment';
 
 import s from './Coupons.scss';
 
@@ -31,11 +32,17 @@ const ROWS_PER_PAGE = 10;
 
 const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },
-  { name: 'Name', selector: (row: any) => row.full_name, sortable: true },
-  { name: 'Code', selector: (row: any) => row.email, sortable: true },
-  { name: 'Discount', selector: (row: any) => row.phone, sortable: true },
-  { name: 'Procedures', selector: (row: any) => row.phone, sortable: false },
-  { name: 'Expiry date', selector: (row: any) => row.phone, sortable: true },
+  { name: 'Name', selector: (row: any) => row.name, sortable: true },
+  { name: 'Code', selector: (row: any) => row.code, sortable: true },
+  { name: 'Discount', selector: (row: any) => row.discount, sortable: true },
+  { name: 'Procedures', cell: (row: { procedure_names: any[]; }) => (
+    <div>
+      {row.procedure_names.map((names, i) => (
+        <div key={i}>{names}</div>
+      ))}
+    </div>
+  ), sortable: false },
+  { name: 'Expiry date', selector: (row: any) => Moment(row.expiry_date).format("MMMM d, yyyy HH:mm"), sortable: true },
 ];
 
 const paginationComponentOptions = {
@@ -80,13 +87,13 @@ export const Coupons = () => {
       width="100%"
       content={
         <>
-          <div className={s.Clients}>
-            <div className={s.Clients__header}>
-              <h2>Clients</h2>
+          <div className={s.Coupons}>
+            <div className={s.Coupons__header}>
+              <h2>Coupons</h2>
             </div>
-            <div className={s.Clients__table_searchFieldWrapper}>
+            <div className={s.Coupons__table_searchFieldWrapper}>
               <Input
-                label="Search for a client:"
+                label="Search for a coupon:"
                 type="text"
                 name="search"
                 value={filterLike}
@@ -96,7 +103,7 @@ export const Coupons = () => {
                 Search
               </ButtonContained>
             </div>
-            <div className={s.Clients__table}>
+            <div className={s.Coupons__table}>
               <DataTable
                 columns={columns}
                 data={data}

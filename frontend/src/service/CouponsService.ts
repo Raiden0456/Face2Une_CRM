@@ -5,7 +5,7 @@ import { CouponData } from '../store/Coupons.store';
 export class CouponsService {
   
   async getCoupons(index: number, perPage: number, filterLike?: string | boolean) {
-    const r = await JSONFetchGet(`clients?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,);
+    const r = await JSONFetchGet(`coupon?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,);
 
     if (r?.success) {
       return r;

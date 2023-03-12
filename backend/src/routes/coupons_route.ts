@@ -5,10 +5,10 @@ import * as coupon from '../controllers/coupons_controller.js';
 //Routing for the coupons//
 
 router.get('/coupon', function(req, res){
-    coupon.loadCoupon(req, res);
+    coupon.loadCoupon(req.query, res);
 });
 router.get('/coupon/:couponid', function(req, res){
-    coupon.findOneCoupon(req.params.couponid, res);
+    coupon.loadCoupon({column: "id", value: req.params.clientid}, res);
 });
 router.post('/create_coupon', function(req, res){
     coupon.createCoupon(req.body, res);
