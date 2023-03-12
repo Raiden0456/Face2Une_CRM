@@ -335,7 +335,7 @@
                   "client_id": {
                     "type": "integer"
                   },
-                  "promocode": {
+                  "coupon": {
                     "type": "string"
                   }
                 }
@@ -349,26 +349,26 @@
             }
           }
         },
-        "/promo": {
+        "/coupon": {
           "get": {
-            "tags": ["Promocodes"],
-            "summary": "Get all promocodes in db",
+            "tags": ["Coupons"],
+            "summary": "Get all coupons in db",
             "responses": {
               "200": {
-                "description": "Returns all promocodes in database in JSON format"
+                "description": "Returns all coupons in database in JSON format"
               }
             }
           }
         },
-        "/promo/{promoid}": {
+        "/coupon/{couponid}": {
           "get": {
-            "tags": ["Promocodes"],
-            "summary": "Get a single promocode by id in db",
+            "tags": ["Coupons"],
+            "summary": "Get a single coupon by id in db",
             "parameters": [
               {
               "in": "path",
-              "name": "promoid",
-              "description": "id of promocode",
+              "name": "couponid",
+              "description": "id of coupon",
               "required": true,
               "schema": {
                 "type": "integer"
@@ -377,23 +377,23 @@
             ],
             "responses": {
               "200": {
-                "description": "Returns a single promocode in database in JSON format"
+                "description": "Returns a single coupon in database in JSON format"
               }
             }
           }
         },
-        "/create_promo": {
+        "/create_coupon": {
           "post": {
-            "tags": ["Promocodes"],
-            "summary": "Create new promocode",
+            "tags": ["Coupons"],
+            "summary": "Create new coupon",
             "parameters": [
               {
               "in": "body",
               "name": "body",
-              "description": "object of promocode",
+              "description": "object of coupon",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/Promocode"
+                "$ref": "#/definitions/Coupon"
               }
             }
             ],
@@ -404,15 +404,15 @@
             }
           }
         },
-        "/update_promo": {
+        "/update_coupon": {
           "post": {
-            "tags": ["Promocodes"],
-            "summary": "Update promocode by id",
+            "tags": ["Coupons"],
+            "summary": "Update coupon by id",
             "parameters": [
               {
               "in": "body",
               "name": "body",
-              "description": "object of promocode",
+              "description": "object of coupon",
               "required": true,
               "schema": {
                 "allOf": [
@@ -425,7 +425,7 @@
                     }
                   },
                   {
-                    "$ref": "#/definitions/Promocode"
+                    "$ref": "#/definitions/Coupon"
                   }
                 ]
               }
@@ -433,20 +433,20 @@
             ],
             "responses": {
               "200": {
-                "description": "Update a promocode in database using JSON format"
+                "description": "Update a coupon in database using JSON format"
               }
             }
           }
         },
-        "/delete_promo/{promoid}": {
+        "/delete_coupon/{couponid}": {
           "delete": {
-            "tags": ["Promocodes"],
-            "summary": "Delete promocode by id",
+            "tags": ["Coupons"],
+            "summary": "Delete coupon by id",
             "parameters": [
               {
               "in": "path",
-              "name": "promoid",
-              "description": "id of promocode",
+              "name": "couponid",
+              "description": "id of coupon",
               "required": true,
               "schema": {
                 "type": "integer"
@@ -455,7 +455,7 @@
             ],
             "responses": {
               "200": {
-                "description": "Delete a promocode in database by id"
+                "description": "Delete a coupon in database by id"
               }
             }
           }
@@ -1042,7 +1042,7 @@
             }
           }
         },
-        "Promocode": {
+        "Coupon": {
           "properties": {
             "name": {
               "type": "string"
