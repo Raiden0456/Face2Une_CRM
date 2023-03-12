@@ -3,10 +3,10 @@ import { Container } from '../components/base/Container';
 import { ButtonContained } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
-import { PromocodesService } from '../service/PromocodesService';
+import { CouponsService } from '../service/CouponsService';
 import DataTable from 'react-data-table-component';
 
-import s from './Promocodes.scss';
+import s from './Coupons.scss';
 
 const customTableStyles = {
   headCells: {
@@ -42,17 +42,17 @@ const paginationComponentOptions = {
   noRowsPerPage: true,
 };
 
-export const Promocodes = () => {
-  const promocodeService = new PromocodesService();
+export const Coupons = () => {
+  const couponService = new CouponsService();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [filterLike, setFilterLike] = useState('');
 
-  const fetchPromocodes = async (page: number) => {
+  const fetchCoupons = async (page: number) => {
     setLoading(true);
 
-    promocodeService.getPromocodes(page, ROWS_PER_PAGE, filterLike).then((r) => {
+    couponService.getCoupons(page, ROWS_PER_PAGE, filterLike).then((r) => {
       if (r.success) {
         console.log(r);
         setData(r.data);
@@ -63,15 +63,15 @@ export const Promocodes = () => {
   };
 
   const handlePageChange = (page: number) => {
-    fetchPromocodes(page);
+    fetchCoupons(page);
   };
 
   const handleSearch = () => {
-    fetchPromocodes(1);
+    fetchCoupons(1);
   };
 
   useEffect(() => {
-    fetchPromocodes(1);
+    fetchCoupons(1);
   }, []);
 
   return (

@@ -1,10 +1,10 @@
 import { JSONFetch, JSONFetchDelete, JSONFetchGet } from '../api/fetchMethod';
 import { ModalStore } from '../store/Modal.store';
-import { PromocodeData } from '../store/Promocodes.store';
+import { CouponData } from '../store/Coupons.store';
 
-export class PromocodesService {
+export class CouponsService {
   
-  async getPromocodes(index: number, perPage: number, filterLike?: string | boolean) {
+  async getCoupons(index: number, perPage: number, filterLike?: string | boolean) {
     const r = await JSONFetchGet(`clients?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,);
 
     if (r?.success) {
@@ -14,8 +14,8 @@ export class PromocodesService {
     }
   }
 
-  async getPromocode(id: number | string | null) {
-    const r = await JSONFetchGet(`promo/${id}`);
+  async getCoupon(id: number | string | null) {
+    const r = await JSONFetchGet(`coupon/${id}`);
 
     if (r?.success) {
       return r;
@@ -24,8 +24,8 @@ export class PromocodesService {
     }
   }
 
-  async updatePromocode(updatePromocode: PromocodeData) {
-    const r = await JSONFetch('update_promo', updatePromocode);
+  async updateCoupon(updateCoupon: CouponData) {
+    const r = await JSONFetch('update_coupon', updateCoupon);
 
     if (r?.success) {
       return r;
@@ -35,8 +35,8 @@ export class PromocodesService {
   }
 
 
-  async createPromocode(createPromocode: PromocodeData) {
-    const r = await JSONFetch('create_promo', createPromocode);
+  async createCoupon(createCoupon: CouponData) {
+    const r = await JSONFetch('create_coupon', createCoupon);
 
     if (r?.success) {
       return r;
@@ -45,8 +45,8 @@ export class PromocodesService {
     }
   }
 
-  async deletePromocode(promocodeId: number) {
-    const r = await JSONFetchDelete(`delete_promo/${promocodeId}`);
+  async deleteCoupon(couponId: number) {
+    const r = await JSONFetchDelete(`delete_coupon/${couponId}`);
 
     if (r?.success) {
       return r;

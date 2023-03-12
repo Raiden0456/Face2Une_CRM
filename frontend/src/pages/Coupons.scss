@@ -1,8 +1,8 @@
-.Clients {
+.Coupons {
   width: 100%;
 }
 
-.Clients__header {
+.Coupons__header {
   margin-bottom: 1rem;
 
   h2 {
@@ -12,7 +12,7 @@
   }
 }
 
-.Clients__table_searchFieldWrapper {
+.Coupons__table_searchFieldWrapper {
   display: flex;
   align-items: flex-end;
 
@@ -21,7 +21,7 @@
   }
 }
 
-.Clients__table {
+.Coupons__table {
   border: 2px solid #91a0db;
   border-radius: 16px;
   margin: 2rem 0;
