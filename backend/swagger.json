@@ -920,12 +920,8 @@
             "name": {
               "type": "string"
             },
-            "procedure_ids": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "uniqueItems": true
-              }
+            "procedure_id": {
+              "type": "number"
             },
             "price": {
               "type": "number"
