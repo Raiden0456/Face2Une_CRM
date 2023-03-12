@@ -75,7 +75,7 @@ export const Home = () => {
           ) : (
             <>
               <div className={s.Home__divider}>
-                <h2>Procedures</h2>
+                <h2>Tunes</h2>
               </div>
 
               {ProceduresStore.proceduresStatus.proceduresData?.map((procedure, i) => {

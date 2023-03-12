@@ -46,6 +46,7 @@ export const AddPassanger = observer(({ setProcedures, setItems, items, procedur
                 onChange={(e) => handleUpdate({ ...items[i], ...e }, i)}
                 defaultValue={{ label: procedures[0].name, value: procedures[0].id }}
               />
+              <h4>Add-ons:</h4>
               {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd) => (
                 <Checkbox
                   onChange={(e: any) =>
