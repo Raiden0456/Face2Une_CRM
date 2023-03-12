@@ -2,8 +2,8 @@ import coupons from "../models/coupons_model.js";
 import { join } from "path";
 
 // Retrieve coupons from the database.
-export function loadCoupon(req, res) {
-  coupons.getAllcoupon((err, data) => {
+export function loadCoupon(url_params, res) {
+  coupons.getAllcoupon(url_params, (err, data, total) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -14,25 +14,6 @@ export function loadCoupon(req, res) {
       res.status(404).json({
         success: false,
         message: `No coupons found.`,
-      });
-    } else {
-      res.json({ success: true, data: data });
-    }
-  });
-}
-// Find a single coupon by an id
-export function findOneCoupon(id: number, res) {
-  coupons.getCouponById(id, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message:
-          err.message || "Some error occurred while retrieving coupons.",
-      });
-    else if (data.length == 0) {
-      res.status(404).json({
-        success: true,
-        message: `Coupon with id ${id} not found.`,
       });
     } else {
       res.json({ success: true, data: data });

@@ -352,10 +352,63 @@
         "/coupon": {
           "get": {
             "tags": ["Coupons"],
-            "summary": "Get all coupons in db",
+            "summary": "Get coupons in db",
+            "parameters": [
+              {
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
+              },
+              {
+                "in": "query",
+                "name": "per_page",
+                "description": "max coupons per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_like",
+                "description": "multifilter 'like' for all columns",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "column",
+                "description": "'equal' filter column name(id, name, code))",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "value",
+                "description": "value of 'equal' filter column",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
             "responses": {
               "200": {
-                "description": "Returns all coupons in database in JSON format"
+                "description": "Returns coupons in database in JSON format"
               }
             }
           }
@@ -368,16 +421,16 @@
               {
               "in": "path",
               "name": "couponid",
-              "description": "id of coupon",
+              "description": "coupon id",
               "required": true,
               "schema": {
                 "type": "integer"
               }
-            }
+              }
             ],
             "responses": {
               "200": {
-                "description": "Returns a single coupon in database in JSON format"
+                "description": "Returns coupon in database in JSON format"
               }
             }
           }
