@@ -4,32 +4,32 @@ import supabase from "./db.js";
 import voucher_codes from "voucher-code-generator";
 
 // Constructor
-const promocode = function (promocode) {
-  this.id = promocode.id;
-  this.name = promocode.name;
-  this.code = promocode.code;
-  this.procedure_ids = promocode.procedure_ids;
-  this.discount = promocode.discount;
-  this.expiry_date = promocode.expiry_date;
+const coupon = function (coupon) {
+  this.id = coupon.id;
+  this.name = coupon.name;
+  this.code = coupon.code;
+  this.procedure_ids = coupon.procedure_ids;
+  this.discount = coupon.discount;
+  this.expiry_date = coupon.expiry_date;
 };
 
-promocode.getAllpromo = async (result) => {
-    let { data: promocodes, error } = await supabase
-      .from("promocodes")
+coupon.getAllcoupon = async (result) => {
+    let { data: coupons, error } = await supabase
+      .from("coupons")
       .select("*")
       .order("created_at", { ascending: true });
-  return result(error, promocodes);
+  return result(error, coupons);
 };
 
-promocode.getPromoById = async (id: number, result) => {
-  let { data: promocodes, error } = await supabase
-    .from("promocodes")
+coupon.getCouponById = async (id: number, result) => {
+  let { data: coupons, error } = await supabase
+    .from("coupons")
     .select("*")
     .eq("id", id);
-  return result(error, promocodes);
+  return result(error, coupons);
 };
 
-promocode.createPromo = async (
+coupon.createCoupon = async (
   proc: {
     name: string;
     code: string;
@@ -40,7 +40,7 @@ promocode.createPromo = async (
   result
 ) => {
   const { data, error } = await supabase
-    .from("promocodes")
+    .from("coupons")
     .insert([
       {
         name: proc.name,
@@ -54,7 +54,7 @@ promocode.createPromo = async (
   return result(error, data);
 };
 
-promocode.updatePromoById = async (
+coupon.updateCouponById = async (
   proc: {
     id: number;
     name: string;
@@ -66,7 +66,7 @@ promocode.updatePromoById = async (
   result
 ) => {
   const { data, error } = await supabase
-    .from("promocodes")
+    .from("coupons")
     .update([
       {
         name: proc.name,
@@ -81,13 +81,13 @@ promocode.updatePromoById = async (
   return result(error, data);
 };
 
-promocode.deletePromoById = async (id: number, result) => {
+coupon.deleteCouponById = async (id: number, result) => {
   const { data, error } = await supabase
-    .from("promocodes")
+    .from("coupons")
     .delete()
     .eq("id", id);
   return result(error, data);
 };
 
 
-export default promocode;
+export default coupon;
