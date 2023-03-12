@@ -81,7 +81,6 @@ export const NumberInput: React.FC<IInput> = ({
     <div className={classNames(s.InputWrapper, className)}>
       <label htmlFor={className}>{label}</label>
       <NumberFormat
-        required
         value={defaultValue}
         className={error ? s.Input__Invalid : undefined}
         format={numberFormat}

@@ -80,7 +80,7 @@ export const Clients = () => {
         <>
           <div className={s.Clients}>
             <div className={s.Clients__header}>
-              <h2>Clients</h2>
+              <h3>Clients</h3>
             </div>
             <div className={s.Clients__table_searchFieldWrapper}>
               <Input

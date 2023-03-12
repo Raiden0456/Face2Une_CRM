@@ -1,7 +1,7 @@
 import { observable } from 'mobx';
 import { ProcedureData } from './Procedures.store';
 
-type Action = 'complete_booking' | 'loader' | 'error' | 'success' | 'deleteItem' | null;
+type Action = 'complete_booking' | 'loader' | 'error' | 'success' | 'deleteItem' | 'addAppointment' | null;
 
 interface IModalStatus {
   open: boolean;

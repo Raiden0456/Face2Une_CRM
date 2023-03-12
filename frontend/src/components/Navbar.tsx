@@ -6,6 +6,8 @@ import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
 import { ButtonOutlined } from './base/Button';
 
+const adminPaths = ['/clients', '/calendar'];
+
 const NavBar = observer(() => {
   const authService = new AuthService();
 
@@ -31,32 +33,42 @@ const NavBar = observer(() => {
           </div>
         </div>
 
-        <div className={s.Navbar__pageStatus}>
-          <div className={window.location.pathname === '/' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el}>
-            Choose Appointment
+        {!adminPaths.includes(window.location.pathname) && (
+          <div className={s.Navbar__pageStatus}>
+            <div
+              className={window.location.pathname === '/' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el}
+            >
+              Choose Appointment
+            </div>
+            <div
+              className={
+                window.location.pathname === '/userInfo' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el
+              }
+            >
+              Your Info
+            </div>
+            <div
+              className={
+                window.location.pathname === '/confirmation' || window.location.pathname === '/confirmation-package'
+                  ? s.Navbar__pageStatus_el_focused
+                  : s.Navbar__pageStatus_el
+              }
+            >
+              Confirmation
+            </div>
           </div>
-          <div
-            className={
-              window.location.pathname === '/userInfo' ? s.Navbar__pageStatus_el_focused : s.Navbar__pageStatus_el
-            }
-          >
-            Your Info
-          </div>
-          <div
-            className={
-              window.location.pathname === '/confirmation' || window.location.pathname === '/confirmation-package'
-                ? s.Navbar__pageStatus_el_focused
-                : s.Navbar__pageStatus_el
-            }
-          >
-            Confirmation
-          </div>
-        </div>
+        )}
+
         <div className={s.Navbar__navigation}>
           {AuthStore.rights === 'admin' && (
-            <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none' }}>
-              <ButtonOutlined>Clients</ButtonOutlined>
-            </Link>
+            <>
+              <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none', marginRight: '1rem' }}>
+                <ButtonOutlined>Clients</ButtonOutlined>
+              </Link>
+              <Link to="/calendar" style={{ textAlign: 'center', textDecoration: 'none' }}>
+                <ButtonOutlined>Calendar</ButtonOutlined>
+              </Link>
+            </>
           )}
         </div>
       </div>

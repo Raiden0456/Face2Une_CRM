@@ -20,7 +20,7 @@ export const Home = () => {
   const [loading, setLoading] = useState(false);
   const [packages, setPackages] = useState([]);
 
-  // Fetch Main & Optional Procedures
+  // Fetch and Store Main & Optional Procedures
   useEffect(() => {
     setLoading(true);
     proceduresService.getOptionalProcedures().then((optionalProcedures) => {

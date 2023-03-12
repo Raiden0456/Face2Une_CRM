@@ -5,6 +5,7 @@ import { ModalStore } from '../store/Modal.store';
 import ProcedureBox from './ProcedureBox';
 import { StatusContainer } from './StatusContainer';
 import ConfirmDelete from './ConfirmDelete';
+import { AddAppointment } from './AddAppointment';
 
 export const ModalsCustomStyles: object = {
   content: {
@@ -90,6 +91,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
       {ModalStore.modalStatus.action === 'deleteItem' && (
         <ConfirmDelete deleteType={ModalStore.deleteItem.deleteType} id={ModalStore.deleteItem.id} />
       )}
+      {ModalStore.modalStatus.action === 'addAppointment' && <AddAppointment />}
       {ModalStore.modalStatus.action === 'loader' && <p>Loading...</p>}
     </Modal>
   );
