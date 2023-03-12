@@ -206,9 +206,9 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
         <div className={type === 'modal' ? s.BookingBox__main : null} style={{ width: '100%' }}>
           <div className={s.BookingBox__header}>
             <div className={s.BookingBox__header_column}>
-              {ModalStore.modalStatus.open && <h2>Your Cart:</h2>}
+              {ModalStore.modalStatus.open && <h2>Passenger 1 Cart:</h2>}
+              {/* {ModalStore.modalStatus.open && <h4></h4>} */}
               <h3>{procedure?.name}</h3>
-              {ModalStore.modalStatus.open && <h4>Passenger 1</h4>}
               <p>
                 {procedure?.duration} minutes @ {procedure?.price}€
               </p>
@@ -238,7 +238,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
           <div className={s.BookingBox__content}>
             <p>{procedure?.description}</p>
           </div>
-
+          <h4>Add-ons:</h4>
           {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
             <div className={s.BookingBox__optionalProcedures}>
               {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (

@@ -519,27 +519,60 @@
             "summary": "Get users in db",
             "parameters": [
               {
-              "in": "query",
-              "name": "column",
-              "description": "filter column name(id, first_name, last_name, email, phone, rights))",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
               },
               {
-              "in": "query",
-              "name": "value",
-              "description": "value of filter column",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "per_page",
+                "description": "max clients per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_like",
+                "description": "multifilter 'like' for all columns",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "column",
+                "description": "'equal' filter column name(id, first_name, last_name, phone, email))",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "value",
+                "description": "value of 'equal' filter column",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
               }
             ],
             "responses": {
               "200": {
-                "description": "Returns users in database in JSON format"
+                "description": "Returns clients in database in JSON format"
               }
             }
           }
@@ -1051,12 +1084,8 @@
             "name": {
               "type": "string"
             },
-            "procedure_ids": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "uniqueItems": true
-              }
+            "procedure_id": {
+              "type": "number"
             },
             "price": {
               "type": "number"

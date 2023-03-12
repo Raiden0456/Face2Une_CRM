@@ -12,7 +12,7 @@ export function loadPack(req, res) {
       });
     else if (data.length == 0) {
       res.status(404).json({
-        success: false,
+        success: true,
         message: `No packages found.`,
       });
     } else {
@@ -45,7 +45,7 @@ export function updatePack(
   pack: {
     id: number;
     name: string;
-    procedure_ids: number[];
+    procedure_id: number;
     price: number;
     amount: number;
   },
@@ -72,7 +72,7 @@ export function updatePack(
 export function createPack(
   pack: {
     name: string;
-    procedure_ids: number[];
+    procedure_id: number;
     price: number;
     amount: number;
   },

@@ -14,22 +14,79 @@ const user = function (user) {
 };
 
 user.getUsers = async (
-  filter: { column: string; value: any } = { column: "", value: false},
+  params: {
+    index: number;
+    per_page: number;
+    filter_like: string;
+    column: string;
+    value: any;
+  },
   result
 ) => {
+  // set default values //
   var resp;
-  resp = filter.value
-  ? 
-  await supabase
-    .from("users")
-    .select("*")
-    .eq(filter.column, filter.value)
-  :
-  await supabase
-    .from("users")
-    .select("*");
+  let total;
+  let start_from = 0;
+  let to = 100;
+  //******//
 
-  return result(resp.error, resp.data);
+  // Pagination set where index = page number and per_page = max amount of entries per page //
+  if(params.index && params.per_page){
+  start_from = (params.index - 1) * params.per_page;
+  to = Number(start_from) + Number(params.per_page) - 1;
+  }
+  //******//
+
+  if (params.filter_like) {
+    resp = await supabase
+      .from("users")
+      .select("*")
+      .or(
+        "first_name.ilike.%" +
+          params.filter_like +
+          "%, last_name.ilike.%" +
+          params.filter_like +
+          "%, email.ilike.%" +
+          params.filter_like +
+          "%, phone.ilike.%" +
+          params.filter_like +
+          "%"
+      )
+      .range(start_from, to);
+
+    total = await supabase
+      .from("users")
+      .select("id")
+      .or(
+        "first_name.ilike.%" +
+          params.filter_like +
+          "%, last_name.ilike.%" +
+          params.filter_like +
+          "%, email.ilike.%" +
+          params.filter_like +
+          "%, phone.ilike.%" +
+          params.filter_like +
+          "%"
+      );
+  } else {
+    if((params.column && !params.value) || (!params.column && params.value))
+      return result(null, [], 0);
+    resp = params.value
+      ? await supabase
+          .from("users")
+          .select("*")
+          .eq(params.column, params.value)
+          .range(start_from, to)
+      : await supabase.from("users").select("*").range(start_from, to);
+
+    total = params.value
+      ? await supabase
+          .from("users")
+          .select("id")
+          .eq(params.column, params.value)
+      : await supabase.from("users").select("id");
+  }
+  return result(resp.error, resp.data, total.data.length);
 };
 
 // Section may be used to register a new user`as well as create a new user as an admin //
