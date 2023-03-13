@@ -7,7 +7,7 @@ interface IPackageData {
   name: string;
   price: number;
   amount: number;
-  procedure_ids: number[];
+  procedure_id: number;
 }
 
 export class ProceduresService {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input } from './base/Input';
-import { Checkbox } from './base/Checkbox';
+import { Checkbox, Radio } from './base/Checkbox';
 import useForm from '../utils/useForm';
 import { ButtonContained, ButtonOutlined } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
@@ -144,7 +144,7 @@ export function AddPackage() {
   const proceduresService = new ProceduresService();
   const [showForm, setShowForm] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
-  const [procedures, setProcedures] = useState({});
+  const [procID, setProcID] = useState<number | null>(null);
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
     name: '',
     price: '',
@@ -155,16 +155,12 @@ export function AddPackage() {
     e.preventDefault();
     setLoader(true);
 
-    proceduresService.createPackage({ ...inputs, procedure_ids: filterObjectToArray(procedures) }).then((r) => {
+    proceduresService.createPackage({ ...inputs, procedure_id: procID }).then((r) => {
       setLoader(false);
       setShowForm(false);
     });
 
     window.location.reload();
-  };
-
-  const handleCheckBoxes = (e: any, id: number) => {
-    setProcedures({ ...procedures, [id]: e });
   };
 
   return (
@@ -214,9 +210,16 @@ export function AddPackage() {
                   <h4>Select Procedure(s):</h4>
                   <div>
                     {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
-                      <Checkbox onChange={(e) => handleCheckBoxes(e, proc.id)} key={proc.id}>
+                      <Radio
+                        required
+                        name="procedures"
+                        value={proc.id}
+                        style={{ marginRight: '0.5rem' }}
+                        onChange={(e) => setProcID(Number(e))}
+                        key={proc.id}
+                      >
                         {proc.name}
-                      </Checkbox>
+                      </Radio>
                     ))}
                   </div>
                 </div>
