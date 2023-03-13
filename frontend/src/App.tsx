@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import MainAuth from './pages/Auth/MainAuth';
 import MainLayout from './layer/MainLayout';
-import { PrivateRouteAdmin } from './layer/PrivateRoute';
+import { PrivateRouteAdmin, PrivateRouteAdminOrEmployee } from './layer/PrivateRoute';
 import { AuthService } from './service/AuthService';
 import { AuthStore } from './store/Auth.store';
 import { WIDTH_QUERY } from './const/widthQuery';
@@ -14,6 +14,7 @@ import { Confirmation } from './pages/Confirmation';
 import { Clients } from './pages/Clients';
 import { ConfirmationPackage } from './pages/ConfirmationPackage';
 import { Calendar } from './pages/Calendar';
+import { Employees } from './pages/Employees';
 //
 require('./App.scss');
 
@@ -55,6 +56,9 @@ const App = observer(() => {
             <Route path="/confirmation-package" element={<ConfirmationPackage />} />
             <Route element={<PrivateRouteAdmin />}>
               <Route path="/clients" element={<Clients />} />
+              <Route path="/employees" element={<Employees />} />
+            </Route>
+            <Route element={<PrivateRouteAdminOrEmployee />}>
               <Route path="/calendar" element={<Calendar />} />
             </Route>
           </Routes>

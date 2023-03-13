@@ -91,6 +91,10 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+
+  a {
+    margin-right: 1rem;
+  }
 }
 
 @media screen and (max-width: 821px) {
