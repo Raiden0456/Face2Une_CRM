@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
-import { ButtonContained } from '../components/base/Button';
+import { ButtonContained, ButtonOutlined } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import { CouponsService } from '../service/CouponsService';
 import DataTable from 'react-data-table-component';
 import Moment from 'moment';
+import { ModalStore } from '../store/Modal.store';
 
 import s from './Coupons.scss';
 
@@ -30,19 +31,51 @@ const customTableStyles = {
 
 const ROWS_PER_PAGE = 10;
 
+// Delete Coopon
+const deleteHandler = async (id: number) => {
+  ModalStore.setDeleteItem({ deleteType: 'coupon', id });
+  ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
+};
+
 const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },
   { name: 'Name', selector: (row: any) => row.name, sortable: true },
   { name: 'Code', selector: (row: any) => row.code, sortable: true },
   { name: 'Discount', selector: (row: any) => row.discount, sortable: true },
-  { name: 'Procedures', cell: (row: { procedure_names: any[]; }) => (
-    <div>
-      {row.procedure_names.map((names, i) => (
-        <div key={i}>{names}</div>
-      ))}
-    </div>
-  ), sortable: false },
-  { name: 'Expiry date', selector: (row: any) => Moment(row.expiry_date).format("MMMM d, yyyy HH:mm"), sortable: true },
+  {
+    name: 'Procedures',
+    cell: (row: { procedure_names: any[] }) => (
+      <div>
+        {row.procedure_names.map((names, i) => (
+          <div key={i}>{names}</div>
+        ))}
+      </div>
+    ),
+    sortable: false,
+  },
+  { name: 'Expiry date', selector: (row: any) => Moment(row.expiry_date).format('MMMM d, yyyy HH:mm'), sortable: true },
+  {
+    name: '',
+    selector: (row: any) => (
+      <ButtonContained
+        width="100%"
+        style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
+        onClick={() => console.log('Edit')}
+      >
+        Edit
+      </ButtonContained>
+    ),
+    sortable: false,
+  },
+  {
+    name: '',
+    selector: (row: any) => (
+      <ButtonOutlined width="100%" onClick={() => deleteHandler(row.id)}>
+        Delete
+      </ButtonOutlined>
+    ),
+    sortable: false,
+  },
 ];
 
 const paginationComponentOptions = {

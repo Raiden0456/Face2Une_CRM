@@ -105,7 +105,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
     }
   };
 
-  // Delete Package Box
+  // Delete Procedure Box
   const deleteHandler = async () => {
     ModalStore.setDeleteItem({ deleteType: 'procedure', id: procedure.id });
     ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
