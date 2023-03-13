@@ -41,7 +41,7 @@ import dotenv from "dotenv";
     }
     if(process.env.NODE_ENV === 'production') {
       app.get("*", (req, res) => {
-        res.sendFile(path.resolve("./dist", "public","build", "index.html"));
+        res.sendFile(path.join(__dirname, 'public', 'build', 'index.html'));
       });
     }
     app.use(express.static(path.join(__dirname, 'public', 'build')));
