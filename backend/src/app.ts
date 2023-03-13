@@ -39,13 +39,6 @@ import dotenv from "dotenv";
       );
       
     }
-    if(process.env.NODE_ENV === 'production') {
-      app.use(express.static(path.resolve('./dist', 'src', 'public', 'build')));
-      app.get("*", (req, res) => {
-        res.sendFile(path.resolve('./dist', 'src', 'public', 'build', 'index.html'));
-      });
-    }
-
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
@@ -56,7 +49,13 @@ import dotenv from "dotenv";
       saveUninitialized: true,
       cookie: { maxAge: oneYear },
       resave: true
-  }))
+    }))
+    if(process.env.NODE_ENV === 'production') {
+      app.use(express.static(path.resolve('./dist', 'src', 'public', 'build')));
+      app.get("*", (req, res) => {
+        res.sendFile(path.resolve('./dist', 'src', 'public', 'build', 'index.html'));
+      });
+    }
 
 ////////////////
 
