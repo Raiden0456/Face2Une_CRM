@@ -50,12 +50,7 @@ import dotenv from "dotenv";
       cookie: { maxAge: oneYear },
       resave: true
     }))
-    if(process.env.NODE_ENV === 'production') {
-      app.use(express.static(path.resolve('./dist', 'src', 'public', 'build')));
-      app.get("*", (req, res) => {
-        res.sendFile(path.resolve('./dist', 'src', 'public', 'build', 'index.html'));
-      });
-    }
+    
 
 ////////////////
 
@@ -66,6 +61,13 @@ app.use('/', AppointmentsRouter);
 app.use('/', ClientsRouter);
 app.use('/', AuthRouter);
 app.use('/', PackagesRouter);
+
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve('./dist', 'src', 'public', 'build')));
+  app.get("/*", (req, res) => {
+    res.sendFile(path.resolve('./dist', 'src', 'public', 'build', 'index.html'));
+  });
+}
 /////////////
 
 export default app;
