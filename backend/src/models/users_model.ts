@@ -2,6 +2,7 @@
 // import client from "./db.js";
 import supabase from "./db.js";
 import bcrypt from "bcrypt";
+import { validate } from 'deep-email-validator'
 
 // Constructor
 const user = function (user) {
@@ -102,6 +103,9 @@ user.createUser = async (
   result
 ) => {
   var resp;
+  let email_valid = await validate(user.email);
+  if(!email_valid.valid)
+    return result({message: "email is not valid"}, []);
   let check = await supabase.from("users").select("id").eq("email", user.email);
 
   if (check.data.length == 0) 
