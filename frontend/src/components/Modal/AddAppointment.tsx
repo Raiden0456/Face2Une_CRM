@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import useForm from '../utils/useForm';
-import { Checkbox, Radio } from './base/Checkbox';
-import { Input, NumberInput } from './base/Input';
-import { ButtonContained } from './base/Button';
-import { saloon_ids } from '../utils/staticData';
-import { ProceduresStore } from '../store/Procedures.store';
+import useForm from '../../utils/useForm';
+import { Checkbox, Radio } from '../base/Checkbox';
+import { Input, NumberInput } from '../base/Input';
+import { ButtonContained } from '../base/Button';
+import { saloon_ids } from '../../utils/staticData';
+import { ProceduresStore } from '../../store/Procedures.store';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import DatePicker from 'react-datepicker';
-import { ClientService } from '../service/ClientService';
-import { AppointmentService } from '../service/AppointmentService';
-import { filterObjectToArray } from '../utils/funcs';
-import { SelectField } from './base/SelectField';
-import { formatPhoneNumber } from '../utils/formatPhone';
+import { ClientService } from '../../service/ClientService';
+import { AppointmentService } from '../../service/AppointmentService';
+import { filterObjectToArray } from '../../utils/funcs';
+import { SelectField } from '../base/SelectField';
+import { formatPhoneNumber } from '../../utils/formatPhone';
 
 import s from './AddAppointment.scss';
 

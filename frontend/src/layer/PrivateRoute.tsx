@@ -9,9 +9,22 @@ export const PrivateRouteAdmin = observer(() => {
 
   return (
     <>
-      {AuthStore.authorized === 'auth' && <Outlet />}
-      {AuthStore.authorized === 'not_auth' ||
-        (AuthStore.rights !== 'admin' && <Navigate state={{ redirectUrl: location }} to="/" />)}
+      {AuthStore.authorized === 'auth' && AuthStore.rights === 'admin' && <Outlet />}
+      {AuthStore.authorized === 'not_auth' && <Navigate state={{ redirectUrl: location }} to="/" />}
+      {!AuthStore.authorized || (AuthStore.authorized === 'check_auth' && 'Loading...')}
+    </>
+  );
+});
+
+export const PrivateRouteAdminOrEmployee = observer(() => {
+  const location = useLocation();
+
+  return (
+    <>
+      {AuthStore.authorized === 'auth' && (AuthStore.rights === 'employee' || AuthStore.rights === 'admin') && (
+        <Outlet />
+      )}
+      {AuthStore.authorized === 'not_auth' && <Navigate state={{ redirectUrl: location }} to="/" />}
       {!AuthStore.authorized || (AuthStore.authorized === 'check_auth' && 'Loading...')}
     </>
   );

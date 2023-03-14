@@ -1,16 +1,24 @@
 import { JSONFetch, JSONFetchDelete, JSONFetchGet } from '../api/fetchMethod';
 import { ModalStore } from '../store/Modal.store';
-import { CouponData } from '../store/Coupons.store';
+
+interface ICoupon {
+  name: string;
+  code: string;
+  procedure_ids: number[];
+  discount: number;
+  expiry_date: string;
+}
 
 export class CouponsService {
-  
   async getCoupons(index: number, perPage: number, filterLike?: string | boolean) {
-    const r = await JSONFetchGet(`coupon?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,);
+    const r = await JSONFetchGet(
+      `coupon?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,
+    );
 
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
     }
   }
 
@@ -20,28 +28,27 @@ export class CouponsService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
     }
   }
 
-  async updateCoupon(updateCoupon: CouponData) {
+  async updateCoupon(updateCoupon: any) {
     const r = await JSONFetch('update_coupon', updateCoupon);
 
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
     }
   }
 
-
-  async createCoupon(createCoupon: CouponData) {
+  async createCoupon(createCoupon: ICoupon) {
     const r = await JSONFetch('create_coupon', createCoupon);
 
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
     }
   }
 
@@ -51,7 +58,7 @@ export class CouponsService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
     }
   }
 }
