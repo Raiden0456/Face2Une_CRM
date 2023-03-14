@@ -31,7 +31,7 @@ const customTableStyles = {
 
 const ROWS_PER_PAGE = 10;
 
-// Delete Coopon
+// Delete Coupon
 const deleteHandler = async (id: number) => {
   ModalStore.setDeleteItem({ deleteType: 'coupon', id });
   ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
@@ -114,6 +114,12 @@ export const Coupons = () => {
     fetchCoupons(1);
   }, []);
 
+  // Add Coupon
+  const addHandler = async () => {
+    ModalStore.setAddItem({ addType: 'coupon' });
+    ModalStore.setModalStatus({ open: true, action: 'addItem' });
+  };
+
   return (
     <Container
       header={<NavBar />}
@@ -134,6 +140,11 @@ export const Coupons = () => {
               />
               <ButtonContained width="auto" onClick={handleSearch}>
                 Search
+              </ButtonContained>
+            </div>
+            <div>
+              <ButtonContained width="auto" onClick={addHandler}>
+                Add Coupon
               </ButtonContained>
             </div>
             <div className={s.Coupons__table}>

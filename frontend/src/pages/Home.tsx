@@ -4,7 +4,6 @@ import { ButtonContained } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import ProcedureBox from '../components/ProcedureBox';
-import { ProceduresService } from '../service/ProceduresService';
 import { TailSpinFixed } from '../components/TailSpin';
 import { ProceduresStore } from '../store/Procedures.store';
 import PackageBox from '../components/PackageBox';
@@ -13,41 +12,9 @@ import { AddPackage, AddProcedure } from '../components/AddProductForms';
 
 import s from './Home.scss';
 
-export const Home = () => {
-  const proceduresService = new ProceduresService();
+export const Home = ({ loading }: { loading: boolean }) => {
   const { inputs, handleChange, clearForm, resetForm } = useForm({ email: '', promo: '' });
   const [displayInput, setDisplayInput] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [packages, setPackages] = useState([]);
-
-  // Fetch and Store Main & Optional Procedures
-  useEffect(() => {
-    setLoading(true);
-    proceduresService.getOptionalProcedures().then((optionalProcedures) => {
-      if (optionalProcedures?.success) {
-        ProceduresStore.setProceduresStatus({
-          ...ProceduresStore.proceduresStatus,
-          optionalProceduresData: optionalProcedures.data,
-        });
-      }
-
-      proceduresService.getProcedures().then((procedures) => {
-        if (procedures?.success) {
-          ProceduresStore.setProceduresStatus({
-            ...ProceduresStore.proceduresStatus,
-            proceduresData: procedures.data,
-          });
-        }
-
-        proceduresService.getPackages().then((packages) => {
-          if (packages?.success) {
-            setPackages(packages.data);
-            setLoading(false);
-          }
-        });
-      });
-    });
-  }, []);
 
   return (
     <Container
@@ -91,7 +58,7 @@ export const Home = () => {
                 <h2>Packages</h2>
               </div>
 
-              {packages?.map((packageItem, i) => {
+              {ProceduresStore.proceduresStatus.packagesData?.map((packageItem, i) => {
                 return <PackageBox key={i} packageItem={packageItem} />;
               })}
 
