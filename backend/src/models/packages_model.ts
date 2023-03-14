@@ -29,7 +29,7 @@ package_p.getPackById = async (id: number, result) => {
 };
 
 package_p.createPack = async (
-  proc: {
+  pack: {
     name: string;
     procedure_ids: number[];
     price: number;
@@ -41,10 +41,10 @@ package_p.createPack = async (
     .from("packages")
     .insert([
       {
-        name: proc.name,
-        procedure_id: proc.procedure_id,
-        price: proc.price,
-        amount: proc.amount,
+        name: pack.name,
+        procedure_id: pack.procedure_id,
+        price: pack.price,
+        amount: pack.amount,
       },
     ])
     .select();
@@ -52,7 +52,7 @@ package_p.createPack = async (
 };
 
 package_p.updatePackById = async (
-  proc: {
+  pack: {
     id: number;
     name: string;
     procedure_ids: number[];
@@ -65,13 +65,13 @@ package_p.updatePackById = async (
     .from("packages")
     .update([
       {
-        name: proc.name,
-        procedure_id: proc.procedure_id,
-        price: proc.price,
-        amount: proc.amount,
+        name: pack.name,
+        procedure_id: pack.procedure_id,
+        price: pack.price,
+        amount: pack.amount,
       },
     ])
-    .eq("id", proc.id)
+    .eq("id", pack.id)
     .select();
   return result(error, data);
 };
@@ -127,8 +127,10 @@ package_p.buyPackages = async (
       return result(error, null);
     }
   }
+  // TODO: delete promocode from console //
   return result(null, {message: "Packages bought successfully", promocodes: all_promocodes});
 };
+
 // Using packages promocodes //
 package_p.usePackage = async (
   client_id: number,

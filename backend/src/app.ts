@@ -19,6 +19,8 @@ import ClientsRouter from "./routes/clients_route.js";
 import AuthRouter from "./routes/auth_route.js";
 import PackagesRouter from "./routes/packages_route.js";
 import CouponsRouter from "./routes/coupons_route.js";
+import CertificatesRouter from "./routes/certificates_route.js";
+import CodeRouter from "./routes/codes_route.js";
 import dotenv from "dotenv";
 ///////////////////////////
 
@@ -60,6 +62,9 @@ app.use("/", AppointmentsRouter);
 app.use("/", ClientsRouter);
 app.use("/", AuthRouter);
 app.use("/", PackagesRouter);
+app.use("/", CouponsRouter);
+app.use("/", CertificatesRouter);
+app.use("/", CodeRouter);
 
 // production mode //
 if (process.env.NODE_ENV === "production") {
@@ -71,8 +76,5 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 /////////////////////
-
-app.use("/", CouponsRouter);
-/////////////
 
 export default app;

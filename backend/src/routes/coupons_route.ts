@@ -20,10 +20,5 @@ router.delete('/delete_coupon/:couponid', function(req, res){
     coupon.deleteCoupon(req.params.couponid, res);
 });
 
-// // use promocodes //
-// router.post('/use_pack', function(req, res){
-//     pack.usePackage(req.body.client_id, req.body.promocode, res);
-// });
-
 
 export default router;

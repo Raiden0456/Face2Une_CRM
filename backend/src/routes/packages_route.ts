@@ -24,9 +24,6 @@ router.delete('/delete_pack/:packid', function(req, res){
 router.post('/buy_pack', function(req, res){
     pack.buyPackages(req.body.client_id, req.body.packages, res);
 });
-router.post('/use_pack', function(req, res){
-    pack.usePackage(req.body.client_id, req.body.promocode, res);
-});
 
 
 export default router;

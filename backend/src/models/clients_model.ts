@@ -2,6 +2,7 @@
 // import client from "./db.js";
 import supabase from "./db.js";
 import p_validator from "validate-phone-number-node-js";
+import { validate } from 'deep-email-validator'
 // Constructor
 const client = function (client) {
   this.id = client.id;
@@ -98,6 +99,9 @@ client.createClient = async (
   // email and phone check //
   if(client.email)
   {
+    let email_valid = await validate(client.email);
+    if(!email_valid.valid)
+      resp = { error: { message: "email is not valid" }, data: [] };
     let check = await supabase
     .from("clients")
     .select("id")
