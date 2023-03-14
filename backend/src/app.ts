@@ -40,8 +40,8 @@ import dotenv from "dotenv";
         swaggerUi.serve, 
         swaggerUi.setup(swaggerDocument)
       );
+      
     }
-    app.use(express.static(path.join(__dirname, 'public', 'build')));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
@@ -52,7 +52,8 @@ import dotenv from "dotenv";
       saveUninitialized: true,
       cookie: { maxAge: oneYear },
       resave: true
-  }))
+    }))
+    
 
 ////////////////
 
@@ -66,6 +67,15 @@ app.use('/', PackagesRouter);
 app.use('/', CouponsRouter);
 app.use('/', CertificatesRouter);
 app.use('/', CodeRouter);
+// production mode //
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve('./dist', 'src', 'public', 'build')));
+  app.get("/*", (req, res) => {
+    res.sendFile(path.resolve('./dist', 'src', 'public', 'build', 'index.html'));
+  });
+}
+/////////////////////
+
 /////////////
 
 export default app;

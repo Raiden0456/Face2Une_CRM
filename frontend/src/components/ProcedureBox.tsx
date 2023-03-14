@@ -238,7 +238,6 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
           <div className={s.BookingBox__content}>
             <p>{procedure?.description}</p>
           </div>
-          <h4>Add-ons:</h4>
           {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
             <div className={s.BookingBox__optionalProcedures}>
               {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (
