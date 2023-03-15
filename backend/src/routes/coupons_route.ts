@@ -8,7 +8,7 @@ router.get('/coupon', function(req, res){
     coupon.loadCoupon(req.query, res);
 });
 router.get('/coupon/:couponid', function(req, res){
-    coupon.loadCoupon({column: "id", value: req.params.clientid}, res);
+    coupon.loadCoupon({column: "id", value: req.params.couponid}, res);
 });
 router.post('/create_coupon', function(req, res){
     coupon.createCoupon(req.body, res);

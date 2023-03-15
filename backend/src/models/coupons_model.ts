@@ -38,9 +38,9 @@ coupon.getAllcoupon = async (
   //******//
 
   // Pagination set where index = page number and per_page = max amount of entries per page //
-  if(params.index && params.per_page){
-  start_from = (params.index - 1) * params.per_page;
-  to = Number(start_from) + Number(params.per_page) - 1;
+  if (params.index && params.per_page) {
+    start_from = (params.index - 1) * params.per_page;
+    to = Number(start_from) + Number(params.per_page) - 1;
   }
   //******//
 
@@ -66,7 +66,6 @@ coupon.getAllcoupon = async (
     }
     //******//
 
-    
     total = await supabase
       .from("coupons")
       .select("id")
@@ -78,8 +77,9 @@ coupon.getAllcoupon = async (
           "%"
       );
   } else {
-    if((params.column && !params.value) || (!params.column && params.value))
+    if ((params.column && !params.value) || (!params.column && params.value))
       return result(null, [], 0);
+
     resp = params.value
       ? await supabase
           .from("coupons")
@@ -160,12 +160,8 @@ coupon.updateCouponById = async (
 };
 
 coupon.deleteCouponById = async (id: number, result) => {
-  const { data, error } = await supabase
-    .from("coupons")
-    .delete()
-    .eq("id", id);
+  const { data, error } = await supabase.from("coupons").delete().eq("id", id);
   return result(error, data);
 };
-
 
 export default coupon;
