@@ -73,6 +73,7 @@
     "mobx": "6.3.0",
     "mobx-react": "7.1.0",
     "mobx-remotedev": "0.3.6",
+    "moment": "^2.29.4",
     "react-calendar": "^3.7.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-data-table-component": "^7.5.3",

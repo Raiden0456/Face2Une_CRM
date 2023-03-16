@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Modals } from '../components/Modals';
+import { Modals } from '../components/Modal/Modals';
 import cn from 'classnames';
 
 import s from './MainLayout.scss';

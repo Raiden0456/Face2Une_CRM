@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ButtonContained } from './base/Button';
+import { ButtonContained } from '../base/Button';
 
 import s from './StatusContainer.scss';
-import { ModalStore } from '../store/Modal.store';
+import { ModalStore } from '../../store/Modal.store';
 
 export const StatusContainer = () => {
   const { action } = ModalStore.modalStatus;

@@ -5,7 +5,6 @@ import { Input } from './base/Input';
 import { TailSpinFixed } from './TailSpin';
 import useForm from '../utils/useForm';
 import { ModalStore } from '../store/Modal.store';
-import { filterObjectToArray } from '../utils/funcs';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
 import { Checkbox, Radio } from './base/Checkbox';

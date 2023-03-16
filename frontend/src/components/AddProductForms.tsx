@@ -7,7 +7,6 @@ import { ProceduresService } from '../service/ProceduresService';
 import { AuthStore } from '../store/Auth.store';
 import { saloon_ids } from '../utils/staticData';
 import { ProceduresStore } from '../store/Procedures.store';
-import { filterObjectToArray } from '../utils/funcs';
 
 import s from './AddProductForms.scss';
 
