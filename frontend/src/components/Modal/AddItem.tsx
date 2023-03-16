@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ButtonContained, ButtonOutlined } from '../base/Button';
 import { CouponsService } from '../../service/CouponsService';
 import useForm from '../../utils/useForm';
@@ -14,16 +14,30 @@ import ReactDatePicker from 'react-datepicker';
 
 import s from './AddItem.scss';
 
-const AddItem: React.FC<IAddItem> = ({ addType }) => {
+const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
   const couponService = new CouponsService();
   const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 30), 16));
   const [procedures, setProcedures] = useState({});
-  const { inputs, handleChange, clearForm, resetForm } = useForm({
+  const { inputs, handleChange, clearForm, resetForm, setInputs } = useForm({
     name: '',
     code: '',
     discount: '',
   });
+
+  useEffect(() => {
+    if (edit && id) {
+      couponService.getCoupon(id).then((r) => {
+        if (r.success) {
+          setInputs({
+            name: r.data.name,
+            code: r.data.code,
+            discount: r.data.discount,
+          });
+        }
+      });
+    }
+  }, []);
 
   // Add Item Handler
   const handleSubmit = async () => {

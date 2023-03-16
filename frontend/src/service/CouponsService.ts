@@ -22,7 +22,7 @@ export class CouponsService {
     }
   }
 
-  async getCoupon(id: number | string | null) {
+  async getCoupon(id: string | number) {
     const r = await JSONFetchGet(`coupon/${id}`);
 
     if (r?.success) {
