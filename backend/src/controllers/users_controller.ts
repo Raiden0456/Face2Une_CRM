@@ -117,7 +117,7 @@ export function updateUser(
   });
 }
 
-// Create a user or register a user on sign in page //
+// Create a user as admin //
 export function createUser(
   _user: {
     first_name: string;
@@ -218,12 +218,88 @@ export function deleteUser(id: number, res) {
   });
 }
 
+export function signUp(
+  _user: {
+    first_name: string;
+    last_name: string;
+    phone: string;
+    email: string;
+    password: string;
+    rights: string;
+  },
+  res
+) {
+  user.signUp(_user, async (err, data) => {
+    if (err)
+      res.status(500).json({
+        success: false,
+        message: err.message || "Some error occurred while creating user.",
+      });
+    else {
+      // Create a client for the user if client with such email does not exist and user is a client //
+      // assigning client variable to response from getClients //
+      if(_user.rights == "client")
+      {
+        var client = (await clients.getClients(
+          {
+            column: "email", value: _user.email,
+            index: 1,
+            per_page: 1,
+            filter_like: ""
+          },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              return data;
+            }
+          }
+        )) as any;
+
+        if (client.length == 0) {
+          const client = {
+            first_name: _user.first_name,
+            last_name: _user.last_name,
+            phone: _user.phone,
+            email: _user.email,
+            user_id: data[0].id,
+          };
+          clients.createClient(client, (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("Created client for user with id: " + data[0].id);
+            }
+          });
+        } else {
+          //update client with user_id //
+          const client_update = {
+            id: client[0].id,
+            first_name: _user.first_name,
+            last_name: _user.last_name,
+            phone: _user.phone,
+            email: _user.email,
+            user_id: data[0].id,
+          };
+          clients.updateClientById(client_update, (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("Updated client with same email: " + data[0].email);
+            }
+          });
+        }
+      }
+      res.json({ success: true, data: data });
+    }
+  });
+}
 // Login a user with the specified email and password in the request //
-export function loginUser(
+export function signIn(
   _user: { email: string; password: string },
   res
 ) {
-  user.loginUser(_user, (err, data) => {
+  user.signIn(_user, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -235,6 +311,34 @@ export function loginUser(
         message: err.message || "User with email ${_user.email} not found.",
       });
     } else {
+      res.json({ success: true, data: data});
+    }
+  });
+}
+
+export function session_user(res) {
+  user.session_user((err, data) => {
+    if (err)
+    {
+      res.status(500).json({
+        success: false,
+        message: err.message || "Some error occurred while getting user session.",
+      });
+    }
+    else {
+      res.json({ success: true, data: data});
+    }
+  }
+  )
+}
+export function signOut(res) {
+  user.signOut((err, data) => {
+    if (err)
+      res.status(500).json({
+        success: false,
+        message: err.message || "Some error occurred while logging out.",
+      });
+    else {
       res.json({ success: true, data: data });
     }
   });
