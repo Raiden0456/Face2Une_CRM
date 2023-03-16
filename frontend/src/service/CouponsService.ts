@@ -7,6 +7,7 @@ interface ICoupon {
   procedure_ids: number[];
   discount: number;
   expiry_date: string;
+  id?: number;
 }
 
 export class CouponsService {
@@ -32,7 +33,7 @@ export class CouponsService {
     }
   }
 
-  async updateCoupon(updateCoupon: any) {
+  async updateCoupon(updateCoupon: ICoupon) {
     const r = await JSONFetch('update_coupon', updateCoupon);
 
     if (r?.success) {

@@ -27,13 +27,16 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
 
   useEffect(() => {
     if (edit && id) {
+      setLoading(true);
       couponService.getCoupon(id).then((r) => {
         if (r.success) {
+          const { name, code, discount } = r.data[0];
           setInputs({
-            name: r.data.name,
-            code: r.data.code,
-            discount: r.data.discount,
+            name,
+            code,
+            discount,
           });
+          setLoading(false);
         }
       });
     }
@@ -44,14 +47,25 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
     setLoading(true);
 
     if (addType === 'coupon') {
-      couponService
-        .createCoupon({ ...inputs, procedure_ids: filterObjectToArray(procedures), expiry_date: startDate })
-        .then((r) => {
-          if (r.success) {
-            console.log('Successfully Added!');
-            window.location.reload();
-          }
-        });
+      if (!edit) {
+        couponService
+          .createCoupon({ ...inputs, procedure_ids: filterObjectToArray(procedures), expiry_date: startDate })
+          .then((r) => {
+            if (r.success) {
+              console.log('Successfully Added!');
+              window.location.reload();
+            }
+          });
+      } else {
+        couponService
+          .updateCoupon({ ...inputs, procedure_ids: filterObjectToArray(procedures), expiry_date: startDate, id })
+          .then((r) => {
+            if (r.success) {
+              console.log('Successfully Updated!');
+              window.location.reload();
+            }
+          });
+      }
     }
 
     setLoading(false);
@@ -77,7 +91,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
             }}
             className={s.AddItemForm}
           >
-            <h2>Create a New Coupon</h2>
+            {edit ? <h2>Edit Coupon</h2> : <h2>Create a New Coupon</h2>}
             <div className={s.AddItemForm__inputs}>
               <div>
                 <Input
