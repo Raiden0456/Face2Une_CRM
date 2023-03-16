@@ -40,7 +40,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
         if (!r.success) {
           setError({ status: true, message: r.message });
         } else {
-          setSuccess({ status: true, message: 'Please, sign in to your account.' });
+          setSuccess({ status: true, message: 'Verification has been sent to your email.' });
         }
       });
     }
