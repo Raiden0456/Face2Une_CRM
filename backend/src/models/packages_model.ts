@@ -13,10 +13,10 @@ const package_p = function (package_p) {
 };
 
 package_p.getAllpack = async (result) => {
-    let { data: package_ps, error } = await supabase
-      .from("packages")
-      .select("*")
-      .order("price", { ascending: true });
+  let { data: package_ps, error } = await supabase
+    .from("packages")
+    .select("*")
+    .order("price", { ascending: true });
   return result(error, package_ps);
 };
 
@@ -77,20 +77,19 @@ package_p.updatePackById = async (
 };
 
 package_p.deletePackById = async (id: number, result) => {
-  const { data, error } = await supabase
-    .from("packages")
-    .delete()
-    .eq("id", id);
+  const { data, error } = await supabase.from("packages").delete().eq("id", id);
   return result(error, data);
 };
 
 // Buying and tracking packages //
 package_p.buyPackages = async (
   client_id: number,
-  packages: [{
-    package_id: number;
-    amount_bought: number;
-  }],
+  packages: [
+    {
+      package_id: number;
+      amount_bought: number;
+    }
+  ],
   result
 ) => {
   let all_promocodes = [];
@@ -112,17 +111,17 @@ package_p.buyPackages = async (
     });
     all_promocodes.push(promocode[0]);
     // insert packages //
-    const { data, error } = await supabase
-      .from("client_packages")
-      .insert([
-        {
-          client_id: client_id,
-          package_id: packages[i].package_id,
-          amount_left_in: amount_add,
-          promocode: promocode[0],
-          expiry_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-        },
-      ])
+    const { data, error } = await supabase.from("client_packages").insert([
+      {
+        client_id: client_id,
+        package_id: packages[i].package_id,
+        amount_left_in: amount_add,
+        promocode: promocode[0],
+        expiry_date: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 1)
+        ),
+      },
+    ]);
     if (error) {
       return result(error, null);
     }

@@ -37,6 +37,12 @@ const deleteHandler = async (id: number) => {
   ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
 };
 
+// Edit Coupon
+const addHandler = async (id: number | null) => {
+  ModalStore.setAddItem({ addType: 'coupon', edit: true, id });
+  ModalStore.setModalStatus({ open: true, action: 'addItem' });
+};
+
 const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },
   { name: 'Name', selector: (row: any) => row.name, sortable: true },
@@ -60,7 +66,7 @@ const columns = [
       <ButtonContained
         width="100%"
         style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
-        onClick={() => console.log('Edit')}
+        onClick={() => addHandler(row.id)}
       >
         Edit
       </ButtonContained>
@@ -116,7 +122,7 @@ export const Coupons = () => {
 
   // Add Coupon
   const addHandler = async () => {
-    ModalStore.setAddItem({ addType: 'coupon' });
+    ModalStore.setAddItem({ addType: 'coupon', edit: false, id: null });
     ModalStore.setModalStatus({ open: true, action: 'addItem' });
   };
 

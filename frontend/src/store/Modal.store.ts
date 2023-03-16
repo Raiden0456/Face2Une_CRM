@@ -17,6 +17,8 @@ export interface IDeleteItem {
 
 export interface IAddItem {
   addType: 'coupon' | 'employee' | '';
+  edit: boolean;
+  id: number | null;
 }
 
 export interface IModalStore {
@@ -41,6 +43,8 @@ export const ModalStore = observable<IModalStore>({
   },
   addItem: {
     addType: '',
+    edit: false,
+    id: null,
   },
   setModalStatus({ open, action, redirectUrl, procedure }) {
     this.modalStatus = {
@@ -56,9 +60,11 @@ export const ModalStore = observable<IModalStore>({
       id,
     };
   },
-  setAddItem({ addType }) {
+  setAddItem({ addType, edit, id }) {
     this.addItem = {
       addType,
+      edit,
+      id,
     };
   },
 });
