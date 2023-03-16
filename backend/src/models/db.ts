@@ -14,7 +14,7 @@ const supabase = createClient(supabaseUrl, service_role_key, {
       persistSession: false
     }
   })
-  
+
   // Access auth admin api
 const adminAuthClient = supabase.auth.admin
 export default supabase;

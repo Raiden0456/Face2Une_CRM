@@ -13,10 +13,10 @@ const package_p = function (package_p) {
 };
 
 package_p.getAllpack = async (result) => {
-    let { data: package_ps, error } = await supabase
-      .from("packages")
-      .select("*")
-      .order("price", { ascending: true });
+  let { data: package_ps, error } = await supabase
+    .from("packages")
+    .select("*")
+    .order("price", { ascending: true });
   return result(error, package_ps);
 };
 
@@ -31,7 +31,7 @@ package_p.getPackById = async (id: number, result) => {
 package_p.createPack = async (
   pack: {
     name: string;
-    procedure_ids: number[];
+    procedure_id: number;
     price: number;
     amount: number;
   },
@@ -55,7 +55,7 @@ package_p.updatePackById = async (
   pack: {
     id: number;
     name: string;
-    procedure_ids: number[];
+    procedure_id: number;
     price: number;
     amount: number;
   },
@@ -77,20 +77,19 @@ package_p.updatePackById = async (
 };
 
 package_p.deletePackById = async (id: number, result) => {
-  const { data, error } = await supabase
-    .from("packages")
-    .delete()
-    .eq("id", id);
+  const { data, error } = await supabase.from("packages").delete().eq("id", id);
   return result(error, data);
 };
 
 // Buying and tracking packages //
 package_p.buyPackages = async (
   client_id: number,
-  packages: [{
-    package_id: number;
-    amount_bought: number;
-  }],
+  packages: [
+    {
+      package_id: number;
+      amount_bought: number;
+    }
+  ],
   result
 ) => {
   let all_promocodes = [];
@@ -112,31 +111,30 @@ package_p.buyPackages = async (
     });
     all_promocodes.push(promocode[0]);
     // insert packages //
-    const { data, error } = await supabase
-      .from("client_packages")
-      .insert([
-        {
-          client_id: client_id,
-          package_id: packages[i].package_id,
-          amount_left_in: amount_add,
-          promocode: promocode[0],
-          expiry_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-        },
-      ])
+    const { data, error } = await supabase.from("client_packages").insert([
+      {
+        client_id: client_id,
+        package_id: packages[i].package_id,
+        amount_left_in: amount_add,
+        promocode: promocode[0],
+        expiry_date: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 1)
+        ),
+      },
+    ]);
     if (error) {
       return result(error, null);
     }
   }
   // TODO: delete promocode from console //
-  return result(null, {message: "Packages bought successfully", promocodes: all_promocodes});
+  return result(null, {
+    message: "Packages bought successfully",
+    promocodes: all_promocodes,
+  });
 };
 
 // Using packages promocodes //
-package_p.usePackage = async (
-  client_id: number,
-  promocode: string,
-  result
-) => {
+package_p.usePackage = async (client_id: number, promocode: string, result) => {
   // Get current amount and expiry date in package //
   let current = await supabase
     .from("client_packages")
@@ -144,10 +142,13 @@ package_p.usePackage = async (
     .eq("client_id", client_id)
     .eq("promocode", promocode);
   let current_date = new Date();
-  let formatted_current_date = current_date.toISOString().split('T')[0]
+  let formatted_current_date = current_date.toISOString().split("T")[0];
   // remove one procedure from package //
   if (current.data.length > 0) {
-    if (current.data[0].amount_left_in > 0 && current.data[0].expiry_date >= formatted_current_date) {
+    if (
+      current.data[0].amount_left_in > 0 &&
+      current.data[0].expiry_date >= formatted_current_date
+    ) {
       // update amount of procedures //
       const { data, error } = await supabase
         .from("client_packages")
@@ -157,29 +158,27 @@ package_p.usePackage = async (
           },
         ])
         .eq("client_id", client_id)
-        .eq("promocode", promocode)
+        .eq("promocode", promocode);
       if (error) {
         return result(error, null);
       }
-    }
-    else {
+    } else {
       // Delete expired package promocode //
       const { data, error } = await supabase
         .from("client_packages")
         .delete()
         .eq("client_id", client_id)
-        .eq("promocode", promocode)
+        .eq("promocode", promocode);
       if (error) {
         return result(error, null);
       }
 
-      return result({message: "Ivalid or expired promocode"}, null);
+      return result({ message: "Ivalid or expired promocode" }, null);
     }
+  } else {
+    return result({ message: "Ivalid or expired promocode" }, null);
   }
-  else {
-    return result({message: "Ivalid or expired promocode"}, null);
-  }
-  return result(null, {message: "Package promocode used successfully" });
+  return result(null, { message: "Package promocode used successfully" });
 };
 
 export default package_p;
