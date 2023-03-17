@@ -45,7 +45,7 @@ const addHandler = async (id: number | null) => {
 
 const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },
-  { name: 'Name', selector: (row: any) => row.name, sortable: true },
+  { name: 'Name', selector: (row: any) => row.name, sortable: true, wrap: true },
   { name: 'Code', selector: (row: any) => row.code, sortable: true },
   { name: 'Discount', selector: (row: any) => row.discount, sortable: true },
   {
@@ -58,8 +58,9 @@ const columns = [
       </div>
     ),
     sortable: false,
+    wrap: true
   },
-  { name: 'Expiry date', selector: (row: any) => Moment(row.expiry_date).format('MMMM d, yyyy HH:mm'), sortable: true },
+  { name: 'Expiry date', selector: (row: any) => Moment(row.expiry_date).format('MMMM DD, YYYY HH:mm'), sortable: true, wrap: true },
   {
     name: '',
     selector: (row: any) => (
