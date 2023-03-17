@@ -6,7 +6,9 @@ import NavBar from '../components/Navbar';
 import { Scheduler } from '@aldabil/react-scheduler';
 import { AppointmentService } from '../service/AppointmentService';
 import { renameAndDeleteArrayObjects } from '../utils/funcs';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { LocationOnRounded, PersonRounded, PaymentsRounded, FaceRetouchingNaturalRounded } from '@mui/icons-material';
+import { formatPhoneNumber } from '../utils/formatPhone';
 
 import './Calendar.scss';
 
@@ -39,6 +41,12 @@ export const Calendar = () => {
           reservation_date_time: 'start',
           reservation_date_time_end: 'end',
           procedure_name: 'title',
+          additional_names: 'titles_additionals',
+          client_full_name: 'client_name',
+          client_phone: 'client_phone',
+          client_email: 'client_email',
+          total_price: 'price',
+          saloon_address: 'location',
         });
 
         console.log(result);
@@ -117,6 +125,44 @@ export const Calendar = () => {
               endHour: 20,
               step: 60,
               cellRenderer: ({ height, start, onClick, ...props }) => <CalendarAlert />,
+            }}
+            viewerExtraComponent={(fields, event) => {
+              return (
+                <div>
+                  <Typography
+                  style={{ display: "flex", alignItems: "center" }}
+                  color="textSecondary"
+                  variant="caption"
+                  noWrap
+                  >
+                    <LocationOnRounded />&nbsp; { event.location || "Unknown"} 
+                  </Typography>
+                  <Typography
+                  style={{ display: "flex", alignItems: "center" }}
+                  color="textSecondary"
+                  variant="caption"
+                  noWrap
+                  >
+                    <PersonRounded />&nbsp; { event.client_name + " (" +[formatPhoneNumber(event.client_phone), event.client_email].join(", ") + ")"}
+                  </Typography>
+                  <Typography
+                  style={{ display: "flex", alignItems: "center" }}
+                  color="textSecondary"
+                  variant="caption"
+                  noWrap
+                  >
+                    <FaceRetouchingNaturalRounded />&nbsp; { event.title + " + (" + (event.titles_additionals.join(", ") || "None") + ")"}
+                  </Typography>
+                  <Typography
+                  style={{ display: "flex", alignItems: "center" }}
+                  color="textSecondary"
+                  variant="caption"
+                  noWrap
+                  >
+                    <PaymentsRounded />&nbsp; { event.price + "€" || "None"}
+                  </Typography>
+                </div>
+              );
             }}
           />
         </>

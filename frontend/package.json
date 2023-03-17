@@ -35,6 +35,7 @@
     "@date-io/dayjs": "^2.13.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.12",
     "@react-spring/web": "^9.5.0",
     "@testing-library/jest-dom": "^5.16.1",
