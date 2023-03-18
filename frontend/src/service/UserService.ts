@@ -1,4 +1,4 @@
-import { JSONFetch, JSONFetchGet } from '../api/fetchMethod';
+import { JSONFetch, JSONFetchDelete, JSONFetchGet } from '../api/fetchMethod';
 import { ModalStore } from '../store/Modal.store';
 
 interface IGetUser {
@@ -10,6 +10,7 @@ interface IGetUser {
 }
 
 interface IEmployee {
+  id?: number;
   first_name: 'string';
   last_name: 'string';
   phone: 'string';
@@ -34,8 +35,38 @@ export class UserService {
     }
   }
 
+  async getEmployee(id: string | number) {
+    const r = await JSONFetchGet(`users/${id}`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+    }
+  }
+
   async createEmployee(createEmployee: IEmployee) {
     const r = await JSONFetch('create_user', createEmployee);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+    }
+  }
+
+  async updateEmployee(updateEmployee: IEmployee) {
+    const r = await JSONFetch('update_user', updateEmployee);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+    }
+  }
+
+  async deleteEmployee(id: number) {
+    const r = await JSONFetchDelete(`delete_user/${id}`);
 
     if (r?.success) {
       return r;

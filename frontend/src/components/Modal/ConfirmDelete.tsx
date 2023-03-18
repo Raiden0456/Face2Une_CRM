@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { ButtonContained, ButtonOutlined } from '../base/Button';
 import { ProceduresService } from '../../service/ProceduresService';
 import { CouponsService } from '../../service/CouponsService';
-
-import s from './ConfirmDelete.scss';
+import { UserService } from '../../service/UserService';
 import { IDeleteItem, ModalStore } from '../../store/Modal.store';
 import { TailSpinFixed } from '../TailSpin';
+
+import s from './ConfirmDelete.scss';
 
 const ConfirmDelete: React.FC<IDeleteItem> = ({ deleteType, id }) => {
   const proceduresService = new ProceduresService();
   const couponService = new CouponsService();
+  const userService = new UserService();
   const [loading, setLoading] = useState<boolean>(false);
 
   // Delete Handler
@@ -32,6 +34,13 @@ const ConfirmDelete: React.FC<IDeleteItem> = ({ deleteType, id }) => {
     }
     if (deleteType === 'coupon' && typeof id === 'number') {
       const r = await couponService.deleteCoupon(id);
+      if (r.success) {
+        console.log('Successfully Deleted!');
+        window.location.reload();
+      }
+    }
+    if (deleteType === 'employee' && typeof id === 'number') {
+      const r = await userService.deleteEmployee(id);
       if (r.success) {
         console.log('Successfully Deleted!');
         window.location.reload();

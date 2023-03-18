@@ -54,17 +54,19 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
     }
     if (edit && id && addType === 'employee') {
       setLoading(true);
-      /* couponService.getCoupon(id).then((r) => {
+      userService.getEmployee(id).then((r) => {
         if (r.success) {
-          const { name, code, discount } = r.data[0];
+          const { first_name, last_name, phone, email } = r.data[0];
           setInputs({
-            name,
-            code,
-            discount,
+            first_name,
+            last_name,
+            phone,
+            email,
+            password: '',
           });
           setLoading(false);
         }
-      }); */
+      });
     }
   }, []);
 
@@ -100,14 +102,14 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
             window.location.reload();
           }
         });
-      } /* else {
-        userService.updateCoupon({ ...inputs, saloon_id: saloonID, rights: 'employee', id }).then((r) => {
+      } else {
+        userService.updateEmployee({ ...inputs, saloon_id: saloonID, rights: 'employee', id }).then((r) => {
           if (r.success) {
             console.log('Successfully Updated!');
             window.location.reload();
           }
         });
-      } */
+      }
     }
 
     setLoading(false);
