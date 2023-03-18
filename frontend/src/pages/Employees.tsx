@@ -8,7 +8,7 @@ import DataTable from 'react-data-table-component';
 import { saloon_ids } from '../utils/staticData';
 import { findElementById } from '../utils/funcs';
 import { ModalStore } from '../store/Modal.store';
-
+import { formatPhoneNumber } from '../utils/formatPhone';
 import s from './Clients.scss';
 
 const customTableStyles = {
@@ -48,7 +48,7 @@ const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },
   { name: 'Full Name', selector: (row: any) => `${row.first_name} ${row.last_name}`, sortable: true },
   { name: 'Email', selector: (row: any) => row.email, sortable: true },
-  { name: 'Phone', selector: (row: any) => row.phone, sortable: false },
+  { name: 'Phone', selector: (row: any) => formatPhoneNumber(row.phone), sortable: false },
   { name: 'Saloon', selector: (row: any) => findElementById(saloon_ids, row.saloon_id).text, sortable: false },
   {
     name: '',
