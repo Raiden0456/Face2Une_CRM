@@ -221,7 +221,7 @@ user.updateUserById = async (
 user.deleteUserById = async (id: number, result) => {
   await supabase.from("clients").update({ user_id: null }).eq("user_id", id);
   const uuid = await supabase.from("users").select("uuid").eq("id", id);
-  await supabase.from("users").delete().eq("id", uuid);
+  await supabase.from("users").delete().eq("id", id);
   const { data, error } = await supabase.auth.admin.deleteUser(
     uuid.data[0].uuid
   );
