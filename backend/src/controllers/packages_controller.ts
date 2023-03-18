@@ -128,25 +128,8 @@ export function deletePack(id: number, res) {
           message: err.message || "Some error occurred while buying packages.",
         });
       else {
+        //TODO: send email to client with promocodes //
         res.json({ success: true, data: data });
       }
     });
 }
-
-  // Use packages //
-  export function usePackage(
-    client_id: number,
-    promocode: string,
-    res
-  ) {
-    package_p.usePackage(client_id, promocode, (err, data) => {
-      if (err)
-        res.status(500).json({
-          success: false,
-          message: err.message || "Some error occurred while using package.",
-        });
-      else {
-        res.json({ success: true, data: data });
-      }
-    });
-  }

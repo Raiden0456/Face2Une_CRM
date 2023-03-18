@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-import { ButtonContained, ButtonOutlined } from './base/Button';
-import { ProceduresService } from '../service/ProceduresService';
+import { ButtonContained, ButtonOutlined } from '../base/Button';
+import { ProceduresService } from '../../service/ProceduresService';
+import { CouponsService } from '../../service/CouponsService';
 
 import s from './ConfirmDelete.scss';
-import { IDeleteItem, ModalStore } from '../store/Modal.store';
-import { TailSpinFixed } from './TailSpin';
+import { IDeleteItem, ModalStore } from '../../store/Modal.store';
+import { TailSpinFixed } from '../TailSpin';
 
 const ConfirmDelete: React.FC<IDeleteItem> = ({ deleteType, id }) => {
   const proceduresService = new ProceduresService();
-  const [loading, setLoading] = useState(false);
+  const couponService = new CouponsService();
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Delete Handler
   const deleteHandler = async () => {
     setLoading(true);
 
-    console.log('DELETING...');
     if (deleteType === 'pack' && typeof id === 'number') {
       const r = await proceduresService.deletePackage(id);
       if (r.success) {
@@ -24,6 +25,13 @@ const ConfirmDelete: React.FC<IDeleteItem> = ({ deleteType, id }) => {
     }
     if (deleteType === 'procedure' && typeof id === 'number') {
       const r = await proceduresService.deleteProcedure(id);
+      if (r.success) {
+        console.log('Successfully Deleted!');
+        window.location.reload();
+      }
+    }
+    if (deleteType === 'coupon' && typeof id === 'number') {
+      const r = await couponService.deleteCoupon(id);
       if (r.success) {
         console.log('Successfully Deleted!');
         window.location.reload();

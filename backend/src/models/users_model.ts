@@ -2,6 +2,7 @@
 // import client from "./db.js";
 import supabase from "./db.js";
 import bcrypt from "bcrypt";
+import { validate } from 'deep-email-validator'
 
 // Constructor
 const user = function (user) {

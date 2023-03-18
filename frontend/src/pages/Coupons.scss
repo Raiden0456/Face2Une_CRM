@@ -1,0 +1,28 @@
+.Coupons {
+  width: 100%;
+}
+
+.Coupons__header {
+  margin-bottom: 1rem;
+
+  h2 {
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+  }
+}
+
+.Coupons__table_searchFieldWrapper {
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-left: 1rem;
+  }
+}
+
+.Coupons__table {
+  border: 2px solid #91a0db;
+  border-radius: 16px;
+  margin: 2rem 0;
+}

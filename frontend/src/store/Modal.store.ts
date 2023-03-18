@@ -1,7 +1,7 @@
 import { observable } from 'mobx';
 import { ProcedureData } from './Procedures.store';
 
-type Action = 'complete_booking' | 'loader' | 'error' | 'success' | 'deleteItem' | 'addAppointment' | null;
+type Action = 'complete_booking' | 'loader' | 'error' | 'success' | 'deleteItem' | 'addItem' | 'addAppointment' | null;
 
 interface IModalStatus {
   open: boolean;
@@ -11,15 +11,23 @@ interface IModalStatus {
 }
 
 export interface IDeleteItem {
-  deleteType: 'pack' | 'procedure' | '';
+  deleteType: 'pack' | 'procedure' | 'coupon' | '';
+  id: number | null;
+}
+
+export interface IAddItem {
+  addType: 'coupon' | 'employee' | '';
+  edit: boolean;
   id: number | null;
 }
 
 export interface IModalStore {
   modalStatus: IModalStatus;
   deleteItem: IDeleteItem;
+  addItem: IAddItem;
   setModalStatus: (status: IModalStatus) => void;
   setDeleteItem: (deleteItem: IDeleteItem) => void;
+  setAddItem: (addItem: IAddItem) => void;
 }
 
 export const ModalStore = observable<IModalStore>({
@@ -33,6 +41,11 @@ export const ModalStore = observable<IModalStore>({
     deleteType: '',
     id: null,
   },
+  addItem: {
+    addType: '',
+    edit: false,
+    id: null,
+  },
   setModalStatus({ open, action, redirectUrl, procedure }) {
     this.modalStatus = {
       open,
@@ -44,6 +57,13 @@ export const ModalStore = observable<IModalStore>({
   setDeleteItem({ deleteType, id }) {
     this.deleteItem = {
       deleteType,
+      id,
+    };
+  },
+  setAddItem({ addType, edit, id }) {
+    this.addItem = {
+      addType,
+      edit,
       id,
     };
   },

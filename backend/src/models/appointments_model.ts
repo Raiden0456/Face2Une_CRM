@@ -29,11 +29,11 @@ appointment.getAppointments = async (
           .from("appointments")
           .select("*")
           .eq(filter.column, filter.value)
-          .order("reservation_date", { ascending: true })
+          .order("reservation_date_time", { ascending: true })
       : await supabase
           .from("appointments")
           .select("*")
-          .order("reservation_date", { ascending: true });
+          .order("reservation_date_time", { ascending: true });
 
 
       // add procedure name and additional names to each appointment //
@@ -59,11 +59,11 @@ appointment.getAppointments = async (
           .from("appointments")
           .select("*")
           .eq(filter.column, filter.value)
-          .order("reservation_date", { ascending: true })
+          .order("reservation_date_time", { ascending: true })
       : await supabase
           .from("appointments")
           .select("*")
-          .order("reservation_date", { ascending: true });
+          .order("reservation_date_time", { ascending: true });
       break;
   }
   return result(resp.error, resp.data);
@@ -97,8 +97,6 @@ appointment.createAppoint = async (
 ) => {
   // Get date and time from reservation_date_time //
   let date_r_obj = new Date(appoint.reservation_date_time);
-  let date_reserved = date.format(date_r_obj, "YYYY-MM-DD");
-  let time_reserved = date.format(date_r_obj, "HH:mm");
   //////////////////////////////////////////////////
   if(date_r_obj < new Date()){
     return result({message: "date is in the past, debil :/"}, null);
@@ -125,8 +123,6 @@ appointment.createAppoint = async (
       {
         procedure_id: appoint.procedure_id,
         additional_ids: appoint.additional_ids,
-        reservation_date: date_reserved,
-        reservation_time: time_reserved,
         client_id: appoint.client_id,
         total_price: appoint.total_price,
         saloon_id: appoint.saloon_id,
@@ -152,8 +148,6 @@ appointment.updateAppointById = async (
 ) => {
   // Get date and time from reservation_date_time //
   let date_r_obj = new Date(appoint.reservation_date_time);
-  let date_reserved = date.format(date_r_obj, "YYYY-MM-DD");
-  let time_reserved = date.format(date_r_obj, "HH:mm");
   //////////////////////////////////////////////////
 
   // Calculate date and time using procedure durations //
@@ -178,8 +172,6 @@ appointment.updateAppointById = async (
       {
         procedure_id: appoint.procedure_id,
         additional_ids: appoint.additional_ids,
-        reservation_date: date_reserved,
-        reservation_time: time_reserved,
         client_id: appoint.client_id,
         total_price: appoint.total_price,
         saloon_id: appoint.saloon_id,

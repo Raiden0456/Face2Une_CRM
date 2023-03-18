@@ -2,7 +2,7 @@ import { Router } from 'express';
 var router = Router();
 import * as pack from '../controllers/packages_controller.js';
 
-//Routing for the procedures//
+//Routing for the packages//
 
 router.get('/pack', function(req, res){
     pack.loadPack(req, res);
@@ -23,9 +23,6 @@ router.delete('/delete_pack/:packid', function(req, res){
 // buy and use packages //
 router.post('/buy_pack', function(req, res){
     pack.buyPackages(req.body.client_id, req.body.packages, res);
-});
-router.post('/use_pack', function(req, res){
-    pack.usePackage(req.body.client_id, req.body.promocode, res);
 });
 
 

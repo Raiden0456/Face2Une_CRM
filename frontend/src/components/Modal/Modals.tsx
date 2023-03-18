@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { observer } from 'mobx-react';
-import { ModalStore } from '../store/Modal.store';
-import ProcedureBox from './ProcedureBox';
-import { StatusContainer } from './StatusContainer';
+import { ModalStore } from '../../store/Modal.store';
+import ProcedureBox from '../ProcedureBox';
 import ConfirmDelete from './ConfirmDelete';
 import { AddAppointment } from './AddAppointment';
+import { StatusContainer } from './StatusContainer';
+import AddItem from './AddItem';
 
 export const ModalsCustomStyles: object = {
   content: {
@@ -76,6 +77,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
         } else if (ModalStore.modalStatus.action !== 'loader') {
           ModalStore.setModalStatus({ open: false, action: null });
           ModalStore.setDeleteItem({ deleteType: '', id: null });
+          ModalStore.setAddItem({ addType: '', edit: false, id: null });
         }
       }}
       style={!mobile ? ModalsCustomStyles : ModalsCustomStylesMobile}
@@ -90,6 +92,9 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
       )}
       {ModalStore.modalStatus.action === 'deleteItem' && (
         <ConfirmDelete deleteType={ModalStore.deleteItem.deleteType} id={ModalStore.deleteItem.id} />
+      )}
+      {ModalStore.modalStatus.action === 'addItem' && (
+        <AddItem addType={ModalStore.addItem.addType} id={ModalStore.addItem.id} edit={ModalStore.addItem.edit} />
       )}
       {ModalStore.modalStatus.action === 'addAppointment' && <AddAppointment />}
       {ModalStore.modalStatus.action === 'loader' && <p>Loading...</p>}

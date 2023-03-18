@@ -6,7 +6,7 @@ import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
 import { ButtonOutlined } from './base/Button';
 
-const adminPaths = ['/clients', '/calendar', '/employees'];
+const adminPaths = ['/clients', '/calendar', '/employees', '/coupons'];
 
 const NavBar = observer(() => {
   const authService = new AuthService();
@@ -74,6 +74,9 @@ const NavBar = observer(() => {
             <>
               <Link to="/calendar" style={{ textAlign: 'center', textDecoration: 'none' }}>
                 <ButtonOutlined>Calendar</ButtonOutlined>
+              </Link>
+              <Link to="/coupons" style={{ textAlign: 'center', textDecoration: 'none' }}>
+                <ButtonOutlined>Coupons</ButtonOutlined>
               </Link>
             </>
           )}
