@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
-import { ButtonContained } from '../components/base/Button';
+import { ButtonContained, ButtonOutlined } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import { UserService } from '../service/UserService';
 import DataTable from 'react-data-table-component';
 import { saloon_ids } from '../utils/staticData';
 import { findElementById } from '../utils/funcs';
+import { ModalStore } from '../store/Modal.store';
 
 import s from './Clients.scss';
 
@@ -31,12 +32,46 @@ const customTableStyles = {
 
 const ROWS_PER_PAGE = 10;
 
+// Delete Employee
+const deleteHandler = async (id: number) => {
+  ModalStore.setDeleteItem({ deleteType: 'employee', id });
+  ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
+};
+
+// Edit Employee
+const addHandler = async (id: number | null) => {
+  ModalStore.setAddItem({ addType: 'employee', edit: true, id });
+  ModalStore.setModalStatus({ open: true, action: 'addItem' });
+};
+
 const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },
   { name: 'Full Name', selector: (row: any) => `${row.first_name} ${row.last_name}`, sortable: true },
   { name: 'Email', selector: (row: any) => row.email, sortable: true },
   { name: 'Phone', selector: (row: any) => row.phone, sortable: false },
   { name: 'Saloon', selector: (row: any) => findElementById(saloon_ids, row.saloon_id).text, sortable: false },
+  {
+    name: '',
+    selector: (row: any) => (
+      <ButtonContained
+        width="100%"
+        style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
+        onClick={() => addHandler(row.id)}
+      >
+        Edit
+      </ButtonContained>
+    ),
+    sortable: false,
+  },
+  {
+    name: '',
+    selector: (row: any) => (
+      <ButtonOutlined width="100%" onClick={() => deleteHandler(row.id)}>
+        Delete
+      </ButtonOutlined>
+    ),
+    sortable: false,
+  },
 ];
 
 const paginationComponentOptions = {
@@ -75,6 +110,12 @@ export const Employees = () => {
     fetchClients(1);
   }, []);
 
+  // Add Employee
+  const addHandler = async () => {
+    ModalStore.setAddItem({ addType: 'employee', edit: false, id: null });
+    ModalStore.setModalStatus({ open: true, action: 'addItem' });
+  };
+
   return (
     <Container
       header={<NavBar />}
@@ -95,6 +136,11 @@ export const Employees = () => {
               />
               <ButtonContained width="auto" onClick={handleSearch}>
                 Search
+              </ButtonContained>
+            </div>
+            <div>
+              <ButtonContained width="auto" onClick={addHandler}>
+                Add Employee
               </ButtonContained>
             </div>
             <div className={s.Clients__table}>
