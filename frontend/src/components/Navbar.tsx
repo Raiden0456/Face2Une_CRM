@@ -6,7 +6,7 @@ import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
 import { ButtonOutlined } from './base/Button';
 
-const adminPaths = ['/clients', '/calendar', '/coupons'];
+const adminPaths = ['/clients', '/calendar', '/employees', '/coupons'];
 
 const NavBar = observer(() => {
   const authService = new AuthService();
@@ -62,10 +62,17 @@ const NavBar = observer(() => {
         <div className={s.Navbar__navigation}>
           {AuthStore.rights === 'admin' && (
             <>
-              <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none', marginRight: '1rem' }}>
+              <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none' }}>
                 <ButtonOutlined>Clients</ButtonOutlined>
               </Link>
-              <Link to="/calendar" style={{ textAlign: 'center', textDecoration: 'none', marginRight: '1rem' }}>
+              <Link to="/employees" style={{ textAlign: 'center', textDecoration: 'none' }}>
+                <ButtonOutlined>Employees</ButtonOutlined>
+              </Link>
+            </>
+          )}
+          {(AuthStore.rights === 'admin' || AuthStore.rights === 'employee') && (
+            <>
+              <Link to="/calendar" style={{ textAlign: 'center', textDecoration: 'none' }}>
                 <ButtonOutlined>Calendar</ButtonOutlined>
               </Link>
               <Link to="/coupons" style={{ textAlign: 'center', textDecoration: 'none' }}>

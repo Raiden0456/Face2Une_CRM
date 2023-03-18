@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import MainAuth from './pages/Auth/MainAuth';
 import MainLayout from './layer/MainLayout';
-import { PrivateRouteAdmin } from './layer/PrivateRoute';
+import { PrivateRouteAdmin, PrivateRouteAdminOrEmployee } from './layer/PrivateRoute';
 import { AuthService } from './service/AuthService';
 import { AuthStore } from './store/Auth.store';
 import { WIDTH_QUERY } from './const/widthQuery';
@@ -15,6 +15,7 @@ import { Clients } from './pages/Clients';
 import { Coupons } from './pages/Coupons';
 import { ConfirmationPackage } from './pages/ConfirmationPackage';
 import { Calendar } from './pages/Calendar';
+import { Employees } from './pages/Employees';
 import { ProceduresService } from './service/ProceduresService';
 import { ProceduresStore } from './store/Procedures.store';
 //
@@ -92,6 +93,9 @@ const App = observer(() => {
             <Route path="/confirmation-package" element={<ConfirmationPackage />} />
             <Route element={<PrivateRouteAdmin />}>
               <Route path="/clients" element={<Clients />} />
+              <Route path="/employees" element={<Employees />} />
+            </Route>
+            <Route element={<PrivateRouteAdminOrEmployee />}>
               <Route path="/coupons" element={<Coupons />} />
               <Route path="/calendar" element={<Calendar />} />
             </Route>
