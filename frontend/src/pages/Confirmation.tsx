@@ -143,7 +143,7 @@ export const Confirmation = () => {
               <div className={s.Confirmation__footer}>
                 <p>
                   <strong>Date:</strong> {new Date(mainPassanger?.date).toLocaleDateString()} at{' '}
-                  {new Date(mainPassanger?.date).toLocaleTimeString().slice(0, 5)}
+                  {new Date(mainPassanger?.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }, )}
                 </p>
                 {total && (
                   <p>
