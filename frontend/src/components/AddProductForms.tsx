@@ -29,7 +29,6 @@ export function AddProcedure() {
     const createProcedure = { ...inputs, additional, saloon_ids: saloonIds };
 
     proceduresService.createProcedure(createProcedure).then((r) => {
-      console.log(r);
       setLoader(false);
       setShowForm(false);
     });
@@ -226,6 +225,71 @@ export function AddPackage() {
 
               <ButtonContained disabled={loader} type="submit">
                 Add Package
+              </ButtonContained>
+            </form>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
+
+export function AddCertificate() {
+  const proceduresService = new ProceduresService();
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(false);
+  const { inputs, handleChange, clearForm, resetForm } = useForm({
+    name: '',
+    price: '',
+  });
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setLoader(true);
+
+    proceduresService.createCertificate(inputs).then((r) => {
+      setLoader(false);
+      setShowForm(false);
+    });
+
+    window.location.reload();
+  };
+
+  return (
+    <>
+      {AuthStore.rights === 'admin' && (
+        <div className={s.AddProductWrapper}>
+          <ButtonOutlined width="200px" onClick={() => setShowForm(!showForm)}>
+            Create Certificate
+          </ButtonOutlined>
+          {showForm && (
+            <form id="addProcedure" onSubmit={handleSubmit} className={s.AddProductForm}>
+              <h2>Create a New Certificate</h2>
+              <div className={s.AddProductForm__inputs} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                <Input
+                  required
+                  className={s.Input}
+                  name="name"
+                  label="Name:"
+                  type="text"
+                  value={inputs?.name}
+                  onChange={handleChange}
+                />
+                <br />
+                <Input
+                  required
+                  className={s.Input}
+                  name="price"
+                  label="Price:"
+                  type="number"
+                  min="0"
+                  value={inputs?.price}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <ButtonContained disabled={loader} type="submit">
+                Add Certificate
               </ButtonContained>
             </form>
           )}

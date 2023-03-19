@@ -7,8 +7,9 @@ import ProcedureBox from '../components/ProcedureBox';
 import { TailSpinFixed } from '../components/TailSpin';
 import { ProceduresStore } from '../store/Procedures.store';
 import PackageBox from '../components/PackageBox';
+import CertificateBox from '../components/CertificateBox';
 import useForm from '../utils/useForm';
-import { AddPackage, AddProcedure } from '../components/AddProductForms';
+import { AddCertificate, AddPackage, AddProcedure } from '../components/AddProductForms';
 
 import s from './Home.scss';
 
@@ -52,8 +53,6 @@ export const Home = ({ loading }: { loading: boolean }) => {
               {/* Add new procedure */}
               <AddProcedure />
 
-              {/* <hr style={{ borderTop: '2px solid #e2e2e2', width: '100%', marginBottom: '2rem' }} /> */}
-
               <div className={s.Home__divider}>
                 <h2>Packages</h2>
               </div>
@@ -64,6 +63,17 @@ export const Home = ({ loading }: { loading: boolean }) => {
 
               {/* Add new package */}
               <AddPackage />
+
+              <div className={s.Home__divider}>
+                <h2>Certificates</h2>
+              </div>
+
+              {ProceduresStore.proceduresStatus.certificatesData?.map((certItem, i) => {
+                return <CertificateBox key={i} certItem={certItem} />;
+              })}
+
+              {/* Add new certificate */}
+              <AddCertificate />
             </>
           )}
         </>

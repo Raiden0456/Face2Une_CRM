@@ -11,7 +11,7 @@ interface IModalStatus {
 }
 
 export interface IDeleteItem {
-  deleteType: 'pack' | 'procedure' | 'coupon' | 'employee' | '';
+  deleteType: 'pack' | 'procedure' | 'certificate' | 'coupon' | 'employee' | '';
   id: number | null;
 }
 

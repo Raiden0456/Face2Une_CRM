@@ -32,6 +32,13 @@ const ConfirmDelete: React.FC<IDeleteItem> = ({ deleteType, id }) => {
         window.location.reload();
       }
     }
+    if (deleteType === 'certificate' && typeof id === 'number') {
+      const r = await proceduresService.deleteCertificate(id);
+      if (r.success) {
+        console.log('Successfully Deleted!');
+        window.location.reload();
+      }
+    }
     if (deleteType === 'coupon' && typeof id === 'number') {
       const r = await couponService.deleteCoupon(id);
       if (r.success) {

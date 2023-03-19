@@ -1,14 +1,6 @@
 import { JSONFetch, JSONFetchDelete, JSONFetchGet } from '../api/fetchMethod';
 import { ModalStore } from '../store/Modal.store';
-import { ProcedureData } from '../store/Procedures.store';
-
-interface IPackageData {
-  id?: number;
-  name: string;
-  price: number;
-  amount: number;
-  procedure_id: number;
-}
+import { CertificatesData, PackageData, ProcedureData } from '../store/Procedures.store';
 
 export class ProceduresService {
   async getProcedures() {
@@ -23,6 +15,16 @@ export class ProceduresService {
 
   async getPackages() {
     const r = await JSONFetchGet('pack');
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
+  async getCertificates() {
+    const r = await JSONFetchGet('cert');
 
     if (r?.success) {
       return r;
@@ -61,8 +63,18 @@ export class ProceduresService {
     }
   }
 
-  async updatePackage(updatePackage: IPackageData) {
+  async updatePackage(updatePackage: PackageData) {
     const r = await JSONFetch('update_pack', updatePackage);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
+  async updateCertificate(updateCertificate: CertificatesData) {
+    const r = await JSONFetch('update_cert', updateCertificate);
 
     if (r?.success) {
       return r;
@@ -81,8 +93,18 @@ export class ProceduresService {
     }
   }
 
-  async createPackage(createPackage: IPackageData) {
+  async createPackage(createPackage: PackageData) {
     const r = await JSONFetch('create_pack', createPackage);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
+  async createCertificate(createCertificate: CertificatesData) {
+    const r = await JSONFetch('create_cert', createCertificate);
 
     if (r?.success) {
       return r;
@@ -103,6 +125,16 @@ export class ProceduresService {
 
   async deletePackage(packageId: number) {
     const r = await JSONFetchDelete(`delete_pack/${packageId}`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
+  async deleteCertificate(certificateId: number) {
+    const r = await JSONFetchDelete(`delete_cert/${certificateId}`);
 
     if (r?.success) {
       return r;
