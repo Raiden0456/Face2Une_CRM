@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
 import { ButtonContained } from '../components/base/Button';
-import { NumberDropdown } from '../components/base/SelectField';
 import NavBar from '../components/Navbar';
 import { AppointmentService } from '../service/AppointmentService';
 import { TailSpinFixed } from '../components/TailSpin';
 import ProductBox from '../components/ProductBox';
 import useForm from '../utils/useForm';
 import { Input, NumberInput } from '../components/base/Input';
-import { AuthService } from '../service/AuthService';
 import { AuthStore } from '../store/Auth.store';
 import { ClientService } from '../service/ClientService';
+import { handleConfirmClient } from '../hooks/handleConfirmClient';
 
 import s from './ConfirmationCertificate.scss';
 
@@ -49,30 +48,20 @@ export const ConfirmationCertificate = () => {
     }
   }, [AuthStore.email]);
 
-  const handleConfirmation = () => {
-    clientService.getClient(inputs.email).then((r) => {
-      if (r.data) {
-        const { id } = r.data[0];
-
-        appointmentService.buyCertificate({ client_id: id, certificate_id: certificate.id }).then((r) => {
-          if (r.success) {
-            console.log('Certificate for the Passenger Created!', r);
-          }
-        });
-      } else {
-        clientService.createClient(inputs, '/confirmation-certificate').then((r) => {
-          if (r.success && r.data) {
-            const { id } = r.data[0];
-
-            appointmentService.buyCertificate({ client_id: id, certificate_id: certificate.id }).then((r) => {
-              if (r.success) {
-                console.log('Certificate for the Passenger Created!', r);
-              }
-            });
-          }
-        });
-      }
+  const handleConfirmation = async () => {
+    const clientId = await handleConfirmClient({
+      email: inputs.email,
+      clientInfo: inputs,
+      fallback: '/confirmation-certificate',
     });
+
+    if (clientId) {
+      appointmentService.buyCertificate({ client_id: clientId, certificate_id: certificate.id }).then((r) => {
+        if (r.success) {
+          console.log('Certificate for the Passenger Created!', r);
+        }
+      });
+    }
   };
 
   return (

@@ -8,9 +8,9 @@ import { TailSpinFixed } from '../components/TailSpin';
 import ProductBox from '../components/ProductBox';
 import useForm from '../utils/useForm';
 import { Input, NumberInput } from '../components/base/Input';
-import { AuthService } from '../service/AuthService';
 import { AuthStore } from '../store/Auth.store';
 import { ClientService } from '../service/ClientService';
+import { handleConfirmClient } from '../hooks/handleConfirmClient';
 
 import s from './ConfirmationPackage.scss';
 
@@ -50,38 +50,22 @@ export const ConfirmationPackage = () => {
     }
   }, [AuthStore.email]);
 
-  const handleConfirmation = () => {
-    /* check client */
-    clientService.getClient(inputs.email).then((r) => {
-      if (r.data) {
-        const { id } = r.data[0];
+  const handleConfirmation = async () => {
+    const clientId = await handleConfirmClient({
+      email: inputs.email,
+      clientInfo: inputs,
+      fallback: '/confirmation-certificate',
+    });
 
-        /* create package buy */
-        appointmentService
-          .buyPack({ client_id: id, package_id: buyPackage.id, amount: Number(selectQuantity) })
-          .then((r) => {
-            if (r.success) {
-              console.log('Package for the Passenger Created!', r);
-            }
-          });
-      } else {
-        /* create client */
-        clientService.createClient(inputs, '/confirmation-package').then((r) => {
-          if (r.success && r.data) {
-            const { id } = r.data[0];
-
-            /* create package buy */
-            appointmentService
-              .buyPack({ client_id: id, package_id: buyPackage.id, amount: Number(selectQuantity) })
-              .then((r) => {
-                if (r.success) {
-                  console.log('Package for the Passenger Created!', r);
-                }
-              });
+    if (clientId) {
+      appointmentService
+        .buyPack({ client_id: clientId, package_id: buyPackage.id, amount: Number(selectQuantity) })
+        .then((r) => {
+          if (r.success) {
+            console.log('Package for the Passenger Created!', r);
           }
         });
-      }
-    });
+    }
   };
 
   return (

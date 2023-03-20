@@ -5,6 +5,17 @@
   margin-bottom: 1.75rem;
 }
 
+.Calendar__header {
+  margin-bottom: 1rem;
+  width: 100%;
+
+  h3 {
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: start;
+  }
+}
+
 .css-96e9fn {
   width: 100%;
   z-index: 0;

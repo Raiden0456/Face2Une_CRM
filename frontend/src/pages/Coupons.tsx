@@ -135,7 +135,7 @@ export const Coupons = () => {
         <>
           <div className={s.Coupons}>
             <div className={s.Coupons__header}>
-              <h2>Coupons</h2>
+              <h3>Coupons</h3>
             </div>
             <div className={s.Coupons__table_searchFieldWrapper}>
               <Input

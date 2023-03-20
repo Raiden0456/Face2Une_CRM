@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ClientService } from '../service/ClientService';
 import { AuthStore } from '../store/Auth.store';
 import { AuthService } from '../service/AuthService';
+import { handleConfirmClient } from '../hooks/handleConfirmClient';
 
 import s from './UserInfo.scss';
 
@@ -23,24 +24,17 @@ export const UserInfo = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    console.log('UserInfoForm', inputs);
-
-    clientService.getClient(inputs.email).then((r) => {
-      if (r.data) {
-        const { id } = r.data[0];
-        sessionStorage.setItem('user_info', JSON.stringify({ ...inputs, clientId: id }));
-        navigate('/confirmation');
-      } else {
-        clientService.createClient(inputs).then((r) => {
-          if (r.success && r.data) {
-            const { id } = r.data[0];
-            sessionStorage.setItem('user_info', JSON.stringify({ ...inputs, clientId: id }));
-            navigate('/confirmation');
-          }
-        });
-      }
+  const handleSubmit = async () => {
+    const clientId = await handleConfirmClient({
+      email: inputs.email,
+      clientInfo: inputs,
+      fallback: '/confirmation-certificate',
     });
+
+    if (clientId) {
+      sessionStorage.setItem('user_info', JSON.stringify({ ...inputs, clientId: clientId }));
+      navigate('/confirmation');
+    }
   };
 
   useEffect(() => {
