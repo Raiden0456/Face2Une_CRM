@@ -28,7 +28,7 @@ export const UserInfo = () => {
     const clientId = await handleConfirmClient({
       email: inputs.email,
       clientInfo: inputs,
-      fallback: '/confirmation-certificate',
+      fallback: '/userInfo',
     });
 
     if (clientId) {

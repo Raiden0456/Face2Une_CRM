@@ -54,7 +54,7 @@ export const ConfirmationPackage = () => {
     const clientId = await handleConfirmClient({
       email: inputs.email,
       clientInfo: inputs,
-      fallback: '/confirmation-certificate',
+      fallback: '/confirmation-package',
     });
 
     if (clientId) {
