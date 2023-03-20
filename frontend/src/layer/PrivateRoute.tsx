@@ -11,8 +11,7 @@ export const PrivateRouteAdmin = observer(() => {
   return (
     <>
       {AuthStore.authorized === 'auth' && AuthStore.rights === 'admin' && <Outlet />}
-      {AuthStore.authorized === 'not_auth' ||
-        (!AuthStore.authorized && <Navigate state={{ redirectUrl: location }} to="/" />)}
+      {AuthStore.authorized === 'not_auth' && <Navigate state={{ redirectUrl: location }} to="/" />}
       {!AuthStore.authorized || (AuthStore.authorized === 'check_auth' && <TailSpinFixed />)}
     </>
   );
@@ -26,8 +25,7 @@ export const PrivateRouteAdminOrEmployee = observer(() => {
       {AuthStore.authorized === 'auth' && (AuthStore.rights === 'employee' || AuthStore.rights === 'admin') && (
         <Outlet />
       )}
-      {AuthStore.authorized === 'not_auth' ||
-        (!AuthStore.authorized && <Navigate state={{ redirectUrl: location }} to="/" />)}
+      {AuthStore.authorized === 'not_auth' && <Navigate state={{ redirectUrl: location }} to="/" />}
       {!AuthStore.authorized || (AuthStore.authorized === 'check_auth' && <TailSpinFixed />)}
     </>
   );

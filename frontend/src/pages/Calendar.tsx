@@ -31,46 +31,19 @@ export const Calendar = () => {
     setLoading(true);
     return new Promise<void>((res) => {
       appointmentService.getAppointments().then((r: any) => {
-        console.log(r.data);
         setLoading(false);
 
-        const result = renameAndDeleteArrayObjects(r.data, {
+        const result = renameAndDeleteArrayObjects(/* r.data */[], {
           id: 'event_id',
           reservation_date_time: 'start',
           reservation_date_time_end: 'end',
           procedure_name: 'title',
         });
 
-        console.log(result);
-
         res(result);
       });
     });
   }
-
-  // Fetch and Store Main & Optional Procedures [IF EMPTY]
-  // TBD + Fix Bug with routing
-  /* useEffect(() => {
-    setLoading(true);
-    if()
-    proceduresService.getOptionalProcedures().then((optionalProcedures) => {
-      if (optionalProcedures?.success) {
-        ProceduresStore.setProceduresStatus({
-          ...ProceduresStore.proceduresStatus,
-          optionalProceduresData: optionalProcedures.data,
-        });
-      }
-
-      proceduresService.getProcedures().then((procedures) => {
-        if (procedures?.success) {
-          ProceduresStore.setProceduresStatus({
-            ...ProceduresStore.proceduresStatus,
-            proceduresData: procedures.data,
-          });
-        }
-      });
-    });
-  }, []); */
 
   return (
     <Container

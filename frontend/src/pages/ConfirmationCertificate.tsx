@@ -12,13 +12,12 @@ import { AuthService } from '../service/AuthService';
 import { AuthStore } from '../store/Auth.store';
 import { ClientService } from '../service/ClientService';
 
-import s from './ConfirmationPackage.scss';
+import s from './ConfirmationCertificate.scss';
 
-export const ConfirmationPackage = () => {
+export const ConfirmationCertificate = () => {
   const appointmentService = new AppointmentService();
   const clientService = new ClientService();
-  const [buyPackage, setBuyPackage] = useState<any>(null);
-  const [selectQuantity, setSelectQuantity] = useState<number>(1);
+  const [certificate, setCertificate] = useState<any>(null);
 
   const [loading, setLoading] = useState({ global: false, local: false });
 
@@ -34,10 +33,10 @@ export const ConfirmationPackage = () => {
   // Redirect back if not found
   useEffect(() => {
     setLoading({ ...loading, global: true });
-    let sessionBuyPackage: any = sessionStorage.getItem('buy_package');
-    setBuyPackage(JSON.parse(sessionBuyPackage));
+    let sessionBuyCertificate: any = sessionStorage.getItem('buy_certificate');
+    setCertificate(JSON.parse(sessionBuyCertificate));
 
-    if (sessionBuyPackage) {
+    if (sessionBuyCertificate) {
       setInputs({
         firstName: AuthStore.firstName,
         lastName: AuthStore.lastName,
@@ -51,33 +50,25 @@ export const ConfirmationPackage = () => {
   }, [AuthStore.email]);
 
   const handleConfirmation = () => {
-    /* check client */
     clientService.getClient(inputs.email).then((r) => {
       if (r.data) {
         const { id } = r.data[0];
 
-        /* create package buy */
-        appointmentService
-          .buyPack({ client_id: id, package_id: buyPackage.id, amount: Number(selectQuantity) })
-          .then((r) => {
-            if (r.success) {
-              console.log('Package for the Passenger Created!', r);
-            }
-          });
+        appointmentService.buyCertificate({ client_id: id, certificate_id: certificate.id }).then((r) => {
+          if (r.success) {
+            console.log('Certificate for the Passenger Created!', r);
+          }
+        });
       } else {
-        /* create client */
-        clientService.createClient(inputs, '/confirmation-package').then((r) => {
+        clientService.createClient(inputs, '/confirmation-certificate').then((r) => {
           if (r.success && r.data) {
             const { id } = r.data[0];
 
-            /* create package buy */
-            appointmentService
-              .buyPack({ client_id: id, package_id: buyPackage.id, amount: Number(selectQuantity) })
-              .then((r) => {
-                if (r.success) {
-                  console.log('Package for the Passenger Created!', r);
-                }
-              });
+            appointmentService.buyCertificate({ client_id: id, certificate_id: certificate.id }).then((r) => {
+              if (r.success) {
+                console.log('Certificate for the Passenger Created!', r);
+              }
+            });
           }
         });
       }
@@ -156,26 +147,13 @@ export const ConfirmationPackage = () => {
                   </div>
                 </form>
 
-                <ProductBox type="pack" procedure={buyPackage} />
+                <ProductBox type="pack" procedure={certificate} />
               </div>
 
               <div className={s.Confirmation__footer}>
-                <div className={s.Confirmation__footer_selectWrapper}>
-                  <p>
-                    <strong>Number of packages:</strong>
-                  </p>
-                  <NumberDropdown
-                    min={1}
-                    max={10}
-                    value={selectQuantity}
-                    onChange={(value: number) => setSelectQuantity(value)}
-                  />
-                </div>
-                {buyPackage && (
-                  <p>
-                    <strong>Total:</strong> {buyPackage?.price * selectQuantity}€
-                  </p>
-                )}
+                <p>
+                  <strong>Total:</strong> {certificate?.price}€
+                </p>
 
                 <ButtonContained type="submit" form="userInfo" width="200px">
                   Pay Now

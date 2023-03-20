@@ -21,7 +21,7 @@ const CertificateBox: React.FC<IBookingBox> = ({ width = '100%', certItem }) => 
   const { inputs, handleChange, clearForm, resetForm } = useForm(certItem);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  console.log(inputs);
+  const { id, name, price, price_gbp } = certItem;
 
   // Edit Button
   async function handleSubmit(event: any) {
@@ -42,28 +42,28 @@ const CertificateBox: React.FC<IBookingBox> = ({ width = '100%', certItem }) => 
     setIsEditing(!isEditing);
   }
 
-  /* const handleProceed = () => {
+  const handleProceed = () => {
     sessionStorage.setItem(
-      'buy_package',
+      'buy_certificate',
       JSON.stringify({
-        id: packageItem.id,
-        amount: packageItem.amount,
-        price: packageItem.price,
-        name: packageItem.name,
+        id,
+        name,
+        price,
+        price_gbp,
       }),
     );
 
-    navigate('/confirmation-package');
-  }; */
+    navigate('/confirmation-certificate');
+  };
 
   // Delete Package Box
   const deleteHandler = async () => {
-    ModalStore.setDeleteItem({ deleteType: 'certificate', id: certItem.id });
+    ModalStore.setDeleteItem({ deleteType: 'certificate', id });
     ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
   };
 
   return (
-    <div id={certItem?.id.toString()} className={s.BookingBox} style={{ width: width }}>
+    <div id={id?.toString()} className={s.BookingBox} style={{ width: width }}>
       {isEditing ? (
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {loading ? (
@@ -97,11 +97,11 @@ const CertificateBox: React.FC<IBookingBox> = ({ width = '100%', certItem }) => 
         <div style={{ width: '100%' }}>
           <div className={s.BookingBox__header}>
             <div className={s.BookingBox__header_column}>
-              <h3>{certItem?.name}</h3>
-              <p>{certItem?.price}€</p>
+              <h3>{name}</h3>
+              <p>{price}€</p>
             </div>
             <div className={s.BookingBox__header_btns}>
-              <ButtonContained width="100px" onClick={() => console.log('Buy')}>
+              <ButtonContained width="100px" onClick={handleProceed}>
                 Buy
               </ButtonContained>
               {AuthStore.rights === 'admin' && (

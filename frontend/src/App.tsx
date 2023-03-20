@@ -18,6 +18,7 @@ import { Calendar } from './pages/Calendar';
 import { Employees } from './pages/Employees';
 import { ProceduresService } from './service/ProceduresService';
 import { ProceduresStore } from './store/Procedures.store';
+import { ConfirmationCertificate } from './pages/ConfirmationCertificate';
 //
 require('./App.scss');
 
@@ -83,6 +84,7 @@ const App = observer(() => {
             <Route path="/userInfo" element={<UserInfo />} />
             <Route path="/confirmation" element={<Confirmation />} />
             <Route path="/confirmation-package" element={<ConfirmationPackage />} />
+            <Route path="/confirmation-certificate" element={<ConfirmationCertificate />} />
             <Route element={<PrivateRouteAdmin />}>
               <Route path="/clients" element={<Clients />} />
               <Route path="/employees" element={<Employees />} />
