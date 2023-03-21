@@ -18,6 +18,7 @@ import { Calendar } from './pages/Calendar';
 import { Employees } from './pages/Employees';
 import { ProceduresService } from './service/ProceduresService';
 import { ProceduresStore } from './store/Procedures.store';
+import { ConfirmationCertificate } from './pages/ConfirmationCertificate';
 //
 require('./App.scss');
 
@@ -39,34 +40,26 @@ const App = observer(() => {
 
   // Fetch and Store Main & Optional Procedures
   useEffect(() => {
-    setLoading(true);
-    proceduresService.getOptionalProcedures().then((optionalProcedures) => {
-      if (optionalProcedures?.success) {
-        ProceduresStore.setProceduresStatus({
-          ...ProceduresStore.proceduresStatus,
-          optionalProceduresData: optionalProcedures.data,
-        });
-      }
+    async function fetchData() {
+      setLoading(true);
+      const [optionalProcedures, procedures, packages, certificates] = await Promise.all([
+        proceduresService.getOptionalProcedures(),
+        proceduresService.getProcedures(),
+        proceduresService.getPackages(),
+        proceduresService.getCertificates(),
+      ]);
 
-      proceduresService.getProcedures().then((procedures) => {
-        if (procedures?.success) {
-          ProceduresStore.setProceduresStatus({
-            ...ProceduresStore.proceduresStatus,
-            proceduresData: procedures.data,
-          });
-        }
-
-        proceduresService.getPackages().then((packages) => {
-          if (packages?.success) {
-            ProceduresStore.setProceduresStatus({
-              ...ProceduresStore.proceduresStatus,
-              packagesData: packages.data,
-            });
-            setLoading(false);
-          }
-        });
+      ProceduresStore.setProceduresStatus({
+        optionalProceduresData: optionalProcedures.data,
+        proceduresData: procedures.data,
+        packagesData: packages.data,
+        certificatesData: certificates.data,
       });
-    });
+
+      setLoading(false);
+    }
+
+    fetchData();
   }, []);
 
   // Keep track of responsivness
@@ -91,6 +84,7 @@ const App = observer(() => {
             <Route path="/userInfo" element={<UserInfo />} />
             <Route path="/confirmation" element={<Confirmation />} />
             <Route path="/confirmation-package" element={<ConfirmationPackage />} />
+            <Route path="/confirmation-certificate" element={<ConfirmationCertificate />} />
             <Route element={<PrivateRouteAdmin />}>
               <Route path="/clients" element={<Clients />} />
               <Route path="/employees" element={<Employees />} />

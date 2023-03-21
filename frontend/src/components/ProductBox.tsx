@@ -18,7 +18,7 @@ const ProductBox: React.FC<IBookingBox> = ({ procedure, addProcedures, type = 'p
           <h3>{procedure?.name}</h3>
         ) : (
           <h3>
-            Package: {procedure?.amount} {procedure?.name}
+            {procedure?.amount} {procedure?.name}
           </h3>
         )}
         <p>

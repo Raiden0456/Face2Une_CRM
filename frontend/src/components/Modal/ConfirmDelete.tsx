@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ButtonContained, ButtonOutlined } from '../base/Button';
+import { ButtonContained, ButtonDelete, ButtonOutlined } from '../base/Button';
 import { ProceduresService } from '../../service/ProceduresService';
 import { CouponsService } from '../../service/CouponsService';
 import { UserService } from '../../service/UserService';
@@ -27,6 +27,13 @@ const ConfirmDelete: React.FC<IDeleteItem> = ({ deleteType, id }) => {
     }
     if (deleteType === 'procedure' && typeof id === 'number') {
       const r = await proceduresService.deleteProcedure(id);
+      if (r.success) {
+        console.log('Successfully Deleted!');
+        window.location.reload();
+      }
+    }
+    if (deleteType === 'certificate' && typeof id === 'number') {
+      const r = await proceduresService.deleteCertificate(id);
       if (r.success) {
         console.log('Successfully Deleted!');
         window.location.reload();
@@ -60,9 +67,9 @@ const ConfirmDelete: React.FC<IDeleteItem> = ({ deleteType, id }) => {
             <p>Are you sure you want to delete this item?</p>
           </div>
           <div className={s.ConfirmDelete__footer}>
-            <ButtonContained onClick={deleteHandler} style={{ marginRight: '15px', width: '100%' }}>
+            <ButtonDelete onClick={deleteHandler} style={{ marginRight: '15px', width: '100%' }}>
               Delete
-            </ButtonContained>
+            </ButtonDelete>
             <ButtonOutlined onClick={() => ModalStore.setModalStatus({ open: false, action: null })}>
               Cancel
             </ButtonOutlined>

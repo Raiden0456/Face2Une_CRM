@@ -1,7 +1,7 @@
 import { JSONFetch, JSONFetchGet } from '../api/fetchMethod';
 import { ModalStore } from '../store/Modal.store';
 
-interface NewClient {
+export interface NewClient {
   firstName: string;
   lastName: string;
   phone: string;

@@ -15,6 +15,11 @@ interface NewPack {
   amount: number;
 }
 
+interface NewCertificate {
+  client_id: number;
+  certificate_id: number;
+}
+
 export class AppointmentService {
   async createAppointment(
     { proc_id, opt_proc_id, date, client_id, saloon_id = 1 }: NewAppointment,
@@ -60,6 +65,16 @@ export class AppointmentService {
       return r;
     } else {
       ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation-package' }); // TBD Set Fallback
+    }
+  }
+
+  async buyCertificate(buyCertificate: NewCertificate) {
+    const r = await JSONFetch('buy_cert', buyCertificate);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation-certificate' }); // TBD Set Fallback
     }
   }
 }

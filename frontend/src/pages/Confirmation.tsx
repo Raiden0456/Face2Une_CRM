@@ -7,6 +7,7 @@ import { AppointmentService } from '../service/AppointmentService';
 import { TailSpinFixed } from '../components/TailSpin';
 import ProductBox from '../components/ProductBox';
 import { allProcsIds } from '../utils/funcs';
+import { ProceduresStore } from '../store/Procedures.store';
 
 import s from './Confirmation.scss';
 
@@ -17,8 +18,6 @@ export const Confirmation = () => {
   const [addPassangers, setAddPassangers] = useState<any>(null); // TBD TS
   const [userInfo, setUserInfo] = useState<any>(null); // TBD TS
   const [procedure, setProcedure] = useState(null); // TBD TS
-  const [mainProcedures, setMainProcedures] = useState<any[]>([]); // TBD TS
-  const [addProcedures, setAddProcedures] = useState<any[]>([]); // TBD TS
   const [loading, setLoading] = useState({ global: false, local: false });
   const [isToggled, setIsToggled] = useState<boolean>(false);
   const [total, setTotal] = useState<number | null>(null);
@@ -38,7 +37,7 @@ export const Confirmation = () => {
     let sessionUserInfo: any = sessionStorage.getItem('user_info');
     setUserInfo(JSON.parse(sessionUserInfo));
 
-    /* SESSION STORAGE */
+    /* SESSION STORAGE LOGS */
     console.log('From session mainPassanger', parsedMainPassanger);
     console.log('From session addPassangers', parsedAddPassangers);
     console.log('From session userInfo', JSON.parse(sessionUserInfo));
@@ -48,37 +47,20 @@ export const Confirmation = () => {
       proceduresService.getProcedure(parsedMainPassanger.proc_id).then((procedure) => {
         if (procedure?.success) {
           setProcedure(procedure.data[0]);
-        }
-      });
-      // Fetch ADDITIONAL proc-s
-      proceduresService.getOptionalProcedures().then((optProcedures) => {
-        if (optProcedures?.success) {
-          setAddProcedures(optProcedures.data);
-        }
-      });
-      // Calc total sum
-      proceduresService.calcTotal(allProcsIds(parsedMainPassanger, parsedAddPassangers)).then((total) => {
-        if (total?.success) {
-          setTotal(total.data);
-          setLoading({ ...loading, global: false });
+
+          // Calc total sum
+          proceduresService.calcTotal(allProcsIds(parsedMainPassanger, parsedAddPassangers)).then((total) => {
+            if (total?.success) {
+              setTotal(total.data);
+              setLoading({ ...loading, global: false });
+            }
+          });
         }
       });
     } else {
       window.location.href = window.location.origin;
     }
   }, []);
-
-  const handleAddPassengers = () => {
-    setLoading({ ...loading, local: true });
-    setIsToggled(!isToggled);
-
-    proceduresService.getProcedures().then((procedures) => {
-      if (procedures?.success) {
-        setMainProcedures(procedures.data);
-        setLoading({ ...loading, local: false });
-      }
-    });
-  };
 
   const handleConfirmation = () => {
     const { proc_id, opt_proc_id, date } = mainPassanger;
@@ -118,7 +100,9 @@ export const Confirmation = () => {
                   <h4>Main Passanger:</h4>
                   <ProductBox
                     procedure={procedure}
-                    addProcedures={addProcedures.filter((el: any) => mainPassanger.opt_proc_id.includes(el.id))}
+                    addProcedures={ProceduresStore.proceduresStatus.optionalProceduresData?.filter((el: any) =>
+                      mainPassanger?.opt_proc_id?.includes(el.id),
+                    )}
                   />
                 </div>
 
@@ -135,10 +119,12 @@ export const Confirmation = () => {
                               <p style={{ color: '#777' }}>Passenger {i + 1}</p>
                               <ProductBox
                                 procedure={
-                                  mainProcedures.filter((procedure: any) => addPassenger?.proc_id === procedure.id)[0]
+                                  ProceduresStore.proceduresStatus.proceduresData?.filter(
+                                    (procedure: any) => addPassenger?.proc_id === procedure.id,
+                                  )[0]
                                 }
-                                addProcedures={addProcedures.filter((el: any) =>
-                                  addPassenger.opt_proc_id.includes(el.id),
+                                addProcedures={ProceduresStore.proceduresStatus.optionalProceduresData?.filter(
+                                  (el: any) => addPassenger?.opt_proc_id?.includes(el.id),
                                 )}
                               />
                             </div>
@@ -146,7 +132,7 @@ export const Confirmation = () => {
                         </>
                       )
                     ) : (
-                      <ButtonContained width="200px" onClick={handleAddPassengers}>
+                      <ButtonContained width="200px" onClick={() => setIsToggled(!isToggled)}>
                         Load all passengers
                       </ButtonContained>
                     )}
@@ -157,7 +143,7 @@ export const Confirmation = () => {
               <div className={s.Confirmation__footer}>
                 <p>
                   <strong>Date:</strong> {new Date(mainPassanger?.date).toLocaleDateString()} at{' '}
-                  {new Date(mainPassanger?.date).toLocaleTimeString().slice(0, 5)}
+                  {new Date(mainPassanger?.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }, )}
                 </p>
                 {total && (
                   <p>
