@@ -14,7 +14,7 @@ export function loadProc(add = 0, res) {
       switch (add) {
         case 0:
           res.status(404).json({
-            success: false,
+            success: true,
             message: `No main procedures found.`,
           });
           break;
