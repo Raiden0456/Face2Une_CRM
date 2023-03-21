@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
-import { ButtonContained, ButtonOutlined } from '../components/base/Button';
+import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import { UserService } from '../service/UserService';
@@ -53,22 +53,18 @@ const columns = [
   {
     name: '',
     selector: (row: any) => (
-      <ButtonContained
-        width="100%"
-        style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
-        onClick={() => addHandler(row.id)}
-      >
+      <ButtonEdit width="85px" onClick={() => addHandler(row.id)}>
         Edit
-      </ButtonContained>
+      </ButtonEdit>
     ),
     sortable: false,
   },
   {
     name: '',
     selector: (row: any) => (
-      <ButtonOutlined width="100%" onClick={() => deleteHandler(row.id)}>
+      <ButtonDelete width="100%" onClick={() => deleteHandler(row.id)}>
         Delete
-      </ButtonOutlined>
+      </ButtonDelete>
     ),
     sortable: false,
   },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ButtonContained, ButtonOutlined } from './base/Button';
+import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
 import { Input } from './base/Input';
 import { TailSpinFixed } from './TailSpin';
@@ -138,16 +138,12 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
               </ButtonContained>
               {AuthStore.rights === 'admin' && (
                 <>
-                  <ButtonContained
-                    width="75px"
-                    style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
-                    onClick={toggleEdit}
-                  >
+                  <ButtonEdit width="75px" onClick={toggleEdit}>
                     Edit
-                  </ButtonContained>
-                  <ButtonOutlined width="75px" onClick={deleteHandler}>
+                  </ButtonEdit>
+                  <ButtonDelete width="75px" onClick={deleteHandler}>
                     Delete
-                  </ButtonOutlined>
+                  </ButtonDelete>
                 </>
               )}
             </div>
