@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
-import { ButtonContained, ButtonOutlined } from './base/Button';
+import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from './base/Button';
 import { Checkbox } from './base/Checkbox';
 import { ModalStore } from '../store/Modal.store';
 import { ProceduresStore } from '../store/Procedures.store';
@@ -16,7 +16,7 @@ import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
-import { saloon_ids } from './AddProductForms';
+import { saloon_ids } from '../utils/staticData';
 
 import s from './ProcedureBox.scss';
 
@@ -105,7 +105,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
     }
   };
 
-  // Delete Package Box
+  // Delete Procedure Box
   const deleteHandler = async () => {
     ModalStore.setDeleteItem({ deleteType: 'procedure', id: procedure.id });
     ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
@@ -206,9 +206,9 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
         <div className={type === 'modal' ? s.BookingBox__main : null} style={{ width: '100%' }}>
           <div className={s.BookingBox__header}>
             <div className={s.BookingBox__header_column}>
-              {ModalStore.modalStatus.open && <h2>Your Cart:</h2>}
+              {ModalStore.modalStatus.open && <h2>Passenger 1 Cart:</h2>}
+              {/* {ModalStore.modalStatus.open && <h4></h4>} */}
               <h3>{procedure?.name}</h3>
-              {ModalStore.modalStatus.open && <h4>Passenger 1</h4>}
               <p>
                 {procedure?.duration} minutes @ {procedure?.price}€
               </p>
@@ -221,16 +221,12 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
               )}
               {type === 'main' && AuthStore.rights === 'admin' && (
                 <>
-                  <ButtonContained
-                    width="75px"
-                    style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
-                    onClick={toggleEdit}
-                  >
+                  <ButtonEdit width="75px" onClick={toggleEdit}>
                     Edit
-                  </ButtonContained>
-                  <ButtonOutlined width="75px" onClick={deleteHandler}>
+                  </ButtonEdit>
+                  <ButtonDelete width="75px" onClick={deleteHandler}>
                     Delete
-                  </ButtonOutlined>
+                  </ButtonDelete>
                 </>
               )}
             </div>
@@ -238,7 +234,6 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
           <div className={s.BookingBox__content}>
             <p>{procedure?.description}</p>
           </div>
-
           {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
             <div className={s.BookingBox__optionalProcedures}>
               {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (

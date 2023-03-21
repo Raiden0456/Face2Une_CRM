@@ -15,7 +15,6 @@
     "[module-name]": false
   },
   "proxy": "http://localhost:3000",
-
   "browserslist": {
     "production": [
       ">0.2%",
@@ -29,13 +28,14 @@
     ]
   },
   "dependencies": {
+    "@aldabil/react-scheduler": "^2.6.13",
     "@babel/core": "^7.17.9",
     "@babel/preset-react": "^7.16.7",
     "@date-io/date-fns": "^2.13.1",
     "@date-io/dayjs": "^2.13.1",
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
-    "@mui/material": "^5.8.3",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.12",
     "@react-spring/web": "^9.5.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -73,6 +73,7 @@
     "mobx": "6.3.0",
     "mobx-react": "7.1.0",
     "mobx-remotedev": "0.3.6",
+    "moment": "^2.29.4",
     "react-calendar": "^3.7.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-data-table-component": "^7.5.3",
@@ -142,6 +143,7 @@
     "sass-loader": "^12.6.0",
     "source-map-loader": "^3.0.1",
     "uniqid": "^5.4.0",
+    "url-loader": "^4.1.1",
     "web-vitals": "^2.1.4",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4",

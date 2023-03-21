@@ -11,9 +11,27 @@ export type ProcedureData = {
   saloon_ids?: number[];
 };
 
+export type PackageData = {
+  id?: number;
+  name: string;
+  price: number;
+  price_gbp?: number;
+  amount: number;
+  procedure_id: number;
+};
+
+export type CertificatesData = {
+  id: number;
+  name: string;
+  price: number;
+  price_gbp?: number;
+};
+
 interface IProceduresStatus {
   proceduresData?: ProcedureData[] | null;
   optionalProceduresData?: ProcedureData[] | null;
+  packagesData?: PackageData[] | null;
+  certificatesData?: CertificatesData[] | null;
 }
 
 export interface IProceduresStore {
@@ -25,11 +43,15 @@ export const ProceduresStore = observable<IProceduresStore>({
   proceduresStatus: {
     proceduresData: null,
     optionalProceduresData: null,
+    packagesData: null,
+    certificatesData: null,
   },
-  setProceduresStatus({ proceduresData, optionalProceduresData }) {
+  setProceduresStatus({ proceduresData, optionalProceduresData, packagesData, certificatesData }) {
     this.proceduresStatus = {
       proceduresData,
       optionalProceduresData,
+      packagesData,
+      certificatesData,
     };
   },
 });

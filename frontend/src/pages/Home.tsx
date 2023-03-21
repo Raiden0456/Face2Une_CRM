@@ -4,50 +4,18 @@ import { ButtonContained } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import ProcedureBox from '../components/ProcedureBox';
-import { ProceduresService } from '../service/ProceduresService';
 import { TailSpinFixed } from '../components/TailSpin';
 import { ProceduresStore } from '../store/Procedures.store';
 import PackageBox from '../components/PackageBox';
+import CertificateBox from '../components/CertificateBox';
 import useForm from '../utils/useForm';
-import { AddPackage, AddProcedure } from '../components/AddProductForms';
+import { AddCertificate, AddPackage, AddProcedure } from '../components/AddProductForms';
 
 import s from './Home.scss';
 
-export const Home = () => {
-  const proceduresService = new ProceduresService();
+export const Home = ({ loading }: { loading: boolean }) => {
   const { inputs, handleChange, clearForm, resetForm } = useForm({ email: '', promo: '' });
   const [displayInput, setDisplayInput] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [packages, setPackages] = useState([]);
-
-  // Fetch Main & Optional Procedures
-  useEffect(() => {
-    setLoading(true);
-    proceduresService.getOptionalProcedures().then((optionalProcedures) => {
-      if (optionalProcedures?.success) {
-        ProceduresStore.setProceduresStatus({
-          ...ProceduresStore.proceduresStatus,
-          optionalProceduresData: optionalProcedures.data,
-        });
-      }
-
-      proceduresService.getProcedures().then((procedures) => {
-        if (procedures?.success) {
-          ProceduresStore.setProceduresStatus({
-            ...ProceduresStore.proceduresStatus,
-            proceduresData: procedures.data,
-          });
-        }
-
-        proceduresService.getPackages().then((packages) => {
-          if (packages?.success) {
-            setPackages(packages.data);
-            setLoading(false);
-          }
-        });
-      });
-    });
-  }, []);
 
   return (
     <Container
@@ -75,7 +43,7 @@ export const Home = () => {
           ) : (
             <>
               <div className={s.Home__divider}>
-                <h2>Procedures</h2>
+                <h2>Tunes</h2>
               </div>
 
               {ProceduresStore.proceduresStatus.proceduresData?.map((procedure, i) => {
@@ -85,18 +53,27 @@ export const Home = () => {
               {/* Add new procedure */}
               <AddProcedure />
 
-              {/* <hr style={{ borderTop: '2px solid #e2e2e2', width: '100%', marginBottom: '2rem' }} /> */}
-
               <div className={s.Home__divider}>
                 <h2>Packages</h2>
               </div>
 
-              {packages?.map((packageItem, i) => {
+              {ProceduresStore.proceduresStatus.packagesData?.map((packageItem, i) => {
                 return <PackageBox key={i} packageItem={packageItem} />;
               })}
 
               {/* Add new package */}
               <AddPackage />
+
+              <div className={s.Home__divider}>
+                <h2>Certificates</h2>
+              </div>
+
+              {ProceduresStore.proceduresStatus.certificatesData?.map((certItem, i) => {
+                return <CertificateBox key={i} certItem={certItem} />;
+              })}
+
+              {/* Add new certificate */}
+              <AddCertificate />
             </>
           )}
         </>

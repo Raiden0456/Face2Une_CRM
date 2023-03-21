@@ -33,3 +33,36 @@ export function allProcsIds(mainPassanger, addPassengers = null) {
 
   return mainPassangerIds;
 }
+
+function roundToNearestMinute(date) {
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  date.setMinutes(Math.round(date.getMinutes()));
+  return date;
+}
+
+export function renameAndDeleteArrayObjects(arr, obj) {
+  let result = arr.map((elem) => {
+    let newElem = {};
+    for (let key in elem) {
+      let newKey = obj[key];
+
+      if (newKey) {
+        newElem[newKey] = elem[key];
+
+        if (newKey === 'start' || newKey === 'end') {
+          newElem[newKey] = roundToNearestMinute(new Date(elem[key]));
+        }
+      }
+
+      newElem['color'] = '#91a0db';
+    }
+    return newElem;
+  });
+  return result;
+}
+
+// Finds element in array of objects, based on its ID
+export function findElementById(arr, id) {
+  return arr.find((element) => element.id === id);
+}

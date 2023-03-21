@@ -11,7 +11,7 @@ export function loadAppoint(url_params, res) {
       });
     else if (data.length == 0) {
       res.status(404).json({
-        success: false,
+        success: true,
         message: `No appointments found.`,
       });
     } else {

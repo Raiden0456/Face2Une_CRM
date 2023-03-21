@@ -40,7 +40,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
         if (!r.success) {
           setError({ status: true, message: r.message });
         } else {
-          setSuccess({ status: true, message: 'Please, sign in to your account.' });
+          setSuccess({ status: true, message: 'Verification has been sent to your email.' });
         }
       });
     }
@@ -81,12 +81,12 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
             />
             <NumberInput
               error={phoneError}
+              required
               helperText={phoneError && 'Your phone number is not valid!'}
               numberFormat="+# (###) ###-##-##"
               type="tel"
               className={s.Input}
               onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
-              required
               label="Phone:"
               name="phone"
               value={inputs?.phone}

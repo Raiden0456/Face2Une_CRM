@@ -62,7 +62,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
 
   .Navbar__pageStatus_el {
     text-align: center;
@@ -87,10 +86,17 @@
 }
 
 .Navbar__navigation {
+  margin-top: 1rem;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+
+  a {
+    margin-right: 1rem;
+    text-align: center;
+    text-decoration: none;
+  }
 }
 
 @media screen and (max-width: 821px) {

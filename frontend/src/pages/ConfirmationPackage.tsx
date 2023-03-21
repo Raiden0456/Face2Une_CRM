@@ -8,14 +8,13 @@ import { TailSpinFixed } from '../components/TailSpin';
 import ProductBox from '../components/ProductBox';
 import useForm from '../utils/useForm';
 import { Input, NumberInput } from '../components/base/Input';
-import { AuthService } from '../service/AuthService';
 import { AuthStore } from '../store/Auth.store';
 import { ClientService } from '../service/ClientService';
+import { handleConfirmClient } from '../hooks/handleConfirmClient';
 
 import s from './ConfirmationPackage.scss';
 
 export const ConfirmationPackage = () => {
-  const authService = new AuthService();
   const appointmentService = new AppointmentService();
   const clientService = new ClientService();
   const [buyPackage, setBuyPackage] = useState<any>(null);
@@ -31,19 +30,11 @@ export const ConfirmationPackage = () => {
   });
   const [phoneError, setPhoneError] = useState<boolean>(false);
 
-  useEffect(() => {
-    setLoading({ ...loading, global: true });
-    authService.getUser().then((r) => {
-      setLoading({ ...loading, global: false });
-    });
-  }, []);
-
   // Look up for booking info in sessionStorage
   // Redirect back if not found
   useEffect(() => {
     setLoading({ ...loading, global: true });
     let sessionBuyPackage: any = sessionStorage.getItem('buy_package');
-    const parsedMainPassanger = JSON.parse(sessionBuyPackage);
     setBuyPackage(JSON.parse(sessionBuyPackage));
 
     if (sessionBuyPackage) {
@@ -59,38 +50,22 @@ export const ConfirmationPackage = () => {
     }
   }, [AuthStore.email]);
 
-  const handleConfirmation = () => {
-    /* check client */
-    clientService.getClient(inputs.email).then((r) => {
-      if (r.data) {
-        const { id } = r.data[0];
+  const handleConfirmation = async () => {
+    const clientId = await handleConfirmClient({
+      email: inputs.email,
+      clientInfo: inputs,
+      fallback: '/confirmation-package',
+    });
 
-        /* create package buy */
-        appointmentService
-          .buyPack({ client_id: id, package_id: buyPackage.id, amount: Number(selectQuantity) })
-          .then((r) => {
-            if (r.success) {
-              console.log('Package for the Passenger Created!', r);
-            }
-          });
-      } else {
-        /* create client */
-        clientService.createClient(inputs, '/confirmation-package').then((r) => {
-          if (r.success && r.data) {
-            const { id } = r.data[0];
-
-            /* create package buy */
-            appointmentService
-              .buyPack({ client_id: id, package_id: buyPackage.id, amount: Number(selectQuantity) })
-              .then((r) => {
-                if (r.success) {
-                  console.log('Package for the Passenger Created!', r);
-                }
-              });
+    if (clientId) {
+      appointmentService
+        .buyPack({ client_id: clientId, package_id: buyPackage.id, amount: Number(selectQuantity) })
+        .then((r) => {
+          if (r.success) {
+            console.log('Package for the Passenger Created!', r);
           }
         });
-      }
-    });
+    }
   };
 
   return (
@@ -139,6 +114,7 @@ export const ConfirmationPackage = () => {
                   </div>
                   <div>
                     <NumberInput
+                      required
                       error={phoneError}
                       helperText={phoneError && 'Your phone number is not valid!'}
                       numberFormat="+# (###) ###-##-##"
@@ -185,7 +161,7 @@ export const ConfirmationPackage = () => {
                   </p>
                 )}
 
-                <ButtonContained type="submit" form="userInfo" width="35%">
+                <ButtonContained type="submit" form="userInfo" width="200px">
                   Pay Now
                 </ButtonContained>
               </div>

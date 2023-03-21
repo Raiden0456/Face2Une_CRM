@@ -1,7 +1,7 @@
 import { JSONFetch, JSONFetchGet } from '../api/fetchMethod';
 import { ModalStore } from '../store/Modal.store';
 
-interface NewClient {
+export interface NewClient {
   firstName: string;
   lastName: string;
   phone: string;
@@ -11,6 +11,16 @@ interface NewClient {
 export class ClientService {
   async getClient(email: string) {
     const r = await JSONFetchGet(`clients?column=email&value=${email}`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
+  async getClient_n(phone: string) {
+    const r = await JSONFetchGet(`clients?column=phone&value=${phone}`);
 
     if (r?.success) {
       return r;

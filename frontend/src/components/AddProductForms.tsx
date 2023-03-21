@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { Input } from './base/Input';
-import { Checkbox } from './base/Checkbox';
+import { Checkbox, Radio } from './base/Checkbox';
 import useForm from '../utils/useForm';
 import { ButtonContained, ButtonOutlined } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
 import { AuthStore } from '../store/Auth.store';
+import { saloon_ids } from '../utils/staticData';
+import { ProceduresStore } from '../store/Procedures.store';
 
 import s from './AddProductForms.scss';
-
-export const saloon_ids = [
-  { id: 1, text: '46 Rue De Richelieu', value: 1 },
-  { id: 2, text: '61 Rue de Caumartin', value: 2 },
-];
 
 export function AddProcedure() {
   const proceduresService = new ProceduresService();
@@ -32,7 +29,6 @@ export function AddProcedure() {
     const createProcedure = { ...inputs, additional, saloon_ids: saloonIds };
 
     proceduresService.createProcedure(createProcedure).then((r) => {
-      console.log(r);
       setLoader(false);
       setShowForm(false);
     });
@@ -146,6 +142,7 @@ export function AddPackage() {
   const proceduresService = new ProceduresService();
   const [showForm, setShowForm] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
+  const [procID, setProcID] = useState<number | null>(null);
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
     name: '',
     price: '',
@@ -156,8 +153,7 @@ export function AddPackage() {
     e.preventDefault();
     setLoader(true);
 
-    proceduresService.createPackage(inputs).then((r) => {
-      console.log(r);
+    proceduresService.createPackage({ ...inputs, procedure_id: procID }).then((r) => {
       setLoader(false);
       setShowForm(false);
     });
@@ -175,7 +171,7 @@ export function AddPackage() {
           {showForm && (
             <form id="addProcedure" onSubmit={handleSubmit} className={s.AddProductForm}>
               <h2>Create a New Package</h2>
-              <div>
+              <div className={s.AddProductForm__inputs} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
                 <Input
                   required
                   className={s.Input}
@@ -208,10 +204,92 @@ export function AddPackage() {
                   onChange={handleChange}
                 />
                 <br />
+                <div className={s.AddProductForm__procedures}>
+                  <h4>Select Procedure(s):</h4>
+                  <div>
+                    {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
+                      <Radio
+                        required
+                        name="procedures"
+                        value={proc.id}
+                        style={{ marginRight: '0.5rem' }}
+                        onChange={(e) => setProcID(Number(e))}
+                        key={proc.id}
+                      >
+                        {proc.name}
+                      </Radio>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <ButtonContained disabled={loader} type="submit">
                 Add Package
+              </ButtonContained>
+            </form>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
+
+export function AddCertificate() {
+  const proceduresService = new ProceduresService();
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(false);
+  const { inputs, handleChange, clearForm, resetForm } = useForm({
+    name: '',
+    price: '',
+  });
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setLoader(true);
+
+    proceduresService.createCertificate(inputs).then((r) => {
+      setLoader(false);
+      setShowForm(false);
+    });
+
+    window.location.reload();
+  };
+
+  return (
+    <>
+      {AuthStore.rights === 'admin' && (
+        <div className={s.AddProductWrapper}>
+          <ButtonOutlined width="200px" onClick={() => setShowForm(!showForm)}>
+            Create Certificate
+          </ButtonOutlined>
+          {showForm && (
+            <form id="addProcedure" onSubmit={handleSubmit} className={s.AddProductForm}>
+              <h2>Create a New Certificate</h2>
+              <div className={s.AddProductForm__inputs} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                <Input
+                  required
+                  className={s.Input}
+                  name="name"
+                  label="Name:"
+                  type="text"
+                  value={inputs?.name}
+                  onChange={handleChange}
+                />
+                <br />
+                <Input
+                  required
+                  className={s.Input}
+                  name="price"
+                  label="Price:"
+                  type="number"
+                  min="0"
+                  value={inputs?.price}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <ButtonContained disabled={loader} type="submit">
+                Add Certificate
               </ButtonContained>
             </form>
           )}

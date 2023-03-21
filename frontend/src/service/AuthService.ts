@@ -24,11 +24,11 @@ export class AuthService {
     if (r.success) {
       AuthStore.setupAuthData({
         authorized: 'auth',
-        email: r.data[0].email,
-        firstName: r.data[0].first_name,
-        lastName: r.data[0].last_name,
-        phone: r.data[0].phone,
-        rights: r.data[0].rights,
+        email: r.data.user.email,
+        firstName: r.data.user.user_metadata.first_name,
+        lastName: r.data.user.user_metadata.last_name,
+        phone: r.data.user.user_metadata.phone,
+        rights: r.data.user.user_metadata.rights,
       });
     } else {
       AuthStore.setupAuthData({ authorized: 'not_auth' });

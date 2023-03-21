@@ -319,15 +319,126 @@
             }
           }
         },
-        "/use_pack":{
+        "/cert": {
+          "get": {
+            "tags": ["Certificates"],
+            "summary": "Get all certificates in db",
+            "responses": {
+              "200": {
+                "description": "Returns all certificates in database in JSON format"
+              }
+            }
+          }
+        },
+        "/cert/{certid}": {
+          "get": {
+            "tags": ["Certificates"],
+            "summary": "Get a single certificate by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "certid",
+              "description": "id of certificate",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single certificate in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_cert": {
           "post": {
-            "tags": ["Packages"],
-            "summary": "Use packages",
+            "tags": ["Certificates"],
+            "summary": "Create new certificate",
             "parameters": [
               {
               "in": "body",
               "name": "body",
-              "description": "client id and package id",
+              "description": "object of certificate",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Certificate"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a certificate in database using JSON format"
+              }
+            }
+          }
+        },
+        "/update_cert": {
+          "post": {
+            "tags": ["Certificates"],
+            "summary": "Update certificate by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of certificate",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Certificate"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a certificate in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_cert/{certid}": {
+          "delete": {
+            "tags": ["Certificates"],
+            "summary": "Delete certificate by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "certid",
+              "description": "id of certificate",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a certificate in database by id"
+              }
+            }
+          }
+        },
+        "/buy_cert": {
+          "post": {
+            "tags": ["Certificates"],
+            "summary": "Buy certificate",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "client id and certificate id",
               "required": true,
               "schema": {
                 "type": "object",
@@ -335,8 +446,8 @@
                   "client_id": {
                     "type": "integer"
                   },
-                  "promocode": {
-                    "type": "string"
+                  "certificate_id": {
+                    "type": "integer"
                   }
                 }
               }
@@ -344,7 +455,238 @@
             ],
             "responses": {
               "200": {
-                "description": "Use 1 package of a client, if none left, delete it from database"
+                "description": "Buy certificate for a client in database using JSON format"
+              }
+            }
+          }
+        },
+        "/coupon": {
+          "get": {
+            "tags": ["Coupons"],
+            "summary": "Get coupons in db",
+            "parameters": [
+              {
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
+              },
+              {
+                "in": "query",
+                "name": "per_page",
+                "description": "max coupons per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_like",
+                "description": "multifilter 'like' for all columns",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "column",
+                "description": "'equal' filter column name(id, name, code))",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "value",
+                "description": "value of 'equal' filter column",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns coupons in database in JSON format"
+              }
+            }
+          }
+        },
+        "/coupon/{couponid}": {
+          "get": {
+            "tags": ["Coupons"],
+            "summary": "Get a single coupon by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "couponid",
+              "description": "coupon id",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns coupon in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_coupon": {
+          "post": {
+            "tags": ["Coupons"],
+            "summary": "Create new coupon",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of coupon",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Coupon"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a coupon in database using JSON format"
+              }
+            }
+          }
+        },
+        "/update_coupon": {
+          "post": {
+            "tags": ["Coupons"],
+            "summary": "Update coupon by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of coupon",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Coupon"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a coupon in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_coupon/{couponid}": {
+          "delete": {
+            "tags": ["Coupons"],
+            "summary": "Delete coupon by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "couponid",
+              "description": "id of coupon",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a coupon in database by id"
+              }
+            }
+          }
+        },
+        "/code_check": {
+          "get": {
+            "tags" : ["Codes"],
+            "summary": "Check code validity and get data on it",
+            "parameters": [
+              {
+                "in": "query",
+                "name": "email",
+                "description": "client email, used to determine if client has a package",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "code",
+                "description": "code to check",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns code type and data in JSON format"
+              }
+            }
+          } 
+        },
+        "/use_code": {
+          "post":{
+            "tags": ["Codes"],
+            "summary": "Use code and modify database, NOTE: CAN NOT BE USED BEFORE VALIDITY IS CHEKED",
+            "parameters": [
+              {
+                "in": "body",
+                "name": "body",
+                "description": "object of code params",
+                "required": true,
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email":{ 
+                      "type": "string"
+                    },
+                    "promocode": {
+                      "type": "string"
+                    },
+                    "code_type": {
+                      "type": "string"
+                    },
+                    "total_price": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Uses codes, e.g modifies database"
               }
             }
           }
@@ -355,27 +697,60 @@
             "summary": "Get users in db",
             "parameters": [
               {
-              "in": "query",
-              "name": "column",
-              "description": "filter column name(id, first_name, last_name, email, phone, rights))",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
               },
               {
-              "in": "query",
-              "name": "value",
-              "description": "value of filter column",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "per_page",
+                "description": "max clients per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_like",
+                "description": "multifilter 'like' for all columns",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "column",
+                "description": "'equal' filter column name(id, first_name, last_name, phone, email))",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "in": "query",
+                "name": "value",
+                "description": "value of 'equal' filter column",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
               }
             ],
             "responses": {
               "200": {
-                "description": "Returns users in database in JSON format"
+                "description": "Returns clients in database in JSON format"
               }
             }
           }
@@ -518,7 +893,7 @@
               },
               {
                 "in": "query",
-                "name": "filter_column_eq",
+                "name": "column",
                 "description": "'equal' filter column name(id, full_name, phone, email, user_id))",
                 "required": false,
                 "default": "",
@@ -528,7 +903,7 @@
               },
               {
                 "in": "query",
-                "name": "filter_column_eq_value",
+                "name": "value",
                 "description": "value of 'equal' filter column",
                 "required": false,
                 "default": "",
@@ -629,7 +1004,7 @@
             "parameters": [
               {
               "in": "path",
-              "name": "clientsid",
+              "name": "clientid",
               "description": "id of client",
               "required": true,
               "schema": {
@@ -732,6 +1107,14 @@
               "schema": {
                 "type": "string"
               }
+              },
+              {
+                "in": "query",
+                "name": "details",
+                "description": "get details boolean",
+                "required": false,
+                "type": "boolean",
+                "default": false
               }
             ],
             "responses": {
@@ -879,11 +1262,58 @@
             "name": {
               "type": "string"
             },
+            "procedure_id": {
+              "type": "number"
+            },
             "price": {
               "type": "number"
             },
             "amount": {
               "type": "number"
+            }
+          }
+        },
+        "Certificate": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number"
+            }
+          }
+        },
+        "Coupon": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "code": {
+              "type": "string"
+            },
+            "procedure_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "uniqueItems": true
+              }
+            },
+            "discount": {
+              "type": "number"
+            },
+            "expiry_date": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "Code": {
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "promocode": {
+              "type": "string"
             }
           }
         },
@@ -907,6 +1337,10 @@
             "rights": {
               "type": "string",
               "default": "client"
+            },
+            "saloon_id": {
+              "type": "integer",
+              "default": null
             }
           }
         },
@@ -929,26 +1363,31 @@
               "type": "string"
             },
             "phone": {
-              "type": "string"
+              "type": "string",
+              "required": false
             },
             "email": {
-              "type": "string"
+              "type": "string",
+              "required": false
             },
             "user_id": {
               "type": "number",
-              "default": null
+              "default": null,
+              "required": false
             }
           }
         },
         "Appointment": {
           "properties": {
             "procedure_id": {
-              "type": "integer"
+              "type": "integer",
+              "default": "1"
             },
             "additional_ids": {
               "type": "array",
               "items": {
                 "type": "integer",
+                "default": 7,
                 "uniqueItems": true
               }
             },

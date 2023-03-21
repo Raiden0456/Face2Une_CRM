@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { ButtonContained, ButtonOutlined } from './base/Button';
+import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
 import { Input } from './base/Input';
 import { TailSpinFixed } from './TailSpin';
 import useForm from '../utils/useForm';
-
+import { ModalStore } from '../store/Modal.store';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
+import { Checkbox, Radio } from './base/Checkbox';
+import { ProceduresStore } from '../store/Procedures.store';
 
 import s from './ProcedureBox.scss';
-import { ModalStore } from '../store/Modal.store';
 
 interface IBookingBox {
   width?: string;
@@ -20,6 +21,7 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
   const navigate = useNavigate();
   const proceduresService = new ProceduresService();
   const { inputs, handleChange, clearForm, resetForm } = useForm(packageItem);
+  const [procID, setProcID] = useState<number | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +30,7 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
     event.preventDefault();
     setLoading(true);
 
-    const r = await proceduresService.updatePackage(inputs);
+    const r = await proceduresService.updatePackage({ ...inputs, procedure_id: procID });
     if (r.success) {
       console.log('Successfully Updated!');
       window.location.reload();
@@ -65,7 +67,7 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
   return (
     <div id={packageItem?.id.toString()} className={s.BookingBox} style={{ width: width }}>
       {isEditing ? (
-        <form onSubmit={handleSubmit} style={{ width: '50%' }}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {loading ? (
             <TailSpinFixed />
           ) : (
@@ -92,6 +94,23 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
                 onChange={handleChange}
               />
               <br />
+              <div className={s.BookingBox__optionalProcedures}>
+                <h4>Select Procedure(s):</h4>
+                <div>
+                  {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
+                    <Radio
+                      required
+                      name="procedures"
+                      value={proc.id}
+                      style={{ marginRight: '0.5rem' }}
+                      onChange={(e) => setProcID(Number(e))}
+                      key={proc.id}
+                    >
+                      {proc.name}
+                    </Radio>
+                  ))}
+                </div>
+              </div>
               <div style={{ display: 'flex' }}>
                 <ButtonContained type="submit">Save</ButtonContained>
                 <ButtonContained
@@ -119,16 +138,12 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
               </ButtonContained>
               {AuthStore.rights === 'admin' && (
                 <>
-                  <ButtonContained
-                    width="75px"
-                    style={{ backgroundColor: 'rgba(119, 119, 119, 0.511)' }}
-                    onClick={toggleEdit}
-                  >
+                  <ButtonEdit width="75px" onClick={toggleEdit}>
                     Edit
-                  </ButtonContained>
-                  <ButtonOutlined width="75px" onClick={deleteHandler}>
+                  </ButtonEdit>
+                  <ButtonDelete width="75px" onClick={deleteHandler}>
                     Delete
-                  </ButtonOutlined>
+                  </ButtonDelete>
                 </>
               )}
             </div>

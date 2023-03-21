@@ -5,16 +5,16 @@
 .Clients__header {
   margin-bottom: 1rem;
 
-  h2 {
+  h3 {
     font-weight: 700;
     text-transform: uppercase;
-    text-align: center;
+    text-align: start;
   }
 }
 
 .Clients__table_searchFieldWrapper {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 
   button {
     margin-left: 1rem;

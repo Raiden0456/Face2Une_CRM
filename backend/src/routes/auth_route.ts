@@ -5,36 +5,20 @@ import * as auth from '../controllers/users_controller.js';
 //Routing for the authintication//
 
 router.post('/sign_up', function(req, res){
-    auth.createUser(req.body, res); 
+    auth.signUp(req.body, res); 
 });
 router.post('/sign_in', function(req, res){
-    auth.loginUser(req.body, res);
-
-    // Set the session //
-    let session=req.session;
-    session.user = req.body;
-    /////////////////////
+    auth.signIn(req.body, res);
 });
 router.get('/sign_out', function(req, res){
     // Destroy the session //
-    req.session.destroy(function(err) {
-        console.log('Session destroyed')
-     })
+    auth.signOut(res);
     /////////////////////////
-    res.json({ success: true, data: "user logged out" });
+    res.json({ success: true, data: "user signed out" });
 });
 
 router.get('/session_user', function(req, res){
-    // Set the session //
-    let session=req.session;
-    // Check if the user is in the session //
-    if (session.user) {
-        auth.loadUsers({column: "email", value: session.user.email}, res);
-    }
-    else {
-        res.json({ success: false, data: "no user in session" });
-    }
-    /////////////////////////////////////////
+    auth.session_user(res);
 });
 
 export default router;
