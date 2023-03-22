@@ -2,7 +2,7 @@ import { Router } from 'express';
 var router = Router();
 import * as coupon from '../controllers/found_us_controller.js';
 
-//Routing for the found us sources//
+//Routing for the Found us sources//
 
 router.get('/sources', function(req, res){
     coupon.loadSources(res);
