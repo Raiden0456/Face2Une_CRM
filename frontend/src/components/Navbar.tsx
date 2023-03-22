@@ -6,7 +6,8 @@ import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
 import { ButtonOutlined } from './base/Button';
 
-const adminPaths = ['/clients', '/calendar', '/coupons'];
+const adminPaths = ['/clients', '/calendar', '/employees', '/coupons'];
+const confirmationPaths = ['/confirmation', '/confirmation-package', '/confirmation-certificate'];
 
 const NavBar = observer(() => {
   const authService = new AuthService();
@@ -49,7 +50,7 @@ const NavBar = observer(() => {
             </div>
             <div
               className={
-                window.location.pathname === '/confirmation' || window.location.pathname === '/confirmation-package'
+                confirmationPaths.includes(window.location.pathname)
                   ? s.Navbar__pageStatus_el_focused
                   : s.Navbar__pageStatus_el
               }
@@ -62,13 +63,20 @@ const NavBar = observer(() => {
         <div className={s.Navbar__navigation}>
           {AuthStore.rights === 'admin' && (
             <>
-              <Link to="/clients" style={{ textAlign: 'center', textDecoration: 'none', marginRight: '1rem' }}>
+              <Link to="/clients">
                 <ButtonOutlined>Clients</ButtonOutlined>
               </Link>
-              <Link to="/calendar" style={{ textAlign: 'center', textDecoration: 'none', marginRight: '1rem' }}>
+              <Link to="/employees">
+                <ButtonOutlined>Employees</ButtonOutlined>
+              </Link>
+            </>
+          )}
+          {(AuthStore.rights === 'admin' || AuthStore.rights === 'employee') && (
+            <>
+              <Link to="/calendar">
                 <ButtonOutlined>Calendar</ButtonOutlined>
               </Link>
-              <Link to="/coupons" style={{ textAlign: 'center', textDecoration: 'none' }}>
+              <Link to="/coupons">
                 <ButtonOutlined>Coupons</ButtonOutlined>
               </Link>
             </>

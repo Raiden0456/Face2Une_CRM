@@ -61,3 +61,8 @@ export function renameAndDeleteArrayObjects(arr, obj) {
   });
   return result;
 }
+
+// Finds element in array of objects, based on its ID
+export function findElementById(arr, id) {
+  return arr.find((element) => element.id === id);
+}

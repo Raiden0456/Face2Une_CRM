@@ -7,30 +7,28 @@ import useForm from '../utils/useForm';
 import { ModalStore } from '../store/Modal.store';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
-import { Checkbox, Radio } from './base/Checkbox';
-import { ProceduresStore } from '../store/Procedures.store';
 
 import s from './ProcedureBox.scss';
 
 interface IBookingBox {
   width?: string;
-  packageItem?: any;
+  certItem?: any;
 }
 
-const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
+const CertificateBox: React.FC<IBookingBox> = ({ width = '100%', certItem }) => {
   const navigate = useNavigate();
   const proceduresService = new ProceduresService();
-  const { inputs, handleChange, clearForm, resetForm } = useForm(packageItem);
-  const [procID, setProcID] = useState<number | null>(null);
+  const { inputs, handleChange, clearForm, resetForm } = useForm(certItem);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { id, name, price, price_gbp } = certItem;
 
   // Edit Button
   async function handleSubmit(event: any) {
     event.preventDefault();
     setLoading(true);
 
-    const r = await proceduresService.updatePackage({ ...inputs, procedure_id: procID });
+    const r = await proceduresService.updateCertificate(inputs);
     if (r.success) {
       console.log('Successfully Updated!');
       window.location.reload();
@@ -46,26 +44,26 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
 
   const handleProceed = () => {
     sessionStorage.setItem(
-      'buy_package',
+      'buy_certificate',
       JSON.stringify({
-        id: packageItem.id,
-        amount: packageItem.amount,
-        price: packageItem.price,
-        name: packageItem.name,
+        id,
+        name,
+        price,
+        price_gbp,
       }),
     );
 
-    navigate('/confirmation-package');
+    navigate('/confirmation-certificate');
   };
 
   // Delete Package Box
   const deleteHandler = async () => {
-    ModalStore.setDeleteItem({ deleteType: 'pack', id: packageItem.id });
+    ModalStore.setDeleteItem({ deleteType: 'certificate', id });
     ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
   };
 
   return (
-    <div id={packageItem?.id.toString()} className={s.BookingBox} style={{ width: width }}>
+    <div id={id?.toString()} className={s.BookingBox} style={{ width: width }}>
       {isEditing ? (
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {loading ? (
@@ -83,34 +81,6 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
                 value={inputs?.price}
                 onChange={handleChange}
               />
-              <br />
-              <Input
-                required
-                min="0"
-                label="Amount:"
-                type="number"
-                name="amount"
-                value={inputs?.amount}
-                onChange={handleChange}
-              />
-              <br />
-              <div className={s.BookingBox__optionalProcedures}>
-                <h4>Select Procedure(s):</h4>
-                <div>
-                  {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
-                    <Radio
-                      required
-                      name="procedures"
-                      value={proc.id}
-                      style={{ marginRight: '0.5rem' }}
-                      onChange={(e) => setProcID(Number(e))}
-                      key={proc.id}
-                    >
-                      {proc.name}
-                    </Radio>
-                  ))}
-                </div>
-              </div>
               <div style={{ display: 'flex' }}>
                 <ButtonContained type="submit">Save</ButtonContained>
                 <ButtonContained
@@ -127,10 +97,8 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
         <div style={{ width: '100%' }}>
           <div className={s.BookingBox__header}>
             <div className={s.BookingBox__header_column}>
-              <h3>
-                Package: {packageItem?.amount} {packageItem?.name}
-              </h3>
-              <p>{packageItem?.price}€</p>
+              <h3>{name}</h3>
+              <p>{price}€</p>
             </div>
             <div className={s.BookingBox__header_btns}>
               <ButtonContained width="100px" onClick={handleProceed}>
@@ -154,4 +122,4 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
   );
 };
 
-export default PackageBox;
+export default CertificateBox;

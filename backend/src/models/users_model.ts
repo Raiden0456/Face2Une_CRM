@@ -12,6 +12,8 @@ const user = function (user) {
   this.phone = user.phone;
   this.email = user.email;
   this.password = user.password;
+  this.rights = user.rights;
+  this.saloon_id = user.saloon_id;
 };
 
 user.getUsers = async (
@@ -39,36 +41,70 @@ user.getUsers = async (
   //******//
 
   if (params.filter_like) {
-    resp = await supabase
-      .from("users")
-      .select("*")
-      .or(
-        "first_name.ilike.%" +
-          params.filter_like +
-          "%, last_name.ilike.%" +
-          params.filter_like +
-          "%, email.ilike.%" +
-          params.filter_like +
-          "%, phone.ilike.%" +
-          params.filter_like +
-          "%"
-      )
-      .range(start_from, to);
+    resp =
+      params.column == "employee"
+        ? await supabase
+            .from("users")
+            .select("*")
+            .or(
+              "first_name.ilike.%" +
+                params.filter_like +
+                "%, last_name.ilike.%" +
+                params.filter_like +
+                "%, email.ilike.%" +
+                params.filter_like +
+                "%, phone.ilike.%" +
+                params.filter_like +
+                "%"
+            )
+            .eq("rights", "employee")
+            .range(start_from, to)
+        : await supabase
+            .from("users")
+            .select("*")
+            .or(
+              "first_name.ilike.%" +
+                params.filter_like +
+                "%, last_name.ilike.%" +
+                params.filter_like +
+                "%, email.ilike.%" +
+                params.filter_like +
+                "%, phone.ilike.%" +
+                params.filter_like +
+                "%"
+            )
+            .range(start_from, to);
 
-    total = await supabase
-      .from("users")
-      .select("id")
-      .or(
-        "first_name.ilike.%" +
-          params.filter_like +
-          "%, last_name.ilike.%" +
-          params.filter_like +
-          "%, email.ilike.%" +
-          params.filter_like +
-          "%, phone.ilike.%" +
-          params.filter_like +
-          "%"
-      );
+    total =
+      params.column == "employee"
+        ? await supabase
+            .from("users")
+            .select("id")
+            .or(
+              "first_name.ilike.%" +
+                params.filter_like +
+                "%, last_name.ilike.%" +
+                params.filter_like +
+                "%, email.ilike.%" +
+                params.filter_like +
+                "%, phone.ilike.%" +
+                params.filter_like +
+                "%"
+            )
+        : await supabase
+            .from("users")
+            .select("id")
+            .or(
+              "first_name.ilike.%" +
+                params.filter_like +
+                "%, last_name.ilike.%" +
+                params.filter_like +
+                "%, email.ilike.%" +
+                params.filter_like +
+                "%, phone.ilike.%" +
+                params.filter_like +
+                "%"
+            );
   } else {
     if ((params.column && !params.value) || (!params.column && params.value))
       return result(null, [], 0);
@@ -99,6 +135,7 @@ user.createUser = async (
     email: string;
     password: string;
     rights: string;
+    saloon_id: number;
   },
   result
 ) => {
@@ -111,6 +148,7 @@ user.createUser = async (
       last_name: user.last_name,
       phone: user.phone,
       rights: user.rights,
+      saloon_id: user.saloon_id,
     },
   });
   if (error) {
@@ -127,6 +165,7 @@ user.createUser = async (
         email: user.email,
         rights: user.rights,
         uuid: data.user.id,
+        saloon_id: user.saloon_id,
       },
     ])
     .select();
@@ -142,6 +181,7 @@ user.updateUserById = async (
     email: string;
     password: string;
     rights: string;
+    saloon_id: number;
   },
   result
 ) => {
@@ -154,6 +194,7 @@ user.updateUserById = async (
         phone: user.phone,
         email: user.email,
         rights: user.rights,
+        saloon_id: user.saloon_id,
       },
     ])
     .eq("id", user.id)
@@ -169,6 +210,7 @@ user.updateUserById = async (
         last_name: user.last_name,
         phone: user.phone,
         rights: user.rights,
+        saloon_id: user.saloon_id,
       },
     }
   );
@@ -179,7 +221,7 @@ user.updateUserById = async (
 user.deleteUserById = async (id: number, result) => {
   await supabase.from("clients").update({ user_id: null }).eq("user_id", id);
   const uuid = await supabase.from("users").select("uuid").eq("id", id);
-  await supabase.from("users").delete().eq("id", uuid);
+  await supabase.from("users").delete().eq("id", id);
   const { data, error } = await supabase.auth.admin.deleteUser(
     uuid.data[0].uuid
   );

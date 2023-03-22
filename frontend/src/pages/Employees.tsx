@@ -3,12 +3,13 @@ import { Container } from '../components/base/Container';
 import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
-import { CouponsService } from '../service/CouponsService';
+import { UserService } from '../service/UserService';
 import DataTable from 'react-data-table-component';
-import Moment from 'moment';
+import { saloon_ids } from '../utils/staticData';
+import { findElementById } from '../utils/funcs';
 import { ModalStore } from '../store/Modal.store';
-
-import s from './Coupons.scss';
+import { formatPhoneNumber } from '../utils/formatPhone';
+import s from './Clients.scss';
 
 const customTableStyles = {
   headCells: {
@@ -31,41 +32,24 @@ const customTableStyles = {
 
 const ROWS_PER_PAGE = 10;
 
-// Delete Coupon
+// Delete Employee
 const deleteHandler = async (id: number) => {
-  ModalStore.setDeleteItem({ deleteType: 'coupon', id });
+  ModalStore.setDeleteItem({ deleteType: 'employee', id });
   ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
 };
 
-// Edit Coupon
+// Edit Employee
 const addHandler = async (id: number | null) => {
-  ModalStore.setAddItem({ addType: 'coupon', edit: true, id });
+  ModalStore.setAddItem({ addType: 'employee', edit: true, id });
   ModalStore.setModalStatus({ open: true, action: 'addItem' });
 };
 
 const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },
-  { name: 'Name', selector: (row: any) => row.name, sortable: true, wrap: true },
-  { name: 'Code', selector: (row: any) => row.code, sortable: true },
-  { name: 'Discount', selector: (row: any) => row.discount, sortable: true },
-  {
-    name: 'Procedures',
-    cell: (row: { procedure_names: any[] }) => (
-      <div>
-        {row.procedure_names.map((names, i) => (
-          <div key={i}>{names}</div>
-        ))}
-      </div>
-    ),
-    sortable: false,
-    wrap: true,
-  },
-  {
-    name: 'Expiry date',
-    selector: (row: any) => Moment(row.expiry_date).format('MMMM DD, YYYY HH:mm'),
-    sortable: true,
-    wrap: true,
-  },
+  { name: 'Full Name', selector: (row: any) => `${row.first_name} ${row.last_name}`, sortable: true },
+  { name: 'Email', selector: (row: any) => row.email, sortable: true },
+  { name: 'Phone', selector: (row: any) => formatPhoneNumber(row.phone), sortable: false },
+  { name: 'Saloon', selector: (row: any) => findElementById(saloon_ids, row.saloon_id).text, sortable: false },
   {
     name: '',
     selector: (row: any) => (
@@ -90,17 +74,17 @@ const paginationComponentOptions = {
   noRowsPerPage: true,
 };
 
-export const Coupons = () => {
-  const couponService = new CouponsService();
+export const Employees = () => {
+  const userService = new UserService();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [filterLike, setFilterLike] = useState('');
 
-  const fetchCoupons = async (page: number) => {
+  const fetchClients = async (page: number) => {
     setLoading(true);
 
-    couponService.getCoupons(page, ROWS_PER_PAGE, filterLike).then((r) => {
+    userService.getEmployees({ index: page, perPage: ROWS_PER_PAGE, filterLike }).then((r) => {
       if (r.success) {
         console.log(r);
         setData(r.data);
@@ -111,20 +95,20 @@ export const Coupons = () => {
   };
 
   const handlePageChange = (page: number) => {
-    fetchCoupons(page);
+    fetchClients(page);
   };
 
   const handleSearch = () => {
-    fetchCoupons(1);
+    fetchClients(1);
   };
 
   useEffect(() => {
-    fetchCoupons(1);
+    fetchClients(1);
   }, []);
 
-  // Add Coupon
+  // Add Employee
   const addHandler = async () => {
-    ModalStore.setAddItem({ addType: 'coupon', edit: false, id: null });
+    ModalStore.setAddItem({ addType: 'employee', edit: false, id: null });
     ModalStore.setModalStatus({ open: true, action: 'addItem' });
   };
 
@@ -134,13 +118,13 @@ export const Coupons = () => {
       width="100%"
       content={
         <>
-          <div className={s.Coupons}>
-            <div className={s.Coupons__header}>
-              <h3>Coupons</h3>
+          <div className={s.Clients}>
+            <div className={s.Clients__header}>
+              <h3>Employees</h3>
             </div>
-            <div className={s.Coupons__table_searchFieldWrapper}>
+            <div className={s.Clients__table_searchFieldWrapper}>
               <Input
-                label="Search for a coupon:"
+                label="Search for an employee:"
                 type="text"
                 name="search"
                 value={filterLike}
@@ -152,10 +136,10 @@ export const Coupons = () => {
             </div>
             <div>
               <ButtonContained width="auto" onClick={addHandler}>
-                Add Coupon
+                Add Employee
               </ButtonContained>
             </div>
-            <div className={s.Coupons__table}>
+            <div className={s.Clients__table}>
               <DataTable
                 columns={columns}
                 data={data}

@@ -33,7 +33,6 @@ export const Calendar = () => {
     setLoading(true);
     return new Promise<void>((res) => {
       appointmentService.getAppointments().then((r: any) => {
-        console.log(r.data);
         setLoading(false);
 
         const result = renameAndDeleteArrayObjects(r.data, {
@@ -49,36 +48,10 @@ export const Calendar = () => {
           saloon_address: 'location',
         });
 
-        console.log(result);
-
         res(result);
       });
     });
   }
-
-  // Fetch and Store Main & Optional Procedures [IF EMPTY]
-  // TBD + Fix Bug with routing
-  /* useEffect(() => {
-    setLoading(true);
-    if()
-    proceduresService.getOptionalProcedures().then((optionalProcedures) => {
-      if (optionalProcedures?.success) {
-        ProceduresStore.setProceduresStatus({
-          ...ProceduresStore.proceduresStatus,
-          optionalProceduresData: optionalProcedures.data,
-        });
-      }
-
-      proceduresService.getProcedures().then((procedures) => {
-        if (procedures?.success) {
-          ProceduresStore.setProceduresStatus({
-            ...ProceduresStore.proceduresStatus,
-            proceduresData: procedures.data,
-          });
-        }
-      });
-    });
-  }, []); */
 
   return (
     <Container
@@ -86,6 +59,9 @@ export const Calendar = () => {
       width="100%"
       content={
         <>
+          <div className="Calendar__header">
+            <h3>Calendar</h3>
+          </div>
           <div className="AddAppointmentBtn_wrapper">
             <ButtonContained
               width="200px"
