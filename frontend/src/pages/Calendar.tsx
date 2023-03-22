@@ -33,7 +33,7 @@ export const Calendar = () => {
       appointmentService.getAppointments().then((r: any) => {
         setLoading(false);
 
-        const result = renameAndDeleteArrayObjects(/* r.data */ [], {
+        const result = renameAndDeleteArrayObjects(r.data, {
           id: 'event_id',
           reservation_date_time: 'start',
           reservation_date_time_end: 'end',
