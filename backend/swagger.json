@@ -1337,10 +1337,6 @@
             "rights": {
               "type": "string",
               "default": "client"
-            },
-            "saloon_id": {
-              "type": "integer",
-              "default": null
             }
           }
         },

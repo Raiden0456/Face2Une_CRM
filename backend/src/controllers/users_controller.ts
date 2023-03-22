@@ -31,7 +31,6 @@ export function updateUser(
     email: string;
     password: string;
     rights: string;
-    saloon_id: number;
   },
   res
 ) {
@@ -127,7 +126,6 @@ export function createUser(
     email: string;
     password: string;
     rights: string;
-    saloon_id: number;
   },
   res
 ) {
