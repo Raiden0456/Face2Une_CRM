@@ -463,7 +463,7 @@
         "/sources":
         {
           "get": {
-            "tags": ["Found out sources"],
+            "tags": ["found us sources"],
             "summary": "Get all sources in db",
             "responses": {
               "200": {
@@ -474,7 +474,7 @@
         },
         "/sources/{sourceid}": {
           "get": {
-            "tags": ["Found out sources"],
+            "tags": ["found us sources"],
             "summary": "Get a single found us source by id in db",
             "parameters": [
               {
@@ -496,7 +496,7 @@
         },
         "/create_source": {
           "post": {
-            "tags": ["Found out sources"],
+            "tags": ["found us sources"],
             "summary": "Create new found us source",
             "parameters": [
               {
@@ -518,7 +518,7 @@
         },
         "/update_source": {
           "post": {
-            "tags": ["Found out sources"],
+            "tags": ["found us sources"],
             "summary": "Update found us source by id",
             "parameters": [
               {
@@ -552,7 +552,7 @@
         },
         "/delete_source/{sourceid}": {
           "delete": {
-            "tags": ["Found out sources"],
+            "tags": ["found us sources"],
             "summary": "Delete found us source by id",
             "parameters": [
               {
@@ -575,7 +575,7 @@
         "/add_source_weight/{sourceid}":
         {
           "post": {
-            "tags": ["Found out sources"],
+            "tags": ["found us sources"],
             "summary": "Add weight to found us source",
             "parameters": [
               {
