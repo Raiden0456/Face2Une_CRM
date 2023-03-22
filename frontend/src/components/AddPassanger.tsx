@@ -41,6 +41,7 @@ export const AddPassanger = observer(({ setProcedures, setItems, items, procedur
           <div className="AddPassenger__procedures_wrapper" key={i}>
             <div style={{ marginBottom: '1rem' }}>
               <SelectField
+                required
                 label={`Choose a Procedure for Passenger ${i + 2}`}
                 options={procedures.map((procedure: any) => ({ label: procedure.name, value: procedure.id }))}
                 onChange={(e) => handleUpdate({ ...items[i], ...e }, i)}

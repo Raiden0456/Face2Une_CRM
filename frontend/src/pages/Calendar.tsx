@@ -1,5 +1,5 @@
-import { ButtonContained } from '../components/base/Button';
-import React, { useState, useEffect } from 'react';
+import { ButtonContained, ButtonEdit } from '../components/base/Button';
+import React, { useState } from 'react';
 import { Container } from '../components/base/Container';
 import { ModalStore } from '../store/Modal.store';
 import NavBar from '../components/Navbar';
@@ -52,6 +52,12 @@ export const Calendar = () => {
       });
     });
   }
+
+  // Edit Employee
+  const editHandler = async (id: number | null) => {
+    ModalStore.setAddItem({ addType: 'appointment', edit: true, id });
+    ModalStore.setModalStatus({ open: true, action: 'addItem' });
+  };
 
   return (
     <Container
@@ -106,36 +112,58 @@ export const Calendar = () => {
               return (
                 <div>
                   <Typography
-                  style={{ display: "flex", alignItems: "center" }}
-                  color="textSecondary"
-                  variant="caption"
-                  noWrap
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    color="textSecondary"
+                    variant="caption"
+                    noWrap
                   >
-                    <LocationOnRounded />&nbsp; { event.location || "Unknown"} 
+                    <LocationOnRounded />
+                    &nbsp; {event.location || 'Unknown'}
                   </Typography>
                   <Typography
-                  style={{ display: "flex", alignItems: "center" }}
-                  color="textSecondary"
-                  variant="caption"
-                  noWrap
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    color="textSecondary"
+                    variant="caption"
+                    noWrap
                   >
-                    <PersonRounded />&nbsp; { event.client_name + " (" +[formatPhoneNumber(event.client_phone), event.client_email].join(", ") + ")"}
+                    <PersonRounded />
+                    &nbsp;{' '}
+                    {event.client_name +
+                      ' (' +
+                      [formatPhoneNumber(event.client_phone), event.client_email].join(', ') +
+                      ')'}
                   </Typography>
                   <Typography
-                  style={{ display: "flex", alignItems: "center" }}
-                  color="textSecondary"
-                  variant="caption"
-                  noWrap
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    color="textSecondary"
+                    variant="caption"
+                    noWrap
                   >
-                    <FaceRetouchingNaturalRounded />&nbsp; { event.title + " + (" + (event.titles_additionals.join(", ") || "None") + ")"}
+                    <FaceRetouchingNaturalRounded />
+                    &nbsp; {event.title + ' + (' + (event.titles_additionals.join(', ') || 'None') + ')'}
                   </Typography>
                   <Typography
-                  style={{ display: "flex", alignItems: "center" }}
-                  color="textSecondary"
-                  variant="caption"
-                  noWrap
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    color="textSecondary"
+                    variant="caption"
+                    noWrap
                   >
-                    <PaymentsRounded />&nbsp; { event.price + "€" || "None"}
+                    <PaymentsRounded />
+                    &nbsp; {event.price + '€' || 'None'}
+                  </Typography>
+                  <Typography
+                    style={{ display: 'flex', alignItems: 'center', marginTop: '1rem' }}
+                    color="textSecondary"
+                    variant="caption"
+                    noWrap
+                  >
+                    <ButtonEdit
+                      onClick={() => {
+                        editHandler(event.event_id as number);
+                      }}
+                    >
+                      Edit
+                    </ButtonEdit>
                   </Typography>
                 </div>
               );

@@ -85,7 +85,7 @@
     "react-modal": "^3.15.1",
     "react-number-format": "^4.9.1",
     "react-router-dom": "^6.3.0",
-    "react-select": "^5.4.0",
+    "react-select": "^5.7.1",
     "react-slidedown": "^2.4.7",
     "react-table": "^7.8.0",
     "regenerator-runtime": "^0.13.9",
