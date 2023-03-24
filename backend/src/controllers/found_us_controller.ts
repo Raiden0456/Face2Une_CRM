@@ -102,8 +102,8 @@ export function createSource(
 }
 
 // Add weight to a source identified by the id in the request
-export function addWeight(id: number, res) {
-  procedure.addWeight(id, (err, data) => {
+export function addWeight(sourceid: {id: number}, res) {
+  procedure.addWeight(sourceid, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -112,7 +112,7 @@ export function addWeight(id: number, res) {
     else if (data.length == 0) {
       res.status(404).json({
         success: true,
-        message: `Source with id ${id} not found.`,
+        message: `Source with id ${sourceid.id} not found.`,
       });
     } else {
       res.json({ success: true, data: data });

@@ -572,19 +572,24 @@
             }
           }
         },
-        "/add_source_weight/{sourceid}":
+        "/add_source_weight":
         {
           "post": {
             "tags": ["Found us sources"],
             "summary": "Add weight to found us source",
             "parameters": [
               {
-              "in": "path",
-              "name": "sourceid",
+              "in": "body",
+              "name": "body",
               "description": "id of found us source",
               "required": true,
               "schema": {
-                "type": "integer"
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                }
               }
             }
             ],

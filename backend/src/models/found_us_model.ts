@@ -69,11 +69,11 @@ source.deleteSourceById = async (id: number, result) => {
   return result(error, data);
 };
 
-source.addWeight = async (id: number, result) => {
+source.addWeight = async (sourceid: { id: number }, result) => {
   let { data: source } = await supabase
     .from("found_us")
     .select("weight")
-    .eq("id", id);
+    .eq("id", sourceid.id);
   const { data, error } = await supabase
     .from("found_us")
 
@@ -82,7 +82,7 @@ source.addWeight = async (id: number, result) => {
         weight: source[0].weight + 1,
       },
     ])
-    .eq("id", id)
+    .eq("id", sourceid.id)
     .select();
   return result(error, data);
 };

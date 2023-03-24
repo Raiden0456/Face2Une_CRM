@@ -19,8 +19,8 @@ router.post('/update_source', function(req, res){
 router.delete('/delete_source/:sourceid', function(req, res){
     coupon.deleteSource(req.params.sourceid, res);
 });
-router.post('/add_source_weight/:sourceid', function(req, res){
-    coupon.addWeight(req.params.sourceid, res);
+router.post('/add_source_weight', function(req, res){
+    coupon.addWeight(req.body, res);
 });
 
 export default router;
