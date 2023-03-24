@@ -49,7 +49,6 @@ const columns = [
   { name: 'Full Name', selector: (row: any) => `${row.first_name} ${row.last_name}`, sortable: true },
   { name: 'Email', selector: (row: any) => row.email, sortable: true },
   { name: 'Phone', selector: (row: any) => formatPhoneNumber(row.phone), sortable: false },
-  { name: 'Saloon', selector: (row: any) => findElementById(saloon_ids, row.saloon_id).text, sortable: false },
   {
     name: '',
     selector: (row: any) => (

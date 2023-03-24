@@ -96,14 +96,14 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
       }
     } else if (addType === 'employee') {
       if (!edit) {
-        userService.createEmployee({ ...inputs, saloon_id: saloonID, rights: 'employee' }).then((r) => {
+        userService.createEmployee({ ...inputs, rights: 'employee' }).then((r) => {
           if (r.success) {
             console.log('Successfully Added!');
             window.location.reload();
           }
         });
       } else {
-        userService.updateEmployee({ ...inputs, saloon_id: saloonID, rights: 'employee', id }).then((r) => {
+        userService.updateEmployee({ ...inputs, rights: 'employee', id }).then((r) => {
           if (r.success) {
             console.log('Successfully Updated!');
             window.location.reload();
@@ -282,21 +282,6 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                     onChange={handleChange}
                   />
                   <br />
-                  <div className={s.AddAppointmentForm__saloons}>
-                    <h3>Available Saloons:</h3>
-                    {saloon_ids.map((saloon) => (
-                      <Radio
-                        name="saloons"
-                        value={saloon.id}
-                        style={{ marginRight: '0.5rem' }}
-                        onChange={(e) => setSaloonID(Number(e))}
-                        key={saloon.id}
-                        required
-                      >
-                        {saloon.text}
-                      </Radio>
-                    ))}
-                  </div>
                 </div>
               </div>
 
