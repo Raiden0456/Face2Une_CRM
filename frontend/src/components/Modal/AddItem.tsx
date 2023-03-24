@@ -34,8 +34,6 @@ function useFormInit(type: 'coupon' | 'employee' | 'appointment' | '') {
         id: '',
         client_id: '',
       };
-    default:
-      return {};
   }
 }
 

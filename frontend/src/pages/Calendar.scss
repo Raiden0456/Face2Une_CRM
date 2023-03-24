@@ -1,18 +1,45 @@
-.AddAppointmentBtn_wrapper{
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 1.75rem;
-}
+
 
 .Calendar__header {
   margin-bottom: 1rem;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
   h3 {
     font-weight: 700;
     text-transform: uppercase;
     text-align: start;
+    margin-bottom: 1.5rem;
+  }
+
+  .Btns_wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+
+    button {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .clientQuestion_wrapper {
+    margin-bottom: 1.5rem;
+  }
+
+  .Salloon__switcher {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+
+    h3 {
+      text-transform: none;
+    }
+
   }
 }
 

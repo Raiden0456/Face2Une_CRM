@@ -74,4 +74,25 @@ export class UserService {
       ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
     }
   }
+
+  /* Sources */
+  async getSources() {
+    const r = await JSONFetchGet('sources');
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' }); // TBD Set Fallback
+    }
+  }
+
+  async addSource(id: number) {
+    const r = await JSONFetch('add_source_weight', { id });
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' }); // TBD Set Fallback
+    }
+  }
 }

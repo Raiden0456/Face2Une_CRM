@@ -1,14 +1,19 @@
-import { ButtonContained, ButtonEdit } from '../components/base/Button';
-import React, { useState } from 'react';
+import { ButtonContained, ButtonEdit, ButtonOutlined } from '../components/base/Button';
+import React, { useEffect, useState } from 'react';
 import { Container } from '../components/base/Container';
 import { ModalStore } from '../store/Modal.store';
 import NavBar from '../components/Navbar';
-import { Scheduler } from '@aldabil/react-scheduler';
+import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
 import { AppointmentService } from '../service/AppointmentService';
 import { renameAndDeleteArrayObjects } from '../utils/funcs';
 import { Button, Typography } from '@mui/material';
 import { LocationOnRounded, PersonRounded, PaymentsRounded, FaceRetouchingNaturalRounded } from '@mui/icons-material';
 import { formatPhoneNumber } from '../utils/formatPhone';
+import { saloon_ids } from '../utils/staticData';
+import { Radio } from '../components/base/Checkbox';
+import { SelectField } from '../components/base/SelectField';
+import { UserService } from '../service/UserService';
+import { TailSpinFixed } from '../components/TailSpin';
 
 import './Calendar.scss';
 
@@ -25,9 +30,30 @@ const CalendarAlert = () => (
   ></Button>
 );
 
+interface ISource {
+  id: number;
+  source: string;
+}
+
 export const Calendar = () => {
   const appointmentService = new AppointmentService();
+  const userService = new UserService();
   const [loading, setLoading] = useState<boolean>(false);
+  const [saloonID, setSaloonID] = useState<number>(1);
+  const [clientQuestion, setClientQuestion] = useState<boolean>(false);
+  const [sources, setSources] = useState<ISource[] | null>(null);
+  const [selectedSource, setSelectedSource] = useState<number | null>(null);
+  const { setEvents } = useScheduler();
+
+  useEffect(() => {
+    setLoading(true);
+    userService.getSources().then((r) => {
+      if (r.success) {
+        setSources(r.data);
+      }
+      setLoading(false);
+    });
+  }, []);
 
   function handleRemoteEvents() {
     setLoading(true);
@@ -53,10 +79,22 @@ export const Calendar = () => {
     });
   }
 
+  function handleQuestionSubmit(e: React.SyntheticEvent) {
+    e.preventDefault();
+    setLoading(true);
+    userService.addSource(selectedSource as number).then((r) => {
+      if (r.success) {
+        console.log(r.data);
+      }
+      setLoading(false);
+    });
+  }
+
   // Edit Employee
   const editHandler = async (id: number | null) => {
     ModalStore.setAddItem({ addType: 'appointment', edit: true, id });
-    ModalStore.setModalStatus({ open: true, action: 'addItem' });
+    ModalStore.setModalStatus({ open: true, action: 'addItem', redirectUrl: '/calendar' });
+    setEvents([]);
   };
 
   return (
@@ -67,19 +105,64 @@ export const Calendar = () => {
         <>
           <div className="Calendar__header">
             <h3>Calendar</h3>
-          </div>
-          <div className="AddAppointmentBtn_wrapper">
-            <ButtonContained
-              width="200px"
-              onClick={() => {
-                ModalStore.setModalStatus({
-                  action: 'addAppointment',
-                  open: true,
-                });
-              }}
-            >
-              Add Appointment Manually
-            </ButtonContained>
+            <div className="Btns_wrapper">
+              <ButtonContained
+                width="200px"
+                onClick={() => {
+                  ModalStore.setModalStatus({
+                    action: 'addAppointment',
+                    open: true,
+                  });
+                }}
+              >
+                Add Appointment Manually
+              </ButtonContained>
+              {loading ? (
+                <TailSpinFixed />
+              ) : (
+                <ButtonOutlined
+                  width="200px"
+                  onClick={() => {
+                    setClientQuestion(!clientQuestion);
+                    setSelectedSource(null);
+                  }}
+                >
+                  Client question
+                </ButtonOutlined>
+              )}
+            </div>
+            {clientQuestion && (
+              <div className="clientQuestion_wrapper">
+                <form onSubmit={handleQuestionSubmit}>
+                  <SelectField
+                    required
+                    label={'Choose a response'}
+                    options={sources?.map((source: any) => ({ label: source.source, value: source.id }))}
+                    onChange={(e) => setSelectedSource(e.value)}
+                  />
+                  <ButtonEdit width="200px" type="submit">
+                    Submit
+                  </ButtonEdit>
+                </form>
+              </div>
+            )}
+
+            <div className="Salloon__switcher">
+              <h3>Available Saloons:</h3>
+              {saloon_ids.map((saloon) => (
+                <Radio
+                  required
+                  name="saloons"
+                  onChange={(e) => {
+                    setSaloonID(Number(e));
+                  }}
+                  key={saloon.id}
+                  value={saloon.id}
+                >
+                  {saloon.text}
+                </Radio>
+              ))}
+            </div>
           </div>
 
           <Scheduler
