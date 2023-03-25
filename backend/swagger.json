@@ -1223,6 +1223,168 @@
               }
             }
           }
+        },
+        "/schedule": {
+          "get": {
+            "tags": ["Schedule"],
+            "summary": "Get Schedules in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "column",
+              "description": "filter column name(id, saloon_id, work_date, lunch_time, employee_id))",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+              },
+              {
+              "in": "query",
+              "name": "value",
+              "description": "value of filter column",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns Schedules in database in JSON format"
+              }
+            }
+          }
+        },
+        "/schedule/{scheduleid}": {
+          "get": {
+            "tags": ["Schedule"],
+            "summary": "Get a single schedule by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "scheduleid",
+              "description": "id of schedule",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single schedule in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_schedule": {
+          "post": {
+            "tags": ["Schedule"],
+            "summary": "Create new schedule",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of schedule",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Schedule"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a schedule using JSON format"
+              }
+            }
+          }
+        },
+        "/update_schedule": {
+          "post": {
+            "tags": ["Schedule"],
+            "summary": "Update schedule by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of schedule",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Schedule"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a schedule in database using JSON format"
+              }
+            }
+          }
+        },
+        "/schedule_lunch": {
+          "post":{
+            "tags": ["Schedule"],
+            "summary": "add a lunch time for a schedule",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of schedule",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "lunch_time": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "add a lunch time for a schedule"
+              }
+            }
+          }
+        },
+        "/delete_schedule/{scheduleid}": {
+          "delete": {
+            "tags": ["Schedule"],
+            "summary": "Delete schedule by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "scheduleid",
+              "description": "id of schedule",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a schedule in database by id"
+              }
+            }
+          }
         }
       },
 
@@ -1396,6 +1558,25 @@
             },
             "saloon_id": {
               "type": "int",
+              "default": "1"
+            }
+          }
+        },
+        "Schedule": {
+          "properties": {
+            "employee_id": {
+              "type": "integer"
+            },
+            "work_date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "lunch_time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "saloon_id": {
+              "type": "integer",
               "default": "1"
             }
           }
