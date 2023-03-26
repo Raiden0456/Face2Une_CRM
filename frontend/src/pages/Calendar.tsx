@@ -35,6 +35,19 @@ interface ISource {
   source: string;
 }
 
+const calendarNamings = {
+  id: 'event_id',
+  reservation_date_time: 'start',
+  reservation_date_time_end: 'end',
+  procedure_name: 'title',
+  additional_names: 'titles_additionals',
+  client_full_name: 'client_name',
+  client_phone: 'client_phone',
+  client_email: 'client_email',
+  total_price: 'price',
+  saloon_address: 'location',
+};
+
 export const Calendar = () => {
   const appointmentService = new AppointmentService();
   const userService = new UserService();
@@ -43,7 +56,7 @@ export const Calendar = () => {
   const [clientQuestion, setClientQuestion] = useState<boolean>(false);
   const [sources, setSources] = useState<ISource[] | null>(null);
   const [selectedSource, setSelectedSource] = useState<number | null>(null);
-  const { setEvents } = useScheduler();
+  const { setEvents, triggerLoading } = useScheduler();
 
   useEffect(() => {
     setLoading(true);
@@ -56,25 +69,13 @@ export const Calendar = () => {
   }, []);
 
   function handleRemoteEvents() {
-    setLoading(true);
     return new Promise<void>((res) => {
       appointmentService.getAppointments().then((r: any) => {
-        setLoading(false);
+        if (r.success) {
+          const result = renameAndDeleteArrayObjects(r.data, calendarNamings);
 
-        const result = renameAndDeleteArrayObjects(r.data, {
-          id: 'event_id',
-          reservation_date_time: 'start',
-          reservation_date_time_end: 'end',
-          procedure_name: 'title',
-          additional_names: 'titles_additionals',
-          client_full_name: 'client_name',
-          client_phone: 'client_phone',
-          client_email: 'client_email',
-          total_price: 'price',
-          saloon_address: 'location',
-        });
-
-        res(result);
+          res(result);
+        }
       });
     });
   }
@@ -85,8 +86,10 @@ export const Calendar = () => {
     userService.addSource(selectedSource as number).then((r) => {
       if (r.success) {
         console.log(r.data);
+        alert('Answer submitted successfully!');
       }
       setLoading(false);
+      setClientQuestion(false);
     });
   }
 
@@ -97,6 +100,18 @@ export const Calendar = () => {
     setEvents([]);
   };
 
+  // Change Saloon
+  const sallonHandler = async (sallonId: number | null) => {
+    triggerLoading(true);
+    appointmentService.getAppointments(sallonId).then((r: any) => {
+      if (r.success) {
+        const result = renameAndDeleteArrayObjects(r.data, calendarNamings);
+        setEvents(result);
+        triggerLoading(false);
+      }
+    });
+  };
+
   return (
     <Container
       header={<NavBar />}
@@ -104,57 +119,71 @@ export const Calendar = () => {
       content={
         <>
           <div className="Calendar__header">
-            <h3>Calendar</h3>
-            <div className="Btns_wrapper">
-              <ButtonContained
-                width="200px"
-                onClick={() => {
-                  ModalStore.setModalStatus({
-                    action: 'addAppointment',
-                    open: true,
-                  });
-                }}
-              >
-                Add Appointment Manually
-              </ButtonContained>
-              {loading ? (
-                <TailSpinFixed />
-              ) : (
-                <ButtonOutlined
+            <div>
+              <h3>Calendar</h3>
+              <div className="Btns_wrapper">
+                <ButtonContained
                   width="200px"
                   onClick={() => {
-                    setClientQuestion(!clientQuestion);
-                    setSelectedSource(null);
+                    ModalStore.setModalStatus({
+                      action: 'addAppointment',
+                      open: true,
+                    });
                   }}
                 >
-                  Client question
-                </ButtonOutlined>
+                  Add Appointment Manually
+                </ButtonContained>
+                {loading ? (
+                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <TailSpinFixed />
+                  </div>
+                ) : (
+                  <ButtonOutlined
+                    width="200px"
+                    onClick={() => {
+                      setClientQuestion(!clientQuestion);
+                      setSelectedSource(null);
+                    }}
+                  >
+                    Client question
+                  </ButtonOutlined>
+                )}
+              </div>
+              {clientQuestion && (
+                <div className="clientQuestion_wrapper">
+                  <form onSubmit={handleQuestionSubmit}>
+                    <SelectField
+                      required
+                      label={'Choose a response'}
+                      options={sources?.map((source: any) => ({ label: source.source, value: source.id }))}
+                      onChange={(e) => setSelectedSource(e.value)}
+                    />
+                    <ButtonEdit width="200px" type="submit">
+                      Submit
+                    </ButtonEdit>
+                  </form>
+                </div>
               )}
             </div>
-            {clientQuestion && (
-              <div className="clientQuestion_wrapper">
-                <form onSubmit={handleQuestionSubmit}>
-                  <SelectField
-                    required
-                    label={'Choose a response'}
-                    options={sources?.map((source: any) => ({ label: source.source, value: source.id }))}
-                    onChange={(e) => setSelectedSource(e.value)}
-                  />
-                  <ButtonEdit width="200px" type="submit">
-                    Submit
-                  </ButtonEdit>
-                </form>
-              </div>
-            )}
 
             <div className="Salloon__switcher">
               <h3>Available Saloons:</h3>
+              <Radio
+                required
+                name="saloons"
+                onChange={(e) => {
+                  sallonHandler(Number(e));
+                }}
+                value={0}
+              >
+                All
+              </Radio>
               {saloon_ids.map((saloon) => (
                 <Radio
                   required
                   name="saloons"
                   onChange={(e) => {
-                    setSaloonID(Number(e));
+                    sallonHandler(Number(e));
                   }}
                   key={saloon.id}
                   value={saloon.id}

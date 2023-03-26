@@ -51,8 +51,8 @@ export class AppointmentService {
     }
   }
 
-  async getAppointments() {
-    const r = await JSONFetchGet('appoint?details=true');
+  async getAppointments(sallonId?: number | string | null) {
+    const r = await JSONFetchGet(`appoint?${sallonId ? `column=saloon_id&value=${sallonId}&` : ''}details=true`);
 
     if (r?.success) {
       return r;
