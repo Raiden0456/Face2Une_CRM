@@ -52,7 +52,6 @@ export const Calendar = () => {
   const appointmentService = new AppointmentService();
   const userService = new UserService();
   const [loading, setLoading] = useState<boolean>(false);
-  const [saloonID, setSaloonID] = useState<number>(1);
   const [clientQuestion, setClientQuestion] = useState<boolean>(false);
   const [sources, setSources] = useState<ISource[] | null>(null);
   const [selectedSource, setSelectedSource] = useState<number | null>(null);
