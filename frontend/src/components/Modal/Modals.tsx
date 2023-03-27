@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { ModalStore } from '../../store/Modal.store';
 import ProcedureBox from '../ProcedureBox';
 import ConfirmDelete from './ConfirmDelete';
-import { AddAppointment } from './AddAppointment';
+import { AddAppointment } from './AddManualAppointment';
 import { StatusContainer } from './StatusContainer';
 import AddItem from './AddItem';
 

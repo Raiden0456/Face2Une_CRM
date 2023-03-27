@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React from 'react';
 import classNames from 'classnames';
 import Select from 'react-select';
 
@@ -11,6 +10,7 @@ interface SelectFieldProps {
   label?: string;
   disabled?: boolean;
   defaultValue?: any;
+  required?: boolean;
   onChange?: (value: any) => void;
 }
 
@@ -33,6 +33,7 @@ export const SelectField = ({
   disabled,
   defaultValue,
   label,
+  required = false,
   onChange,
 }: SelectFieldProps) => {
   return (
@@ -58,6 +59,7 @@ export const SelectField = ({
         defaultValue={defaultValue}
         isDisabled={disabled}
         name="color"
+        required={required}
         options={options}
       />
     </div>
