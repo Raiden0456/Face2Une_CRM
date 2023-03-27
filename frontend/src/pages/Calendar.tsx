@@ -53,6 +53,7 @@ export const Calendar = () => {
   const userService = new UserService();
   const [loading, setLoading] = useState<boolean>(false);
   const [clientQuestion, setClientQuestion] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<boolean>(false);
   const [sources, setSources] = useState<ISource[] | null>(null);
   const [selectedSource, setSelectedSource] = useState<number | null>(null);
   const { setEvents, triggerLoading } = useScheduler();
@@ -81,11 +82,12 @@ export const Calendar = () => {
 
   function handleQuestionSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
+    setSuccessMessage(false);
     setLoading(true);
     userService.addSource(selectedSource as number).then((r) => {
       if (r.success) {
         console.log(r.data);
-        alert('Answer submitted successfully!');
+        setSuccessMessage(true);
       }
       setLoading(false);
       setClientQuestion(false);
@@ -147,6 +149,7 @@ export const Calendar = () => {
                     Client question
                   </ButtonOutlined>
                 )}
+                {successMessage && <p className="success">Answer submitted successfully!</p>}
               </div>
               {clientQuestion && (
                 <div className="clientQuestion_wrapper">
