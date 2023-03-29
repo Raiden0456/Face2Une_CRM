@@ -68,6 +68,7 @@ export const Calendar = () => {
     });
   }, []);
 
+  // Init calendar
   function handleRemoteEvents() {
     return new Promise<void>((res) => {
       appointmentService.getAppointments().then((r: any) => {
@@ -80,6 +81,7 @@ export const Calendar = () => {
     });
   }
 
+  // Submit Question
   function handleQuestionSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     setSuccessMessage(false);
