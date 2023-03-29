@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ButtonContained, ButtonOutlined } from '../base/Button';
+import { ButtonContained } from '../base/Button';
 import { CouponsService } from '../../service/CouponsService';
 import useForm from '../../utils/useForm';
-import { IAddItem, ModalStore } from '../../store/Modal.store';
+import { IAddItem } from '../../store/Modal.store';
 import { TailSpinFixed } from '../TailSpin';
 import { Input, NumberInput } from '../base/Input';
 import { ProceduresStore } from '../../store/Procedures.store';
@@ -14,28 +14,42 @@ import ReactDatePicker from 'react-datepicker';
 import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
 import { saloon_ids } from '../../utils/staticData';
 import { UserService } from '../../service/UserService';
+import { AppointmentService } from '../../service/AppointmentService';
+import { SelectField } from '../base/SelectField';
 
 import s from './AddItem.scss';
 
-// Adds new coupons or employee
+function useFormInit(type: 'coupon' | 'employee' | 'admin' | 'appointment' | '') {
+  switch (type) {
+    case 'coupon':
+      return {
+        name: '',
+        code: '',
+        discount: '',
+      };
+    case 'employee' || 'admin':
+      return { first_name: '', last_name: '', phone: '', email: '', password: '' };
+    case 'appointment':
+      return {
+        id: '',
+        client_id: '',
+      };
+  }
+}
+
+// Adds new COUPON or EMPLOYEE or ADMIN or APPOINTMENT(edit only)
 const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
   const couponService = new CouponsService();
   const userService = new UserService();
+  const appointmentService = new AppointmentService();
   const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 30), 16));
+  const [procedure, setProcedure] = useState<number | null>(null);
   const [procedures, setProcedures] = useState({});
   const [saloonID, setSaloonID] = useState<number | null>(null);
   const [phoneError, setPhoneError] = useState<boolean>(false);
   const [hidePassword, setHidePassword] = useState(false);
-  const { inputs, handleChange, handleNumberChange, clearForm, resetForm, setInputs } = useForm(
-    addType === 'coupon'
-      ? {
-          name: '',
-          code: '',
-          discount: '',
-        }
-      : { first_name: '', last_name: '', phone: '', email: '', password: '' },
-  );
+  const { inputs, handleChange, handleNumberChange, clearForm, resetForm, setInputs } = useForm(useFormInit(addType));
 
   useEffect(() => {
     if (edit && id && addType === 'coupon') {
@@ -63,6 +77,19 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
             phone,
             email,
             password: '',
+          });
+          setLoading(false);
+        }
+      });
+    }
+    if (edit && id && addType === 'appointment') {
+      setLoading(true);
+      appointmentService.getAppointment(id).then((r) => {
+        if (r.success) {
+          const { id, client_id } = r.data[0];
+          setInputs({
+            id,
+            client_id,
           });
           setLoading(false);
         }
@@ -110,6 +137,28 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
           }
         });
       }
+    } else if (addType === 'admin') {
+      userService.createEmployee({ ...inputs, rights: 'admin' }).then((r) => {
+        if (r.success) {
+          console.log('Successfully Added!');
+          window.location.reload();
+        }
+      });
+    } else if (addType === 'appointment' && edit) {
+      appointmentService
+        .updateAppointment({
+          ...inputs,
+          additional_ids: filterObjectToArray(procedures),
+          procedure_id: procedure,
+          saloon_id: saloonID,
+          reservation_date_time: startDate,
+        })
+        .then((r) => {
+          if (r.success) {
+            console.log('Successfully Updated!');
+            window.location.reload();
+          }
+        });
     }
 
     setLoading(false);
@@ -129,6 +178,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
         <TailSpinFixed />
       ) : (
         <div className={s.AddItem}>
+          {/* ADD/EDIT APPOINTMENT */}
           {addType === 'coupon' && (
             <form
               id="AddItem"
@@ -212,7 +262,8 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
             </form>
           )}
 
-          {addType === 'employee' && (
+          {/* ADD/EDIT EMPLOYEE */}
+          {(addType === 'employee' || addType === 'admin') && (
             <form
               id="AddItem"
               onSubmit={(e) => {
@@ -221,7 +272,17 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
               }}
               className={s.AddItemForm}
             >
-              {edit ? <h2>Edit Employee</h2> : <h2>Add a New Employee</h2>}
+              {/* Sorry for nested ternary, but I was in a hurry and didn't have time to refactor it. */}
+              {addType !== 'admin' ? (
+                edit ? (
+                  <h2>Edit Employee</h2>
+                ) : (
+                  <h2>Add a New Employee</h2>
+                )
+              ) : (
+                <h2>Add a New Admin</h2>
+              )}
+
               <div className={s.AddItemForm__inputs}>
                 <div>
                   <Input
@@ -286,7 +347,80 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
               </div>
 
               <ButtonContained disabled={loading} type="submit">
-                Add Employee
+                Add User
+              </ButtonContained>
+            </form>
+          )}
+
+          {/* EDIT APPOINTMENT */}
+          {addType === 'appointment' && (
+            <form
+              id="createAppointment"
+              onSubmit={(e) => {
+                e.preventDefault();
+                procedure && handleSubmit();
+              }}
+              className={s.AddItemForm}
+            >
+              <h2>Edit an appointment:</h2>
+              <div className={s.AddItemForm__inputs}>
+                <div>
+                  <SelectField
+                    label={'Choose a Procedure'}
+                    options={ProceduresStore?.proceduresStatus?.proceduresData?.map((procedure: any) => ({
+                      label: procedure.name,
+                      value: procedure.id,
+                    }))}
+                    required
+                    onChange={(e) => setProcedure(e.value)}
+                  />
+
+                  <div className={s.AddItemForm_radios}>
+                    {ProceduresStore.proceduresStatus.optionalProceduresData?.map((optProd, i) => (
+                      <Checkbox onChange={(e) => handleCheckBoxes(e, optProd.id)} key={optProd.id}>
+                        {optProd.name}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className={s.AddItemForm_radios}>
+                    <h3>Available Saloons:</h3>
+                    {saloon_ids.map((saloon) => (
+                      <Radio
+                        name="saloons"
+                        value={saloon.id}
+                        style={{ marginRight: '0.5rem' }}
+                        onChange={(e) => setSaloonID(Number(e))}
+                        key={saloon.id}
+                        required
+                      >
+                        {saloon.text}
+                      </Radio>
+                    ))}
+                  </div>
+
+                  <div style={{ marginTop: '1rem' }}>
+                    <p style={{ marginBottom: '5px' }}>Choose Date:</p>
+                    <ReactDatePicker
+                      selected={startDate}
+                      onChange={(date: Date) => setStartDate(date)}
+                      showTimeSelect
+                      timeFormat="HH:mm"
+                      minDate={new Date()}
+                      minTime={setHours(setMinutes(new Date(), 0), 10)}
+                      maxTime={setHours(setMinutes(new Date(), 0), 20)}
+                      timeIntervals={5}
+                      dateFormat="MMMM d, yyyy HH:mm"
+                      inline
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <ButtonContained disabled={loading} type="submit">
+                Edit Appointment
               </ButtonContained>
             </form>
           )}

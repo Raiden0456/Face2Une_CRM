@@ -110,3 +110,27 @@
     background: #007bffac;
   }
 }
+
+.ButtonDanger {
+  height: 44px;
+  border-radius: 6px;
+  background: #FF5722;
+  color: #ffffff;
+  padding: 11.5px 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.32px;
+
+  font: inherit;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    background: #ff56228e;
+  }
+}

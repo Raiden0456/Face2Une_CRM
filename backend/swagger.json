@@ -460,6 +460,146 @@
             }
           }
         },
+        "/sources":
+        {
+          "get": {
+            "tags": ["Found us sources"],
+            "summary": "Get all sources in db",
+            "responses": {
+              "200": {
+                "description": "Returns all possible Found us sources in database in JSON format"
+              }
+            }
+          }
+        },
+        "/sources/{sourceid}": {
+          "get": {
+            "tags": ["Found us sources"],
+            "summary": "Get a single found us source by id in db",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "sourceid",
+              "description": "id of source",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns a single found us source in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_source": {
+          "post": {
+            "tags": ["Found us sources"],
+            "summary": "Create new found us source",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of found us source",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Source"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a found us source in database using JSON format"
+              }
+            }
+          }
+        },
+        "/update_source": {
+          "post": {
+            "tags": ["Found us sources"],
+            "summary": "Update found us source by id",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of found us source",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Source"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a found us source in database using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_source/{sourceid}": {
+          "delete": {
+            "tags": ["Found us sources"],
+            "summary": "Delete found us source by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "sourceid",
+              "description": "id of found us source",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a found us source in database by id"
+              }
+            }
+          }
+        },
+        "/add_source_weight":
+        {
+          "post": {
+            "tags": ["Found us sources"],
+            "summary": "Add weight to found us source",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "id of found us source",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Add weight to found us source in database"
+              }
+            }
+          }
+        },
         "/coupon": {
           "get": {
             "tags": ["Coupons"],
@@ -1475,6 +1615,13 @@
               "type": "string"
             },
             "promocode": {
+              "type": "string"
+            }
+          }
+        },
+        "Source": {
+          "properties": {
+            "source": {
               "type": "string"
             }
           }

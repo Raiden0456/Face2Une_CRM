@@ -110,3 +110,28 @@ export const ButtonEdit: React.FC<IButton> = ({
 ButtonEdit.defaultProps = {
   type: 'button',
 };
+
+export const ButtonDanger: React.FC<IButton> = ({
+  children,
+  onClick,
+  width,
+  disabled = false,
+  className,
+  ...shared
+}) => {
+  return (
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className={classNames(s.ButtonDanger, className)}
+      style={width ? { width } : { width: '100%' }}
+      {...shared}
+    >
+      {children}
+    </button>
+  );
+};
+
+ButtonDanger.defaultProps = {
+  type: 'button',
+};
