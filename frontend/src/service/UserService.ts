@@ -55,6 +55,16 @@ export class UserService {
     }
   }
 
+  async createAdmin(createAdmin: IEmployee) {
+    const r = await JSONFetch('create_user', createAdmin);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+    }
+  }
+
   async updateEmployee(updateEmployee: IEmployee) {
     const r = await JSONFetch('update_user', updateEmployee);
 

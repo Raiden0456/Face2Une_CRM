@@ -19,7 +19,7 @@ import { SelectField } from '../base/SelectField';
 
 import s from './AddItem.scss';
 
-function useFormInit(type: 'coupon' | 'employee' | 'appointment' | '') {
+function useFormInit(type: 'coupon' | 'employee' | 'admin' | 'appointment' | '') {
   switch (type) {
     case 'coupon':
       return {
@@ -27,7 +27,7 @@ function useFormInit(type: 'coupon' | 'employee' | 'appointment' | '') {
         code: '',
         discount: '',
       };
-    case 'employee':
+    case 'employee' || 'admin':
       return { first_name: '', last_name: '', phone: '', email: '', password: '' };
     case 'appointment':
       return {
@@ -37,7 +37,7 @@ function useFormInit(type: 'coupon' | 'employee' | 'appointment' | '') {
   }
 }
 
-// Adds new COUPON or EMPLOYEE or APPOINTMENT(edit only)
+// Adds new COUPON or EMPLOYEE or ADMIN or APPOINTMENT(edit only)
 const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
   const couponService = new CouponsService();
   const userService = new UserService();
@@ -137,6 +137,13 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
           }
         });
       }
+    } else if (addType === 'admin') {
+      userService.createEmployee({ ...inputs, rights: 'admin' }).then((r) => {
+        if (r.success) {
+          console.log('Successfully Added!');
+          window.location.reload();
+        }
+      });
     } else if (addType === 'appointment' && edit) {
       appointmentService
         .updateAppointment({
@@ -255,8 +262,8 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
             </form>
           )}
 
-          {/* ADD/EDIT APPOINTMENT */}
-          {addType === 'employee' && (
+          {/* ADD/EDIT EMPLOYEE */}
+          {(addType === 'employee' || addType === 'admin') && (
             <form
               id="AddItem"
               onSubmit={(e) => {
@@ -265,7 +272,17 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
               }}
               className={s.AddItemForm}
             >
-              {edit ? <h2>Edit Employee</h2> : <h2>Add a New Employee</h2>}
+              {/* Sorry for nested ternary, but I was in a hurry and didn't have time to refactor it. */}
+              {addType !== 'admin' ? (
+                edit ? (
+                  <h2>Edit Employee</h2>
+                ) : (
+                  <h2>Add a New Employee</h2>
+                )
+              ) : (
+                <h2>Add a New Admin</h2>
+              )}
+
               <div className={s.AddItemForm__inputs}>
                 <div>
                   <Input
@@ -330,7 +347,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
               </div>
 
               <ButtonContained disabled={loading} type="submit">
-                Add Employee
+                Add User
               </ButtonContained>
             </form>
           )}

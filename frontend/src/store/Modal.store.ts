@@ -16,7 +16,7 @@ export interface IDeleteItem {
 }
 
 export interface IAddItem {
-  addType: 'coupon' | 'employee' | 'appointment' | '';
+  addType: 'coupon' | 'employee' | 'admin' | 'appointment' | '';
   edit: boolean;
   id: number | null;
 }
