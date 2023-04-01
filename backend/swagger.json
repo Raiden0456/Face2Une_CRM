@@ -1370,21 +1370,34 @@
             "summary": "Get Schedules in db",
             "parameters": [
               {
-              "in": "query",
-              "name": "column",
-              "description": "filter column name(id, saloon_id, work_date, lunch_time, employee_id))",
-              "required": false,
-              "schema": {
-                "type": "string"
-              }
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
+              },
+              {
+                "in": "query",
+                "name": "per_page",
+                "description": "max clients per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
               },
               {
               "in": "query",
-              "name": "value",
-              "description": "value of filter column",
+              "name": "work_date",
+              "description": "work day to fetch schedule",
               "required": false,
               "schema": {
-                "type": "string"
+                "type": "string",
+                "format": "date-time"
               }
               }
             ],
@@ -1486,7 +1499,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
+                  "employee_id": {
                     "type": "integer"
                   },
                   "lunch_time": {
@@ -1715,10 +1728,6 @@
               "type": "integer"
             },
             "work_date": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "lunch_time": {
               "type": "string",
               "format": "date-time"
             },

@@ -9,7 +9,7 @@ export function loadSchedule(url_params, res) {
         message:
           err.message || "Some error occurred while retrieving schedules.",
       });
-    else if (data.length == 0) {
+    else if (data == undefined || data.length == 0) {
       res.status(404).json({
         success: true,
         message: `No schedules found.`,
@@ -53,7 +53,6 @@ export async function createSchedule(
   sched: {
     employee_id: number;
     work_date: Date;
-    lunch_time: Date;
     saloon_id: number;
   },
   res
@@ -87,7 +86,7 @@ export function deleteSchedule(id, res) {
 // Set lunch time //
 export function setLunchTime(
   sched: {
-    id: number;
+    employee_id: number;
     lunch_time: Date;
   },
   res
@@ -101,7 +100,7 @@ export function setLunchTime(
     else if (data.length == 0) {
       res.status(404).json({
         success: true,
-        message: `schedule with id ${sched.id} not found.`,
+        message: `schedule with employee_id ${sched.employee_id} not found.`,
       });
     } else {
       res.json({ success: true, data: data });

@@ -11,37 +11,98 @@ const schedule = function (schedule) {
 };
 
 schedule.getAllSchedules = async (
-  filter: { column: string; value: string } = { column: "", value: "" },
+  params: {
+    index: number;
+    per_page: number;
+    work_date: Date;
+  },
   result
 ) => {
-  let resp = filter.value
-    ? await supabase
-        .from("schedule")
-        .select("*")
-        .eq(filter.column, filter.value)
-    : await supabase.from("schedule").select("*");
-  return result(resp.error, resp.data);
+  // set default values //
+  var resp;
+  let total;
+  let start_from = 0;
+  let to = 100;
+  //******//
+
+  // Pagination set where index = page number and per_page = max amount of entries per page //
+  if (params.index && params.per_page) {
+    start_from = (params.index - 1) * params.per_page;
+    to = Number(start_from) + Number(params.per_page) - 1;
+  }
+  //******//
+
+  // Get date from work_date //
+  let work_date = new Date(params.work_date);
+  let work_date_formatted = date.format(work_date, "YYYY-MM-DD");
+  //******//
+ 
+  // Get all users with rights = employee //
+  let users = await supabase
+    .from("users")
+    .select("id, first_name, last_name")
+    .eq("rights", "employee");
+  //******//
+
+  // Get all schedules for a specific date //
+  let schedules = await supabase
+    .from("schedule")
+    .select("*")
+    .eq("work_date", work_date_formatted);
+  //******//
+
+  // Create an array of objects with user data and schedule data //
+  let data = [];
+  for (let i = 0; i < users.data.length; i++) {
+    let user = users.data[i];
+    let schedule = schedules.data.find(
+      (schedule) => schedule.employee_id == user.id
+    );
+    if (schedule) {
+      data.push({
+        id: schedule.id,
+        employee_id: schedule.employee_id,
+        work_date: schedule.work_date,
+        lunch_time: schedule.lunch_time,
+        saloon_id: schedule.saloon_id,
+        full_name: user.first_name + " " + user.last_name,
+      });
+    } else {
+      data.push({
+        id: null,
+        employee_id: user.id,
+        work_date: null,
+        lunch_time: null,
+        saloon_id: null,
+        full_name: user.first_name + " " + user.last_name,
+      });
+    }
+  }
+  //******//
+  data = data.slice(start_from, to);
+
+  total = await supabase
+    .from("users")
+    .select('id')
+    .eq("rights", "employee");
+
+  return result(null, data, total.data.length);
 };
 
 schedule.createSchedule = async (
   schedule: {
     employee_id: number;
     work_date: Date;
-    lunch_time: Date;
     saloon_id: number;
   },
   result
 ) => {
-  //Get hours and minutes from lunch_time
-  let lunch = new Date(schedule.lunch_time);
-  let lunch_time = date.format(lunch, "HH:mm");
   const { data, error } = await supabase
     .from("schedule")
     .insert([
       {
         employee_id: schedule.employee_id,
         work_date: schedule.work_date,
-        lunch_time: lunch_time,
         saloon_id: schedule.saloon_id,
       },
     ])
@@ -83,16 +144,18 @@ schedule.deleteScheduleById = async (id: number, result) => {
 };
 
 schedule.setLunchTime = async (
-  schedule: { id: number; lunch_time: Date },
+  schedule: { employee_id: number; lunch_time: Date },
   result
 ) => {
   //Get hours and minutes from lunch_time
   let lunch = new Date(schedule.lunch_time);
+  let lunch_day = date.format(lunch, "YYYY-MM-DD");
   let lunch_time = date.format(lunch, "HH:mm");
   const { data, error } = await supabase
     .from("schedule")
     .update({ lunch_time: lunch_time })
-    .eq("id", schedule.id)
+    .eq("employee_id", schedule.employee_id)
+    .eq("work_date", lunch_day)
     .select();
   return result(error, data);
 };
