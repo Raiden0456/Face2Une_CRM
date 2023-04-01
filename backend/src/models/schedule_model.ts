@@ -1,6 +1,6 @@
 import supabase from "./db.js";
 import date from "date-and-time";
-
+import { getDatesBetween } from "../utils/work_days.js";
 // Constructor
 const schedule = function (schedule) {
   this.id = schedule.id;
@@ -19,7 +19,6 @@ schedule.getAllSchedules = async (
   result
 ) => {
   // set default values //
-  var resp;
   let total;
   let start_from = 0;
   let to = 100;
@@ -92,51 +91,37 @@ schedule.getAllSchedules = async (
 schedule.createSchedule = async (
   schedule: {
     employee_id: number;
-    work_date: Date;
+    work_date_start: Date;
+    work_date_end: Date;
     saloon_id: number;
   },
   result
 ) => {
-  const { data, error } = await supabase
-    .from("schedule")
-    .insert([
-      {
-        employee_id: schedule.employee_id,
-        work_date: schedule.work_date,
-        saloon_id: schedule.saloon_id,
-      },
-    ])
-    .select();
-  return result(error, data);
+  // Get all work days between two dates //
+  let work_days = getDatesBetween(
+    schedule.work_date_start,
+    schedule.work_date_end
+  );
+  //******//
+  // loop through work days and create a schedule for each day //
+  for (let i = 0; i < work_days.length; i++) {
+    let work_date = work_days[i];
+    let work_date_formatted = date.format(work_date, "YYYY-MM-DD");
+    const { data, error } = await supabase
+      .from("schedule")
+      .insert([
+        {
+          employee_id: schedule.employee_id,
+          work_date: work_date_formatted,
+          saloon_id: schedule.saloon_id,
+        },
+      ]);
+    console.log("work day:", work_date_formatted, "for employee", schedule.employee_id, "created")
+  }
+  //******//
+  return result(null, { message: "Schedule created successfully" });
 };
 
-schedule.updateScheduleById = async (
-  schedule: {
-    id: number;
-    employee_id: number;
-    work_date: Date;
-    lunch_time: Date;
-    saloon_id: number;
-  },
-  result
-) => {
-  //Get hours and minutes from lunch_time
-  let lunch = new Date(schedule.lunch_time);
-  let lunch_time = date.format(lunch, "HH:mm");
-  const { data, error } = await supabase
-    .from("schedule")
-    .update([
-      {
-        employee_id: schedule.employee_id,
-        work_date: schedule.work_date,
-        lunch_time: lunch_time,
-        saloon_id: schedule.saloon_id,
-      },
-    ])
-    .eq("id", schedule.id)
-    .select();
-  return result(error, data);
-};
 
 schedule.deleteScheduleById = async (id: number, result) => {
   const { data, error } = await supabase.from("schedule").delete().eq("id", id);

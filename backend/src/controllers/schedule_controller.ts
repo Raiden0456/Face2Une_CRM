@@ -20,39 +20,12 @@ export function loadSchedule(url_params, res) {
   });
 }
 
-// Update an schedule identified by the id in the request
-export async function updateSchedule(
-  sched: {
-    id: number;
-    employee_id: number;
-    work_date: Date;
-    lunch_time: Date;
-    saloon_id: number;
-  },
-  res
-) {
-  schedule.updateScheduleById(sched, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while updating schedule.",
-      });
-    else if (data.length == 0) {
-      res.status(404).json({
-        success: true,
-        message: `schedule with id ${sched.id} not found.`,
-      });
-    } else {
-      res.json({ success: true, data: data });
-    }
-  });
-}
-
 // Create an schedule //
 export async function createSchedule(
   sched: {
     employee_id: number;
-    work_date: Date;
+    work_date_start: Date;
+    work_date_end: Date;
     saloon_id: number;
   },
   res
