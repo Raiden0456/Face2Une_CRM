@@ -37,7 +37,7 @@ function useFormInit(type: 'coupon' | 'employee' | 'admin' | 'appointment' | '')
   }
 }
 
-// Adds new COUPON or EMPLOYEE or ADMIN or APPOINTMENT(edit only)
+// Adds or Edits new COUPON or EMPLOYEE or ADMIN or APPOINTMENT(edit only)
 const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
   const couponService = new CouponsService();
   const userService = new UserService();

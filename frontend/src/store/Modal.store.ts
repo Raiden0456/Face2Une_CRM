@@ -1,7 +1,16 @@
 import { observable } from 'mobx';
 import { ProcedureData } from './Procedures.store';
 
-type Action = 'complete_booking' | 'loader' | 'error' | 'success' | 'deleteItem' | 'addItem' | 'addAppointment' | null;
+type Action =
+  | 'complete_booking'
+  | 'loader'
+  | 'error'
+  | 'success'
+  | 'deleteItem'
+  | 'addItem'
+  | 'addAppointment'
+  | 'scheduling'
+  | null;
 
 interface IModalStatus {
   open: boolean;
@@ -21,13 +30,20 @@ export interface IAddItem {
   id: number | null;
 }
 
+export interface IScheduling {
+  schedulingType: 'workDays' | 'launchTime' | '';
+  edit: boolean;
+}
+
 export interface IModalStore {
   modalStatus: IModalStatus;
   deleteItem: IDeleteItem;
   addItem: IAddItem;
+  scheduling: IScheduling;
   setModalStatus: (status: IModalStatus) => void;
   setDeleteItem: (deleteItem: IDeleteItem) => void;
   setAddItem: (addItem: IAddItem) => void;
+  setScheduling: (scheduling: IScheduling) => void;
 }
 
 export const ModalStore = observable<IModalStore>({
@@ -45,6 +61,10 @@ export const ModalStore = observable<IModalStore>({
     addType: '',
     edit: false,
     id: null,
+  },
+  scheduling: {
+    schedulingType: '',
+    edit: false,
   },
   setModalStatus({ open, action, redirectUrl, procedure }) {
     this.modalStatus = {
@@ -65,6 +85,12 @@ export const ModalStore = observable<IModalStore>({
       addType,
       edit,
       id,
+    };
+  },
+  setScheduling({ schedulingType, edit }) {
+    this.scheduling = {
+      schedulingType,
+      edit,
     };
   },
 });

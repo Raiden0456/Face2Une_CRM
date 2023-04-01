@@ -9,7 +9,7 @@ interface IGetUser {
   value?: string;
 }
 
-interface IEmployee {
+export interface IEmployee {
   id?: number;
   first_name: 'string';
   last_name: 'string';
@@ -27,6 +27,16 @@ export class UserService {
         filterLike ? `&filter_like=${filterLike}` : ''
       }&column=rights&value=employee`,
     );
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+    }
+  }
+
+  async getAllEmployees() {
+    const r = await JSONFetchGet('users?column=rights&value=employee');
 
     if (r?.success) {
       return r;
