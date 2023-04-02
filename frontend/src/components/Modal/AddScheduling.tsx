@@ -18,19 +18,20 @@ import { AppointmentService } from '../../service/AppointmentService';
 import { SelectField } from '../base/SelectField';
 import { useDebounce } from '../../hooks/debounceSearch';
 import { useFilteredEmployees } from '../../hooks/use-filtered-employees';
+import { ScheduleService } from '../../service/ScheduleService';
 
 import s from './AddItem.scss';
 
 // Add working Days / Add lunch time
 const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
-  const couponService = new CouponsService();
   const userService = new UserService();
+  const scheduleService = new ScheduleService();
   const appointmentService = new AppointmentService();
   const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [employees, setEmployees] = useState<IEmployee[]>([]);
-  const [employee, setEmployee] = useState<number | null>(null);
+  const [employeeId, setEmployeeId] = useState<number | null>(null);
   const [search, setSearch] = useState('');
   const [saloonId, setSaloonId] = useState<number>(1);
   const debouncedSearch = useDebounce(search, 300);
@@ -49,21 +50,36 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
     });
   }, []);
 
-  // Add Item Handler
+  // Add Schedule Handler
   const handleSubmit = async () => {
     setLoading(true);
 
     if (schedulingType === 'workDays') {
-      console.log(inputs);
-
-      /* couponService
-        .updateCoupon({ ...inputs, procedure_ids: filterObjectToArray(procedures), expiry_date: startDate, id })
+      scheduleService
+        .createSchedule({
+          employee_id: employeeId!!,
+          work_date_start: startDate,
+          work_date_end: endDate!!,
+          saloon_id: saloonId,
+        })
         .then((r) => {
           if (r.success) {
-            console.log('Successfully Updated!');
+            console.log('Successfully Added!');
             window.location.reload();
           }
-        }); */
+        });
+    } else {
+      scheduleService
+        .createLunch({
+          employee_id: employeeId!!,
+          lunch_time: startDate,
+        })
+        .then((r) => {
+          if (r.success) {
+            console.log('Successfully Added!');
+            window.location.reload();
+          }
+        });
     }
 
     setLoading(false);
@@ -87,6 +103,7 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
             id="AddScheduling"
             onSubmit={(e) => {
               e.preventDefault();
+              if (!endDate && schedulingType === 'workDays') return alert('Please select a date range!');
               handleSubmit();
             }}
             className={s.AddItemForm}
@@ -110,26 +127,28 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
                     value: employee.id,
                   }))}
                   required
-                  onChange={(e) => setEmployee(e.value)}
+                  onChange={(e) => setEmployeeId(e.value)}
                 />
               </div>
               <div>
-                <div className={s.AddItemForm_radios}>
-                  <h3>Available Saloons:</h3>
-                  {saloon_ids.map((saloon) => (
-                    <Radio
-                      name="saloons"
-                      value={saloon.id}
-                      style={{ marginRight: '0.5rem' }}
-                      onChange={(e) => setSaloonId(Number(e))}
-                      key={saloon.id}
-                      defaultChecked={saloon.id === saloonId}
-                      required
-                    >
-                      {saloon.text}
-                    </Radio>
-                  ))}
-                </div>
+                {schedulingType === 'workDays' && (
+                  <div className={s.AddItemForm_radios}>
+                    <h3>Available Saloons:</h3>
+                    {saloon_ids.map((saloon) => (
+                      <Radio
+                        name="saloons"
+                        value={saloon.id}
+                        style={{ marginRight: '0.5rem' }}
+                        onChange={(e) => setSaloonId(Number(e))}
+                        key={saloon.id}
+                        defaultChecked={saloon.id === saloonId}
+                        required
+                      >
+                        {saloon.text}
+                      </Radio>
+                    ))}
+                  </div>
+                )}
                 <br />
                 <div className={s.AddItem__datepicker}>
                   {schedulingType === 'workDays' ? (
@@ -142,6 +161,7 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
                         endDate={endDate}
                         selectsRange
                         inline
+                        required
                       />
                     </>
                   ) : (
@@ -158,6 +178,7 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
                         timeIntervals={5}
                         dateFormat="MMMM d, yyyy HH:mm"
                         inline
+                        required
                       />
                     </>
                   )}
@@ -166,7 +187,7 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
             </div>
 
             <ButtonContained disabled={loading} type="submit">
-              Add Coupon
+              Add Schedule
             </ButtonContained>
           </form>
         </div>

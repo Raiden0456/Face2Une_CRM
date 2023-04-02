@@ -15,60 +15,21 @@ import { UserService } from '../service/UserService';
 import { TailSpinFixed } from '../components/TailSpin';
 import DatePicker from 'react-datepicker';
 import DataTable from 'react-data-table-component';
+import { ScheduleService } from '../service/ScheduleService';
 
 import s from './Scheduling.scss';
 
-function generateFakeData(delay: number) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const employees = [
-        {
-          employee_id: 1,
-          employee_name: 'Alice',
-          work_date: `${new Date()}`,
-          lunch_time: `${new Date()}`,
-          saloon_id: 1,
-        },
-        {
-          employee_id: 2,
-          employee_name: 'Bob',
-          work_date: `${new Date()}`,
-          lunch_time: `${new Date()}`,
-          saloon_id: 2,
-        },
-        {
-          employee_id: 3,
-          employee_name: 'Carol',
-          work_date: null,
-          lunch_time: null,
-          saloon_id: null,
-        },
-        {
-          employee_id: 4,
-          employee_name: 'David',
-          work_date: `${new Date()}`,
-          lunch_time: `${new Date()}`,
-          saloon_id: 1,
-        },
-        {
-          employee_id: 5,
-          employee_name: 'Eve',
-          work_date: null,
-          lunch_time: null,
-          saloon_id: null,
-        },
-      ];
-
-      resolve(employees);
-    }, delay);
-  });
-}
+// Delete Schedule
+const deleteHandler = async (id: number) => {
+  ModalStore.setDeleteItem({ deleteType: 'schedule', id });
+  ModalStore.setModalStatus({ open: true, action: 'deleteItem' });
+};
 
 const ROWS_PER_PAGE = 10;
 
 const columns = [
   { name: 'ID', selector: (row: any) => row.employee_id, sortable: true },
-  { name: 'Full Name', selector: (row: any) => `${row.employee_name} ${row.employee_name}`, sortable: true },
+  { name: 'Full Name', selector: (row: any) => row.full_name, sortable: true },
   {
     name: 'Work Date',
     selector: (row: any) => row.work_date,
@@ -80,7 +41,7 @@ const columns = [
   {
     name: '',
     selector: (row: any) => (
-      <ButtonDelete width="100%" onClick={() => console.log('delete')}>
+      <ButtonDelete width="100%" onClick={() => deleteHandler(row.employee_id)}>
         Delete
       </ButtonDelete>
     ),
@@ -114,22 +75,12 @@ const customTableStyles = {
 
 export const Scheduling = () => {
   const appointmentService = new AppointmentService();
-  const userService = new UserService();
+  const scheduleService = new ScheduleService();
   const [data, setData] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
   const [saloonId, setSaloonId] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
-
-  /* useEffect(() => {
-    setLoading(true);
-    userService.getSources().then((r) => {
-      if (r.success) {
-        setSources(r.data);
-      }
-      setLoading(false);
-    });
-  }, []); */
 
   // Change Saloon
   /* const sallonHandler = async (sallonId: number | null) => {
@@ -143,28 +94,26 @@ export const Scheduling = () => {
     });
   }; */
 
-  const fetchEmployees = async (page: number) => {
+  const fetchEmployees = async (page: number, workDate: string | Date) => {
     setLoading(true);
 
-    generateFakeData(2000).then((serverResponse: any) => {
-      console.log(serverResponse);
-      setData(serverResponse);
-      setTotalRows(serverResponse.length);
-      setLoading(false);
+    scheduleService.getSchedule({ index: page, perPage: ROWS_PER_PAGE, workDate }).then((r) => {
+      if (r.success) {
+        console.log(r);
+        setData(r.data);
+        setTotalRows(r.data.length);
+        setLoading(false);
+      }
     });
   };
 
   const handlePageChange = (page: number) => {
-    fetchEmployees(page);
-  };
-
-  const handleSearch = () => {
-    fetchEmployees(1);
+    fetchEmployees(page, startDate);
   };
 
   useEffect(() => {
-    fetchEmployees(1);
-  }, []);
+    fetchEmployees(1, startDate);
+  }, [saloonId, startDate]);
 
   // Add working Days Employee
   const addWorkingDaysHandler = async () => {
