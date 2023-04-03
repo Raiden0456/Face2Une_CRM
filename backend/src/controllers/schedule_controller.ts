@@ -1,8 +1,16 @@
 import schedule from "../models/schedule_model.js";
 import { join } from "path";
 // Retrieve schedules from the database.
-export function loadSchedule(url_params, res) {
-  schedule.getAllSchedules(url_params, (err, data) => {
+export function loadSchedule(
+  params: {
+    index: number;
+    per_page: number;
+    work_date: Date;
+    saloon_id?: number;
+  },
+  res
+) {
+  schedule.getAllSchedules(params, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -19,6 +27,7 @@ export function loadSchedule(url_params, res) {
     }
   });
 }
+
 
 // Create an schedule //
 export async function createSchedule(
@@ -51,7 +60,10 @@ export function deleteSchedule(id, res) {
         message: err.message || "Some error occurred while deleting schedule.",
       });
     else {
-      res.json({ success: true,  message: "deleted schedule with id: " + id + ", successfully!", });
+      res.json({
+        success: true,
+        message: "deleted schedule with id: " + id + ", successfully!",
+      });
     }
   });
 }

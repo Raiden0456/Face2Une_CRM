@@ -7,9 +7,6 @@ import * as schedule from '../controllers/schedule_controller.js';
 router.get('/schedule', function(req, res){
     schedule.loadSchedule(req.query, res);
 });
-router.get('/schedule/:scheduleid', function(req, res){
-    schedule.loadSchedule({column: "id", value: req.params.scheduleid}, res);
-});
 router.post('/create_schedule', function(req, res){
     schedule.createSchedule(req.body, res);
 });

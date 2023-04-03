@@ -1399,33 +1399,20 @@
                 "type": "string",
                 "format": "date-time"
               }
+              },
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "saloon id to fetch schedule",
+              "required": false,
+              "schema": {
+                "type": "number"
+              }
               }
             ],
             "responses": {
               "200": {
                 "description": "Returns Schedules in database in JSON format"
-              }
-            }
-          }
-        },
-        "/schedule/{scheduleid}": {
-          "get": {
-            "tags": ["Schedule"],
-            "summary": "Get a single schedule by id in db",
-            "parameters": [
-              {
-              "in": "path",
-              "name": "scheduleid",
-              "description": "id of schedule",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-            ],
-            "responses": {
-              "200": {
-                "description": "Returns a single schedule in database in JSON format"
               }
             }
           }

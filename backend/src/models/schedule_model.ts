@@ -15,6 +15,7 @@ schedule.getAllSchedules = async (
     index: number;
     per_page: number;
     work_date: Date;
+    saloon_id?: number;
   },
   result
 ) => {
@@ -44,10 +45,18 @@ schedule.getAllSchedules = async (
   //******//
 
   // Get all schedules for a specific date //
-  let schedules = await supabase
+  if (params.saloon_id) {
+    var schedules = await supabase
+      .from("schedule")
+      .select("*")
+      .eq("work_date", work_date_formatted)
+      .eq("saloon_id", params.saloon_id);
+  } else {
+    var schedules = await supabase
     .from("schedule")
     .select("*")
     .eq("work_date", work_date_formatted);
+  }
   //******//
 
   // Create an array of objects with user data and schedule data //
@@ -87,6 +96,7 @@ schedule.getAllSchedules = async (
 
   return result(null, data, total.data.length);
 };
+
 
 schedule.createSchedule = async (
   schedule: {
