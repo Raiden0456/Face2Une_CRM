@@ -5,6 +5,7 @@ interface IGetSchedule {
   index: number;
   perPage: number;
   workDate: string | Date;
+  saloonId?: number;
 }
 
 interface ICreateSchedule {
@@ -20,8 +21,10 @@ interface ICreateLunch {
 }
 
 export class ScheduleService {
-  async getSchedule({ index, perPage, workDate }: IGetSchedule) {
-    const r = await JSONFetchGet(`schedule?index=${index}&per_page=${perPage}&work_date=${workDate}`);
+  async getSchedule({ index, perPage, workDate, saloonId }: IGetSchedule) {
+    const r = await JSONFetchGet(
+      `schedule?index=${index}&per_page=${perPage}&work_date=${workDate}${saloonId ? `&saloon_id=${saloonId}` : ''}`,
+    );
 
     if (r?.success) {
       return r;

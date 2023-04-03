@@ -1,21 +1,14 @@
-import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from '../components/base/Button';
+import { ButtonContained, ButtonDelete } from '../components/base/Button';
 import React, { useEffect, useState } from 'react';
 import { Container } from '../components/base/Container';
 import { ModalStore } from '../store/Modal.store';
 import NavBar from '../components/Navbar';
-import { AppointmentService } from '../service/AppointmentService';
-import { renameAndDeleteArrayObjects } from '../utils/funcs';
-import { Button, Typography } from '@mui/material';
-import { LocationOnRounded, PersonRounded, PaymentsRounded, FaceRetouchingNaturalRounded } from '@mui/icons-material';
-import { formatPhoneNumber } from '../utils/formatPhone';
 import { saloon_ids } from '../utils/staticData';
 import { Radio } from '../components/base/Checkbox';
-import { SelectField } from '../components/base/SelectField';
-import { UserService } from '../service/UserService';
-import { TailSpinFixed } from '../components/TailSpin';
 import DatePicker from 'react-datepicker';
 import DataTable from 'react-data-table-component';
 import { ScheduleService } from '../service/ScheduleService';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import s from './Scheduling.scss';
 
@@ -34,14 +27,28 @@ const columns = [
     name: 'Work Date',
     selector: (row: any) => row.work_date,
     sortable: true,
-    cell: (row: any) => <div style={{ backgroundColor: row.work_date ? 'green' : 'none' }}>{row.work_date}</div>,
+    cell: (row: any) =>
+      row.work_date ? (
+        <div style={{ color: 'green', fontWeight: '700' }}>{row.work_date}</div>
+      ) : (
+        <CancelIcon color="warning" />
+      ),
   },
-  { name: 'Lunch Time', selector: (row: any) => row.lunch_time, sortable: true },
+  {
+    name: 'Lunch Time',
+    selector: (row: any) =>
+      row.lunch_time ? (
+        <div style={{ color: 'green', fontWeight: '700' }}>{row.lunch_time}</div>
+      ) : (
+        <CancelIcon color="warning" />
+      ),
+    sortable: true,
+  },
   { name: 'Saloon', selector: (row: any) => row.saloon_id, sortable: true },
   {
     name: '',
     selector: (row: any) => (
-      <ButtonDelete width="100%" onClick={() => deleteHandler(row.employee_id)}>
+      <ButtonDelete width="100%" onClick={() => deleteHandler(row.id)}>
         Delete
       </ButtonDelete>
     ),
@@ -58,12 +65,13 @@ const customTableStyles = {
     style: {
       fontWeight: 'bold',
       backgroundColor: '#f2f2f2',
+      fontSize: '14px',
     },
   },
   cells: {
     style: {
       padding: '12px',
-      width: '150px',
+      fontSize: '14px',
     },
   },
   pagination: {
@@ -74,30 +82,17 @@ const customTableStyles = {
 };
 
 export const Scheduling = () => {
-  const appointmentService = new AppointmentService();
   const scheduleService = new ScheduleService();
   const [data, setData] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
-  const [saloonId, setSaloonId] = useState<number>(1);
+  const [saloonId, setSaloonId] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-
-  // Change Saloon
-  /* const sallonHandler = async (sallonId: number | null) => {
-    triggerLoading(true);
-    appointmentService.getAppointments(sallonId).then((r: any) => {
-      if (r.success) {
-        const result = renameAndDeleteArrayObjects(r.data, calendarNamings);
-        setEvents(result);
-        triggerLoading(false);
-      }
-    });
-  }; */
 
   const fetchEmployees = async (page: number, workDate: string | Date) => {
     setLoading(true);
 
-    scheduleService.getSchedule({ index: page, perPage: ROWS_PER_PAGE, workDate }).then((r) => {
+    scheduleService.getSchedule({ index: page, perPage: ROWS_PER_PAGE, workDate, saloonId }).then((r) => {
       if (r.success) {
         console.log(r);
         setData(r.data);
@@ -113,7 +108,7 @@ export const Scheduling = () => {
 
   useEffect(() => {
     fetchEmployees(1, startDate);
-  }, [saloonId, startDate]);
+  }, [saloonId, startDate, saloonId]);
 
   // Add working Days Employee
   const addWorkingDaysHandler = async () => {
@@ -137,7 +132,7 @@ export const Scheduling = () => {
             <div>
               <h3>Scheduling</h3>
               <div className={s.Scheduling__datepicker}>
-                <p style={{ marginBottom: '5px' }}>Choose Date:</p>
+                <h4 style={{ marginBottom: '5px' }}>Choose Date:</h4>
                 <DatePicker
                   selected={startDate}
                   onChange={(date: Date) => setStartDate(date)}
@@ -151,6 +146,17 @@ export const Scheduling = () => {
               <div className={s.Salloon__switcher}>
                 <h3>Available Saloons:</h3>
 
+                <Radio
+                  required
+                  name="saloons"
+                  onChange={(e) => {
+                    setSaloonId(Number(e));
+                  }}
+                  defaultChecked
+                  value={0}
+                >
+                  All
+                </Radio>
                 {saloon_ids.map((saloon) => (
                   <Radio
                     required
@@ -158,7 +164,6 @@ export const Scheduling = () => {
                     onChange={(e) => {
                       setSaloonId(Number(e));
                     }}
-                    defaultChecked={saloon.id === saloonId}
                     key={saloon.id}
                     value={saloon.id}
                   >

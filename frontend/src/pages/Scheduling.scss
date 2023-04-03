@@ -96,13 +96,20 @@
     }
   }
 
+  .react-datepicker__input-container {
+    border: 2px solid #91a0db;
+    border-radius: 8px;
+    padding: 0.5rem;
+
+    input {
+      all: unset;
+    }
+  }
 }
 
-/* .css-96e9fn {
+.Scheduling__table {
   width: 100%;
-  z-index: 0;
-
-  .css-12aktbw {
-    margin-top: 1rem;
-  }
-} */
+  border: 2px solid #91a0db;
+  border-radius: 16px;
+  margin: 2rem 0;
+}
