@@ -1,10 +1,10 @@
 import { ButtonContained, ButtonEdit, ButtonOutlined } from '../components/base/Button';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Container } from '../components/base/Container';
 import { ModalStore } from '../store/Modal.store';
 import NavBar from '../components/Navbar';
 import { Scheduler } from '@aldabil/react-scheduler';
-import { useScheduler } from '@aldabil/react-scheduler';
+import type { SchedulerRef } from '@aldabil/react-scheduler/types';
 import { AppointmentService } from '../service/AppointmentService';
 import { renameAndDeleteArrayObjects } from '../utils/funcs';
 import { Button, Typography } from '@mui/material';
@@ -57,7 +57,8 @@ export const Calendar = () => {
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
   const [sources, setSources] = useState<ISource[] | null>(null);
   const [selectedSource, setSelectedSource] = useState<number | null>(null);
-  const { setEvents, triggerLoading } = useScheduler();
+
+  const calendarRef = useRef<SchedulerRef>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -101,17 +102,17 @@ export const Calendar = () => {
   const editHandler = async (id: number | null) => {
     ModalStore.setAddItem({ addType: 'appointment', edit: true, id });
     ModalStore.setModalStatus({ open: true, action: 'addItem', redirectUrl: '/calendar' });
-    setEvents([]);
+    calendarRef.current?.scheduler.handleState([], 'events');
   };
 
   // Change Saloon
   const sallonHandler = async (sallonId: number | null) => {
-    triggerLoading(true);
+    calendarRef.current?.scheduler.triggerLoading(true);
     appointmentService.getAppointments(sallonId).then((r: any) => {
       if (r.success) {
         const result = renameAndDeleteArrayObjects(r.data, calendarNamings);
-        setEvents(result);
-        triggerLoading(false);
+        calendarRef.current?.scheduler.handleState(result, 'events');
+        calendarRef.current?.scheduler.triggerLoading(false);
       }
     });
   };
@@ -179,6 +180,7 @@ export const Calendar = () => {
                 onChange={(e) => {
                   sallonHandler(Number(e));
                 }}
+                defaultChecked
                 value={0}
               >
                 All
@@ -200,12 +202,12 @@ export const Calendar = () => {
           </div>
 
           <Scheduler
+            ref={calendarRef}
             view="week"
             hourFormat="24"
             editable={false}
             deletable={false}
             draggable={false}
-            loading={loading}
             getRemoteEvents={handleRemoteEvents}
             day={null}
             month={{
