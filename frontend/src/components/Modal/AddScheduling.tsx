@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { ButtonContained } from '../base/Button';
-import { CouponsService } from '../../service/CouponsService';
-import useForm from '../../utils/useForm';
-import { IAddItem, IScheduling } from '../../store/Modal.store';
+import { IScheduling } from '../../store/Modal.store';
 import { TailSpinFixed } from '../TailSpin';
-import { Input, NumberInput } from '../base/Input';
-import { ProceduresStore } from '../../store/Procedures.store';
+import { Input } from '../base/Input';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
-import { filterObjectToArray } from '../../utils/funcs';
-import { Checkbox, Radio } from '../base/Checkbox';
+import { Radio } from '../base/Checkbox';
 import DatePicker from 'react-datepicker';
-import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
 import { saloon_ids } from '../../utils/staticData';
 import { IEmployee, UserService } from '../../service/UserService';
-import { AppointmentService } from '../../service/AppointmentService';
 import { SelectField } from '../base/SelectField';
 import { useDebounce } from '../../hooks/debounceSearch';
 import { useFilteredEmployees } from '../../hooks/use-filtered-employees';
@@ -26,7 +20,6 @@ import s from './AddItem.scss';
 const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
   const userService = new UserService();
   const scheduleService = new ScheduleService();
-  const appointmentService = new AppointmentService();
   const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
@@ -37,7 +30,6 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
   const debouncedSearch = useDebounce(search, 300);
 
   const { filteredEmployees } = useFilteredEmployees(employees, debouncedSearch);
-  const { inputs, handleChange, handleNumberChange, clearForm, resetForm, setInputs } = useForm();
 
   useEffect(() => {
     setLoading(true);

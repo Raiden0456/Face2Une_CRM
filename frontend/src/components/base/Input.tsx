@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import NumberFormat from 'react-number-format';
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
 
 import s from './Input.scss';
 
@@ -92,8 +94,28 @@ export const NumberInput: React.FC<IInput> = ({
   );
 };
 
-Input.defaultProps = {
-  type: 'text',
+export const PhoneInputStyled: React.FC<IInput> = ({
+  onChange,
+  onBlur,
+  label,
+  className,
+  error,
+  helperText,
+  defaultValue,
+}) => {
+  return (
+    <div className={classNames(s.InputWrapperPhone, className)}>
+      <label htmlFor={className}>{label}</label>
+      <PhoneInput
+        required
+        className={error ? s.PhoneInput_invalid : undefined}
+        value={defaultValue}
+        onChange={(values: any) => (onChange ? onChange(values) : '')}
+        onBlur={onBlur}
+      />
+      {helperText && <small>{helperText}</small>}
+    </div>
+  );
 };
 
 export const TextArea: React.FC<ITextArea> = ({
@@ -125,4 +147,8 @@ export const TextArea: React.FC<ITextArea> = ({
       {helperText && <small>{helperText}</small>}
     </div>
   );
+};
+
+Input.defaultProps = {
+  type: 'text',
 };
