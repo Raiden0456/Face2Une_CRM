@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import DataTable from 'react-data-table-component';
 import { ScheduleService } from '../service/ScheduleService';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { findElementById } from '../utils/funcs';
 
 import s from './Scheduling.scss';
 
@@ -44,7 +45,12 @@ const columns = [
       ),
     sortable: true,
   },
-  { name: 'Saloon', selector: (row: any) => row.saloon_id, sortable: true },
+  {
+    name: 'Saloon',
+    selector: (row: any) =>
+      row.saloon_id ? findElementById(saloon_ids, row.saloon_id).text : <CancelIcon color="warning" />,
+    sortable: true,
+  },
   {
     name: '',
     selector: (row: any) => (
