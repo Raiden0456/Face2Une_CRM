@@ -4,9 +4,10 @@ import { observer } from 'mobx-react';
 import { ModalStore } from '../../store/Modal.store';
 import ProcedureBox from '../ProcedureBox';
 import ConfirmDelete from './ConfirmDelete';
-import { AddAppointment } from './AddAppointment';
+import { AddAppointment } from './AddManualAppointment';
 import { StatusContainer } from './StatusContainer';
 import AddItem from './AddItem';
+import AddScheduling from './AddScheduling';
 
 export const ModalsCustomStyles: object = {
   content: {
@@ -78,6 +79,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
           ModalStore.setModalStatus({ open: false, action: null });
           ModalStore.setDeleteItem({ deleteType: '', id: null });
           ModalStore.setAddItem({ addType: '', edit: false, id: null });
+          ModalStore.setScheduling({ schedulingType: '', edit: false });
         }
       }}
       style={!mobile ? ModalsCustomStyles : ModalsCustomStylesMobile}
@@ -97,6 +99,9 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
         <AddItem addType={ModalStore.addItem.addType} id={ModalStore.addItem.id} edit={ModalStore.addItem.edit} />
       )}
       {ModalStore.modalStatus.action === 'addAppointment' && <AddAppointment />}
+      {ModalStore.modalStatus.action === 'scheduling' && (
+        <AddScheduling schedulingType={ModalStore.scheduling.schedulingType} edit={ModalStore.scheduling.edit} />
+      )}
       {ModalStore.modalStatus.action === 'loader' && <p>Loading...</p>}
     </Modal>
   );

@@ -21,6 +21,8 @@ import PackagesRouter from './routes/packages_route.js';
 import CouponsRouter from './routes/coupons_route.js';
 import CertificatesRouter from './routes/certificates_route.js';
 import CodeRouter from './routes/codes_route.js';
+import Found_usRouter from './routes/found_us_route.js';
+import ScheduleRouter from './routes/schedule_route.js';
 import dotenv from "dotenv";
 ///////////////////////////
 
@@ -65,6 +67,8 @@ app.use('/', PackagesRouter);
 app.use('/', CouponsRouter);
 app.use('/', CertificatesRouter);
 app.use('/', CodeRouter);
+app.use('/', Found_usRouter);
+app.use('/', ScheduleRouter);
 // production mode //
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve("./dist", "src", "public", "build")));

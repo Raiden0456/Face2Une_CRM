@@ -36,7 +36,7 @@ appointment.getAppointments = async (
           .order("reservation_date_time", { ascending: true });
 
 
-      // add procedure name and additional names to each appointment //
+      // add procedure name and additional names and saloon Adress and client name to each appointment //
       for (let i = 0; i < resp.data.length; i++) {
         let { data: proc } = await supabase
           .from("procedures")
@@ -51,7 +51,35 @@ appointment.getAppointments = async (
             .eq("id", resp.data[i].additional_ids[j]);
           resp.data[i].additional_names.push(add_proc[0].name);
         }
+        let { data: saloon } = await supabase
+          .from("saloons")
+          .select("Street, index")
+          .eq("id", resp.data[i].saloon_id);
+        resp.data[i].saloon_address = saloon[0].Street + " " + saloon[0].index;
+        let { data: client } = await supabase
+          .from("clients")
+          .select("full_name, phone, email")
+          .eq("id", resp.data[i].client_id);
+        resp.data[i].client_full_name = client[0].full_name;
+        resp.data[i].client_phone = client[0].phone;
+        resp.data[i].client_email = client[0].email;
+
       }
+      // for (let i = 0; i < resp.data.length; i++) {
+      //   let { data: proc } = await supabase
+      //     .from("procedures")
+      //     .select("name")
+      //     .eq("id", resp.data[i].procedure_id);
+      //   resp.data[i].procedure_name = proc[0].name;
+      //   resp.data[i].additional_names = [];
+      //   for (let j = 0; j < resp.data[i].additional_ids.length; j++) {
+      //     let { data: add_proc } = await supabase
+      //       .from("procedures")
+      //       .select("name")
+      //       .eq("id", resp.data[i].additional_ids[j]);
+      //     resp.data[i].additional_names.push(add_proc[0].name);
+      //   }
+      // }
       break;
     default:
       resp = filter.value

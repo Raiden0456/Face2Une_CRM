@@ -9,7 +9,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -19,7 +19,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -29,7 +29,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -39,7 +39,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -49,7 +49,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -59,7 +59,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -69,7 +69,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -79,7 +79,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -89,7 +89,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -99,7 +99,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -109,7 +109,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -119,7 +119,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -129,7 +129,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -139,7 +139,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -149,7 +149,7 @@ export class ProceduresService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 }

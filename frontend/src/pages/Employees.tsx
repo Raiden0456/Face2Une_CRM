@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
-import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from '../components/base/Button';
+import { ButtonContained, ButtonDanger, ButtonDelete, ButtonEdit, ButtonOutlined } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import { UserService } from '../service/UserService';
@@ -9,18 +9,21 @@ import { saloon_ids } from '../utils/staticData';
 import { findElementById } from '../utils/funcs';
 import { ModalStore } from '../store/Modal.store';
 import { formatPhoneNumber } from '../utils/formatPhone';
-import s from './Clients.scss';
+
+import s from './Employees.scss';
 
 const customTableStyles = {
   headCells: {
     style: {
       fontWeight: 'bold',
       backgroundColor: '#f2f2f2',
+      fontSize: '14px',
     },
   },
   cells: {
     style: {
       padding: '12px',
+      fontSize: '14px',
     },
   },
   pagination: {
@@ -49,7 +52,6 @@ const columns = [
   { name: 'Full Name', selector: (row: any) => `${row.first_name} ${row.last_name}`, sortable: true },
   { name: 'Email', selector: (row: any) => row.email, sortable: true },
   { name: 'Phone', selector: (row: any) => formatPhoneNumber(row.phone), sortable: false },
-  { name: 'Saloon', selector: (row: any) => findElementById(saloon_ids, row.saloon_id).text, sortable: false },
   {
     name: '',
     selector: (row: any) => (
@@ -107,8 +109,14 @@ export const Employees = () => {
   }, []);
 
   // Add Employee
-  const addHandler = async () => {
+  const addEmployeeHandler = async () => {
     ModalStore.setAddItem({ addType: 'employee', edit: false, id: null });
+    ModalStore.setModalStatus({ open: true, action: 'addItem' });
+  };
+
+  // Add Admin
+  const addAdminHandler = async () => {
+    ModalStore.setAddItem({ addType: 'admin', edit: false, id: null });
     ModalStore.setModalStatus({ open: true, action: 'addItem' });
   };
 
@@ -118,11 +126,11 @@ export const Employees = () => {
       width="100%"
       content={
         <>
-          <div className={s.Clients}>
-            <div className={s.Clients__header}>
+          <div className={s.Employees}>
+            <div className={s.Employees__header}>
               <h3>Employees</h3>
             </div>
-            <div className={s.Clients__table_searchFieldWrapper}>
+            <div className={s.Employees__table_searchFieldWrapper}>
               <Input
                 label="Search for an employee:"
                 type="text"
@@ -134,12 +142,16 @@ export const Employees = () => {
                 Search
               </ButtonContained>
             </div>
-            <div>
-              <ButtonContained width="auto" onClick={addHandler}>
+            <div className={s.Employees__btnsWrapper}>
+              <ButtonContained width="175px" onClick={addEmployeeHandler}>
                 Add Employee
               </ButtonContained>
+              <ButtonDanger onClick={addAdminHandler} width="175px">
+                Add Admin
+              </ButtonDanger>
             </div>
-            <div className={s.Clients__table}>
+
+            <div className={s.Employees__table}>
               <DataTable
                 columns={columns}
                 data={data}

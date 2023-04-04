@@ -14,7 +14,7 @@ import { filterObjectToArray } from '../../utils/funcs';
 import { SelectField } from '../base/SelectField';
 import { formatPhoneNumber } from '../../utils/formatPhone';
 
-import s from './AddAppointment.scss';
+import s from './AddManualAppointment.scss';
 
 type AppointmentStatus = 'checkClient' | 'clientExists' | 'noClient' | 'success';
 
@@ -34,9 +34,6 @@ export const AddAppointment = () => {
   );
   const [procedures, setProcedures] = useState<any>(() => ProceduresStore.proceduresStatus.proceduresData || null);
   const [pickedOptProcedures, setPickedOptProcedures] = useState({});
-  const [optProcedures, setOptProcedures] = useState<any>(
-    () => ProceduresStore.proceduresStatus.optionalProceduresData || null,
-  );
 
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
     firstName: '',
@@ -249,7 +246,7 @@ export const AddAppointment = () => {
       )}
       {appointmentStatus === 'clientExists' && (
         <form
-          id="checkClient"
+          id="createAppointment"
           onSubmit={handleCreateAppoint}
           className={s.AddAppointmentForm}
           style={{ height: 'auto' }}
@@ -259,6 +256,7 @@ export const AddAppointment = () => {
 
             <div className={s.AddAppointmentForm_procs}>
               <SelectField
+                required
                 label={'Choose a Procedure'}
                 options={procedures.map((procedure: any) => ({ label: procedure.name, value: procedure.id }))}
                 onChange={(e) => setPickedProcedure(e.value)}

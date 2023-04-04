@@ -2,6 +2,7 @@ import { JSONFetch, JSONFetchGet } from '../api/fetchMethod';
 import { ModalStore } from '../store/Modal.store';
 
 interface NewAppointment {
+  id?: number | string;
   proc_id: number;
   opt_proc_id: number[];
   date: Date;
@@ -36,17 +37,37 @@ export class AppointmentService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl });
     }
   }
 
-  async getAppointments() {
-    const r = await JSONFetchGet('appoint?details=true');
+  async updateAppointment(updateAppointment: NewAppointment) {
+    const r = await JSONFetch('update_appoint', updateAppointment);
 
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' });
+    }
+  }
+
+  async getAppointments(sallonId?: number | string | null) {
+    const r = await JSONFetchGet(`appoint?${sallonId ? `column=saloon_id&value=${sallonId}&` : ''}details=true`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' });
+    }
+  }
+
+  async getAppointment(id: string | number) {
+    const r = await JSONFetchGet(`appoint/${id}`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' });
     }
   }
 
@@ -64,7 +85,7 @@ export class AppointmentService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation-package' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation-package' });
     }
   }
 
@@ -74,7 +95,7 @@ export class AppointmentService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation-certificate' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/confirmation-certificate' });
     }
   }
 }

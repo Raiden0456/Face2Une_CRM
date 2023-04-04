@@ -2,6 +2,7 @@ const path = require('path'),
   MiniCssExtractPlugin = require('mini-css-extract-plugin'),
   { CleanWebpackPlugin } = require('clean-webpack-plugin'),
   Dotenv = require('dotenv-webpack'),
+  CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin');
 require('webpack');
 
@@ -114,6 +115,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'public/favicon.svg', to: 'favicon.svg' }],
+    }),
     new HtmlWebpackPlugin({
       minify: {
         collapseWhitespace: true,
@@ -128,6 +132,7 @@ module.exports = {
                         <title>Face2Une</title>
                         <meta name="msapplication-TileColor" content="#da532c">
                         <meta name="theme-color" content="#ffffff">
+                        <link rel="icon" type="image/png" href="favicon.svg">
                     </head>
                     <body>
                         <div id="root"></div>

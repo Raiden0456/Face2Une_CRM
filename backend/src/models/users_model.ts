@@ -13,7 +13,6 @@ const user = function (user) {
   this.email = user.email;
   this.password = user.password;
   this.rights = user.rights;
-  this.saloon_id = user.saloon_id;
 };
 
 user.getUsers = async (
@@ -135,7 +134,6 @@ user.createUser = async (
     email: string;
     password: string;
     rights: string;
-    saloon_id: number;
   },
   result
 ) => {
@@ -148,7 +146,6 @@ user.createUser = async (
       last_name: user.last_name,
       phone: user.phone,
       rights: user.rights,
-      saloon_id: user.saloon_id,
     },
   });
   if (error) {
@@ -165,7 +162,6 @@ user.createUser = async (
         email: user.email,
         rights: user.rights,
         uuid: data.user.id,
-        saloon_id: user.saloon_id,
       },
     ])
     .select();
@@ -181,7 +177,6 @@ user.updateUserById = async (
     email: string;
     password: string;
     rights: string;
-    saloon_id: number;
   },
   result
 ) => {
@@ -194,7 +189,6 @@ user.updateUserById = async (
         phone: user.phone,
         email: user.email,
         rights: user.rights,
-        saloon_id: user.saloon_id,
       },
     ])
     .eq("id", user.id)
@@ -210,7 +204,6 @@ user.updateUserById = async (
         last_name: user.last_name,
         phone: user.phone,
         rights: user.rights,
-        saloon_id: user.saloon_id,
       },
     }
   );
