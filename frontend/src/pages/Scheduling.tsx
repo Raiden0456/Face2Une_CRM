@@ -22,7 +22,7 @@ const deleteHandler = async (id: number) => {
 const ROWS_PER_PAGE = 10;
 
 const columns = [
-  { name: 'ID', selector: (row: any) => row.employee_id, sortable: true },
+  { name: 'ID', selector: (row: any) => row.id, sortable: true },
   { name: 'Full Name', selector: (row: any) => row.full_name, sortable: true },
   {
     name: 'Work Date',
