@@ -19,7 +19,7 @@ export class CouponsService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' });
     }
   }
 
@@ -29,7 +29,7 @@ export class CouponsService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' });
     }
   }
 
@@ -39,7 +39,7 @@ export class CouponsService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' });
     }
   }
 
@@ -49,7 +49,7 @@ export class CouponsService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' });
     }
   }
 
@@ -59,7 +59,7 @@ export class CouponsService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' });
     }
   }
 }

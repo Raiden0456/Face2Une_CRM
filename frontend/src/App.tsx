@@ -19,6 +19,7 @@ import { Employees } from './pages/Employees';
 import { ProceduresService } from './service/ProceduresService';
 import { ProceduresStore } from './store/Procedures.store';
 import { ConfirmationCertificate } from './pages/ConfirmationCertificate';
+import { Scheduling } from './pages/Scheduling';
 //
 require('./App.scss');
 
@@ -92,6 +93,7 @@ const App = observer(() => {
             <Route element={<PrivateRouteAdminOrEmployee />}>
               <Route path="/coupons" element={<Coupons />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="/scheduling" element={<Scheduling />} />
             </Route>
           </Routes>
         </MainLayout>

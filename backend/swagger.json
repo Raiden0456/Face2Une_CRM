@@ -1363,189 +1363,336 @@
               }
             }
           }
+        },
+        "/schedule": {
+          "get": {
+            "tags": ["Schedule"],
+            "summary": "Get Schedules in db",
+            "parameters": [
+              {
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
+              },
+              {
+                "in": "query",
+                "name": "per_page",
+                "description": "max clients per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+              "in": "query",
+              "name": "work_date",
+              "description": "work day to fetch schedule",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              }
+              },
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "saloon id to fetch schedule",
+              "required": false,
+              "schema": {
+                "type": "number"
+              }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns Schedules in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_schedule": {
+          "post": {
+            "tags": ["Schedule"],
+            "summary": "Create new schedule",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of schedule",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Schedule"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a schedule using JSON format"
+              }
+            }
+          }
+        },
+        "/schedule_lunch": {
+          "post":{
+            "tags": ["Schedule"],
+            "summary": "add a lunch time for a schedule",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of schedule",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "employee_id": {
+                    "type": "integer"
+                  },
+                  "lunch_time": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "add a lunch time for a schedule"
+              }
+            }
+          }
+        },
+        "/delete_schedule/{scheduleid}": {
+          "delete": {
+            "tags": ["Schedule"],
+            "summary": "Delete schedule by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "scheduleid",
+              "description": "id of schedule",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a schedule in database by id"
+              }
+            }
+          }
         }
       },
 
-      "definitions": {
-        "Procedure": {
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "price": {
-              "type": "number"
-            },
-            "price_gbp": {
-              "type": "number"
-            },
-            "duration": {
-              "type": "integer"
-            },
-            "additional": {
-              "type": "integer"
-            },
-            "saloon_ids": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "uniqueItems": true
-              },
-              "default": [1]
-            }
-          }
-        },
-        "Package": {
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "procedure_id": {
-              "type": "number"
-            },
-            "price": {
-              "type": "number"
-            },
-            "amount": {
-              "type": "number"
-            }
-          }
-        },
-        "Certificate": {
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "price": {
-              "type": "number"
-            }
-          }
-        },
-        "Coupon": {
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "code": {
-              "type": "string"
-            },
-            "procedure_ids": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "uniqueItems": true
-              }
-            },
-            "discount": {
-              "type": "number"
-            },
-            "expiry_date": {
-              "type": "string",
-              "format": "date-time"
-            }
-          }
-        },
-        "Code": {
-          "properties": {
-            "email": {
-              "type": "string"
-            },
-            "promocode": {
-              "type": "string"
-            }
-          }
-        },
-        "Source": {
-          "properties": {
-            "source": {
-              "type": "string"
-            }
-          }
-        },
-        "User": {
-          "properties": {
-            "first_name": {
-              "type": "string"
-            },
-            "last_name": {
-              "type": "string"
-            },
-            "phone": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            },
-            "rights": {
-              "type": "string",
-              "default": "client"
-            }
-          }
-        },
-        "Login": {
-          "properties": {
-            "email": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            }
-          }
-        },
-        "Client": {
-          "properties": {
-            "first_name": {
-              "type": "string"
-            },
-            "last_name": {
-              "type": "string"
-            },
-            "phone": {
-              "type": "string",
-              "required": false
-            },
-            "email": {
-              "type": "string",
-              "required": false
-            },
-            "user_id": {
-              "type": "number",
-              "default": null,
-              "required": false
-            }
-          }
-        },
-        "Appointment": {
-          "properties": {
-            "procedure_id": {
+    "definitions": {
+      "Procedure": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "price_gbp": {
+            "type": "number"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "additional": {
+            "type": "integer"
+          },
+          "saloon_ids": {
+            "type": "array",
+            "items": {
               "type": "integer",
-              "default": "1"
+              "uniqueItems": true
             },
-            "additional_ids": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "default": 7,
-                "uniqueItems": true
-              }
-            },
-            "reservation_date_time": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "client_id": {
-              "type": "integer"
-            },
-            "saloon_id": {
-              "type": "int",
-              "default": "1"
+            "default": [1]
+          }
+        }
+      },
+      "Package": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "procedure_id": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "amount": {
+            "type": "number"
+          }
+        }
+      },
+      "Certificate": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          }
+        }
+      },
+      "Coupon": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "procedure_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "uniqueItems": true
             }
+          },
+          "discount": {
+            "type": "number"
+          },
+          "expiry_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Code": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "promocode": {
+            "type": "string"
+          }
+        }
+      },
+      "Source": {
+        "properties": {
+          "source": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "rights": {
+            "type": "string",
+            "default": "client"
+          }
+        }
+      },
+      "Login": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Client": {
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "required": false
+          },
+          "email": {
+            "type": "string",
+            "required": false
+          },
+          "user_id": {
+            "type": "number",
+            "default": null,
+            "required": false
+          }
+        }
+      },
+      "Appointment": {
+        "properties": {
+          "procedure_id": {
+            "type": "integer",
+            "default": "1"
+          },
+          "additional_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "default": 7,
+              "uniqueItems": true
+            }
+          },
+          "reservation_date_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "client_id": {
+            "type": "integer"
+          },
+          "saloon_id": {
+            "type": "int",
+            "default": "1"
+          }
+        }
+      },
+      "Schedule": {
+        "properties": {
+          "employee_id": {
+            "type": "integer"
+          },
+          "work_date_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "work_date_end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "saloon_id": {
+            "type": "integer",
+            "default": "1"
           }
         }
       }
+    }
   }

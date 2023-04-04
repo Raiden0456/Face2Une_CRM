@@ -9,7 +9,7 @@ interface IGetUser {
   value?: string;
 }
 
-interface IEmployee {
+export interface IEmployee {
   id?: number;
   first_name: 'string';
   last_name: 'string';
@@ -31,7 +31,17 @@ export class UserService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
+    }
+  }
+
+  async getAllEmployees() {
+    const r = await JSONFetchGet('users?column=rights&value=employee');
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
     }
   }
 
@@ -41,7 +51,7 @@ export class UserService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' });
     }
   }
 
@@ -51,7 +61,7 @@ export class UserService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' });
     }
   }
 
@@ -61,7 +71,7 @@ export class UserService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' });
     }
   }
 
@@ -71,7 +81,7 @@ export class UserService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' });
     }
   }
 
@@ -81,7 +91,7 @@ export class UserService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/employees' });
     }
   }
 
@@ -92,7 +102,7 @@ export class UserService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' });
     }
   }
 
@@ -102,7 +112,7 @@ export class UserService {
     if (r?.success) {
       return r;
     } else {
-      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' }); // TBD Set Fallback
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/calendar' });
     }
   }
 }

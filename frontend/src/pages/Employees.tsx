@@ -17,11 +17,13 @@ const customTableStyles = {
     style: {
       fontWeight: 'bold',
       backgroundColor: '#f2f2f2',
+      fontSize: '14px',
     },
   },
   cells: {
     style: {
       padding: '12px',
+      fontSize: '14px',
     },
   },
   pagination: {
