@@ -4,7 +4,7 @@ import { CouponsService } from '../../service/CouponsService';
 import useForm from '../../utils/useForm';
 import { IAddItem } from '../../store/Modal.store';
 import { TailSpinFixed } from '../TailSpin';
-import { Input, NumberInput } from '../base/Input';
+import { Input, PhoneInputStyled } from '../base/Input';
 import { ProceduresStore } from '../../store/Procedures.store';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
@@ -18,6 +18,7 @@ import { AppointmentService } from '../../service/AppointmentService';
 import { SelectField } from '../base/SelectField';
 
 import s from './AddItem.scss';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 function useFormInit(type: 'coupon' | 'employee' | 'admin' | 'appointment' | '') {
   switch (type) {
@@ -268,7 +269,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
               id="AddItem"
               onSubmit={(e) => {
                 e.preventDefault();
-                handleSubmit();
+                isPossiblePhoneNumber(`+${inputs?.phone}`) && handleSubmit();
               }}
               className={s.AddItemForm}
             >
@@ -305,19 +306,14 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                     onChange={handleChange}
                   />
                   <br />
-                  <NumberInput
-                    required
-                    error={phoneError}
-                    helperText={phoneError && 'Your phone number is not valid!'}
-                    numberFormat="+# (###) ###-##-##"
-                    type="tel"
-                    className={s.Input}
-                    onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
-                    label="Phone:"
-                    name="phone"
-                    defaultValue={inputs?.phone}
-                    value={inputs?.phone}
+                  <PhoneInputStyled
+                    defaultValue={`+${inputs?.phone}`}
                     onChange={(e) => handleNumberChange(e, 'phone')}
+                    error={phoneError}
+                    label="Phone:"
+                    onBlur={() =>
+                      isPossiblePhoneNumber(`+${inputs?.phone}`) ? setPhoneError(false) : setPhoneError(true)
+                    }
                   />
                 </div>
                 <div>
