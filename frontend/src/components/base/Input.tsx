@@ -107,6 +107,7 @@ export const PhoneInputStyled: React.FC<IInput> = ({
     <div className={classNames(s.InputWrapperPhone, className)}>
       <label htmlFor={className}>{label}</label>
       <PhoneInput
+        international
         required
         className={error ? s.PhoneInput_invalid : undefined}
         value={defaultValue}
