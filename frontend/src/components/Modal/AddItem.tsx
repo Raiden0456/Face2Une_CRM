@@ -179,7 +179,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
         <TailSpinFixed />
       ) : (
         <div className={s.AddItem}>
-          {/* ADD/EDIT APPOINTMENT */}
+          {/* ADD/EDIT COUPON */}
           {addType === 'coupon' && (
             <form
               id="AddItem"
@@ -224,10 +224,9 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                     value={inputs?.discount}
                     onChange={handleChange}
                   />
-                </div>
-                <div>
+                  <br />
                   <div className={s.AddItemForm__procs}>
-                    <h3>Available Procedures:</h3>
+                    <h3> Procedures:</h3>
                     {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
                       <Checkbox
                         style={{ marginRight: '0.5rem' }}
@@ -239,6 +238,20 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                     ))}
                   </div>
                   <br />
+                  <div className={s.AddItemForm__procs}>
+                    <h3>Additional Procedures:</h3>
+                    {ProceduresStore.proceduresStatus.optionalProceduresData?.map((proc, i) => (
+                      <Checkbox
+                        style={{ marginRight: '0.5rem' }}
+                        onChange={(e) => handleCheckBoxes(e, proc.id)}
+                        key={i}
+                      >
+                        {proc.name}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </div>
+                <div>
                   <div className={s.AddItem__datepicker}>
                     <p style={{ marginBottom: '5px' }}>Choose Expirity Date:</p>
                     <ReactDatePicker
@@ -382,7 +395,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
 
                 <div>
                   <div className={s.AddItemForm_radios}>
-                    <h3>Available Saloons:</h3>
+                    <h3>Available Studios:</h3>
                     {saloon_ids.map((saloon) => (
                       <Radio
                         name="saloons"

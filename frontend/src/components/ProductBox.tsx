@@ -1,5 +1,4 @@
 import React from 'react';
-import { ModalStore } from '../store/Modal.store';
 import { ProcedureData } from '../store/Procedures.store';
 
 import s from './ProcedureBox.scss';
