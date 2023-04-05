@@ -10,6 +10,7 @@ import DataTable from 'react-data-table-component';
 import { ScheduleService } from '../service/ScheduleService';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { findElementById } from '../utils/funcs';
+import { customTableStyles } from '../utils/customTableStyles';
 
 import s from './Scheduling.scss';
 
@@ -64,27 +65,6 @@ const columns = [
 
 const paginationComponentOptions = {
   noRowsPerPage: true,
-};
-
-const customTableStyles = {
-  headCells: {
-    style: {
-      fontWeight: 'bold',
-      backgroundColor: '#f2f2f2',
-      fontSize: '14px',
-    },
-  },
-  cells: {
-    style: {
-      padding: '12px',
-      fontSize: '14px',
-    },
-  },
-  pagination: {
-    style: {
-      borderRadius: '0 0 16px 16px',
-    },
-  },
 };
 
 export const Scheduling = () => {
@@ -150,7 +130,7 @@ export const Scheduling = () => {
 
             <div className={s.Scheduling__header_right}>
               <div className={s.Salloon__switcher}>
-                <h3>Available Saloons:</h3>
+                <h3>Available Studios:</h3>
 
                 <Radio
                   required

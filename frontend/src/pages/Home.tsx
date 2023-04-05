@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container } from '../components/base/Container';
 import { ButtonContained } from '../components/base/Button';
 import { Input } from '../components/base/Input';

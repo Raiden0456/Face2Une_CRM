@@ -6,29 +6,9 @@ import NavBar from '../components/Navbar';
 import { ClientService } from '../service/ClientService';
 import DataTable from 'react-data-table-component';
 import { formatPhoneNumber } from '../utils/formatPhone';
+import { customTableStyles } from '../utils/customTableStyles';
 
 import s from './Clients.scss';
-
-const customTableStyles = {
-  headCells: {
-    style: {
-      fontWeight: 'bold',
-      backgroundColor: '#f2f2f2',
-      fontSize: '14px',
-    },
-  },
-  cells: {
-    style: {
-      padding: '12px',
-      fontSize: '14px',
-    },
-  },
-  pagination: {
-    style: {
-      borderRadius: '0 0 16px 16px',
-    },
-  },
-};
 
 const ROWS_PER_PAGE = 10;
 

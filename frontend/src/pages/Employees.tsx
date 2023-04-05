@@ -1,37 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
-import { ButtonContained, ButtonDanger, ButtonDelete, ButtonEdit, ButtonOutlined } from '../components/base/Button';
+import { ButtonContained, ButtonDanger, ButtonDelete, ButtonEdit } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import { UserService } from '../service/UserService';
 import DataTable from 'react-data-table-component';
-import { saloon_ids } from '../utils/staticData';
-import { findElementById } from '../utils/funcs';
 import { ModalStore } from '../store/Modal.store';
 import { formatPhoneNumber } from '../utils/formatPhone';
+import { customTableStyles } from '../utils/customTableStyles';
 
 import s from './Employees.scss';
-
-const customTableStyles = {
-  headCells: {
-    style: {
-      fontWeight: 'bold',
-      backgroundColor: '#f2f2f2',
-      fontSize: '14px',
-    },
-  },
-  cells: {
-    style: {
-      padding: '12px',
-      fontSize: '14px',
-    },
-  },
-  pagination: {
-    style: {
-      borderRadius: '0 0 16px 16px',
-    },
-  },
-};
 
 const ROWS_PER_PAGE = 10;
 

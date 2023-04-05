@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ButtonContained } from '../base/Button';
 
 import s from './StatusContainer.scss';

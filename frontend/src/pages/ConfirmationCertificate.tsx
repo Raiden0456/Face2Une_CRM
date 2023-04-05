@@ -8,7 +8,6 @@ import ProductBox from '../components/ProductBox';
 import useForm from '../utils/useForm';
 import { Input, PhoneInputStyled } from '../components/base/Input';
 import { AuthStore } from '../store/Auth.store';
-import { ClientService } from '../service/ClientService';
 import { handleConfirmClient } from '../hooks/handleConfirmClient';
 
 import s from './ConfirmationCertificate.scss';
@@ -16,7 +15,6 @@ import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 export const ConfirmationCertificate = () => {
   const appointmentService = new AppointmentService();
-  const clientService = new ClientService();
   const [certificate, setCertificate] = useState<any>(null);
 
   const [loading, setLoading] = useState({ global: false, local: false });

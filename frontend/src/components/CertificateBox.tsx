@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from './base/Button';
+import { ButtonContained, ButtonDelete, ButtonEdit } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
 import { Input } from './base/Input';
 import { TailSpinFixed } from './TailSpin';

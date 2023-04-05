@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import classNames from 'classnames/bind';
-import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from './base/Button';
+import { ButtonContained, ButtonDelete, ButtonEdit } from './base/Button';
 import { Checkbox } from './base/Checkbox';
 import { ModalStore } from '../store/Modal.store';
 import { ProceduresStore } from '../store/Procedures.store';
@@ -169,7 +168,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
                   />
                   <br />
                   <div className={s.BookingBoxForm__saloons}>
-                    <h3>Available Saloons:</h3>
+                    <h3>Available Studios:</h3>
                     {saloon_ids.map((saloon) => (
                       <Checkbox
                         style={{ marginRight: '0.5rem' }}
@@ -248,13 +247,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
 
       {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
         <>
-          <AddPassanger
-            optionalProcedures={ProceduresStore.proceduresStatus.optionalProceduresData}
-            procedures={procedures}
-            setProcedures={setProcedures}
-            items={items}
-            setItems={setItems}
-          />
+          <AddPassanger setProcedures={setProcedures} items={items} setItems={setItems} />
           <div className={s.BookingBox__datepicker}>
             <p style={{ marginBottom: '5px' }}>Choose Date:</p>
             <DatePicker

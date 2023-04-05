@@ -1,35 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '../components/base/Container';
-import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from '../components/base/Button';
+import { ButtonContained, ButtonDelete, ButtonEdit } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import { CouponsService } from '../service/CouponsService';
 import DataTable from 'react-data-table-component';
 import Moment from 'moment';
 import { ModalStore } from '../store/Modal.store';
+import { customTableStyles } from '../utils/customTableStyles';
 
 import s from './Coupons.scss';
-
-const customTableStyles = {
-  headCells: {
-    style: {
-      fontWeight: 'bold',
-      backgroundColor: '#f2f2f2',
-      fontSize: '14px',
-    },
-  },
-  cells: {
-    style: {
-      padding: '12px',
-      fontSize: '14px',
-    },
-  },
-  pagination: {
-    style: {
-      borderRadius: '0 0 16px 16px',
-    },
-  },
-};
 
 const ROWS_PER_PAGE = 10;
 
