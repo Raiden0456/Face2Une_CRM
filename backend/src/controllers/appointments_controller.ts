@@ -29,6 +29,7 @@ export async function updateAppoint(
     reservation_date_time: Date;
     client_id: number;
     total_price: number;
+    total_price_gbp: number;
     saloon_id: number;
   },
   res
@@ -62,6 +63,7 @@ export async function createAppoint(
     reservation_date_time: Date;
     client_id: number;
     total_price: number;
+    total_price_gbp: number;
     saloon_id: number;
     new_client: boolean;
   },
