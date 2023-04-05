@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { ButtonContained, ButtonOutlined } from '../../components/base/Button';
 import { Container } from '../../components/base/Container';
-import { Input, NumberInput } from '../../components/base/Input';
+import { Input, PhoneInputStyled } from '../../components/base/Input';
 import { AuthService } from '../../service/AuthService';
-import NavBar from '../../components/Navbar';
 import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
 import useForm from '../../utils/useForm';
 import { Link } from 'react-router-dom';
 
 import s from './SignUp.scss';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 const SignUp = observer(({ mobile }: { mobile: boolean }) => {
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm } = useForm({
@@ -30,7 +30,7 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!passwordCompareError && !phoneError) {
+    if (!passwordCompareError && isPossiblePhoneNumber(`+${inputs?.phone}`)) {
       setLoader(true);
       setError({ status: false, message: '' });
       setSuccess({ status: false, message: '' });
@@ -79,18 +79,13 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
               value={inputs?.lastName}
               onChange={handleChange}
             />
-            <NumberInput
-              error={phoneError}
-              required
-              helperText={phoneError && 'Your phone number is not valid!'}
-              numberFormat="+# (###) ###-##-##"
-              type="tel"
+            <PhoneInputStyled
               className={s.Input}
-              onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
-              label="Phone:"
-              name="phone"
-              value={inputs?.phone}
+              defaultValue={`+${inputs?.phone}`}
               onChange={(e) => handleNumberChange(e, 'phone')}
+              error={phoneError}
+              label="Phone:"
+              onBlur={() => (isPossiblePhoneNumber(`+${inputs?.phone}`) ? setPhoneError(false) : setPhoneError(true))}
             />
             <Input
               required

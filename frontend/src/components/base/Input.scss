@@ -48,3 +48,39 @@
     right: 8px;
   }
 }
+
+.InputWrapperPhone {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  label {
+    color: #8e8e93;
+    line-height: 13px;
+    margin-bottom: 5px;
+  }
+
+  .PhoneInput {
+    padding: 8px 16px;
+    background: #ffffff;
+    border: 2px solid #f2f2f7;
+    border-radius: 6px;
+    color: #8e8e93;
+    letter-spacing: -0.32px;
+  }
+
+  .PhoneInput_invalid {
+    background: #ffebee;
+    border: 2px solid #b71c1c;
+    border-radius: 6px;
+
+    .PhoneInputInput {
+      border: 1px solid transparent;
+      background: #ffebee;
+    }
+  }
+
+  .PhoneInputInput {
+    border: 1px solid transparent;
+  }
+}

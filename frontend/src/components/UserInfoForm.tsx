@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { ButtonContained } from './base/Button';
-import { Input, NumberInput } from './base/Input';
+import { Input, PhoneInputStyled } from './base/Input';
 import PersonalAgreement from './PersonalAgreement';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 import s from './UserInfoForm.scss';
 
@@ -14,7 +15,7 @@ export const UserInfoForm = ({ inputs, handleChange, handleNumberChange, handleS
         id="userInfo"
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
-          !phoneError && handleSubmit();
+          isPossiblePhoneNumber(`+${inputs?.phone}`) && handleSubmit();
         }}
       >
         <div className={s.UserInfoForm__inputs}>
@@ -38,20 +39,14 @@ export const UserInfoForm = ({ inputs, handleChange, handleNumberChange, handleS
             onChange={handleChange}
           />
           <br />
-          <NumberInput
-            required
-            error={phoneError}
-            helperText={phoneError && 'Your phone number is not valid!'}
-            numberFormat="+# (###) ###-##-##"
-            type="tel"
-            className={s.Input}
-            onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
-            label="Phone:"
-            name="phone"
-            defaultValue={inputs?.phone}
-            value={inputs?.phone}
+          <PhoneInputStyled
+            defaultValue={`+${inputs?.phone}`}
             onChange={(e) => handleNumberChange(e, 'phone')}
+            error={phoneError}
+            label="Phone:"
+            onBlur={() => (isPossiblePhoneNumber(`+${inputs?.phone}`) ? setPhoneError(false) : setPhoneError(true))}
           />
+
           <br />
           <Input
             autoComplete="email"

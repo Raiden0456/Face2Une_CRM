@@ -32,12 +32,10 @@ export default function useForm(initial) {
   }
 
   function handleNumberChange(e, name) {
-    let { value, formattedValue, floatValue } = e;
-
     setInputs({
       ...inputs,
       // dynamic var + override the existing property
-      [name]: value,
+      [name]: e ? e.replace('+', '') : '',
     });
   }
 
