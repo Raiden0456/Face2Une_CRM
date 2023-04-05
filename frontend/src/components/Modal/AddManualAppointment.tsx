@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useForm from '../../utils/useForm';
 import { Checkbox, Radio } from '../base/Checkbox';
-import { Input, NumberInput } from '../base/Input';
+import { Input, PhoneInputStyled } from '../base/Input';
 import { ButtonContained } from '../base/Button';
 import { saloon_ids } from '../../utils/staticData';
 import { ProceduresStore } from '../../store/Procedures.store';
@@ -15,6 +15,7 @@ import { SelectField } from '../base/SelectField';
 import { formatPhoneNumber } from '../../utils/formatPhone';
 
 import s from './AddManualAppointment.scss';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 type AppointmentStatus = 'checkClient' | 'clientExists' | 'noClient' | 'success';
 
@@ -135,7 +136,7 @@ export const AddAppointment = () => {
           id="checkClient"
           onSubmit={(e) => {
             e.preventDefault();
-            (inputs.email || (inputs.phone && !phoneError)) && handleCheckClient();
+            (inputs.email || (inputs.phone && isPossiblePhoneNumber(`+${inputs?.phone}`))) && handleCheckClient();
           }}
           className={s.AddAppointmentForm}
         >
@@ -157,18 +158,12 @@ export const AddAppointment = () => {
               value={inputs?.email}
               onChange={handleChange}
             />
-            <NumberInput
-              error={phoneError}
-              helperText={phoneError && 'Your phone number is not valid!'}
-              numberFormat="+# (###) ###-##-##"
-              type="tel"
-              className={s.Input}
-              onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
-              label="Phone:"
-              name="phone"
-              defaultValue={inputs?.phone}
-              value={inputs?.phone}
+            <PhoneInputStyled
+              defaultValue={`+${inputs?.phone}`}
               onChange={(e) => handleNumberChange(e, 'phone')}
+              error={phoneError}
+              label="Phone:"
+              onBlur={() => (isPossiblePhoneNumber(`+${inputs?.phone}`) ? setPhoneError(false) : setPhoneError(true))}
             />
           </div>
 
@@ -214,19 +209,12 @@ export const AddAppointment = () => {
               onChange={handleChange}
             />
             <br />
-            <NumberInput
-              error={phoneError}
-              helperText={phoneError && 'Your phone number is not valid!'}
-              numberFormat="+# (###) ###-##-##"
-              type="tel"
-              className={s.Input}
-              onBlur={() => (inputs?.phone.length === 11 ? setPhoneError(false) : setPhoneError(true))}
-              label="Phone:"
-              name="phone"
-              required
-              defaultValue={inputs?.phone}
-              value={inputs?.phone}
+            <PhoneInputStyled
+              defaultValue={`+${inputs?.phone}`}
               onChange={(e) => handleNumberChange(e, 'phone')}
+              error={phoneError}
+              label="Phone:"
+              onBlur={() => (isPossiblePhoneNumber(`+${inputs?.phone}`) ? setPhoneError(false) : setPhoneError(true))}
             />
             <br />
             <Input
