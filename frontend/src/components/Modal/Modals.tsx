@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import { observer } from 'mobx-react';
 import { ModalStore } from '../../store/Modal.store';

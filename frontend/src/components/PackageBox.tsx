@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ButtonContained, ButtonDelete, ButtonEdit, ButtonOutlined } from './base/Button';
+import { ButtonContained, ButtonDelete, ButtonEdit } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
 import { Input } from './base/Input';
 import { TailSpinFixed } from './TailSpin';
@@ -7,7 +7,7 @@ import useForm from '../utils/useForm';
 import { ModalStore } from '../store/Modal.store';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
-import { Checkbox, Radio } from './base/Checkbox';
+import { Radio } from './base/Checkbox';
 import { ProceduresStore } from '../store/Procedures.store';
 
 import s from './ProcedureBox.scss';

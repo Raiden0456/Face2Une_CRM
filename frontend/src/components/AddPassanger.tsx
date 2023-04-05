@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import classNames from 'classnames/bind';
+import React from 'react';
 import { SelectField } from './base/SelectField';
 import { ButtonContained } from './base/Button';
 import { observer } from 'mobx-react';
@@ -10,7 +9,7 @@ import './AddPassanger.scss';
 
 const ITEM_LIMIT = 4;
 
-export const AddPassanger = observer(({ setProcedures, setItems, items, procedures, optionalProcedures }: any) => {
+export const AddPassanger = observer(({ setItems, items, procedures }: any) => {
   // Add Passenger
   const handleAdd = () => {
     if (items.length >= ITEM_LIMIT) {

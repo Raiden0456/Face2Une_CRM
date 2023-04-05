@@ -5,7 +5,6 @@ import UserInfoForm from '../components/UserInfoForm';
 import { TailSpinFixed } from '../components/TailSpin';
 import useForm from '../utils/useForm';
 import { useNavigate } from 'react-router-dom';
-import { ClientService } from '../service/ClientService';
 import { AuthStore } from '../store/Auth.store';
 import { AuthService } from '../service/AuthService';
 import { handleConfirmClient } from '../hooks/handleConfirmClient';
@@ -13,7 +12,6 @@ import { handleConfirmClient } from '../hooks/handleConfirmClient';
 import s from './UserInfo.scss';
 
 export const UserInfo = () => {
-  const clientService = new ClientService();
   const authService = new AuthService();
   const navigate = useNavigate();
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm, setInputs } = useForm({
