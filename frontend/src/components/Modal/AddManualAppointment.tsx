@@ -13,9 +13,9 @@ import { AppointmentService } from '../../service/AppointmentService';
 import { filterObjectToArray } from '../../utils/funcs';
 import { SelectField } from '../base/SelectField';
 import { formatPhoneNumber } from '../../utils/formatPhone';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 import s from './AddManualAppointment.scss';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 type AppointmentStatus = 'checkClient' | 'clientExists' | 'noClient' | 'success';
 
@@ -261,7 +261,7 @@ export const AddAppointment = () => {
             </div>
 
             <div className={s.AddAppointmentForm__saloons}>
-              <h3>Available Saloons:</h3>
+              <h3>Available Studios:</h3>
               {saloon_ids.map((saloon) => (
                 <Radio
                   name="saloons"

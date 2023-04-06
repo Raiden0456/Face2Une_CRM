@@ -125,7 +125,7 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
               <div>
                 {schedulingType === 'workDays' && (
                   <div className={s.AddItemForm_radios}>
-                    <h3>Available Saloons:</h3>
+                    <h3>Available Studios:</h3>
                     {saloon_ids.map((saloon) => (
                       <Radio
                         name="saloons"

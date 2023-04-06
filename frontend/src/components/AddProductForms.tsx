@@ -110,7 +110,7 @@ export function AddProcedure() {
                   </Checkbox>
                 </div>
                 <div className={s.AddProductForm__saloons}>
-                  <h3>Available Saloons:</h3>
+                  <h3>Available Studios:</h3>
                   {saloon_ids.map((saloon) => (
                     <Checkbox
                       style={{ marginRight: '0.5rem' }}

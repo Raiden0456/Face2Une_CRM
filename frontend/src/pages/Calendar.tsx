@@ -173,7 +173,7 @@ export const Calendar = () => {
             </div>
 
             <div className="Salloon__switcher">
-              <h3>Available Saloons:</h3>
+              <h3>Available Studios:</h3>
               <Radio
                 required
                 name="saloons"
