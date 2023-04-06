@@ -78,7 +78,7 @@ export const UserInfo = () => {
                 <div className={s.YourDetails__content}>
                   <p>
                     Enter your personal details below that will be used to make a reservation (details of a single
-                    person is enough). Upon arriving at Face2Une use this data to proceed with your flight on beauty the
+                    person is enough). Upon arriving at FaceStellar use this data to proceed with your flight on beauty the
                     spaceship!
                   </p>
                 </div>
