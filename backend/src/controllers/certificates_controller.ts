@@ -103,7 +103,7 @@ export function deleteCert(id: number, res) {
   });
 }
   // Buy certificates //
-  export function buyCertages(
+  export function buyCertificates(
     client_id: number,
     certificate_id: number,
     res

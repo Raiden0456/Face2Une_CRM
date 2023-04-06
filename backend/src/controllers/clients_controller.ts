@@ -1,4 +1,6 @@
 import client from "../models/clients_model.js";
+import { buyPackages } from "./packages_controller.js";
+import { buyCertificates } from "./certificates_controller.js";
 import { join } from "path";
 
 // Retrieve clients from the database with filter.
@@ -93,4 +95,27 @@ export function deleteClient(id: number, res) {
       });
     }
   });
+}
+
+// manual order of client //
+
+export function addOrder(
+  client_id: number,
+  email: string,
+  package_id: number,
+  certificate_id: number,
+  res
+) {
+  if (package_id != null) {
+    buyPackages(client_id, [{package_id: package_id, amount_bought: 1}], res);
+  }
+  else if (certificate_id != null) {
+    buyCertificates(client_id, certificate_id, res);
+}
+  else {
+    res.status(500).json({
+      success: false,
+      message: "Package and certificate id is null.",
+    });
+  }
 }
