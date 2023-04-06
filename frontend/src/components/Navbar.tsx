@@ -19,7 +19,7 @@ const NavBar = observer(() => {
           <div>{AuthStore.authorized === 'auth' && <p>{AuthStore.email}</p>}</div>
           <div className={s.Navbar__header_logo}>
             <Link to="/" style={{ textAlign: 'center', textDecoration: 'none', color: '#000' }}>
-              Face2Une
+              FaceStellar
             </Link>
           </div>
           <div>

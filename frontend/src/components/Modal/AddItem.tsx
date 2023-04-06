@@ -226,7 +226,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                   />
                   <br />
                   <div className={s.AddItemForm__procs}>
-                    <h3>Main Procedures:</h3>
+                    <h3>Tunes:</h3>
                     {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
                       <Checkbox
                         style={{ marginRight: '0.5rem' }}
@@ -239,7 +239,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                   </div>
                   <br />
                   <div className={s.AddItemForm__procs}>
-                    <h3>Additional Procedures:</h3>
+                    <h3>Add-ons:</h3>
                     {ProceduresStore.proceduresStatus.optionalProceduresData?.map((proc, i) => (
                       <Checkbox
                         style={{ marginRight: '0.5rem' }}
