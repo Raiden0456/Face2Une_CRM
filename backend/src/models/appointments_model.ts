@@ -84,13 +84,14 @@ appointment.getAppointments = async (
 };
 
 // Calculate total price // TODO: add gbp option
-appointment.getTotalPrice = async (main_proc: number, additional_procs: number[]) => {
+appointment.getTotalPrice = async (main_proc: number, additional_procs: number[], price_type: string) => {
   let all_ids: number[];
   all_ids = [];
   all_ids.push(main_proc);
   all_ids = all_ids.concat(additional_procs);
+
   // get total price of procedures by all_ids using procedure.getTotalCost //
-  const resp = (await procedure.getTotalCost(all_ids, (data) => {
+  const resp = (await procedure.getTotalCost(all_ids, price_type, (data) => {
       return data;
   }
   ));

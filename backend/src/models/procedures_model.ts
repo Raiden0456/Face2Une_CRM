@@ -53,14 +53,25 @@ procedure.getProcById = async (id: number, result) => {
   return result(error, procedures);
 };
 
-procedure.getTotalCost = async (proc_ids: number[], result) => {
+procedure.getTotalCost = async (proc_ids: number[], price_type: string, result) => {
   let total = 0;
-  for (let i = 0; i < proc_ids.length; i++) {
-    let { data: procedure } = await supabase
-      .from("procedures")
-      .select("price")
-      .eq("id", proc_ids[i]);
-    total += procedure[0].price;
+  if (price_type == "gbp") {
+    for (let i = 0; i < proc_ids.length; i++) {
+      let { data: procedure } = await supabase
+        .from("procedures")
+        .select("price_gbp")
+        .eq("id", proc_ids[i]);
+      total += procedure[0].price_gbp;
+    }
+  }
+  else {
+    for (let i = 0; i < proc_ids.length; i++) {
+      let { data: procedure } = await supabase
+        .from("procedures")
+        .select("price")
+        .eq("id", proc_ids[i]);
+      total += procedure[0].price;
+    }
   }
   return result(total);
 };

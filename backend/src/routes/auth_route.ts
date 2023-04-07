@@ -2,7 +2,7 @@ import { Router } from 'express';
 var router = Router();
 import * as auth from '../controllers/users_controller.js';
 
-//Routing for the authintication//
+//Routing for the Authentication//
 
 router.post('/sign_up', function(req, res){
     auth.signUp(req.body, res); 

@@ -1161,7 +1161,7 @@
         },
         "/sign_up": {
           "post": {
-            "tags": ["Authintication"],
+            "tags": ["Authentication"],
             "summary": "Register new user",
             "parameters": [
               {
@@ -1183,7 +1183,7 @@
         },
         "/sign_in": {
           "post": {
-            "tags": ["Authintication"],
+            "tags": ["Authentication"],
             "summary": "Sign in as user",
             "parameters": [
               {
@@ -1205,7 +1205,7 @@
         },
         "/sign_out": {
           "get": {
-            "tags": ["Authintication"],
+            "tags": ["Authentication"],
             "summary": "Sign out",
             "responses": {
               "200": {
@@ -1216,7 +1216,7 @@
         },
         "/session_user": {
           "get": {
-            "tags": ["Authintication"],
+            "tags": ["Authentication"],
             "summary": "Get current session user details",
             "responses": {
               "200": {
