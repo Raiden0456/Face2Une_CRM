@@ -53,9 +53,9 @@ procedure.getProcById = async (id: number, result) => {
   return result(error, procedures);
 };
 
-procedure.getTotalCost = async (proc_ids: number[], price_type: string, result) => {
+procedure.getTotalCost = async (proc_ids: number[], currency: string, result) => {
   let total = 0;
-  if (price_type == "gbp") {
+  if (currency != undefined && currency == "gbp") {
     for (let i = 0; i < proc_ids.length; i++) {
       let { data: procedure } = await supabase
         .from("procedures")

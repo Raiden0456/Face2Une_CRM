@@ -158,7 +158,13 @@
                 "type": "integer",
                 "uniqueItems": false
               }
-            }
+            },
+            {
+              "in": "query",
+              "name": "currency",
+              "description": "currency(eur, gbp)",
+              "required": false,
+              "type": "string"              }
             ],
             "responses": {
               "200": {
