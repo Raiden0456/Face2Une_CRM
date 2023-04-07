@@ -83,7 +83,7 @@ appointment.getAppointments = async (
   return result(resp.error, resp.data);
 };
 
-// Calculate total price // TODO: add gbp option
+// Calculate total price //
 appointment.getTotalPrice = async (main_proc: number, additional_procs: number[], currency: string) => {
   let all_ids: number[];
   all_ids = [];
