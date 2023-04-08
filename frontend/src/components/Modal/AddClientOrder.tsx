@@ -56,6 +56,7 @@ const AddClientOrder: React.FC<any> = ({ clientId, email }) => {
               <div className={s.AddItemForm__inputs}>
                 <div>
                   <SelectField
+                    disabled={Boolean(pickedCert)}
                     style={{ width: '100%' }}
                     label={'Choose a Package'}
                     options={ProceduresStore.proceduresStatus.packagesData?.map((pack: PackageData) => ({
@@ -67,6 +68,7 @@ const AddClientOrder: React.FC<any> = ({ clientId, email }) => {
                 </div>
                 <div>
                   <SelectField
+                    disabled={Boolean(pickedPackage)}
                     style={{ width: '100%' }}
                     label={'Choose a Certificate'}
                     options={ProceduresStore.proceduresStatus.certificatesData?.map((cert: CertificatesData) => ({
