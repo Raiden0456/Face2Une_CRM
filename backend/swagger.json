@@ -25,6 +25,15 @@
           "get": {
             "tags": ["Procedures"],
             "summary": "Get all main procedures in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon)",
+              "required": false,
+              "type": "integer"
+            }
+            ],
             "responses": {
               "200": {
                 "description": "Returns all main procedures in database in JSON format"
@@ -36,6 +45,15 @@
           "get": {
             "tags": ["Procedures"],
             "summary": "Get all optional procedures in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon)",
+              "required": false,
+              "type": "integer"
+            }
+            ],
             "responses": {
               "200": {
                 "description": "Returns all optional procedures in database in JSON format"
@@ -161,10 +179,10 @@
             },
             {
               "in": "query",
-              "name": "currency",
-              "description": "currency(eur, gbp)",
+              "name": "saloon_id",
+              "description": "id of studio(saloon)",
               "required": false,
-              "type": "string"              }
+              "type": "integer"              }
             ],
             "responses": {
               "200": {

@@ -2,8 +2,8 @@ import procedure from "../models/procedures_model.js";
 import { join } from "path";
 
 // Retrieve procedures from the database.
-export function loadProc(add = 0, res) {
-  procedure.getAllproc(add, (err, data) => {
+export function loadProc(add = 0, saloon_id, res) {
+  procedure.getAllproc(add, saloon_id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -26,25 +26,32 @@ export function loadProc(add = 0, res) {
           break;
       }
     } else {
+      // Change price_gbp to price if applicable //
+      data = data.map((item) => {
+        if (item.price_gbp) {
+          const { price_gbp, ...otherProps } = item;
+          return { price: price_gbp, ...otherProps };
+        }
+        return item;
+      });      
       res.json({ success: true, data: data });
     }
   });
 }
 
 // Get total cost of procedures by array of their ids
-export function totalCost(proc_ids: number[], currency: string, res) {
-  if (!currency)
-    currency = "eur";
-  procedure.getTotalCost(proc_ids, currency, (data) => {
-    // if (err)
-    //   res.status(500).json({
-    //     success: false,
-    //     message:
-    //       err.message || "Some error occurred while counting total cost.",
-    //   });
-    // else {
-      res.json({ success: true, data: data });
-    // }
+export function totalCost(proc_ids: number[], saloon_id: number, res) {
+  if (!saloon_id) saloon_id = 1;
+  procedure.getTotalCost(proc_ids, saloon_id, (err, data) => {
+    if (err)
+      res.status(500).json({
+        success: false,
+        message:
+          err.message || "Some error occurred while counting total cost.",
+      });
+    else {
+    res.json({ success: true, data: data });
+    }
   });
 }
 

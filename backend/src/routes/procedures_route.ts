@@ -5,10 +5,10 @@ import * as proc from '../controllers/procedures_controller.js';
 //Routing for the procedures//
 
 router.get('/main_proc', function(req, res){
-    proc.loadProc(0, res);
+    proc.loadProc(0, req.query.saloon_id, res);
 });
 router.get('/optional_proc', function(req, res){
-    proc.loadProc(1, res);
+    proc.loadProc(1, req.query.saloon_id, res);
 });
 router.get('/proc/:procid', function(req, res){
     proc.findOneProc(req.params.procid, res);
@@ -25,7 +25,7 @@ router.delete('/delete_proc/:procid', function(req, res){
 
 router.get('/proc_total', function(req, res){
     const proc_ids_array = req.query.proc_array.split(',');
-    const currency = req.query.currency ? req.query.currency : 'eur';
-    proc.totalCost(proc_ids_array, currency, res);
+    const saloon_id = req.query.saloon_id ? req.query.saloon_id : 1;
+    proc.totalCost(proc_ids_array, saloon_id, res);
 });
 export default router;

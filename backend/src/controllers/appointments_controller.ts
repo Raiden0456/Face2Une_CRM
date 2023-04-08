@@ -35,8 +35,8 @@ export async function updateAppoint(
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 'eur');
-  appoint.total_price_gbp = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 'gbp');
+  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 1);
+  appoint.total_price_gbp = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 3);
   
   appointment.updateAppointById(appoint, (err, data) => {
     if (err)
@@ -71,8 +71,8 @@ export async function createAppoint(
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 'eur');
-  appoint.total_price_gbp = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 'gbp');
+  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 1);
+  appoint.total_price_gbp = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 3);
 
   appointment.createAppoint(appoint, (err, data) => {
     if (err)

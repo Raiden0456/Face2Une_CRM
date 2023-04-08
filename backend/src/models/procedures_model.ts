@@ -13,37 +13,43 @@ const procedure = function (procedure) {
   this.saloon_ids = procedure.saloon_ids;
 };
 
-procedure.getAllproc = async (additional: number, result) => {
+procedure.getAllproc = async (additional: number, saloon_id: number, result) => {
+  const selectColumns = (saloon_id == 3) ? "id, name, description, price_gbp, duration, additional, saloon_ids" : "id, name, description, price, duration, additional, saloon_ids";
+
   switch (additional) {
     case 0: {
       let { data: procedures, error } = await supabase
         .from("procedures")
-        .select("*")
+        .select(selectColumns)
         .eq("additional", 0)
-        .order("price", { ascending: true });
+        .contains("saloon_ids", [saloon_id])
+        .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
       result(error, procedures);
       break;
     }
     case 1: {
       let { data: procedures, error } = await supabase
         .from("procedures")
-        .select("*")
+        .select(selectColumns)
         .eq("additional", 1)
-        .order("price", { ascending: true });
+        .contains("saloon_ids", [saloon_id])
+        .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
       result(error, procedures);
       break;
     }
     default: {
       let { data: procedures, error } = await supabase
         .from("procedures")
-        .select("*")
-        .order("price", { ascending: true });
+        .select(selectColumns)
+        .contains("saloon_ids", [saloon_id])
+        .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
       result(error, procedures);
       break;
     }
   }
   return result;
 };
+
 
 procedure.getProcById = async (id: number, result) => {
   let { data: procedures, error } = await supabase
@@ -53,27 +59,22 @@ procedure.getProcById = async (id: number, result) => {
   return result(error, procedures);
 };
 
-procedure.getTotalCost = async (proc_ids: number[], currency: string, result) => {
+procedure.getTotalCost = async (proc_ids: number[], saloon_id: number, result) => {
   let total = 0;
-  if (currency != undefined && currency == "gbp") {
-    for (let i = 0; i < proc_ids.length; i++) {
-      let { data: procedure } = await supabase
-        .from("procedures")
-        .select("price_gbp")
-        .eq("id", proc_ids[i]);
-      total += procedure[0].price_gbp;
+  let selectColumn = (saloon_id == 3) ? "price_gbp" : "price";
+  
+  for (let i = 0; i < proc_ids.length; i++) {
+    let resp: any = await supabase
+      .from("procedures")
+      .select(selectColumn)
+      .eq("id", proc_ids[i]);
+    
+    if (resp.error) {
+      return result(resp.error, null);
     }
+    total += (resp.data[0].price) ? resp.data[0].price : resp.data[0].price_gbp;
   }
-  else {
-    for (let i = 0; i < proc_ids.length; i++) {
-      let { data: procedure } = await supabase
-        .from("procedures")
-        .select("price")
-        .eq("id", proc_ids[i]);
-      total += procedure[0].price;
-    }
-  }
-  return result(total);
+  return result(null, total);
 };
 
 procedure.createProc = async (

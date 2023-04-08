@@ -84,14 +84,14 @@ appointment.getAppointments = async (
 };
 
 // Calculate total price //
-appointment.getTotalPrice = async (main_proc: number, additional_procs: number[], currency: string) => {
+appointment.getTotalPrice = async (main_proc: number, additional_procs: number[], saloon_id: number) => {
   let all_ids: number[];
   all_ids = [];
   all_ids.push(main_proc);
   all_ids = all_ids.concat(additional_procs);
 
   // get total price of procedures by all_ids using procedure.getTotalCost //
-  const resp = (await procedure.getTotalCost(all_ids, currency, (data) => {
+  const resp = (await procedure.getTotalCost(all_ids, saloon_id, (err, data) => {
       return data;
   }
   ));
