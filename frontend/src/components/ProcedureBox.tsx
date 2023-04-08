@@ -245,15 +245,12 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
 
       {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
         <>
-<<<<<<< HEAD
           <AddPassanger
             procedures={ProceduresStore.proceduresStatus.proceduresData}
             items={items}
             setItems={setItems}
           />
-=======
-          <AddPassanger setProcedures={setProcedures} items={items} setItems={setItems} />
->>>>>>> 0cd4922 (coupons_fix + add-s)
+
           <div className={s.BookingBox__datepicker}>
             <p style={{ marginBottom: '5px' }}>Choose Date:</p>
             <DatePicker
