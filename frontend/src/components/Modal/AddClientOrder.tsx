@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ButtonContained } from '../base/Button';
+import { ButtonContained, ButtonOutlined } from '../base/Button';
 import { TailSpinFixed } from '../TailSpin';
 import { SelectField } from '../base/SelectField';
 import { ClientService } from '../../service/ClientService';
@@ -11,8 +11,8 @@ import s from './AddItem.scss';
 const AddClientOrder: React.FC<any> = ({ clientId, email }) => {
   const clientService = new ClientService();
   const [loading, setLoading] = useState<boolean>(false);
-  const [pickedPackage, setPickedPackage] = useState<number | null>(null);
-  const [pickedCert, setPickedCert] = useState<number | null>(null);
+  const [pickedPackage, setPickedPackage] = useState<any>(null);
+  const [pickedCert, setPickedCert] = useState<any>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
   // Add Client Order
@@ -20,7 +20,12 @@ const AddClientOrder: React.FC<any> = ({ clientId, email }) => {
     setLoading(true);
 
     clientService
-      .addClientOrder({ client_id: clientId, email, package_id: pickedPackage, certificate_id: pickedCert })
+      .addClientOrder({
+        client_id: clientId,
+        email,
+        package_id: pickedPackage?.value,
+        certificate_id: pickedCert?.value,
+      })
       .then((r) => {
         if (r.success) {
           console.log('Successfully Added!');
@@ -63,7 +68,8 @@ const AddClientOrder: React.FC<any> = ({ clientId, email }) => {
                       label: pack.name,
                       value: pack.id,
                     }))}
-                    onChange={(e) => setPickedPackage(e.value)}
+                    onChange={(e) => setPickedPackage(e)}
+                    value={pickedPackage}
                   />
                 </div>
                 <div>
@@ -75,14 +81,26 @@ const AddClientOrder: React.FC<any> = ({ clientId, email }) => {
                       label: cert.name,
                       value: cert.id,
                     }))}
-                    onChange={(e) => setPickedCert(e.value)}
+                    onChange={(e) => setPickedCert(e)}
+                    value={pickedCert}
                   />
                 </div>
               </div>
 
-              <ButtonContained disabled={loading} type="submit">
-                Add Order
-              </ButtonContained>
+              <div style={{ display: 'flex' }}>
+                <ButtonOutlined
+                  onClick={() => {
+                    setPickedPackage(null);
+                    setPickedCert(null);
+                  }}
+                  style={{ marginRight: '1rem' }}
+                >
+                  Reset
+                </ButtonOutlined>
+                <ButtonContained disabled={loading} type="submit">
+                  Add Order
+                </ButtonContained>
+              </div>
             </form>
           )}
         </div>
