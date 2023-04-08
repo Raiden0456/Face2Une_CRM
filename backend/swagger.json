@@ -1159,6 +1159,28 @@
             }
           }
         },
+        "/add_client_order": {
+          "post": {
+            "tags": ["Clients"],
+            "summary": "Add order to client",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of client order",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ClientOrder"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Add order to client in database using JSON format"
+              }
+            }
+          }
+        },
         "/sign_up": {
           "post": {
             "tags": ["Authintication"],
@@ -1645,6 +1667,25 @@
             "type": "number",
             "default": null,
             "required": false
+          }
+        }
+      },
+      "ClientOrder": {
+        "properties": {
+          "client_id": {
+            "type": "integer",
+            "required": true
+          },
+          "email": {
+            "type": "string"
+          },
+          "package_id": {
+            "type": "integer",
+            "default": null
+          },
+          "certificate_id": {
+            "type": "number",
+            "default": null
           }
         }
       },

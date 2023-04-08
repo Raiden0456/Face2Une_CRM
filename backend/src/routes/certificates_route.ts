@@ -22,7 +22,7 @@ router.delete('/delete_cert/:certid', function(req, res){
 
 // buy and use certificates //
 router.post('/buy_cert', function(req, res){
-    cert.buyCertages(req.body.client_id, req.body.certificate_id, res);
+    cert.buyCertificates(req.body.client_id, req.body.certificate_id, res);
 });
 
 

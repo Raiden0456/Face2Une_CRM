@@ -2,7 +2,7 @@
 // import client from "./db.js";
 import supabase from "./db.js";
 import p_validator from "validate-phone-number-node-js";
-import { validate } from 'deep-email-validator'
+import { validate } from "deep-email-validator";
 // Constructor
 const client = function (client) {
   this.id = client.id;
@@ -31,9 +31,9 @@ client.getClients = async (
   //******//
 
   // Pagination set where index = page number and per_page = max amount of entries per page //
-  if(params.index && params.per_page){
-  start_from = (params.index - 1) * params.per_page;
-  to = Number(start_from) + Number(params.per_page) - 1;
+  if (params.index && params.per_page) {
+    start_from = (params.index - 1) * params.per_page;
+    to = Number(start_from) + Number(params.per_page) - 1;
   }
   //******//
 
@@ -65,7 +65,7 @@ client.getClients = async (
           "%"
       );
   } else {
-    if((params.column && !params.value) || (!params.column && params.value))
+    if ((params.column && !params.value) || (!params.column && params.value))
       return result(null, [], 0);
     resp = params.value
       ? await supabase
@@ -97,20 +97,18 @@ client.createClient = async (
 ) => {
   var resp;
   // email and phone check //
-  if(client.email)
-  {
+  if (client.email) {
     let email_valid = await validate(client.email);
-    if(!email_valid.valid)
+    if (!email_valid.valid)
       resp = { error: { message: "email is not valid" }, data: [] };
     let check = await supabase
-    .from("clients")
-    .select("id")
-    .eq("email", client.email);
+      .from("clients")
+      .select("id")
+      .eq("email", client.email);
     if (check.data.length != 0)
       resp = { error: { message: "email is already in use" }, data: [] };
   }
-  if(client.phone)
-  {
+  if (client.phone) {
     let phone_check = p_validator.validate(client.phone);
     if (!phone_check)
       resp = { error: { message: "invalid phone format" }, data: [] };
@@ -158,33 +156,31 @@ client.updateClientById = async (
     .select("user_id")
     .eq("id", client.id)
     .then((res) => res.data[0]);
-  if ((typeof user != "undefined") && (typeof client.user_id == "undefined"))
-  {
-    if(user.user_id != null)
-    {
-      resp = { error: { message: "Edit impossible, client connected to existing user" }, data: [] };
+  if (typeof user != "undefined" && typeof client.user_id == "undefined") {
+    if (user.user_id != null) {
+      resp = {
+        error: {
+          message: "Edit impossible, client connected to existing user",
+        },
+        data: [],
+      };
       return result(resp.error, resp.data);
     }
   }
   // email and phone check //
-  if(client.email)
-  {
+  if (client.email) {
     let check = await supabase
-    .from("clients")
-    .select("id")
-    .eq("email", client.email);
-    if (check.data.length != 0 && check.data[0].id != client.id)
-    {
+      .from("clients")
+      .select("id")
+      .eq("email", client.email);
+    if (check.data.length != 0 && check.data[0].id != client.id) {
       resp = { error: { message: "email is already in use" }, data: [] };
       return result(resp.error, resp.data);
     }
-      
   }
-  if(client.phone)
-  {
+  if (client.phone) {
     let phone_check = p_validator.validate(client.phone);
-    if (!phone_check)
-    {
+    if (!phone_check) {
       resp = { error: { message: "invalid phone format" }, data: [] };
       return result(resp.error, resp.data);
     }
@@ -215,7 +211,12 @@ client.deleteClientById = async (id: number, result) => {
     .then((res) => res.data[0]);
   if (typeof user != "undefined") {
     if (user.user_id != null) {
-      let resp = { error: { message: "Delete impossible, client connected to existing user" }, data: [] };
+      let resp = {
+        error: {
+          message: "Delete impossible, client connected to existing user",
+        },
+        data: [],
+      };
       return result(resp.error, resp.data);
     }
   }
