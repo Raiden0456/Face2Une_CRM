@@ -11,7 +11,9 @@ interface SelectFieldProps {
   disabled?: boolean;
   defaultValue?: any;
   required?: boolean;
+  style?: any;
   onChange?: (value: any) => void;
+  value?: any;
 }
 
 interface SelectProps {
@@ -35,9 +37,11 @@ export const SelectField = ({
   label,
   required = false,
   onChange,
+  style,
+  value,
 }: SelectFieldProps) => {
   return (
-    <div className={classNames(name, s.SelectWrapper)}>
+    <div style={style} className={classNames(name, s.SelectWrapper)}>
       {label && <label htmlFor={name}>{label}</label>}
       <Select
         theme={(theme: any) => ({
@@ -61,6 +65,7 @@ export const SelectField = ({
         name="color"
         required={required}
         options={options}
+        value={value}
       />
     </div>
   );

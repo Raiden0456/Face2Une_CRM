@@ -39,8 +39,7 @@ export function findOnePack(id: number, res) {
     if (err)
       res.status(500).json({
         success: false,
-        message:
-          err.message || "Some error occurred while retrieving package.",
+        message: err.message || "Some error occurred while retrieving package.",
       });
     else if (data.length == 0) {
       res.status(404).json({
@@ -127,24 +126,26 @@ export function deletePack(id: number, res) {
     }
   });
 }
-  // Buy packages //
-  export function buyPackages(
-    client_id: number,
-    packages: [{
+// Buy packages //
+export function buyPackages(
+  client_id: number,
+  packages: [
+    {
       package_id: number;
       amount_bought: number;
-    }],
-    res
-  ) {
-    package_p.buyPackages(client_id, packages, (err, data) => {
-      if (err)
-        res.status(500).json({
-          success: false,
-          message: err.message || "Some error occurred while buying packages.",
-        });
-      else {
-        //TODO: send email to client with promocodes //
-        res.json({ success: true, data: data });
-      }
-    });
+    }
+  ],
+  res
+) {
+  package_p.buyPackages(client_id, packages, (err, data) => {
+    if (err)
+      res.status(500).json({
+        success: false,
+        message: err.message || "Some error occurred while buying packages.",
+      });
+    else {
+      //TODO: send email to client with promocodes //
+      res.json({ success: true, data: data });
+    }
+  });
 }

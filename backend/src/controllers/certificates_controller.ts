@@ -28,7 +28,7 @@ export function loadCert(saloon_id: number, res) {
         if(item.price_gbp !== null && item.price !== null)
           return item;
       });
-           
+
       res.json({ success: true, data: data });
     }
   });
@@ -120,16 +120,13 @@ export function deleteCert(id: number, res) {
     }
   });
 }
-// Buy certificates //
-export function buyCertages(
-  client_id: number,
-  certificate_id: number,
-  res
-) {
-  certificate.buyCertificate(
-    client_id,
-    certificate_id,
-    (err, data) => {
+  // Buy certificates //
+  export function buyCertificates(
+    client_id: number,
+    certificate_id: number,
+    res
+  ) {
+    certificate.buyCertificate(client_id, certificate_id, (err, data) => {
       if (err)
         res.status(500).json({
           success: false,

@@ -36,8 +36,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
   const [saloonIds, setSaloonIds] = useState<number[]>([]);
 
   // Add Passengers State
-  const [procedures, setProcedures] = useState<any>(() => ProceduresStore.proceduresStatus.proceduresData || null); // TBD TS
-  const [items, setItems] = useState<any>([]); // TBD TS
+  const [items, setItems] = useState<any>([]);
 
   // Edit Button
   async function handleSubmit(event: any) {
@@ -247,7 +246,11 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
 
       {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
         <>
-          <AddPassanger setProcedures={setProcedures} items={items} setItems={setItems} />
+          <AddPassanger
+            procedures={ProceduresStore.proceduresStatus.proceduresData}
+            items={items}
+            setItems={setItems}
+          />
           <div className={s.BookingBox__datepicker}>
             <p style={{ marginBottom: '5px' }}>Choose Date:</p>
             <DatePicker

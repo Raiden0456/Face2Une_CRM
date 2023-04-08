@@ -97,3 +97,11 @@
   }
 
 }
+
+@media screen and (max-width: 821px) {
+  .AddItemForm__inputs {
+    display: flex;
+    flex-direction: column;
+  }
+}
+

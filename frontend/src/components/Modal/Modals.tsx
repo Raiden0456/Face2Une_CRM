@@ -8,6 +8,7 @@ import { AddAppointment } from './AddManualAppointment';
 import { StatusContainer } from './StatusContainer';
 import AddItem from './AddItem';
 import AddScheduling from './AddScheduling';
+import AddClientOrder from './AddClientOrder';
 
 export const ModalsCustomStyles: object = {
   content: {
@@ -80,6 +81,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
           ModalStore.setDeleteItem({ deleteType: '', id: null });
           ModalStore.setAddItem({ addType: '', edit: false, id: null });
           ModalStore.setScheduling({ schedulingType: '', edit: false });
+          ModalStore.setClientOrder({ clientId: null, email: '' });
         }
       }}
       style={!mobile ? ModalsCustomStyles : ModalsCustomStylesMobile}
@@ -101,6 +103,9 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
       {ModalStore.modalStatus.action === 'addAppointment' && <AddAppointment />}
       {ModalStore.modalStatus.action === 'scheduling' && (
         <AddScheduling schedulingType={ModalStore.scheduling.schedulingType} edit={ModalStore.scheduling.edit} />
+      )}
+      {ModalStore.modalStatus.action === 'clientOrder' && (
+        <AddClientOrder clientId={ModalStore.clientOrder.clientId} email={ModalStore.clientOrder.email} />
       )}
       {ModalStore.modalStatus.action === 'loader' && <p>Loading...</p>}
     </Modal>

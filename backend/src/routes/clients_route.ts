@@ -19,4 +19,10 @@ router.post('/update_client', function(req, res){
 router.delete('/delete_client/:clientid', function(req, res){
     client.deleteClient(req.params.clientid, res);
 });
+
+// add Orders to clients //
+router.post('/add_client_order', function(req, res){
+    client.addOrder(req.body.client_id, req.body.email, req.body.package_id, req.body.certificate_id, res);
+});
+
 export default router;
