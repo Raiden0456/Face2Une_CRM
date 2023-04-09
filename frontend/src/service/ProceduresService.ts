@@ -3,8 +3,20 @@ import { ModalStore } from '../store/Modal.store';
 import { CertificatesData, PackageData, ProcedureData } from '../store/Procedures.store';
 
 export class ProceduresService {
+  localStorageSaloon = localStorage.getItem('saloon');
+
+  async getSaloons() {
+    const r = await JSONFetchGet('saloons');
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
+    }
+  }
+
   async getProcedures() {
-    const r = await JSONFetchGet('main_proc');
+    const r = await JSONFetchGet(`main_proc?saloon_id=${this.localStorageSaloon}`);
 
     if (r?.success) {
       return r;
@@ -14,7 +26,7 @@ export class ProceduresService {
   }
 
   async getPackages() {
-    const r = await JSONFetchGet('pack');
+    const r = await JSONFetchGet(`pack?saloon_id=${this.localStorageSaloon}`);
 
     if (r?.success) {
       return r;
@@ -24,7 +36,7 @@ export class ProceduresService {
   }
 
   async getCertificates() {
-    const r = await JSONFetchGet('cert');
+    const r = await JSONFetchGet(`cert?saloon_id=${this.localStorageSaloon}`);
 
     if (r?.success) {
       return r;
@@ -44,7 +56,7 @@ export class ProceduresService {
   }
 
   async getOptionalProcedures() {
-    const r = await JSONFetchGet('optional_proc');
+    const r = await JSONFetchGet(`optional_proc?saloon_id=${this.localStorageSaloon}`);
 
     if (r?.success) {
       return r;
@@ -144,7 +156,7 @@ export class ProceduresService {
   }
 
   async calcTotal(ids: string) {
-    const r = await JSONFetchGet(`proc_total?proc_array=${ids}`);
+    const r = await JSONFetchGet(`proc_total?proc_array=${ids}&saloon_id=${this.localStorageSaloon}`);
 
     if (r?.success) {
       return r;

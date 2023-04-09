@@ -12,11 +12,12 @@ const package_p = function (package_p) {
   this.amount = package_p.amount;
 };
 
-package_p.getAllpack = async (result) => {
+package_p.getAllpack = async (saloon_id: number, result) => {
+  const selectFields = (saloon_id == 3) ? "id, name, procedure_id, price_gbp, amount" : "id, name, procedure_id, price, amount";
   let { data: package_ps, error } = await supabase
     .from("packages")
-    .select("*")
-    .order("price", { ascending: true });
+    .select(selectFields)
+    .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
   return result(error, package_ps);
 };
 
@@ -33,6 +34,7 @@ package_p.createPack = async (
     name: string;
     procedure_id: number;
     price: number;
+    price_gbp: number;
     amount: number;
   },
   result
@@ -44,6 +46,7 @@ package_p.createPack = async (
         name: pack.name,
         procedure_id: pack.procedure_id,
         price: pack.price,
+        price_gbp: pack.price_gbp,
         amount: pack.amount,
       },
     ])
@@ -57,6 +60,7 @@ package_p.updatePackById = async (
     name: string;
     procedure_id: number;
     price: number;
+    price_gbp: number;
     amount: number;
   },
   result
@@ -68,6 +72,7 @@ package_p.updatePackById = async (
         name: pack.name,
         procedure_id: pack.procedure_id,
         price: pack.price,
+        price_gbp: pack.price_gbp,
         amount: pack.amount,
       },
     ])

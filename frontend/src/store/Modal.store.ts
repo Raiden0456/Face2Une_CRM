@@ -11,6 +11,7 @@ type Action =
   | 'addAppointment'
   | 'scheduling'
   | 'clientOrder'
+  | 'selectSaloon'
   | null;
 
 interface IModalStatus {

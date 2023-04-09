@@ -2,8 +2,8 @@ import certificate from "../models/certificates_model.js";
 import { join } from "path";
 
 // Retrieve certificates from the database.
-export function loadCert(req, res) {
-  certificate.getAllcert((err, data) => {
+export function loadCert(saloon_id: number, res) {
+  certificate.getAllcert(saloon_id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -16,6 +16,19 @@ export function loadCert(req, res) {
         message: `No certificates found.`,
       });
     } else {
+      // Change price_gbp to price if applicable //
+      data = data.map((item) => {
+        if (item.price_gbp) {
+          const { price_gbp, ...otherProps } = item;
+          return { price: price_gbp, ...otherProps };
+        }
+        return item;
+      });
+      data = data.filter((item) => {
+        if(item.price_gbp !== null && item.price !== null)
+          return item;
+      });
+
       res.json({ success: true, data: data });
     }
   });
@@ -46,6 +59,7 @@ export function updateCert(
     id: number;
     name: string;
     price: number;
+    price_gbp: number;
   },
   res
 ) {
@@ -53,7 +67,8 @@ export function updateCert(
     if (err)
       res.status(500).json({
         success: false,
-        message: err.message || "Some error occurred while updating certificate.",
+        message:
+          err.message || "Some error occurred while updating certificate.",
       });
     else if (data.length == 0) {
       res.status(404).json({
@@ -71,6 +86,7 @@ export function createCert(
   cert: {
     name: string;
     price: number;
+    price_gbp: number;
   },
   res
 ) {
@@ -78,7 +94,8 @@ export function createCert(
     if (err)
       res.status(500).json({
         success: false,
-        message: err.message || "Some error occurred while creating certificate.",
+        message:
+          err.message || "Some error occurred while creating certificate.",
       });
     else {
       res.json({ success: true, data: data });
@@ -92,7 +109,8 @@ export function deleteCert(id: number, res) {
     if (err)
       res.status(500).json({
         success: false,
-        message: err.message || "Some error occurred while deleting certificate.",
+        message:
+          err.message || "Some error occurred while deleting certificate.",
       });
     else {
       res.json({
@@ -112,11 +130,13 @@ export function deleteCert(id: number, res) {
       if (err)
         res.status(500).json({
           success: false,
-          message: err.message || "Some error occurred while buying certificate.",
+          message:
+            err.message || "Some error occurred while buying certificate.",
         });
       else {
         //TODO: send email to client with promocode //
         res.json({ success: true, data: data });
       }
-    });
+    }
+  );
 }

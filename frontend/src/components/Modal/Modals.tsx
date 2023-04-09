@@ -9,6 +9,8 @@ import { StatusContainer } from './StatusContainer';
 import AddItem from './AddItem';
 import AddScheduling from './AddScheduling';
 import AddClientOrder from './AddClientOrder';
+import SelectSaloon from './SelectSaloon';
+
 
 export const ModalsCustomStyles: object = {
   content: {
@@ -107,6 +109,7 @@ export const Modals = observer(({ mobile }: { mobile: boolean | undefined }) => 
       {ModalStore.modalStatus.action === 'clientOrder' && (
         <AddClientOrder clientId={ModalStore.clientOrder.clientId} email={ModalStore.clientOrder.email} />
       )}
+      {ModalStore.modalStatus.action === 'selectSaloon' && <SelectSaloon />}
       {ModalStore.modalStatus.action === 'loader' && <p>Loading...</p>}
     </Modal>
   );

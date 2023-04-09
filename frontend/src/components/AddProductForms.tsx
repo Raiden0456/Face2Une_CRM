@@ -5,7 +5,6 @@ import useForm from '../utils/useForm';
 import { ButtonContained, ButtonOutlined } from './base/Button';
 import { ProceduresService } from '../service/ProceduresService';
 import { AuthStore } from '../store/Auth.store';
-import { saloon_ids } from '../utils/staticData';
 import { ProceduresStore } from '../store/Procedures.store';
 
 import s from './AddProductForms.scss';
@@ -111,17 +110,18 @@ export function AddProcedure() {
                 </div>
                 <div className={s.AddProductForm__saloons}>
                   <h3>Available Studios:</h3>
-                  {saloon_ids.map((saloon) => (
+                  {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
+
                     <Checkbox
                       style={{ marginRight: '0.5rem' }}
                       onChange={(e: boolean) =>
                         e === true
-                          ? setSaloonIds([...saloonIds, saloon.value])
-                          : setSaloonIds([...saloonIds].filter((el) => el !== saloon.value))
+                          ? setSaloonIds([...saloonIds, saloon.id])
+                          : setSaloonIds([...saloonIds].filter((el) => el !== saloon.id))
                       }
                       key={saloon.id}
                     >
-                      {saloon.text}
+                      {saloon.address}
                     </Checkbox>
                   ))}
                 </div>

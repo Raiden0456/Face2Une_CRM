@@ -10,11 +10,11 @@ import { renameAndDeleteArrayObjects } from '../utils/funcs';
 import { Button, Typography } from '@mui/material';
 import { LocationOnRounded, PersonRounded, PaymentsRounded, FaceRetouchingNaturalRounded } from '@mui/icons-material';
 import { formatPhoneNumber } from '../utils/formatPhone';
-import { saloon_ids } from '../utils/staticData';
 import { Radio } from '../components/base/Checkbox';
 import { SelectField } from '../components/base/SelectField';
 import { UserService } from '../service/UserService';
 import { TailSpinFixed } from '../components/TailSpin';
+import { ProceduresStore } from '../store/Procedures.store';
 
 import './Calendar.scss';
 
@@ -185,7 +185,7 @@ export const Calendar = () => {
               >
                 All
               </Radio>
-              {saloon_ids.map((saloon) => (
+              {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
                 <Radio
                   required
                   name="saloons"
@@ -195,7 +195,7 @@ export const Calendar = () => {
                   key={saloon.id}
                   value={saloon.id}
                 >
-                  {saloon.text}
+                  {saloon.address}
                 </Radio>
               ))}
             </div>

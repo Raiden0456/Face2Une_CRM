@@ -1,21 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from '../components/base/Container';
 import { ButtonContained } from '../components/base/Button';
 import { Input } from '../components/base/Input';
 import NavBar from '../components/Navbar';
 import ProcedureBox from '../components/ProcedureBox';
 import { TailSpinFixed } from '../components/TailSpin';
-import { ProceduresStore } from '../store/Procedures.store';
+import { ProceduresStore, SaloonsData } from '../store/Procedures.store';
 import PackageBox from '../components/PackageBox';
 import CertificateBox from '../components/CertificateBox';
 import useForm from '../utils/useForm';
 import { AddCertificate, AddPackage, AddProcedure } from '../components/AddProductForms';
+import { SelectField } from '../components/base/SelectField';
+import { findElementById } from '../utils/funcs';
 
 import s from './Home.scss';
 
 export const Home = ({ loading }: { loading: boolean }) => {
   const { inputs, handleChange, clearForm, resetForm } = useForm({ email: '', promo: '' });
   const [displayInput, setDisplayInput] = useState(false);
+  const [saloon, setSaloon] = useState<any>(null);
+
+
+  useEffect(() => {
+    const localStorageSaloon = localStorage.getItem('saloon');
+    if (localStorageSaloon && ProceduresStore.saloonsStatus.saloonsData) {
+      setSaloon({
+        label: findElementById(ProceduresStore.saloonsStatus.saloonsData, Number(localStorageSaloon)).address,
+        value: findElementById(ProceduresStore.saloonsStatus.saloonsData, Number(localStorageSaloon)).id,
+      });
+    }
+  }, [ProceduresStore.saloonsStatus.saloonsData]);
 
   return (
     <Container
@@ -23,21 +37,40 @@ export const Home = ({ loading }: { loading: boolean }) => {
       width="100%"
       content={
         <>
-          <div style={{ margin: '25px 0', alignSelf: 'start', minWidth: '200px' }}>
-            <ButtonContained
-              onClick={() => {
-                setDisplayInput(!displayInput);
-              }}
-            >
-              Use My Code
-            </ButtonContained>
-            {displayInput && (
-              <>
-                <Input name="email" value={inputs.email} placeholder="Email:" onChange={handleChange} />
-                <Input name="promo" value={inputs.promo} placeholder="Promocode:" onChange={handleChange} />
-              </>
-            )}
+          <div className={s.Home__header}>
+            <div>
+              <ButtonContained
+                width="200px"
+                onClick={() => {
+                  setDisplayInput(!displayInput);
+                }}
+              >
+                Use My Code
+              </ButtonContained>
+              {displayInput && (
+                <>
+                  <Input name="email" value={inputs.email} placeholder="Email:" onChange={handleChange} />
+                  <Input name="promo" value={inputs.promo} placeholder="Promocode:" onChange={handleChange} />
+                </>
+              )}
+            </div>
+            <div>
+              <SelectField
+                style={{ width: '200px' }}
+                label={'Select a Studio'}
+                options={ProceduresStore.saloonsStatus.saloonsData?.map((saloon: SaloonsData) => ({
+                  label: saloon.address,
+                  value: saloon.id,
+                }))}
+                onChange={(e) => {
+                  localStorage.setItem('saloon', String(e.value));
+                  window.location.reload();
+                }}
+                value={saloon}
+              />
+            </div>
           </div>
+
           {loading ? (
             <TailSpinFixed />
           ) : (

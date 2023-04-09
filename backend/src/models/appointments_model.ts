@@ -12,8 +12,9 @@ const appointment = function (appointment) {
   this.reservation_date_time = appointment.reservation_date_time;
   this.reservation_date_time_end = appointment.reservation_date_time_end;
   this.client_id = appointment.client_id;
-  this.reserved_on = appointment.reserved_on;
   this.saloon_id = appointment.saloon_id;
+  this.total_price = appointment.total_price;
+  this.total_price_gbp = appointment.total_price_gbp;
 };
 
 appointment.getAppointments = async (
@@ -65,21 +66,6 @@ appointment.getAppointments = async (
         resp.data[i].client_email = client[0].email;
 
       }
-      // for (let i = 0; i < resp.data.length; i++) {
-      //   let { data: proc } = await supabase
-      //     .from("procedures")
-      //     .select("name")
-      //     .eq("id", resp.data[i].procedure_id);
-      //   resp.data[i].procedure_name = proc[0].name;
-      //   resp.data[i].additional_names = [];
-      //   for (let j = 0; j < resp.data[i].additional_ids.length; j++) {
-      //     let { data: add_proc } = await supabase
-      //       .from("procedures")
-      //       .select("name")
-      //       .eq("id", resp.data[i].additional_ids[j]);
-      //     resp.data[i].additional_names.push(add_proc[0].name);
-      //   }
-      // }
       break;
     default:
       resp = filter.value
@@ -98,13 +84,14 @@ appointment.getAppointments = async (
 };
 
 // Calculate total price //
-appointment.getTotalPrice = async (main_proc: number, additional_procs: number[]) => {
+appointment.getTotalPrice = async (main_proc: number, additional_procs: number[], saloon_id: number) => {
   let all_ids: number[];
   all_ids = [];
   all_ids.push(main_proc);
   all_ids = all_ids.concat(additional_procs);
+
   // get total price of procedures by all_ids using procedure.getTotalCost //
-  const resp = (await procedure.getTotalCost(all_ids, (data) => {
+  const resp = (await procedure.getTotalCost(all_ids, saloon_id, (err, data) => {
       return data;
   }
   ));
@@ -120,6 +107,7 @@ appointment.createAppoint = async (
     client_id: number;
     saloon_id: number;
     total_price: number;
+    total_price_gbp: number;
   },
   result
 ) => {
@@ -153,6 +141,7 @@ appointment.createAppoint = async (
         additional_ids: appoint.additional_ids,
         client_id: appoint.client_id,
         total_price: appoint.total_price,
+        total_price_gbp: appoint.total_price_gbp,
         saloon_id: appoint.saloon_id,
         reservation_date_time: appoint.reservation_date_time,
         reservation_date_time_end: reservation_date_time_end,
@@ -171,6 +160,7 @@ appointment.updateAppointById = async (
     client_id: number;
     saloon_id: number;
     total_price: number;
+    total_price_gbp: number;
   },
   result
 ) => {
@@ -202,6 +192,7 @@ appointment.updateAppointById = async (
         additional_ids: appoint.additional_ids,
         client_id: appoint.client_id,
         total_price: appoint.total_price,
+        total_price_gbp: appoint.total_price_gbp,
         saloon_id: appoint.saloon_id,
         reservation_date_time: appoint.reservation_date_time,
         reservation_date_time_end: reservation_date_time_end,

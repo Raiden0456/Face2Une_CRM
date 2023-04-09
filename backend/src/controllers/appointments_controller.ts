@@ -29,12 +29,14 @@ export async function updateAppoint(
     reservation_date_time: Date;
     client_id: number;
     total_price: number;
+    total_price_gbp: number;
     saloon_id: number;
   },
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids);
+  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 1);
+  appoint.total_price_gbp = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 3);
   
   appointment.updateAppointById(appoint, (err, data) => {
     if (err)
@@ -62,13 +64,15 @@ export async function createAppoint(
     reservation_date_time: Date;
     client_id: number;
     total_price: number;
+    total_price_gbp: number;
     saloon_id: number;
     new_client: boolean;
   },
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids);
+  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 1);
+  appoint.total_price_gbp = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 3);
 
   appointment.createAppoint(appoint, (err, data) => {
     if (err)

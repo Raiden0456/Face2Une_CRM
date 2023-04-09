@@ -2,8 +2,8 @@ import package_p from "../models/packages_model.js";
 import { join } from "path";
 
 // Retrieve packages from the database.
-export function loadPack(req, res) {
-  package_p.getAllpack((err, data) => {
+export function loadPack(saloon_id, res) {
+  package_p.getAllpack(saloon_id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -16,6 +16,19 @@ export function loadPack(req, res) {
         message: `No packages found.`,
       });
     } else {
+      // Change price_gbp to price if applicable //
+      data = data.map((item) => {
+        if (item.price_gbp) {
+          const { price_gbp, ...otherProps } = item;
+          return { price: price_gbp, ...otherProps };
+        }
+        return item;
+      });
+      data = data.filter((item) => {
+        if(item.price_gbp !== null && item.price !== null)
+          return item;
+      });
+
       res.json({ success: true, data: data });
     }
   });
@@ -46,6 +59,7 @@ export function updatePack(
     name: string;
     procedure_id: number;
     price: number;
+    price_gbp: number;
     amount: number;
   },
   res
@@ -73,6 +87,7 @@ export function createPack(
     name: string;
     procedure_id: number;
     price: number;
+    price_gbp: number;
     amount: number;
   },
   res
