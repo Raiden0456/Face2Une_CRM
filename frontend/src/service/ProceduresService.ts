@@ -3,6 +3,16 @@ import { ModalStore } from '../store/Modal.store';
 import { CertificatesData, PackageData, ProcedureData } from '../store/Procedures.store';
 
 export class ProceduresService {
+  async getSaloons() {
+    const r = await JSONFetchGet('saloons');
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
+    }
+  }
+
   async getProcedures() {
     const r = await JSONFetchGet('main_proc');
 

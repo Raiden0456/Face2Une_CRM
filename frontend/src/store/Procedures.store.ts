@@ -56,7 +56,7 @@ export interface IProceduresStore {
 
 export const ProceduresStore = observable<IProceduresStore>({
   saloonsStatus: {
-    saloonsData: [
+    saloonsData: /* [
       {
         id: 1,
         address: '46 Rue De Richelieu',
@@ -69,7 +69,7 @@ export const ProceduresStore = observable<IProceduresStore>({
         image_src:
           'https://images.squarespace-cdn.com/content/v1/5e77a8d31f1ca16b984e7d8c/1656929372105-2QI01MJUI3S9MLEMJ0LX/IMG_1516+2.jpg?format=1500w',
       },
-    ],
+    ], */ null,
   },
   proceduresStatus: {
     proceduresData: null,

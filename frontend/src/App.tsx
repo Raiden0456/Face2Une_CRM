@@ -32,10 +32,16 @@ const App = observer(() => {
 
   // Check if saloon is specified
   useEffect(() => {
-    if (!localStorage.getItem('saloon')) {
-      // Open the select saloon
-      ModalStore.setModalStatus({ open: true, action: 'selectSaloon', redirectUrl: '/' });
-    }
+    proceduresService.getSaloons().then((r) => {
+      if (r.success) {
+        ProceduresStore.setSaloonsStatus(r.data);
+
+        if (!localStorage.getItem('saloon')) {
+          // Open the select saloon
+          ModalStore.setModalStatus({ open: true, action: 'selectSaloon', redirectUrl: '/' });
+        }
+      }
+    });
   }, []);
 
   // Check user authorization
