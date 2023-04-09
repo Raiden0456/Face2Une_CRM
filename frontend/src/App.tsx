@@ -30,33 +30,9 @@ const App = observer(() => {
   const [loading, setLoading] = useState(false);
   const authService = new AuthService();
 
-  // Check if saloon is specified
+  // Check if saloon is specified, then fetch the main data
   useEffect(() => {
-    proceduresService.getSaloons().then((r) => {
-      if (r.success) {
-        ProceduresStore.setSaloonsStatus(r.data);
-
-        if (!localStorage.getItem('saloon')) {
-          // Open the select saloon
-          ModalStore.setModalStatus({ open: true, action: 'selectSaloon', redirectUrl: '/' });
-        }
-      }
-    });
-  }, []);
-
-  // Check user authorization
-  useEffect(() => {
-    if (!AuthStore.authorized) {
-      authService.getUser();
-    }
-
-    if (AuthStore.authorized === 'auth') {
-      console.log("You're Authorized");
-    }
-  }, [AuthStore.authorized]);
-
-  // Fetch and Store Main & Optional Procedures
-  useEffect(() => {
+    // Fetch all the proc-s and save to the store
     async function fetchData() {
       setLoading(true);
       const [optionalProcedures, procedures, packages, certificates] = await Promise.all([
@@ -76,8 +52,31 @@ const App = observer(() => {
       setLoading(false);
     }
 
-    fetchData();
+    // First we fetch existing sallons and check if there is a saloonID in localStorage
+    proceduresService.getSaloons().then((r) => {
+      if (r.success) {
+        ProceduresStore.setSaloonsStatus({ saloonsData: r.data });
+
+        if (!localStorage.getItem('saloon')) {
+          // Open the select saloon modal
+          ModalStore.setModalStatus({ open: true, action: 'selectSaloon', redirectUrl: '/' });
+        }
+        // If there is a saloonID in localStorage, we fetch the data
+        fetchData();
+      }
+    });
   }, []);
+
+  // Check user authorization
+  useEffect(() => {
+    if (!AuthStore.authorized) {
+      authService.getUser();
+    }
+
+    if (AuthStore.authorized === 'auth') {
+      console.log("You're Authorized");
+    }
+  }, [AuthStore.authorized]);
 
   // Keep track of responsivness
   const calcWidth = () => {

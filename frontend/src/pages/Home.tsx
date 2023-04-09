@@ -20,15 +20,16 @@ export const Home = ({ loading }: { loading: boolean }) => {
   const [displayInput, setDisplayInput] = useState(false);
   const [saloon, setSaloon] = useState<any>(null);
 
+
   useEffect(() => {
     const localStorageSaloon = localStorage.getItem('saloon');
     if (localStorageSaloon && ProceduresStore.saloonsStatus.saloonsData) {
       setSaloon({
-        label: findElementById(ProceduresStore.saloonsStatus.saloonsData!!, Number(localStorageSaloon)).address,
-        value: findElementById(ProceduresStore.saloonsStatus.saloonsData!!, Number(localStorageSaloon)).id,
+        label: findElementById(ProceduresStore.saloonsStatus.saloonsData, Number(localStorageSaloon)).address,
+        value: findElementById(ProceduresStore.saloonsStatus.saloonsData, Number(localStorageSaloon)).id,
       });
     }
-  }, []);
+  }, [ProceduresStore.saloonsStatus.saloonsData]);
 
   return (
     <Container
