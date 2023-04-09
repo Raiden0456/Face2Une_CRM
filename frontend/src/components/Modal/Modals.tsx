@@ -11,6 +11,7 @@ import AddScheduling from './AddScheduling';
 import AddClientOrder from './AddClientOrder';
 import SelectSaloon from './SelectSaloon';
 
+
 export const ModalsCustomStyles: object = {
   content: {
     maxHeight: '625px', //test

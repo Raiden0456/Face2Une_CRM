@@ -111,6 +111,7 @@ export function AddProcedure() {
                 <div className={s.AddProductForm__saloons}>
                   <h3>Available Studios:</h3>
                   {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
+
                     <Checkbox
                       style={{ marginRight: '0.5rem' }}
                       onChange={(e: boolean) =>

@@ -262,6 +262,7 @@ export const AddAppointment = () => {
             <div className={s.AddAppointmentForm__saloons}>
               <h3>Available Studios:</h3>
               {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
+
                 <Radio
                   name="saloons"
                   value={saloon.id}

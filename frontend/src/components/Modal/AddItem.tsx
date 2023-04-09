@@ -395,7 +395,9 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                 <div>
                   <div className={s.AddItemForm_radios}>
                     <h3>Available Studios:</h3>
+
                     {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
+
                       <Radio
                         name="saloons"
                         value={saloon.id}
