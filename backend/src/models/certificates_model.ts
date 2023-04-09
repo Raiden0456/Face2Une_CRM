@@ -109,6 +109,7 @@ certificate.buyCertificate = async (
           discount_left: cert_price,
           discount_left_gbp: cert_price_gbp,
           expiry_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+          client_id: client_id,
         },
       ])
     if (error) {
