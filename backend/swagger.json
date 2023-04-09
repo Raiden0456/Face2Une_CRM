@@ -1532,6 +1532,117 @@
               }
             }
           }
+        },
+        "/saloons": {
+          "get": {
+            "tags": ["Saloons"],
+            "summary": "Get Saloons in db",
+            "responses": {
+              "200": {
+                "description": "Returns Saloons in database in JSON format"
+              }
+            }
+          }
+        },
+        "/saloons/{saloonid}": {
+          "get": {
+            "tags": ["Saloons"],
+            "summary": "Get Saloon by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "saloonid",
+              "description": "id of saloon",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns Saloon in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_saloon": {
+          "post": {
+            "tags": ["Saloons"],
+            "summary": "Create new saloon",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of saloon",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Saloon"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a saloon using JSON format"
+              }
+            }
+          }
+        },
+        "/update_saloon": {
+          "post": {
+            "tags": ["Saloons"],
+            "summary": "Update saloon",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of saloon",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Saloon"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a saloon using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_saloon/{saloonid}": {
+          "delete": {
+            "tags": ["Saloons"],
+            "summary": "Delete saloon by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "saloonid",
+              "description": "id of saloon",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a saloon in database by id"
+              }
+            }
+          }
         }
       },
 
@@ -1738,6 +1849,25 @@
           "saloon_id": {
             "type": "integer",
             "default": "1"
+          }
+        }
+      },
+      "Saloon": {
+        "properties":{
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "index": {
+            "type": "string"
+          },
+          "image_src": {
+            "type": "string"
           }
         }
       }
