@@ -15,7 +15,7 @@ certificate.getAllcert = async (saloon_id: number, result) => {
     let { data: certificates, error } = await supabase
       .from("certificates")
       .select(selectFields)
-      .order("price", { ascending: true });
+      .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
   return result(error, certificates);
 };
 

@@ -25,7 +25,7 @@ export function loadCert(saloon_id: number, res) {
         return item;
       });
       data = data.filter((item) => {
-        if(item.price_gbp !== null)
+        if(item.price_gbp !== null && item.price !== null)
           return item;
       });
            

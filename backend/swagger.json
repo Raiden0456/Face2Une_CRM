@@ -195,6 +195,15 @@
           "get": {
             "tags": ["Packages"],
             "summary": "Get all packages in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon)",
+              "required": false,
+              "type": "integer"
+            }
+            ],
             "responses": {
               "200": {
                 "description": "Returns all packages in database in JSON format"
@@ -1566,6 +1575,9 @@
             "type": "number"
           },
           "price": {
+            "type": "number"
+          },
+          "price_gbp": {
             "type": "number"
           },
           "amount": {
