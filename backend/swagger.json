@@ -347,6 +347,14 @@
           "get": {
             "tags": ["Certificates"],
             "summary": "Get all certificates in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon)",
+              "required": false,
+              "type": "integer"              }
+            ],
             "responses": {
               "200": {
                 "description": "Returns all certificates in database in JSON format"
@@ -1571,6 +1579,9 @@
             "type": "string"
           },
           "price": {
+            "type": "number"
+          }, 
+          "price_gbp": {
             "type": "number"
           }
         }

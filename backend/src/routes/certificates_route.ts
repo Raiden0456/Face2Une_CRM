@@ -5,7 +5,7 @@ import * as cert from '../controllers/certificates_controller.js';
 //Routing for the certificates//
 
 router.get('/cert', function(req, res){
-    cert.loadCert(req, res);
+    cert.loadCert(req.query.saloon_id, res);
 });
 router.get('/cert/:certid', function(req, res){
     cert.findOneCert(req.params.certid, res);
