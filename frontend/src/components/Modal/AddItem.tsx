@@ -12,7 +12,6 @@ import { filterObjectToArray } from '../../utils/funcs';
 import { Checkbox, Radio } from '../base/Checkbox';
 import ReactDatePicker from 'react-datepicker';
 import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
-import { saloon_ids } from '../../utils/staticData';
 import { UserService } from '../../service/UserService';
 import { AppointmentService } from '../../service/AppointmentService';
 import { SelectField } from '../base/SelectField';
@@ -396,7 +395,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                 <div>
                   <div className={s.AddItemForm_radios}>
                     <h3>Available Studios:</h3>
-                    {saloon_ids.map((saloon) => (
+                    {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
                       <Radio
                         name="saloons"
                         value={saloon.id}
@@ -405,7 +404,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                         key={saloon.id}
                         required
                       >
-                        {saloon.text}
+                        {saloon.address}
                       </Radio>
                     ))}
                   </div>

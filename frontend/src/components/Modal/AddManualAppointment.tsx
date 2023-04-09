@@ -3,7 +3,6 @@ import useForm from '../../utils/useForm';
 import { Checkbox, Radio } from '../base/Checkbox';
 import { Input, PhoneInputStyled } from '../base/Input';
 import { ButtonContained } from '../base/Button';
-import { saloon_ids } from '../../utils/staticData';
 import { ProceduresStore } from '../../store/Procedures.store';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
@@ -262,7 +261,7 @@ export const AddAppointment = () => {
 
             <div className={s.AddAppointmentForm__saloons}>
               <h3>Available Studios:</h3>
-              {saloon_ids.map((saloon) => (
+              {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
                 <Radio
                   name="saloons"
                   value={saloon.id}
@@ -271,7 +270,7 @@ export const AddAppointment = () => {
                   key={saloon.id}
                   required
                 >
-                  {saloon.text}
+                  {saloon.address}
                 </Radio>
               ))}
             </div>

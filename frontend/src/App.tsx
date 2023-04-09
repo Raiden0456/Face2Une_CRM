@@ -20,6 +20,7 @@ import { ProceduresService } from './service/ProceduresService';
 import { ProceduresStore } from './store/Procedures.store';
 import { ConfirmationCertificate } from './pages/ConfirmationCertificate';
 import { Scheduling } from './pages/Scheduling';
+import { ModalStore } from './store/Modal.store';
 //
 require('./App.scss');
 
@@ -29,6 +30,15 @@ const App = observer(() => {
   const [loading, setLoading] = useState(false);
   const authService = new AuthService();
 
+  // Check if saloon is specified
+  useEffect(() => {
+    if (!localStorage.getItem('saloon')) {
+      // Open the select saloon
+      ModalStore.setModalStatus({ open: true, action: 'selectSaloon', redirectUrl: '/' });
+    }
+  }, []);
+
+  // Check user authorization
   useEffect(() => {
     if (!AuthStore.authorized) {
       authService.getUser();

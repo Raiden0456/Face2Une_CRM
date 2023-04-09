@@ -7,12 +7,12 @@ import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { Radio } from '../base/Checkbox';
 import DatePicker from 'react-datepicker';
-import { saloon_ids } from '../../utils/staticData';
 import { IEmployee, UserService } from '../../service/UserService';
 import { SelectField } from '../base/SelectField';
 import { useDebounce } from '../../hooks/debounceSearch';
 import { useFilteredEmployees } from '../../hooks/use-filtered-employees';
 import { ScheduleService } from '../../service/ScheduleService';
+import { ProceduresStore } from '../../store/Procedures.store';
 
 import s from './AddItem.scss';
 
@@ -126,7 +126,7 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
                 {schedulingType === 'workDays' && (
                   <div className={s.AddItemForm_radios}>
                     <h3>Available Studios:</h3>
-                    {saloon_ids.map((saloon) => (
+                    {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
                       <Radio
                         name="saloons"
                         value={saloon.id}
@@ -136,7 +136,7 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
                         defaultChecked={saloon.id === saloonId}
                         required
                       >
-                        {saloon.text}
+                        {saloon.address}
                       </Radio>
                     ))}
                   </div>

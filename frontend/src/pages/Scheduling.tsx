@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Container } from '../components/base/Container';
 import { ModalStore } from '../store/Modal.store';
 import NavBar from '../components/Navbar';
-import { saloon_ids } from '../utils/staticData';
 import { Radio } from '../components/base/Checkbox';
 import DatePicker from 'react-datepicker';
 import DataTable from 'react-data-table-component';
@@ -11,6 +10,7 @@ import { ScheduleService } from '../service/ScheduleService';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { findElementById } from '../utils/funcs';
 import { customTableStyles } from '../utils/customTableStyles';
+import { ProceduresStore } from '../store/Procedures.store';
 
 import s from './Scheduling.scss';
 
@@ -49,7 +49,11 @@ const columns = [
   {
     name: 'Saloon',
     selector: (row: any) =>
-      row.saloon_id ? findElementById(saloon_ids, row.saloon_id).text : <CancelIcon color="warning" />,
+      row.saloon_id ? (
+        findElementById(ProceduresStore.saloonsStatus.saloonsData, row.saloon_id).text
+      ) : (
+        <CancelIcon color="warning" />
+      ),
     sortable: true,
   },
   {
@@ -143,7 +147,7 @@ export const Scheduling = () => {
                 >
                   All
                 </Radio>
-                {saloon_ids.map((saloon) => (
+                {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
                   <Radio
                     required
                     name="saloons"
@@ -153,7 +157,7 @@ export const Scheduling = () => {
                     key={saloon.id}
                     value={saloon.id}
                   >
-                    {saloon.text}
+                    {saloon.address}
                   </Radio>
                 ))}
               </div>
