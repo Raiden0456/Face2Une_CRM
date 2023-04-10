@@ -4,6 +4,7 @@ import supabase from "./db.js";
 import p_validator from "validate-phone-number-node-js";
 import { validate } from "deep-email-validator";
 import { getPaginationBounds } from "../utils/pagination.js";
+import client_utils from "../utils/clients.js";
 // Constructor
 const client = function (client) {
   this.id = client.id;
@@ -113,70 +114,32 @@ client.createClient = async (
   return result(resp.error, resp.data);
 };
 
-client.updateClientById = async (
-  client: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    phone: string;
-    email: string;
-    user_id: number;
-  },
-  result
-) => {
-  var resp;
-  // if user_id is set, block ability to edit client //
-  // get user from clients table //
-  let user = await supabase
-    .from("clients")
-    .select("user_id")
-    .eq("id", client.id)
-    .then((res) => res.data[0]);
-  if (typeof user != "undefined" && typeof client.user_id == "undefined") {
-    if (user.user_id != null) {
-      resp = {
-        error: {
-          message: "Edit impossible, client connected to existing user",
-        },
-        data: [],
-      };
-      return result(resp.error, resp.data);
-    }
-  }
-  // email and phone check //
-  if (client.email) {
-    let check = await supabase
-      .from("clients")
-      .select("id")
-      .eq("email", client.email);
-    if (check.data.length != 0 && check.data[0].id != client.id) {
-      resp = { error: { message: "email is already in use" }, data: [] };
-      return result(resp.error, resp.data);
-    }
-  }
-  if (client.phone) {
-    let phone_check = p_validator.validate(client.phone);
-    if (!phone_check) {
-      resp = { error: { message: "invalid phone format" }, data: [] };
-      return result(resp.error, resp.data);
-    }
-  }
-  //******//
+client.updateClientById = async (client, result) => {
+  let resp;
 
-  resp = await supabase
-    .from("clients")
-    .update([
-      {
-        full_name: client.first_name + " " + client.last_name,
-        phone: client.phone,
-        email: client.email,
-        user_id: client.user_id,
-      },
-    ])
-    .eq("id", client.id)
-    .select();
+  const user = await client_utils.getUserById(client.id);
+  if (user && user.user_id && client.user_id === undefined) {
+    resp = {
+      error: { message: "Edit impossible, client connected to existing user" },
+      data: [],
+    };
+    return result(resp.error, resp.data);
+  }
+
+  if (client.email && (await client_utils.isEmailInUse(client.email, client.id))) {
+    resp = { error: { message: "email is already in use" }, data: [] };
+    return result(resp.error, resp.data);
+  }
+
+  if (client.phone && ! client_utils.isValidPhone(client.phone)) {
+    resp = { error: { message: "invalid phone format" }, data: [] };
+    return result(resp.error, resp.data);
+  }
+
+  resp = await client_utils.updateClient(client);
   return result(resp.error, resp.data);
 };
+
 
 client.deleteClientById = async (id: number, result) => {
   // if client is connected to user, block ability to delete //

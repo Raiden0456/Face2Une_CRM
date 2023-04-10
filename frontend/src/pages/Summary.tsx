@@ -173,7 +173,7 @@ export const Summary = () => {
             </div>
             <SelectField
               style={{ width: '200px' }}
-              label={'Filter by:'}
+              label={'Order type:'}
               options={expandedFilters.map((cert) => ({
                 label: cert.label,
                 value: cert.value,
