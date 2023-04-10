@@ -72,4 +72,16 @@ export class ClientService {
       ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/clients' });
     }
   }
+
+  async getClientsSummary(index: number, perPage: number, filterLike?: string | boolean) {
+    const r = await JSONFetchGet(
+      `clients_summary?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,
+    );
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/summary' });
+    }
+  }
 }

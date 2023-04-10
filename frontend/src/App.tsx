@@ -21,6 +21,7 @@ import { ProceduresStore } from './store/Procedures.store';
 import { ConfirmationCertificate } from './pages/ConfirmationCertificate';
 import { Scheduling } from './pages/Scheduling';
 import { ModalStore } from './store/Modal.store';
+import { Summary } from './pages/Summary';
 //
 require('./App.scss');
 
@@ -109,6 +110,7 @@ const App = observer(() => {
               <Route path="/coupons" element={<Coupons />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/scheduling" element={<Scheduling />} />
+              <Route path="/clients-summary" element={<Summary />} />
             </Route>
           </Routes>
         </MainLayout>

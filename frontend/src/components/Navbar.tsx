@@ -6,7 +6,7 @@ import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
 import { ButtonOutlined } from './base/Button';
 
-const adminPaths = ['/clients', '/calendar', '/employees', '/coupons', '/scheduling'];
+const adminPaths = ['/clients', '/calendar', '/employees', '/coupons', '/scheduling', '/clients-summary'];
 const confirmationPaths = ['/confirmation', '/confirmation-package', '/confirmation-certificate'];
 
 const NavBar = observer(() => {
@@ -81,6 +81,9 @@ const NavBar = observer(() => {
               </Link>
               <Link to="/scheduling">
                 <ButtonOutlined>Scheduling</ButtonOutlined>
+              </Link>
+              <Link to="/clients-summary">
+                <ButtonOutlined>Summary</ButtonOutlined>
               </Link>
             </>
           )}
