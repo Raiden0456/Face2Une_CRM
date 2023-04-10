@@ -72,7 +72,7 @@ user.getUsers = async (
 };
 
 
-// Section may be used to register a new user`as well as create a new user as an admin //
+// Section may be used to create a new user as an admin //
 user.createUser = async (
   user: {
     first_name: string;
