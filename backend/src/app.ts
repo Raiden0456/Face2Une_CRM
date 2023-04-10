@@ -1,5 +1,5 @@
 import createError from "http-errors";
-import express, { json, urlencoded } from "express";
+import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
@@ -8,29 +8,28 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
-var app = express();
+import dotenv from "dotenv";
+
+// Importing the routes
+import proceduresRouter from "./routes/procedures_route.js";
+import usersRouter from "./routes/users_route.js";
+import appointmentsRouter from "./routes/appointments_route.js";
+import clientsRouter from "./routes/clients_route.js";
+import authRouter from "./routes/auth_route.js";
+import packagesRouter from "./routes/packages_route.js";
+import couponsRouter from "./routes/coupons_route.js";
+import certificatesRouter from "./routes/certificates_route.js";
+import codeRouter from "./routes/codes_route.js";
+import foundUsRouter from "./routes/found_us_route.js";
+import scheduleRouter from "./routes/schedule_route.js";
+import saloonsRouter from "./routes/saloons_route.js";
+import clientsSummaryRouter from "./routes/clientsSummary_route.js";
+
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// Importing the routes //
-import ProceduresRouter from './routes/procedures_route.js';
-import UsersRouter from './routes/users_route.js';
-import AppointmentsRouter from './routes/appointments_route.js';
-import ClientsRouter from './routes/clients_route.js';
-import AuthRouter from './routes/auth_route.js';
-import PackagesRouter from './routes/packages_route.js';
-import CouponsRouter from './routes/coupons_route.js';
-import CertificatesRouter from './routes/certificates_route.js';
-import CodeRouter from './routes/codes_route.js';
-import Found_usRouter from './routes/found_us_route.js';
-import ScheduleRouter from './routes/schedule_route.js';
-import SaloonsRouter from './routes/saloons_route.js';
-import ClientsSummaryRouter from './routes/clientsSummary_route.js';
-import dotenv from "dotenv";
-///////////////////////////
 
-// middleware //
-// CORS with cookies //
-
+// middleware
 app.use(
   cors({
     origin:
@@ -39,15 +38,18 @@ app.use(
     credentials: true,
   })
 );
+
 if (process.env.NODE_ENV === "development") {
   swaggerDocument.host = process.env.SWAGGER_HOST;
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-// Конфиг сессии //
-let oneYear = 1000 * 60 * 60 * 24 * 365;
+
+// Session config
+const oneYear = 1000 * 60 * 60 * 24 * 365;
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -57,23 +59,22 @@ app.use(
   })
 );
 
-////////////////
+// Routing
+app.use("/", proceduresRouter);
+app.use("/", usersRouter);
+app.use("/", appointmentsRouter);
+app.use("/", clientsRouter);
+app.use("/", authRouter);
+app.use("/", packagesRouter);
+app.use("/", couponsRouter);
+app.use("/", certificatesRouter);
+app.use("/", codeRouter);
+app.use("/", foundUsRouter);
+app.use("/", scheduleRouter);
+app.use("/", saloonsRouter);
+app.use("/", clientsSummaryRouter);
 
-// Routing //
-app.use('/', ProceduresRouter);
-app.use('/', UsersRouter);
-app.use('/', AppointmentsRouter);
-app.use('/', ClientsRouter);
-app.use('/', AuthRouter);
-app.use('/', PackagesRouter);
-app.use('/', CouponsRouter);
-app.use('/', CertificatesRouter);
-app.use('/', CodeRouter);
-app.use('/', Found_usRouter);
-app.use('/', ScheduleRouter);
-app.use('/', SaloonsRouter);
-app.use('/', ClientsSummaryRouter);
-// production mode //
+// Production mode
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve("./dist", "src", "public", "build")));
   app.get("/*", (req, res) => {
@@ -82,6 +83,5 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
-/////////////////////
 
 export default app;
