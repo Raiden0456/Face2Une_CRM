@@ -1,6 +1,7 @@
 import supabase from "./db.js";
 import date from "date-and-time";
 import { getDatesBetween } from "../utils/work_days.js";
+import { getPaginationBounds } from "../utils/pagination.js";
 // Constructor
 const schedule = function (schedule) {
   this.id = schedule.id;
@@ -21,16 +22,8 @@ schedule.getAllSchedules = async (
 ) => {
   // set default values //
   let total;
-  let start_from = 0;
-  let to = 100;
-  //******//
-
-  // Pagination set where index = page number and per_page = max amount of entries per page //
-  if (params.index && params.per_page) {
-    start_from = (params.index - 1) * params.per_page;
-    to = Number(start_from) + Number(params.per_page) - 1;
-  }
-  //******//
+  
+  const { start, end } = getPaginationBounds(params.index, params.per_page);
 
   // Get date from work_date //
   let work_date = new Date(params.work_date);
@@ -87,7 +80,7 @@ schedule.getAllSchedules = async (
     }
   }
   //******//
-  data = data.slice(start_from, to);
+  data = data.slice(start, end);
 
   total = await supabase
     .from("users")

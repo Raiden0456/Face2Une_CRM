@@ -1100,6 +1100,50 @@
             }
           }
         },
+        "/clients_summary": {
+          "get": {
+            "tags": ["Clients Summary"],
+            "summary": "Get Clients Summary",
+            "parameters":[
+              {
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
+              },
+              {
+                "in": "query",
+                "name": "per_page",
+                "description": "max clients per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_like",
+                "description": "multifilter 'like' for all columns",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns Client Summary in database in JSON format"
+              }
+            }
+          } 
+        },
         "/clients/{clientid}": {
           "get": {
             "tags": ["Clients"],

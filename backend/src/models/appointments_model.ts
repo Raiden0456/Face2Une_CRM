@@ -17,71 +17,60 @@ const appointment = function (appointment) {
   this.total_price_gbp = appointment.total_price_gbp;
 };
 
+const fetchAppointmentDetails = async (appointment) => {
+  const { data: proc } = await supabase
+    .from("procedures")
+    .select("name")
+    .eq("id", appointment.procedure_id);
+  appointment.procedure_name = proc[0].name;
+  appointment.additional_names = [];
+
+  for (const additionalId of appointment.additional_ids) {
+    const { data: add_proc } = await supabase
+      .from("procedures")
+      .select("name")
+      .eq("id", additionalId);
+    appointment.additional_names.push(add_proc[0].name);
+  }
+
+  const { data: saloon } = await supabase
+    .from("saloons")
+    .select("address, index")
+    .eq("id", appointment.saloon_id);
+  appointment.saloon_address = saloon[0].address + " " + saloon[0].index;
+
+  const { data: client } = await supabase
+    .from("clients")
+    .select("full_name, phone, email")
+    .eq("id", appointment.client_id);
+  appointment.client_full_name = client[0].full_name;
+  appointment.client_phone = client[0].phone;
+  appointment.client_email = client[0].email;
+
+  return appointment;
+};
+
 appointment.getAppointments = async (
   filter: { column: string; value: any; details: string; } = { column: "", value: false, details: 'false' },
   result
 ) => {
-  var resp; 
-  let boolean_details = (filter.details === "true");
-  switch (boolean_details) {
-    case true:
-      resp = filter.value
-      ? await supabase
-          .from("appointments")
-          .select("*")
-          .eq(filter.column, filter.value)
-          .order("reservation_date_time", { ascending: true })
-      : await supabase
-          .from("appointments")
-          .select("*")
-          .order("reservation_date_time", { ascending: true });
-
-
-      // add procedure name and additional names and saloon Adress and client name to each appointment //
-      for (let i = 0; i < resp.data.length; i++) {
-        let { data: proc } = await supabase
-          .from("procedures")
-          .select("name")
-          .eq("id", resp.data[i].procedure_id);
-        resp.data[i].procedure_name = proc[0].name;
-        resp.data[i].additional_names = [];
-        for (let j = 0; j < resp.data[i].additional_ids.length; j++) {
-          let { data: add_proc } = await supabase
-            .from("procedures")
-            .select("name")
-            .eq("id", resp.data[i].additional_ids[j]);
-          resp.data[i].additional_names.push(add_proc[0].name);
-        }
-        let { data: saloon } = await supabase
-          .from("saloons")
-          .select("Street, index")
-          .eq("id", resp.data[i].saloon_id);
-        resp.data[i].saloon_address = saloon[0].Street + " " + saloon[0].index;
-        let { data: client } = await supabase
-          .from("clients")
-          .select("full_name, phone, email")
-          .eq("id", resp.data[i].client_id);
-        resp.data[i].client_full_name = client[0].full_name;
-        resp.data[i].client_phone = client[0].phone;
-        resp.data[i].client_email = client[0].email;
-
-      }
-      break;
-    default:
-      resp = filter.value
-      ? await supabase
-          .from("appointments")
-          .select("*")
-          .eq(filter.column, filter.value)
-          .order("reservation_date_time", { ascending: true })
-      : await supabase
-          .from("appointments")
-          .select("*")
-          .order("reservation_date_time", { ascending: true });
-      break;
+  const query = supabase.from("appointments").select("*").order("reservation_date_time", { ascending: true });
+  if (filter.value) {
+    query.eq(filter.column, filter.value);
   }
+
+  const resp = await query;
+  const boolean_details = filter.details === "true";
+
+  if (boolean_details) {
+    for (let i = 0; i < resp.data.length; i++) {
+      resp.data[i] = await fetchAppointmentDetails(resp.data[i]);
+    }
+  }
+
   return result(resp.error, resp.data);
 };
+
 
 // Calculate total price //
 appointment.getTotalPrice = async (main_proc: number, additional_procs: number[], saloon_id: number) => {

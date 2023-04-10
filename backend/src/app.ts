@@ -24,6 +24,7 @@ import CodeRouter from './routes/codes_route.js';
 import Found_usRouter from './routes/found_us_route.js';
 import ScheduleRouter from './routes/schedule_route.js';
 import SaloonsRouter from './routes/saloons_route.js';
+import ClientsSummaryRouter from './routes/clientsSummary_route.js';
 import dotenv from "dotenv";
 ///////////////////////////
 
@@ -71,6 +72,7 @@ app.use('/', CodeRouter);
 app.use('/', Found_usRouter);
 app.use('/', ScheduleRouter);
 app.use('/', SaloonsRouter);
+app.use('/', ClientsSummaryRouter);
 // production mode //
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve("./dist", "src", "public", "build")));
