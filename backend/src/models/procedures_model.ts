@@ -23,7 +23,7 @@ procedure.getAllproc = async (additional: number, saloon_id: number, result) => 
         .select(selectColumns)
         .eq("additional", 0)
         .contains("saloon_ids", [saloon_id])
-        .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
+        .order(saloon_id == 3 ? "price_gbp" : "price", { ascending: true });
       result(error, procedures);
       break;
     }
@@ -33,7 +33,7 @@ procedure.getAllproc = async (additional: number, saloon_id: number, result) => 
         .select(selectColumns)
         .eq("additional", 1)
         .contains("saloon_ids", [saloon_id])
-        .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
+        .order(saloon_id == 3 ? "price_gbp" : "price", { ascending: true });
       result(error, procedures);
       break;
     }
@@ -42,7 +42,7 @@ procedure.getAllproc = async (additional: number, saloon_id: number, result) => 
         .from("procedures")
         .select(selectColumns)
         .contains("saloon_ids", [saloon_id])
-        .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
+        .order(saloon_id == 3 ? "price_gbp" : "price", { ascending: true });
       result(error, procedures);
       break;
     }
