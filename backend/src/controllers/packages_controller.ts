@@ -1,151 +1,128 @@
-import package_p from "../models/packages_model.js";
-import { join } from "path";
+import PackageP from "../models/packages_model.js";
 
 // Retrieve packages from the database.
-export function loadPack(saloon_id, res) {
-  package_p.getAllpack(saloon_id, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message:
-          err.message || "Some error occurred while retrieving packages.",
-      });
-    else if (data.length == 0) {
+export async function loadPack(saloon_id, res) {
+  try {
+    const data = await PackageP.getAllPack(saloon_id);
+
+    if (data.length === 0) {
       res.status(404).json({
         success: true,
         message: `No packages found.`,
       });
     } else {
-      // Change price_gbp to price if applicable //
-      data = data.map((item) => {
-        if (item.price_gbp) {
-          const { price_gbp, ...otherProps } = item;
-          return { price: price_gbp, ...otherProps };
-        }
-        return item;
-      });
-      data = data.filter((item) => {
-        if(item.price_gbp !== null && item.price !== null)
-          return item;
-      });
+      const packages = data
+        .map(
+          (item: {
+            id: any;
+            name: any;
+            procedure_id: any;
+            price?: any;
+            price_gbp?: any;
+            amount: any;
+          }) => {
+            if (item.price_gbp) {
+              const { price_gbp, ...otherProps } = item;
+              return { price: price_gbp, ...otherProps };
+            }
+            return item;
+          }
+        )
+        .filter((item) => {
+          if (item.price_gbp !== null && item.price !== null) return item;
+        });
 
-      res.json({ success: true, data: data });
+      res.json({ success: true, data: packages });
     }
-  });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Some error occurred while retrieving packages.",
+    });
+  }
 }
+
 // Find a single package by an id
-export function findOnePack(id: number, res) {
-  package_p.getPackById(id, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while retrieving package.",
-      });
-    else if (data.length == 0) {
+export async function findOnePack(id, res) {
+  try {
+    const data = await PackageP.getPackById(id);
+
+    if (data.length === 0) {
       res.status(404).json({
         success: true,
-        message: `package with id ${id} not found.`,
+        message: `Package with id ${id} not found.`,
       });
     } else {
       res.json({ success: true, data: data });
     }
-  });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message:
+        err.message || "Some error occurred while retrieving the package.",
+    });
+  }
 }
 
-// Update a packages identified by the id in the request
-export function updatePack(
-  pack: {
-    id: number;
-    name: string;
-    procedure_id: number;
-    price: number;
-    price_gbp: number;
-    amount: number;
-  },
-  res
-) {
-  package_p.updatePackById(pack, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while updating package_p.",
-      });
-    else if (data.length == 0) {
+// Update a package identified by the id in the request
+export async function updatePack(pack, res) {
+  try {
+    const data = await PackageP.updatePackById(pack);
+
+    if (data.length === 0) {
       res.status(404).json({
         success: true,
-        message: `package with id ${pack.id} not found.`,
+        message: `Package with id ${pack.id} not found.`,
       });
     } else {
       res.json({ success: true, data: data });
     }
-  });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Some error occurred while updating the package.",
+    });
+  }
 }
 
 // Create a package
-export function createPack(
-  pack: {
-    name: string;
-    procedure_id: number;
-    price: number;
-    price_gbp: number;
-    amount: number;
-  },
-  res
-) {
-  package_p.createPack(pack, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while creating package.",
-      });
-    else {
-      res.json({ success: true, data: data });
-    }
-  });
+export async function createPack(pack, res) {
+  try {
+    const data = await PackageP.createPack(pack);
+    res.json({ success: true, data: data });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Some error occurred while creating the package.",
+    });
+  }
 }
 
-// Delete a packages with the specified id in the request
-export function deletePack(id: number, res) {
-  package_p.deletePackById(id, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while deleting package.",
-      });
-    // else if (data == null) {
-    //   res.status(404).json({
-    //     success: false,
-    //     message: `package_p with id ${id} not found.`
-    //   });
-    // }
-    else {
-      res.json({
-        success: true,
-        message: "deleted package with id: " + id + ", successfully!",
-      });
-    }
-  });
+// Delete a package with the specified id in the request
+export async function deletePack(id, res) {
+  try {
+    await PackageP.deletePackById(id);
+    res.json({
+      success: true,
+      message: "Deleted package with id: " + id + ", successfully!",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Some error occurred while deleting the package.",
+    });
+  }
 }
+
 // Buy packages //
-export function buyPackages(
-  client_id: number,
-  packages: [
-    {
-      package_id: number;
-      amount_bought: number;
-    }
-  ],
-  res
-) {
-  package_p.buyPackages(client_id, packages, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while buying packages.",
-      });
-    else {
-      //TODO: send email to client with promocodes //
-      res.json({ success: true, data: data });
-    }
-  });
+export async function buyPackages(client_id, packages, res) {
+  try {
+    const data = await PackageP.buyPackages(client_id, packages);
+    res.json({ success: true, data: data });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Some error occurred while buying packages.",
+    });
+  }
 }

@@ -43,7 +43,7 @@ user.getUsers = async (
   const filterColumnCondition =
     params.column && params.value ? { [params.column]: params.value } : undefined;
 
-  const isEmployee = params.column === "employee";
+  const isEmployee = params.column == "employee";
 
   if ((params.column && !params.value) || (!params.column && params.value)) {
     return result(null, [], 0);
