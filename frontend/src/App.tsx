@@ -11,7 +11,6 @@ import { WIDTH_QUERY } from './const/widthQuery';
 import { Home } from './pages/Home';
 import { UserInfo } from './pages/UserInfo';
 import { Confirmation } from './pages/Confirmation';
-import { Clients } from './pages/Clients';
 import { Coupons } from './pages/Coupons';
 import { ConfirmationPackage } from './pages/ConfirmationPackage';
 import { Calendar } from './pages/Calendar';
@@ -103,14 +102,13 @@ const App = observer(() => {
             <Route path="/confirmation-package" element={<ConfirmationPackage />} />
             <Route path="/confirmation-certificate" element={<ConfirmationCertificate />} />
             <Route element={<PrivateRouteAdmin />}>
-              <Route path="/clients" element={<Clients />} />
               <Route path="/employees" element={<Employees />} />
             </Route>
             <Route element={<PrivateRouteAdminOrEmployee />}>
               <Route path="/coupons" element={<Coupons />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/scheduling" element={<Scheduling />} />
-              <Route path="/clients-summary" element={<Summary />} />
+              <Route path="/clients" element={<Summary />} />
             </Route>
           </Routes>
         </MainLayout>

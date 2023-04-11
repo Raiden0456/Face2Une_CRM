@@ -8,6 +8,7 @@ import DataTable from 'react-data-table-component';
 import { customTableStyles } from '../utils/customTableStyles';
 import Moment from 'moment';
 import { SelectField } from '../components/base/SelectField';
+import { formatPhoneNumber } from '../utils/formatPhone';
 
 import s from './Summary.scss';
 
@@ -23,6 +24,7 @@ const columns = [
   { name: 'ID', selector: (row: any) => row.id, sortable: true },
   { name: 'Full Name', selector: (row: any) => row.full_name, sortable: true },
   { name: 'Email', selector: (row: any) => row.email, sortable: true },
+  { name: 'Phone', selector: (row: any) => formatPhoneNumber(row.phone), sortable: false },
 ];
 
 const paginationComponentOptions = {
@@ -40,7 +42,7 @@ export const Summary = () => {
   const fetchClients = async (page: number) => {
     setLoading(true);
 
-    clientService.getClientsSummary(page, ROWS_PER_PAGE, filterLike).then((r) => {
+    clientService.getClients(page, ROWS_PER_PAGE, filterLike).then((r) => {
       if (r.success) {
         console.log(r);
         setData(r.data);
