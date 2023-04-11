@@ -36,7 +36,7 @@ client.getClients = async (
     : undefined;
 
   const fields = `
-    id, full_name, email,
+    id, full_name, email, phone,
     appointments(procedures(name), saloons(address), total_price, reservation_date_time, bought_on),
     track_certificates(certificate_id, discount_left, discount_left_gbp, expiry_date, bought_on),
     client_packages(packages(name), amount_left_in, expiry_date, bought_on)
