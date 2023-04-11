@@ -27,38 +27,43 @@ client.getClients = async (
 ) => {
   const { start, end } = getPaginationBounds(params.index, params.per_page);
 
-  const filterLikeCondition = params.filter_like
+  const filterCondition = params.filter_like
     ? "full_name.ilike.%" +
       params.filter_like +
       "%, email.ilike.%" +
       params.filter_like +
-      "%, phone.ilike.%" +
-      params.filter_like +
-      "%"
+      "%, phone.ilike.%"
     : undefined;
 
-  const filterColumnCondition =
-    params.column && params.value ? { [params.column]: params.value } : undefined;
+  const fields = `
+    id, full_name, email,
+    appointments(procedures(name), saloons(address), total_price, reservation_date_time, bought_on),
+    track_certificates(certificate_id, discount_left, discount_left_gbp, expiry_date, bought_on),
+    client_packages(packages(name), amount_left_in, expiry_date, bought_on)
+  `;
 
-  if ((params.column && !params.value) || (!params.column && params.value)) {
-    return result(null, [], 0);
+  const query = supabase
+    .from("clients")
+    .select(fields)
+    .range(start, end);
+
+  const totalQuery = supabase
+    .from("clients")
+    .select("id");
+
+  
+  if (filterCondition) {
+    query.or(filterCondition);
+    totalQuery.or(filterCondition);
   }
-
-  const query = supabase.from("clients").select("*").range(start, end);
-  const totalQuery = supabase.from("clients").select("id");
-
-  if (filterLikeCondition) {
-    query.or(filterLikeCondition);
-    totalQuery.or(filterLikeCondition);
-  } else if (filterColumnCondition) {
+  if (params.column && params.value) {
     query.eq(params.column, params.value);
     totalQuery.eq(params.column, params.value);
   }
-
   const resp = await query;
-  const total = await totalQuery;
+  const totalResp = await totalQuery;
 
-  return result(resp.error, resp.data, total.data.length);
+  return result(resp.error, resp.data, (totalResp.data?.length) ?? 0);
 };
 
 
