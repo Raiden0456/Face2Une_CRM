@@ -4,6 +4,17 @@ import supabase from "./db.js";
 import date from "date-and-time";
 import Procedure from "./procedures_model.js";
 
+// Set interface for the appointment model
+interface appoint {
+  id?: number;
+  procedure_id: number;
+  additional_ids: number[];
+  reservation_date_time: Date;
+  client_id: number;
+  saloon_id: number;
+  total_price: number;
+  total_price_gbp: number;
+}
 class Appointment {
   static async fetchAppointmentDetails(appointment) {
     const { data: proc } = await supabase
@@ -90,18 +101,7 @@ class Appointment {
   }
   //////////////////////////
 
-  static async createAppoint(
-    appoint: {
-      procedure_id: number;
-      additional_ids: number[];
-      reservation_date_time: Date;
-      client_id: number;
-      saloon_id: number;
-      total_price: number;
-      total_price_gbp: number;
-    },
-    result
-  ) {
+  static async createAppoint(appoint: appoint, result) {
     // Get date and time from reservation_date_time //
     let date_r_obj = new Date(appoint.reservation_date_time);
     //////////////////////////////////////////////////
@@ -142,19 +142,7 @@ class Appointment {
     return result(error, data);
   }
 
-  static async updateAppointById(
-    appoint: {
-      id: number;
-      procedure_id: number;
-      additional_ids: number[];
-      reservation_date_time: Date;
-      client_id: number;
-      saloon_id: number;
-      total_price: number;
-      total_price_gbp: number;
-    },
-    result
-  ) {
+  static async updateAppointById(appoint: appoint, result) {
     // Get date and time from reservation_date_time //
     let date_r_obj = new Date(appoint.reservation_date_time);
     //////////////////////////////////////////////////

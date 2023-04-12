@@ -1,5 +1,15 @@
 import PackageP from "../models/packages_model.js";
 
+// Set interface from the model
+interface pack {
+  id?: number;
+  name: string;
+  procedure_id: number;
+  price: number;
+  price_gbp: number;
+  amount: number;
+}
+
 // Retrieve packages from the database.
 export async function loadPack(saloon_id, res) {
   try {
@@ -65,7 +75,7 @@ export async function findOnePack(id, res) {
 }
 
 // Update a package identified by the id in the request
-export async function updatePack(pack, res) {
+export async function updatePack(pack: pack, res) {
   try {
     const data = await PackageP.updatePackById(pack);
 
@@ -86,7 +96,7 @@ export async function updatePack(pack, res) {
 }
 
 // Create a package
-export async function createPack(pack, res) {
+export async function createPack(pack: pack, res) {
   try {
     const data = await PackageP.createPack(pack);
     res.json({ success: true, data: data });

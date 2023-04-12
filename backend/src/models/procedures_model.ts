@@ -1,6 +1,6 @@
 import supabase from "./db.js";
 
-type ProcedureData = {
+interface ProcedureData {
   id?: number;
   name: string;
   description: string;

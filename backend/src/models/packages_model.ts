@@ -1,9 +1,21 @@
 import supabase from "./db.js";
 import voucher_codes from "voucher-code-generator";
 
+
+//Interface for the package model
+
+interface pack {
+  id?: number;
+  name: string;
+  procedure_id: number;
+  price: number;
+  price_gbp: number;
+  amount: number;
+}
+
 class PackageP {
 
-  static async getAllPack(saloon_id) {
+  static async getAllPack(saloon_id: number) {
     const selectFields =
       saloon_id == 3
         ? "id, name, procedure_id, price_gbp, amount"
@@ -17,7 +29,7 @@ class PackageP {
     return package_ps;
   }
 
-  static async getPackById(id) {
+  static async getPackById(id: number) {
     const { data: package_ps, error } = await supabase
       .from("packages")
       .select("*")
@@ -27,7 +39,7 @@ class PackageP {
     return package_ps;
   }
 
-  static async createPack(pack) {
+  static async createPack(pack: pack) {
     const { data, error } = await supabase.from("packages").insert([
       {
         name: pack.name,
@@ -44,7 +56,7 @@ class PackageP {
     return data;
   }
 
-  static async updatePackById(pack) {
+  static async updatePackById(pack: pack) {
     const { data, error } = await supabase
       .from("packages")
       .update({
@@ -61,7 +73,7 @@ class PackageP {
     return data;
   }
 
-  static async deletePackById(id) {
+  static async deletePackById(id: number) {
     const { data, error } = await supabase
       .from("packages")
       .delete()
@@ -71,7 +83,7 @@ class PackageP {
     return data;
   }
 
-  static async buyPackages(client_id, packages) {
+  static async buyPackages(client_id: number, packages) {
     let all_promocodes = [];
     for (let i = 0; i < packages.length; i++) {
       const { data: amount_proc } = await supabase
