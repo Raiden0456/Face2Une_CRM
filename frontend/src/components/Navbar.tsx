@@ -63,9 +63,6 @@ const NavBar = observer(() => {
         <div className={s.Navbar__navigation}>
           {AuthStore.rights === 'admin' && (
             <>
-              <Link to="/clients">
-                <ButtonOutlined>Clients</ButtonOutlined>
-              </Link>
               <Link to="/employees">
                 <ButtonOutlined>Employees</ButtonOutlined>
               </Link>
@@ -82,8 +79,8 @@ const NavBar = observer(() => {
               <Link to="/scheduling">
                 <ButtonOutlined>Scheduling</ButtonOutlined>
               </Link>
-              <Link to="/clients-summary">
-                <ButtonOutlined>Summary</ButtonOutlined>
+              <Link to="/clients">
+                <ButtonOutlined>Clients</ButtonOutlined>
               </Link>
             </>
           )}
