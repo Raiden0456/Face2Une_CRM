@@ -17,7 +17,7 @@ package_p.getAllpack = async (saloon_id: number, result) => {
   let { data: package_ps, error } = await supabase
     .from("packages")
     .select(selectFields)
-    .order(saloon_id === 3 ? "price_gbp" : "price", { ascending: true });
+    .order(saloon_id == 3 ? "price_gbp" : "price", { ascending: true });
   return result(error, package_ps);
 };
 

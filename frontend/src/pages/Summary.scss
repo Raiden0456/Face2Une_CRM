@@ -1,8 +1,8 @@
-.Clients {
+.Summary {
   width: 100%;
 }
 
-.Clients__header {
+.Summary__header {
   margin-bottom: 1rem;
 
   h3 {
@@ -12,7 +12,7 @@
   }
 }
 
-.Clients__table_searchFieldWrapper {
+.Summary__table_searchFieldWrapper {
   display: flex;
   align-items: center;
 
@@ -21,8 +21,18 @@
   }
 }
 
-.Clients__table {
+.Summary__table {
   border: 2px solid #91a0db;
   border-radius: 16px;
   margin: 2rem 0;
+
+  .rdt_TableHeadRow {
+    background-color: #f2f2f2;
+  }
+
+}
+
+.Appointments__table {
+  border: 1px solid #91a0db;
+  border-radius: 16px !important;
 }

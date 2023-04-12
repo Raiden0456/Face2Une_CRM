@@ -2,6 +2,7 @@
 // import client from "./db.js";
 import supabase from "./db.js";
 import voucher_codes from "voucher-code-generator";
+import { getPaginationBounds } from "../utils/pagination.js";
 
 // Constructor
 const coupon = function (coupon) {
@@ -33,17 +34,13 @@ coupon.getAllcoupon = async (
   // set default values //
   var resp;
   let total;
-  let start_from = 0;
-  let to = 100;
-  //******//
 
-  // Pagination set where index = page number and per_page = max amount of entries per page //
-  if (params.index && params.per_page) {
-    start_from = (params.index - 1) * params.per_page;
-    to = Number(start_from) + Number(params.per_page) - 1;
-  }
-  //******//
+  const { start, end } = getPaginationBounds(
+    params.index,
+    params.per_page
+  );
 
+  
   if (params.filter_like) {
     resp = await supabase
       .from("coupons")
@@ -55,7 +52,7 @@ coupon.getAllcoupon = async (
           params.filter_like +
           "%"
       )
-      .range(start_from, to);
+      .range(start, end);
     // Add procedure name to the response //
     for (let i = 0; i < resp.data.length; i++) {
       let { data: procedures, error } = await supabase
@@ -85,8 +82,8 @@ coupon.getAllcoupon = async (
           .from("coupons")
           .select("*")
           .eq(params.column, params.value)
-          .range(start_from, to)
-      : await supabase.from("coupons").select("*").range(start_from, to);
+          .range(start, end)
+      : await supabase.from("coupons").select("*").range(start, end);
     // Add procedure name to the response //
     for (let i = 0; i < resp.data.length; i++) {
       let { data: procedures, error } = await supabase
