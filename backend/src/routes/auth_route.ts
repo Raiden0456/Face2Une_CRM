@@ -12,7 +12,7 @@ router.post('/sign_in', function(req, res){
 });
 router.get('/sign_out', function(req, res){
     // Destroy the session //
-    auth.signOut(res);
+    auth.signOut();
     /////////////////////////
     res.json({ success: true, data: "user signed out" });
 });

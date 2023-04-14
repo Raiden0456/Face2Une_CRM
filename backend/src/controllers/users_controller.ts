@@ -1,10 +1,10 @@
-import user from "../models/users_model.js";
+import User from "../models/users_model.js";
 import Client from "../models/clients_model.js";
 import { join } from "path";
 
 // Find a single user with an id
 export function loadUsers(url_params, res) {
-  user.getUsers(url_params, (err, data) => {
+  User.getUsers(url_params, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -34,7 +34,7 @@ export function updateUser(
   },
   res
 ) {
-  user.updateUserById(_user, async (err, data) => {
+  User.updateUserById(_user, async (err, data) => {
     if (err)
       res.status(500).send({
         message: err.message || "Some error occurred while updating user.",
@@ -116,7 +116,7 @@ export function createUser(
   },
   res
 ) {
-  user.createUser(_user, async (err, data) => {
+  User.createUser(_user, async (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -165,7 +165,7 @@ export function createUser(
 
 // Delete a user with the specified id in the request //
 export function deleteUser(id: number, res) {
-  user.deleteUserById(id, (err, data) => {
+  User.deleteUserById(id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -197,7 +197,7 @@ export function signUp(
   },
   res
 ) {
-  user.signUp(_user, async (err, data) => {
+  User.signUp(_user, async (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -248,7 +248,7 @@ export function signIn(
   _user: { email: string; password: string },
   res
 ) {
-  user.signIn(_user, (err, data) => {
+  User.signIn(_user, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -266,7 +266,7 @@ export function signIn(
 }
 
 export function session_user(res) {
-  user.session_user((err, data) => {
+  User.session_user((err, data) => {
     if (err)
     {
       res.status(500).json({
@@ -280,16 +280,11 @@ export function session_user(res) {
   }
   )
 }
-export function signOut(res) {
-  user.signOut((err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while logging out.",
-      });
-    else {
-      res.json({ success: true, data: data });
-    }
-  });
+export function signOut() {
+  try {
+    User.signOut();
+  } catch (err) {
+    console.log(err);
+  }
 }
 
