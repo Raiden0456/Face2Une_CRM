@@ -1,52 +1,31 @@
-import code from "../models/codes_model.js";
-import { join } from "path";
+import  PromoCode  from "../models/codes_model.js";
 
 // check code type and return the code object //
-export function checkCodeType(email: string, promocode: string, res) {
-  let params = {
+export async function checkCodeType(email: string, promocode: string, res) {
+  const params = {
     email: email,
     promocode: promocode,
   };
-  code.checkCode(params, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while checking code.",
-      });
-    else if (data == null) {
-      res.status(404).json({
-        success: false,
-        message: `No code found.`,
-      });
-    } else {
-      res.json({ success: true, data: data });
-    }
-  });
+  try {
+    const data = await PromoCode.checkCode(params);
+    res.json({ success: true, data: data });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Some error occurred while checking code.",
+    });
+  }
 }
 
 // use code //
-export function useCode(
-  params: {
-    email: string;
-    promocode: string;
-    code_type: string;
-    total_price: number;
-  },
-  res
-) {
-  code.useCode(params, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message: err.message || "Some error occurred while using code.",
-      });
-    else if (data == null) {
-      res.status(404).json({
-        success: false,
-        message: `No code found.`,
-      });
-    } else {
-      res.json({ success: true, data: data });
-    }
-  });
+export async function useCode(params, res) {
+  try {
+    const data = await PromoCode.useCode(params);
+    res.json({ success: true, data: data });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Some error occurred while using code.",
+    });
+  }
 }

@@ -1,164 +1,138 @@
-// import { QueryResult } from "pg";
-// import client from "./db.js";
 import supabase from "./db.js";
 import voucher_codes from "voucher-code-generator";
 import { getPaginationBounds } from "../utils/pagination.js";
 
-// Constructor
-const coupon = function (coupon) {
-  this.id = coupon.id;
-  this.name = coupon.name;
-  this.code = coupon.code;
-  this.procedure_ids = coupon.procedure_ids;
-  this.discount = coupon.discount;
-  this.expiry_date = coupon.expiry_date;
-};
+export interface CouponData {
+  id?: number;
+  name: string;
+  code: string;
+  procedure_ids: number[];
+  discount: number;
+  expiry_date: Date;
+}
 
-// coupon.getAllcoupon = async (result) => {
-//     let { data: coupons, error } = await supabase
-//       .from("coupons")
-//       .select("*")
-//       .order("created_at", { ascending: true });
-//   return result(error, coupons);
-// };
-coupon.getAllcoupon = async (
-  params: {
-    index: number;
-    per_page: number;
-    filter_like: string;
-    column: string;
-    value: any;
-  },
-  result
-) => {
-  // set default values //
-  var resp;
-  let total;
+interface CouponParams {
+  index: number;
+  per_page: number;
+  filter_like: string;
+  column: string;
+  value: any;
+}
 
-  const { start, end } = getPaginationBounds(
-    params.index,
-    params.per_page
-  );
+class Coupon {
+  static async getAllcoupon(params: CouponParams) {
+    const { start, end } = getPaginationBounds(params.index, params.per_page);
+    let resp;
+    let total;
 
-  
-  if (params.filter_like) {
-    resp = await supabase
-      .from("coupons")
-      .select("*")
-      .or(
-        "name.ilike.%" +
-          params.filter_like +
-          "%, code.ilike.%" +
-          params.filter_like +
-          "%"
-      )
-      .range(start, end);
-    // Add procedure name to the response //
-    for (let i = 0; i < resp.data.length; i++) {
-      let { data: procedures, error } = await supabase
-        .from("procedures")
-        .select("name")
-        .in("id", resp.data[i].procedure_ids);
-      resp.data[i].procedure_names = procedures.map((p) => p.name);
+    if (params.filter_like) {
+      resp = await supabase
+        .from("coupons")
+        .select("*")
+        .or(
+          "name.ilike.%" +
+            params.filter_like +
+            "%, code.ilike.%" +
+            params.filter_like +
+            "%"
+        )
+        .range(start, end);
+
+      for (let i = 0; i < resp.data.length; i++) {
+        const { data: procedures } = await supabase
+          .from("procedures")
+          .select("name")
+          .in("id", resp.data[i].procedure_ids);
+        resp.data[i].procedure_names = procedures.map((p) => p.name);
+      }
+
+      total = await supabase
+        .from("coupons")
+        .select("id")
+        .or(
+          "name.ilike.%" +
+            params.filter_like +
+            "%, code.ilike.%" +
+            params.filter_like +
+            "%"
+        );
+    } else {
+      if ((params.column && !params.value) || (!params.column && params.value))
+        return { error: null, data: [], total: 0 };
+
+      resp = params.value
+        ? await supabase
+            .from("coupons")
+            .select("*")
+            .eq(params.column, params.value)
+            .range(start, end)
+        : await supabase.from("coupons").select("*").range(start, end);
+
+      for (let i = 0; i < resp.data.length; i++) {
+        const { data: procedures } = await supabase
+          .from("procedures")
+          .select("name")
+          .in("id", resp.data[i].procedure_ids);
+        resp.data[i].procedure_names = procedures.map((p) => p.name);
+      }
+
+      total = params.value
+        ? await supabase
+            .from("coupons")
+            .select("id")
+            .eq(params.column, params.value)
+        : await supabase.from("coupons").select("id");
     }
-    //******//
 
-    total = await supabase
-      .from("coupons")
-      .select("id")
-      .or(
-        "name.ilike.%" +
-          params.filter_like +
-          "%, code.ilike.%" +
-          params.filter_like +
-          "%"
-      );
-  } else {
-    if ((params.column && !params.value) || (!params.column && params.value))
-      return result(null, [], 0);
-
-    resp = params.value
-      ? await supabase
-          .from("coupons")
-          .select("*")
-          .eq(params.column, params.value)
-          .range(start, end)
-      : await supabase.from("coupons").select("*").range(start, end);
-    // Add procedure name to the response //
-    for (let i = 0; i < resp.data.length; i++) {
-      let { data: procedures, error } = await supabase
-        .from("procedures")
-        .select("name")
-        .in("id", resp.data[i].procedure_ids);
-      resp.data[i].procedure_names = procedures.map((p) => p.name);
-    }
-    //******//
-
-    total = params.value
-      ? await supabase
-          .from("coupons")
-          .select("id")
-          .eq(params.column, params.value)
-      : await supabase.from("coupons").select("id");
+    return { error: resp.error, data: resp.data, total: total.data.length };
   }
-  return result(resp.error, resp.data, total.data.length);
-};
 
-coupon.createCoupon = async (
-  proc: {
-    name: string;
-    code: string;
-    procedure_ids: number[];
-    discount: number;
-    expiry_date: Date;
-  },
-  result
-) => {
-  const { data, error } = await supabase
-    .from("coupons")
-    .insert([
-      {
-        name: proc.name,
-        code: proc.code,
-        procedure_ids: proc.procedure_ids,
-        discount: proc.discount,
-        expiry_date: proc.expiry_date,
-      },
-    ])
-    .select();
-  return result(error, data);
-};
+  static async createCoupon(couponData: CouponData) {
+    const { data, error } = await supabase
+      .from("coupons")
+      .insert([
+        {
+          name: couponData.name,
+          code: couponData.code,
+          procedure_ids: couponData.procedure_ids,
+          discount: couponData.discount,
+          expiry_date: couponData.expiry_date,
+        },
+      ])
+      .select();
 
-coupon.updateCouponById = async (
-  proc: {
-    id: number;
-    name: string;
-    code: string;
-    procedure_ids: number[];
-    discount: number;
-    expiry_date: Date;
-  },
-  result
-) => {
-  const { data, error } = await supabase
-    .from("coupons")
-    .update([
-      {
-        name: proc.name,
-        code: proc.code,
-        procedure_ids: proc.procedure_ids,
-        discount: proc.discount,
-        expiry_date: proc.expiry_date,
-      },
-    ])
-    .eq("id", proc.id)
-    .select();
-  return result(error, data);
-};
+    if (error) {
+      throw error;
+    }
+    return data;
+  }
 
-coupon.deleteCouponById = async (id: number, result) => {
-  const { data, error } = await supabase.from("coupons").delete().eq("id", id);
-  return result(error, data);
-};
+  static async updateCouponById(couponData: CouponData): Promise<Coupon> {
+    const { data, error } = await supabase
+      .from("coupons")
+      .update([
+        {
+          name: couponData.name,
+          code: couponData.code,
+          procedure_ids: couponData.procedure_ids,
+          discount: couponData.discount,
+          expiry_date: couponData.expiry_date,
+        },
+      ])
+      .eq("id", couponData.id)
+      .select();
+    if (error) {
+      throw error;
+    }
+    return data[0];
+  }
 
-export default coupon;
+  static async deleteCouponById(id: number): Promise<void> {
+    const { error } = await supabase.from("coupons").delete().eq("id", id);
+    if (error) {
+      throw error.message;
+    }
+  }
+}
+
+export default Coupon;

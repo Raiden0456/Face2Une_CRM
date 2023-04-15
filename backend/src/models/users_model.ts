@@ -5,237 +5,211 @@ import bcrypt from "bcrypt";
 import { validate } from 'deep-email-validator'
 import { getPaginationBounds } from "../utils/pagination.js";
 
-// Constructor
-const user = function (user) {
-  this.id = user.id;
-  this.first_name = user.first_name;
-  this.last_name = user.last_name;
-  this.phone = user.phone;
-  this.email = user.email;
-  this.password = user.password;
-  this.rights = user.rights;
-};
+interface UserParams {
+  id?: number;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  email: string;
+  password?: string;
+  rights: string;
+}
 
-user.getUsers = async (
-  params: {
-    index: number;
-    per_page: number;
-    filter_like: string;
-    column: string;
-    value: any;
-  },
-  result
-) => {
-  const { start, end } = getPaginationBounds(params.index, params.per_page);
+interface LoginParams {
+  email: string;
+  password: string;
+}
 
-  const filterLikeCondition = params.filter_like
-    ? "first_name.ilike.%" +
-      params.filter_like +
-      "%, last_name.ilike.%" +
-      params.filter_like +
-      "%, email.ilike.%" +
-      params.filter_like +
-      "%, phone.ilike.%" +
-      params.filter_like +
-      "%"
-    : undefined;
+interface GetUsersParams {
+  index: number;
+  per_page: number;
+  filter_like: string;
+  column: string;
+  value: any;
+}
+class User {
+  static async getUsers(params: GetUsersParams, result) {
 
-  const filterColumnCondition =
-    params.column && params.value ? { [params.column]: params.value } : undefined;
+    const { start, end } = getPaginationBounds(params.index, params.per_page);
 
-  const isEmployee = params.column === "employee";
+    const filterLikeCondition = params.filter_like
+      ? "first_name.ilike.%" +
+        params.filter_like +
+        "%, last_name.ilike.%" +
+        params.filter_like +
+        "%, email.ilike.%" +
+        params.filter_like +
+        "%, phone.ilike.%" +
+        params.filter_like +
+        "%"
+      : undefined;
 
-  if ((params.column && !params.value) || (!params.column && params.value)) {
-    return result(null, [], 0);
-  }
+    const filterColumnCondition =
+      params.column && params.value ? { [params.column]: params.value } : undefined;
 
-  const query = supabase.from("users").select("*").range(start, end);
-  const totalQuery = supabase.from("users").select("id");
+    const isEmployee = params.column == "employee";
 
-  if (filterLikeCondition) {
-    query.or(filterLikeCondition);
-    totalQuery.or(filterLikeCondition);
-
-    if (isEmployee) {
-      query.eq("rights", "employee");
-      totalQuery.eq("rights", "employee");
+    if ((params.column && !params.value) || (!params.column && params.value)) {
+      return result(null, [], 0);
     }
-  } else if (filterColumnCondition) {
-    query.eq(params.column, params.value);
-    totalQuery.eq(params.column, params.value);
+
+    const query = supabase.from("users").select("*").range(start, end);
+    const totalQuery = supabase.from("users").select("id");
+
+    if (filterLikeCondition) {
+      query.or(filterLikeCondition);
+      totalQuery.or(filterLikeCondition);
+
+      if (isEmployee) {
+        query.eq("rights", "employee");
+        totalQuery.eq("rights", "employee");
+      }
+    } else if (filterColumnCondition) {
+      query.eq(params.column, params.value);
+      totalQuery.eq(params.column, params.value);
+    }
+
+    const resp = await query;
+    const total = await totalQuery;
+
+    return result(resp.error, resp.data, total.data.length);
   }
 
-  const resp = await query;
-  const total = await totalQuery;
+  static async createUser(params: UserParams, result) {
+    const { first_name, last_name, phone, email, password, rights } = params;
 
-  return result(resp.error, resp.data, total.data.length);
-};
+    const emailValidation = await validate(email);
+    if (!emailValidation.valid) {
+      return result({ message: "Email is not valid" }, null);
+    }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-// Section may be used to create a new user as an admin //
-user.createUser = async (
-  user: {
-    first_name: string;
-    last_name: string;
-    phone: string;
-    email: string;
-    password: string;
-    rights: string;
-  },
-  result
-) => {
-  const { data, error } = await supabase.auth.admin.createUser({
-    email: user.email,
-    password: user.password,
-    email_confirm: true,
-    user_metadata: {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      phone: user.phone,
-      rights: user.rights,
-    },
-  });
-  if (error) {
-    return result(error, null);
+    const { data, error } = await supabase
+      .from("users")
+      .insert({ first_name, last_name, phone, email, password: hashedPassword, rights });
+
+    if (error) return result(error, null);
+
+    return result(null, data);
   }
 
-  const resp = await supabase
-    .from("users")
-    .insert([
-      {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone: user.phone,
-        email: user.email,
-        rights: user.rights,
-        uuid: data.user.id,
-      },
-    ])
-    .select();
-  return result(resp.error, resp.data);
-};
+  static async updateUserById(params: UserParams, result) {
+    const { id, first_name, last_name, phone, email, password, rights } = params;
 
-user.updateUserById = async (
-  user: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    phone: string;
-    email: string;
-    password: string;
-    rights: string;
-  },
-  result
-) => {
-  const resp = await supabase
-    .from("users")
-    .update([
-      {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone: user.phone,
-        email: user.email,
-        rights: user.rights,
-      },
-    ])
-    .eq("id", user.id)
-    .select();
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const { data, error } = await supabase.auth.admin.updateUserById(
-    resp.data[0].uuid,
-    {
-      email: user.email,
-      password: user.password,
+    const resp = await supabase
+      .from("users")
+      .update([
+        {
+          first_name,
+          last_name,
+          phone,
+          email,
+          rights,
+        },
+      ])
+      .eq("id", id)
+      .select();
+
+    const { data, error } = await supabase.auth.admin.updateUserById(resp.data[0].uuid, {
+      email,
+      password: hashedPassword,
       user_metadata: {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone: user.phone,
-        rights: user.rights,
+        first_name,
+        last_name,
+        phone,
+        rights,
       },
-    }
-  );
+    });
 
-  return result(resp.error, resp.data);
-};
-
-user.deleteUserById = async (id: number, result) => {
-  await supabase.from("clients").update({ user_id: null }).eq("user_id", id);
-  const uuid = await supabase.from("users").select("uuid").eq("id", id);
-  await supabase.from("users").delete().eq("id", id);
-  const { data, error } = await supabase.auth.admin.deleteUser(
-    uuid.data[0].uuid
-  );
-  return result(error, data);
-};
-
-user.signUp = async (
-  user: {
-    first_name: string;
-    last_name: string;
-    phone: string;
-    email: string;
-    password: string;
-    rights: string;
-  },
-  result
-) => {
-  const { data, error } = await supabase.auth.signUp({
-    email: user.email,
-    password: user.password,
-    options: {
-      data: {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone: user.phone,
-        rights: user.rights,
-      },
-      emailRedirectTo: process.env.CORS_ORIGIN + "/auth/Signin",
-    },
-  });
-  if (error) {
-    return result(error, null);
+    return result(resp.error, resp.data);
   }
 
-  const resp = await supabase
-    .from("users")
-    .insert([
-      {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        phone: user.phone,
-        email: user.email,
-        rights: user.rights,
-        uuid: data.user.id,
+  static async deleteUserById(id: number, result) {
+    await supabase.from("clients").update({ user_id: null }).eq("user_id", id);
+    const uuid = await supabase.from("users").select("uuid").eq("id", id);
+    await supabase.from("users").delete().eq("id", id);
+    const { data, error } = await supabase.auth.admin.deleteUser(
+      uuid.data[0].uuid
+    );
+    return result(error, data);
+  }
+
+  static async getUserById(id: number, result) {
+    const resp = await supabase.from("users").select("*").eq("id", id);
+    return result(resp.error, resp.data);
+  }
+
+  static async signUp(params: UserParams, result) {
+    const { first_name, last_name, phone, email, password, rights } = params;
+
+    const emailValidation = await validate(email);
+    if (!emailValidation.valid) {
+      return result({ message: "Email is not valid" }, null);
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: hashedPassword,
+      options: {
+        data: {
+          first_name,
+          last_name,
+          phone,
+          rights,
+        },
+        emailRedirectTo: process.env.CORS_ORIGIN + "/auth/Signin",
       },
-    ])
-    .select();
-  return result(resp.error, resp.data);
-};
+    });
 
-// Login for sign in page //
-user.signIn = async (
-  user: {
-    email: string;
-    password: string;
-  },
-  result
-) => {
-  const resp = await supabase.auth.signInWithPassword({
-    email: user.email,
-    password: user.password,
-  });
-  return result(resp.error, resp.data);
-};
+    if (error) {
+      return result(error, null);
+    }
 
-// session user //
-user.session_user = async (result) => {
-  const session = await supabase.auth.getSession();
-  return result(session.error, session.data.session);
-};
+    const resp = await supabase
+      .from("users")
+      .insert([
+        {
+          first_name,
+          last_name,
+          phone,
+          email,
+          rights,
+          uuid: data.user.id,
+        },
+      ])
+      .select();
 
-// sign out //
-user.signOut = async (result) => {
-  const resp = await supabase.auth.signOut();
-};
+    return result(resp.error, resp.data);
+  }
 
-export default user;
+  static async signIn(params: LoginParams, result) {
+    const { email, password } = params;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      return result(error, null);
+    }
+
+    return result(null, data);
+  }
+
+  static async session_user(result) {
+    const session = await supabase.auth.getSession();
+    return result(session.error, session.data.session);
+  }
+
+  static async signOut() {
+    supabase.auth.signOut();
+  }
+}
+
+export default User;
