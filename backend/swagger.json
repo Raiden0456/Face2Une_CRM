@@ -25,6 +25,15 @@
           "get": {
             "tags": ["Procedures"],
             "summary": "Get all main procedures in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon) not related to the id you get in the response",
+              "required": false,
+              "type": "integer"
+            }
+            ],
             "responses": {
               "200": {
                 "description": "Returns all main procedures in database in JSON format"
@@ -36,6 +45,15 @@
           "get": {
             "tags": ["Procedures"],
             "summary": "Get all optional procedures in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon) not related to the id you get in the response",
+              "required": false,
+              "type": "integer"
+            }
+            ],
             "responses": {
               "200": {
                 "description": "Returns all optional procedures in database in JSON format"
@@ -158,7 +176,13 @@
                 "type": "integer",
                 "uniqueItems": false
               }
-            }
+            },
+            {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon) not related to the id you get in the response",
+              "required": false,
+              "type": "integer"              }
             ],
             "responses": {
               "200": {
@@ -171,6 +195,15 @@
           "get": {
             "tags": ["Packages"],
             "summary": "Get all packages in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon) not related to the id you get in the response",
+              "required": false,
+              "type": "integer"
+            }
+            ],
             "responses": {
               "200": {
                 "description": "Returns all packages in database in JSON format"
@@ -323,6 +356,14 @@
           "get": {
             "tags": ["Certificates"],
             "summary": "Get all certificates in db",
+            "parameters": [
+              {
+              "in": "query",
+              "name": "saloon_id",
+              "description": "id of studio(saloon) not related to the id you get in the response",
+              "required": false,
+              "type": "integer"              }
+            ],
             "responses": {
               "200": {
                 "description": "Returns all certificates in database in JSON format"
@@ -1059,6 +1100,50 @@
             }
           }
         },
+        "/clients_summary": {
+          "get": {
+            "tags": ["Clients Summary"],
+            "summary": "Get Clients Summary",
+            "parameters":[
+              {
+                "in": "query",
+                "name": "index",
+                "description": "starting index(starting from 1)",
+                "required": false,
+                "default": 1,
+                "schema": {
+                  "type": "number"
+                }
+                
+              },
+              {
+                "in": "query",
+                "name": "per_page",
+                "description": "max clients per page",
+                "required": false,
+                "default": 10,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              {
+                "in": "query",
+                "name": "filter_like",
+                "description": "multifilter 'like' for all columns",
+                "required": false,
+                "default": "",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns Client Summary in database in JSON format"
+              }
+            }
+          } 
+        },
         "/clients/{clientid}": {
           "get": {
             "tags": ["Clients"],
@@ -1159,9 +1244,31 @@
             }
           }
         },
+        "/add_client_order": {
+          "post": {
+            "tags": ["Clients"],
+            "summary": "Add order to client",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of client order",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ClientOrder"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Add order to client in database using JSON format"
+              }
+            }
+          }
+        },
         "/sign_up": {
           "post": {
-            "tags": ["Authintication"],
+            "tags": ["Authentication"],
             "summary": "Register new user",
             "parameters": [
               {
@@ -1183,7 +1290,7 @@
         },
         "/sign_in": {
           "post": {
-            "tags": ["Authintication"],
+            "tags": ["Authentication"],
             "summary": "Sign in as user",
             "parameters": [
               {
@@ -1205,7 +1312,7 @@
         },
         "/sign_out": {
           "get": {
-            "tags": ["Authintication"],
+            "tags": ["Authentication"],
             "summary": "Sign out",
             "responses": {
               "200": {
@@ -1216,7 +1323,7 @@
         },
         "/session_user": {
           "get": {
-            "tags": ["Authintication"],
+            "tags": ["Authentication"],
             "summary": "Get current session user details",
             "responses": {
               "200": {
@@ -1491,6 +1598,117 @@
               }
             }
           }
+        },
+        "/saloons": {
+          "get": {
+            "tags": ["Saloons"],
+            "summary": "Get Saloons in db",
+            "responses": {
+              "200": {
+                "description": "Returns Saloons in database in JSON format"
+              }
+            }
+          }
+        },
+        "/saloons/{saloonid}": {
+          "get": {
+            "tags": ["Saloons"],
+            "summary": "Get Saloon by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "saloonid",
+              "description": "id of saloon",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Returns Saloon in database in JSON format"
+              }
+            }
+          }
+        },
+        "/create_saloon": {
+          "post": {
+            "tags": ["Saloons"],
+            "summary": "Create new saloon",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of saloon",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Saloon"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Create a saloon using JSON format"
+              }
+            }
+          }
+        },
+        "/update_saloon": {
+          "post": {
+            "tags": ["Saloons"],
+            "summary": "Update saloon",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of saloon",
+              "required": true,
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/definitions/Saloon"
+                  }
+                ]
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Update a saloon using JSON format"
+              }
+            }
+          }
+        },
+        "/delete_saloon/{saloonid}": {
+          "delete": {
+            "tags": ["Saloons"],
+            "summary": "Delete saloon by id",
+            "parameters": [
+              {
+              "in": "path",
+              "name": "saloonid",
+              "description": "id of saloon",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Delete a saloon in database by id"
+              }
+            }
+          }
         }
       },
 
@@ -1536,6 +1754,9 @@
           "price": {
             "type": "number"
           },
+          "price_gbp": {
+            "type": "number"
+          },
           "amount": {
             "type": "number"
           }
@@ -1547,6 +1768,9 @@
             "type": "string"
           },
           "price": {
+            "type": "number"
+          }, 
+          "price_gbp": {
             "type": "number"
           }
         }
@@ -1648,6 +1872,25 @@
           }
         }
       },
+      "ClientOrder": {
+        "properties": {
+          "client_id": {
+            "type": "integer",
+            "required": true
+          },
+          "email": {
+            "type": "string"
+          },
+          "package_id": {
+            "type": "integer",
+            "default": null
+          },
+          "certificate_id": {
+            "type": "number",
+            "default": null
+          }
+        }
+      },
       "Appointment": {
         "properties": {
           "procedure_id": {
@@ -1691,6 +1934,25 @@
           "saloon_id": {
             "type": "integer",
             "default": "1"
+          }
+        }
+      },
+      "Saloon": {
+        "properties":{
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "index": {
+            "type": "string"
+          },
+          "image_src": {
+            "type": "string"
           }
         }
       }

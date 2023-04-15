@@ -10,6 +10,8 @@ type Action =
   | 'addItem'
   | 'addAppointment'
   | 'scheduling'
+  | 'clientOrder'
+  | 'selectSaloon'
   | null;
 
 interface IModalStatus {
@@ -35,15 +37,22 @@ export interface IScheduling {
   edit: boolean;
 }
 
+export interface IClientOrder {
+  clientId: number | null;
+  email: string;
+}
+
 export interface IModalStore {
   modalStatus: IModalStatus;
   deleteItem: IDeleteItem;
   addItem: IAddItem;
   scheduling: IScheduling;
+  clientOrder: IClientOrder;
   setModalStatus: (status: IModalStatus) => void;
   setDeleteItem: (deleteItem: IDeleteItem) => void;
   setAddItem: (addItem: IAddItem) => void;
   setScheduling: (scheduling: IScheduling) => void;
+  setClientOrder: (clientOrder: IClientOrder) => void;
 }
 
 export const ModalStore = observable<IModalStore>({
@@ -65,6 +74,10 @@ export const ModalStore = observable<IModalStore>({
   scheduling: {
     schedulingType: '',
     edit: false,
+  },
+  clientOrder: {
+    clientId: null,
+    email: '',
   },
   setModalStatus({ open, action, redirectUrl, procedure }) {
     this.modalStatus = {
@@ -91,6 +104,12 @@ export const ModalStore = observable<IModalStore>({
     this.scheduling = {
       schedulingType,
       edit,
+    };
+  },
+  setClientOrder({ clientId, email }) {
+    this.clientOrder = {
+      clientId,
+      email,
     };
   },
 });

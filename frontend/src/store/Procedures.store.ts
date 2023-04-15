@@ -27,6 +27,15 @@ export type CertificatesData = {
   price_gbp?: number;
 };
 
+export type SaloonsData = {
+  id: number;
+  address: string;
+  image_src: string;
+  country?: string;
+  city?: string;
+  index?: string;
+};
+
 interface IProceduresStatus {
   proceduresData?: ProcedureData[] | null;
   optionalProceduresData?: ProcedureData[] | null;
@@ -34,12 +43,21 @@ interface IProceduresStatus {
   certificatesData?: CertificatesData[] | null;
 }
 
+interface ISaloonsData {
+  saloonsData?: SaloonsData[] | null;
+}
+
 export interface IProceduresStore {
+  saloonsStatus: ISaloonsData;
   proceduresStatus: IProceduresStatus;
   setProceduresStatus: (status: IProceduresStatus) => void;
+  setSaloonsStatus: (status: ISaloonsData) => void;
 }
 
 export const ProceduresStore = observable<IProceduresStore>({
+  saloonsStatus: {
+    saloonsData: null,
+  },
   proceduresStatus: {
     proceduresData: null,
     optionalProceduresData: null,
@@ -52,6 +70,11 @@ export const ProceduresStore = observable<IProceduresStore>({
       optionalProceduresData,
       packagesData,
       certificatesData,
+    };
+  },
+  setSaloonsStatus({ saloonsData }) {
+    this.saloonsStatus = {
+      saloonsData,
     };
   },
 });

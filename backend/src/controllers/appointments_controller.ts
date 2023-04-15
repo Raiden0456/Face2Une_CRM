@@ -1,8 +1,8 @@
-import appointment from "../models/appointments_model.js";
+import Appointment from "../models/appointments_model.js";
 import { join } from "path";
 // Retrieve appointments from the database.
 export function loadAppoint(url_params, res) {
-  appointment.getAppointments(url_params, (err, data) => {
+  Appointment.getAppointments(url_params, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -28,15 +28,17 @@ export async function updateAppoint(
     additional_ids: [];
     reservation_date_time: Date;
     client_id: number;
-    total_price: number;
+    total_price: any;
+    total_price_gbp: any;
     saloon_id: number;
   },
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids);
+  appoint.total_price = await Appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 1);
+  appoint.total_price_gbp = await Appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 3);
   
-  appointment.updateAppointById(appoint, (err, data) => {
+  Appointment.updateAppointById(appoint, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -61,16 +63,17 @@ export async function createAppoint(
     additional_ids: [];
     reservation_date_time: Date;
     client_id: number;
-    total_price: number;
+    total_price: any;
+    total_price_gbp: any;
     saloon_id: number;
     new_client: boolean;
   },
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids);
-
-  appointment.createAppoint(appoint, (err, data) => {
+  appoint.total_price = await Appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 1);
+  appoint.total_price_gbp = await Appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 3);
+  Appointment.createAppoint(appoint, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -85,7 +88,7 @@ export async function createAppoint(
 
 // Delete an appointment with the specified id in the request
 export function deleteAppoint(id: number, res) {
-  appointment.deleteAppointById(id, (err, data) => {
+  Appointment.deleteAppointById(id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,

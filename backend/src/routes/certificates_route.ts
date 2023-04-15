@@ -5,7 +5,7 @@ import * as cert from '../controllers/certificates_controller.js';
 //Routing for the certificates//
 
 router.get('/cert', function(req, res){
-    cert.loadCert(req, res);
+    cert.loadCert(req.query.saloon_id, res);
 });
 router.get('/cert/:certid', function(req, res){
     cert.findOneCert(req.params.certid, res);
@@ -22,7 +22,7 @@ router.delete('/delete_cert/:certid', function(req, res){
 
 // buy and use certificates //
 router.post('/buy_cert', function(req, res){
-    cert.buyCertages(req.body.client_id, req.body.certificate_id, res);
+    cert.buyCertificates(req.body.client_id, req.body.certificate_id, res);
 });
 
 

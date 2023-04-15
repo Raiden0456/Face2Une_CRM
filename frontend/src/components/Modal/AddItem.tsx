@@ -12,7 +12,6 @@ import { filterObjectToArray } from '../../utils/funcs';
 import { Checkbox, Radio } from '../base/Checkbox';
 import ReactDatePicker from 'react-datepicker';
 import { IconEyeClosed, IconEyeOpened } from '../../assets/svg';
-import { saloon_ids } from '../../utils/staticData';
 import { UserService } from '../../service/UserService';
 import { AppointmentService } from '../../service/AppointmentService';
 import { SelectField } from '../base/SelectField';
@@ -226,7 +225,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                   />
                   <br />
                   <div className={s.AddItemForm__procs}>
-                    <h3>Main Procedures:</h3>
+                    <h3>Tunes:</h3>
                     {ProceduresStore.proceduresStatus.proceduresData?.map((proc, i) => (
                       <Checkbox
                         style={{ marginRight: '0.5rem' }}
@@ -239,7 +238,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                   </div>
                   <br />
                   <div className={s.AddItemForm__procs}>
-                    <h3>Additional Procedures:</h3>
+                    <h3>Add-ons:</h3>
                     {ProceduresStore.proceduresStatus.optionalProceduresData?.map((proc, i) => (
                       <Checkbox
                         style={{ marginRight: '0.5rem' }}
@@ -396,7 +395,9 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                 <div>
                   <div className={s.AddItemForm_radios}>
                     <h3>Available Studios:</h3>
-                    {saloon_ids.map((saloon) => (
+
+                    {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
+
                       <Radio
                         name="saloons"
                         value={saloon.id}
@@ -405,7 +406,7 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                         key={saloon.id}
                         required
                       >
-                        {saloon.text}
+                        {saloon.address}
                       </Radio>
                     ))}
                   </div>

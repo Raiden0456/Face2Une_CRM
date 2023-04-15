@@ -6,7 +6,7 @@ import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
 import { ButtonOutlined } from './base/Button';
 
-const adminPaths = ['/clients', '/calendar', '/employees', '/coupons', '/scheduling'];
+const adminPaths = ['/clients', '/calendar', '/employees', '/coupons', '/scheduling', '/clients-summary'];
 const confirmationPaths = ['/confirmation', '/confirmation-package', '/confirmation-certificate'];
 
 const NavBar = observer(() => {
@@ -19,7 +19,7 @@ const NavBar = observer(() => {
           <div>{AuthStore.authorized === 'auth' && <p>{AuthStore.email}</p>}</div>
           <div className={s.Navbar__header_logo}>
             <Link to="/" style={{ textAlign: 'center', textDecoration: 'none', color: '#000' }}>
-              Face2Une
+              FaceStellar
             </Link>
           </div>
           <div>
@@ -63,9 +63,6 @@ const NavBar = observer(() => {
         <div className={s.Navbar__navigation}>
           {AuthStore.rights === 'admin' && (
             <>
-              <Link to="/clients">
-                <ButtonOutlined>Clients</ButtonOutlined>
-              </Link>
               <Link to="/employees">
                 <ButtonOutlined>Employees</ButtonOutlined>
               </Link>
@@ -81,6 +78,9 @@ const NavBar = observer(() => {
               </Link>
               <Link to="/scheduling">
                 <ButtonOutlined>Scheduling</ButtonOutlined>
+              </Link>
+              <Link to="/clients">
+                <ButtonOutlined>Clients</ButtonOutlined>
               </Link>
             </>
           )}

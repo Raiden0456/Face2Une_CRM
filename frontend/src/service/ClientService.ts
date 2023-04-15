@@ -8,6 +8,13 @@ export interface NewClient {
   email: string;
 }
 
+export interface IAddClientOrder {
+  client_id: number;
+  email: string;
+  package_id?: number | null;
+  certificate_id?: number | null;
+}
+
 export class ClientService {
   async getClient(email: string) {
     const r = await JSONFetchGet(`clients?column=email&value=${email}`);
@@ -53,6 +60,28 @@ export class ClientService {
       return r;
     } else {
       ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl });
+    }
+  }
+
+  async addClientOrder(addClientOrder: IAddClientOrder) {
+    const r = await JSONFetch('add_client_order', addClientOrder);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/clients' });
+    }
+  }
+
+  async getClientsSummary(index: number, perPage: number, filterLike?: string | boolean) {
+    const r = await JSONFetchGet(
+      `clients_summary?index=${index}&per_page=${perPage}${filterLike ? `&filter_like=${filterLike}` : ''}`,
+    );
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/summary' });
     }
   }
 }

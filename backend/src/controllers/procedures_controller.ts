@@ -1,9 +1,9 @@
-import procedure from "../models/procedures_model.js";
+import Procedure from "../models/procedures_model.js";
 import { join } from "path";
 
 // Retrieve procedures from the database.
-export function loadProc(add = 0, res) {
-  procedure.getAllproc(add, (err, data) => {
+export function loadProc(add = 0, saloon_id, res) {
+  Procedure.getAllproc(add, saloon_id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -26,29 +26,38 @@ export function loadProc(add = 0, res) {
           break;
       }
     } else {
+      // Change price_gbp to price if applicable //
+      data = data.map((item) => {
+        if (item.price_gbp) {
+          const { price_gbp, ...otherProps } = item;
+          return { price: price_gbp, ...otherProps };
+        }
+        return item;
+      });      
       res.json({ success: true, data: data });
     }
   });
 }
 
 // Get total cost of procedures by array of their ids
-export function totalCost(proc_ids: number[], res) {
-  procedure.getTotalCost(proc_ids, (data) => {
-    // if (err)
-    //   res.status(500).json({
-    //     success: false,
-    //     message:
-    //       err.message || "Some error occurred while counting total cost.",
-    //   });
-    // else {
-      res.json({ success: true, data: data });
-    // }
+export function totalCost(proc_ids: number[], saloon_id: number, res) {
+  if (!saloon_id) saloon_id = 1;
+  Procedure.getTotalCost(proc_ids, saloon_id, (err, data) => {
+    if (err)
+      res.status(500).json({
+        success: false,
+        message:
+          err.message || "Some error occurred while counting total cost.",
+      });
+    else {
+    res.json({ success: true, data: data });
+    }
   });
 }
 
 // Find a single procedure with an id
 export function findOneProc(id: number, res) {
-  procedure.getProcById(id, (err, data) => {
+  Procedure.getProcById(id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -80,7 +89,7 @@ export function updateProc(
   },
   res
 ) {
-  procedure.updateProcById(proc, (err, data) => {
+  Procedure.updateProcById(proc, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -110,7 +119,7 @@ export function createProc(
   },
   res
 ) {
-  procedure.createProc(proc, (err, data) => {
+  Procedure.createProc(proc, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,
@@ -124,7 +133,7 @@ export function createProc(
 
 // Delete a procedure with the specified id in the request
 export function deleteProc(id: number, res) {
-  procedure.deleteProcById(id, (err, data) => {
+  Procedure.deleteProcById(id, (err, data) => {
     if (err)
       res.status(500).json({
         success: false,

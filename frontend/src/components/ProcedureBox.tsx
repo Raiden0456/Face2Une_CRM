@@ -15,7 +15,6 @@ import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
-import { saloon_ids } from '../utils/staticData';
 
 import s from './ProcedureBox.scss';
 
@@ -36,8 +35,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
   const [saloonIds, setSaloonIds] = useState<number[]>([]);
 
   // Add Passengers State
-  const [procedures, setProcedures] = useState<any>(() => ProceduresStore.proceduresStatus.proceduresData || null); // TBD TS
-  const [items, setItems] = useState<any>([]); // TBD TS
+  const [items, setItems] = useState<any>([]);
 
   // Edit Button
   async function handleSubmit(event: any) {
@@ -169,17 +167,17 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
                   <br />
                   <div className={s.BookingBoxForm__saloons}>
                     <h3>Available Studios:</h3>
-                    {saloon_ids.map((saloon) => (
+                    {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
                       <Checkbox
                         style={{ marginRight: '0.5rem' }}
                         onChange={(e: boolean) =>
                           e === true
-                            ? setSaloonIds([...saloonIds, saloon.value])
-                            : setSaloonIds([...saloonIds].filter((el) => el !== saloon.value))
+                            ? setSaloonIds([...saloonIds, saloon.id])
+                            : setSaloonIds([...saloonIds].filter((el) => el !== saloon.id))
                         }
                         key={saloon.id}
                       >
-                        {saloon.text}
+                        {saloon.address}
                       </Checkbox>
                     ))}
                   </div>
@@ -247,7 +245,12 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
 
       {type === 'modal' && ProceduresStore.proceduresStatus.optionalProceduresData && (
         <>
-          <AddPassanger setProcedures={setProcedures} items={items} setItems={setItems} />
+          <AddPassanger
+            procedures={ProceduresStore.proceduresStatus.proceduresData}
+            items={items}
+            setItems={setItems}
+          />
+
           <div className={s.BookingBox__datepicker}>
             <p style={{ marginBottom: '5px' }}>Choose Date:</p>
             <DatePicker
