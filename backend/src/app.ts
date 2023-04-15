@@ -24,6 +24,7 @@ import foundUsRouter from "./routes/found_us_route.js";
 import scheduleRouter from "./routes/schedule_route.js";
 import saloonsRouter from "./routes/saloons_route.js";
 import clientsSummaryRouter from "./routes/clientsSummary_route.js";
+import sumupRouter from "./routes/sumup_route.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -73,6 +74,7 @@ app.use("/", foundUsRouter);
 app.use("/", scheduleRouter);
 app.use("/", saloonsRouter);
 app.use("/", clientsSummaryRouter);
+app.use("/", sumupRouter);
 
 // Production mode
 if (process.env.NODE_ENV === "production") {
