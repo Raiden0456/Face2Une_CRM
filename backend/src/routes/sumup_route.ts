@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { createCheckout } from '../services/sumup.js';
+import { createCheckout, getCheckoutStatus } from '../services/sumup.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -20,17 +20,17 @@ router.post('/payment', async (req: Request, res: Response) => {
 });
 
 router.post('/webhook', async (req: Request, res: Response) => {
-  const eventType = req.header('X-Event-Type');
-  const eventData = req.body;
+  const eventType = req.body.event_type;
+  const checkoutId = req.body.id;
 
   try {
-    // Handle the event based on its type (e.g., payment.succeeded, payment.failed)
-    if (eventType === 'payment.succeeded') {
-      // Update your application with the successful payment
-      console.log('Payment succeeded:', eventData);
-    } else if (eventType === 'payment.failed') {
-      // Handle a failed payment
-      console.log('Payment failed:', eventData);
+    // Handle the event based on its type
+    if (eventType === 'CHECKOUT_STATUS_CHANGED') {
+      // Get the updated checkout status from SumUp's API
+      const checkoutStatus = await getCheckoutStatus(checkoutId);
+
+      // Update your application based on the new status
+      // (e.g., mark an order as paid, update the user's account, send an email receipt)
     }
 
     // Respond to SumUp with a 200 status code to acknowledge receipt of the event
@@ -40,6 +40,7 @@ router.post('/webhook', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to process the webhook event.' });
   }
 });
+
 
 
 export default router;
