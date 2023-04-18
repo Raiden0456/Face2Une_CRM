@@ -6,11 +6,9 @@ dotenv.config();
 const router = express.Router();
 
 router.post('/payment', async (req: Request, res: Response) => {
-  //const { amount, currency } = req.body;
-  const amount = 1;
-  const currency = 'EUR';
+  const { amount, currency } = req.body;
   try {
-    const returnUrl = process.env.CORS_ORIGIN + '/webhook';
+    const returnUrl = process.env.SUMUP_TEST_REDIRECT_URI;
     const checkoutUrl = await createCheckout(amount, currency, returnUrl);
     res.json({ checkoutUrl });
   } catch (error) {
@@ -30,6 +28,7 @@ router.post('/webhook', async (req: Request, res: Response) => {
       const checkoutStatus = await getCheckoutStatus(checkoutId);
 
       // Update application based on the new status
+      // (e.g., mark an order as paid, update the user's account, send an email receipt)
       switch (checkoutStatus) {
         case 'PENDING':
           console.log('The payment is pending.');
@@ -52,7 +51,7 @@ router.post('/webhook', async (req: Request, res: Response) => {
         default:
           console.log('Unknown checkout status.');
       }
-      // (e.g., mark an order as paid, update the user's account, send an email receipt)
+      
     }
     
 

@@ -1709,9 +1709,52 @@
               }
             }
           }
+        },
+        "/payment": {
+          "post": {
+            "tags": ["SumUp"],
+            "summary": "Proceed to payment",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of payment",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Payment"
+              }
+            }
+            ],
+            "responses": {
+              "200": {
+                "description": "Proceed to payment using JSON format"
+              }
+            }
+          }
+        },
+        "/webhook": {
+          "post": {
+            "tags": ["SumUp"],
+            "summary": "Webhook for SumUp",
+            "parameters": [
+              {
+              "in": "body",
+              "name": "body",
+              "description": "object of webhook",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Webhook"
+              }
+            }
+            ], 
+            "responses": {
+              "200": {
+                "description": "Webhook for SumUp"
+              }
+            }
+          }
         }
       },
-
     "definitions": {
       "Procedure": {
         "properties": {
@@ -1953,6 +1996,26 @@
           },
           "image_src": {
             "type": "string"
+          }
+        }
+      },
+      "Payment": {
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
+      "Webhook": {
+        "properties": {
+          "event_type": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
           }
         }
       }
