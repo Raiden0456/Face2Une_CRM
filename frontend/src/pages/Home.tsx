@@ -63,7 +63,7 @@ export const Home = ({ loading }: { loading: boolean }) => {
               ) : (
                 <>
                   <ButtonContained width="200px" style={{ marginBottom: '1rem' }} onClick={onPromo}>
-                    Use My Code
+                    Check My Code
                   </ButtonContained>
                   {displayInput && (
                     <>
@@ -80,11 +80,22 @@ export const Home = ({ loading }: { loading: boolean }) => {
                         <>
                           <h3>{promocode.name}</h3>
 
-                          <p>Promocode type: {promocode.code_type}</p>
-                          <p>Discount: {promocode.discount}</p>
+                          <div>
+                            <u>Promocode type:</u> {promocode.code_type}
+                          </div>
+                          <div>
+                            <u>Discount:</u> {promocode.discount}
+                          </div>
 
-                          {/* TO-DO: Display proc-s */}
-                          <p>Procedures: {promocode.procedure_ids}</p>
+                          <div>
+                            <u>Procedures:</u>
+                            {promocode.procedure_ids
+                              .map(
+                                (id: number) =>
+                                  findElementById(ProceduresStore.proceduresStatus.proceduresData, id).name,
+                              )
+                              .join(', ')}
+                          </div>
                         </>
                       )}
                     </div>
