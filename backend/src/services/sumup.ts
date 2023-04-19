@@ -1,5 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import voucher_codes from "voucher-code-generator";
 dotenv.config();
 
 const sumupApiBaseURL = "https://api.sumup.com";
@@ -37,10 +38,17 @@ async function getAccessToken(): Promise<string> {
 export async function createCheckout(
   amount: number,
   currency: string,
-  returnUrl: string
-): Promise<string> {
+  returnUrl: string,
+  client_id: string,
+  order_type: string,
+): Promise<object> {
   const affiliateKey = process.env.SUMUP_AFFILIATE_TEST_KEY;
   const checkoutURL = `${sumupApiBaseURL}/v0.1/checkouts`;
+  const unique_code = voucher_codes.generate({
+    length: 4,
+    count: 1,
+  });
+  const checkout_reference = `${client_id}${order_type}${unique_code[0]}`;
 
   try {
     const accessToken = await getAccessToken();
@@ -48,10 +56,10 @@ export async function createCheckout(
     const response = await axios.post(
       checkoutURL,
       {
-        checkout_reference: "FACESTELLAR", // TODO: generate a unique reference, e.g using transaction type(pack,cert,appointement) and price
+        checkout_reference: checkout_reference, // Unique reference for the checkout
         amount,
         currency,
-        pay_to_email: "dev_8qpuaubv@sumup.com",
+        pay_to_email: process.env.SUMUP_TEST_PAYTOEMAIL,
         return_url: returnUrl, // URL SumUp directs info about the payment status 
       },
       {
@@ -62,8 +70,10 @@ export async function createCheckout(
         },
       }
     );
-    console.log("response", response);
-    return response.data.checkout_url;
+
+    const checkoutRedirectURL = checkoutURL + "/" + response.data.id;
+    const retObject = {checkoutRedirectURL: checkoutRedirectURL, checkoutId: response.data.id, checkout_reference: response.data.checkout_reference}
+    return retObject
   } catch (error) {
     console.log("error", error);
     throw new Error(`Failed to create SumUp checkout: ${error.message}`);

@@ -2006,6 +2006,12 @@
           },
           "currency": {
             "type": "string"
+          },
+          "client_id": {
+            "type": "integer"
+          },
+          "order_type": {
+            "type": "string"
           }
         }
       },

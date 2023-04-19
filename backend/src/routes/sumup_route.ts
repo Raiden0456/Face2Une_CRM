@@ -6,11 +6,11 @@ dotenv.config();
 const router = express.Router();
 
 router.post('/payment', async (req: Request, res: Response) => {
-  const { amount, currency } = req.body;
+  const { amount, currency, client_id, order_type } = req.body;
   try {
     const returnUrl = process.env.SUMUP_TEST_REDIRECT_URI;
-    const checkoutUrl = await createCheckout(amount, currency, returnUrl);
-    res.json({ checkoutUrl });
+    const data = await createCheckout(amount, currency, returnUrl, client_id, order_type);
+    res.json(data);
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Failed to initiate the payment.' });
