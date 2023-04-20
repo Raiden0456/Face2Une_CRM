@@ -78,15 +78,29 @@ class PromoCode {
       if (certificate.length > 0) {
         if (
           certificate[0].expiry_date < Date.now() ||
-          certificate[0].discount_left == 0
+          (certificate[0].discount_left == 0 && certificate[0].dicount_left_gbp == 0)
         ) {
           throw { message: "Certificate expired/exhausted" };
         }
-        return {
-          code_type: "certificate",
-          name: certificate[0].name,
-          discount_left: certificate[0].discount_left,
-        };
+        if (certificate[0].discount_left != 0)
+        {
+          return {
+            code_type: "certificate",
+            name: certificate[0].name,
+            discount_left: certificate[0].discount_left,
+            currency: 'eur',
+          };
+        }
+        else 
+        {
+          return {
+            code_type: "certificate",
+            name: certificate[0].name,
+            discount_left: certificate[0].discount_left_gbp,
+            currency: 'gbp',
+          };
+        }
+        
       }
     } catch (error) {
       throw error;
