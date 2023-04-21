@@ -83,19 +83,32 @@ export const Home = ({ loading }: { loading: boolean }) => {
                           <div>
                             <u>Promocode type:</u> {promocode.code_type}
                           </div>
-                          <div>
-                            <u>Discount:</u> {promocode.discount}
-                          </div>
 
-                          <div>
-                            <u>Procedures:</u>
-                            {promocode.procedure_ids
-                              .map(
-                                (id: number) =>
-                                  findElementById(ProceduresStore.proceduresStatus.proceduresData, id).name,
-                              )
-                              .join(', ')}
-                          </div>
+                          {promocode.code_type === 'coupon' && (
+                            <>
+                              <div>
+                                <u>Discount:</u> {promocode.discount}
+                              </div>
+
+                              <div>
+                                <u>Procedures:</u>
+                                {promocode.procedure_ids
+                                  .map(
+                                    (id: number) =>
+                                      findElementById(ProceduresStore.proceduresStatus.proceduresData, id).name,
+                                  )
+                                  .join(', ')}
+                              </div>
+                            </>
+                          )}
+
+                          {promocode.code_type === 'certificate' && (
+                            <>
+                              <div>
+                                <u>Discount:</u> {promocode.discount_left} {promocode.currency}
+                              </div>
+                            </>
+                          )}
                         </>
                       )}
                     </div>
