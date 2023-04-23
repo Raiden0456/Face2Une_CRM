@@ -25,6 +25,7 @@ import scheduleRouter from "./routes/schedule_route.js";
 import saloonsRouter from "./routes/saloons_route.js";
 import clientsSummaryRouter from "./routes/clientsSummary_route.js";
 import sumupRouter from "./routes/sumup_route.js";
+import stripeRouter from "./services/stripe.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -75,6 +76,7 @@ app.use("/", scheduleRouter);
 app.use("/", saloonsRouter);
 app.use("/", clientsSummaryRouter);
 app.use("/", sumupRouter);
+app.use("/", stripeRouter);
 
 // Production mode
 if (process.env.NODE_ENV === "production") {
