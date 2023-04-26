@@ -77,30 +77,6 @@ class Appointment {
     return result(resp.error, resp.data);
   }
 
-  // Calculate total price //
-  static async getTotalPrice(
-    main_proc: number,
-    additional_procs: number[],
-    saloon_id: number
-  ) {
-    let all_ids: number[];
-    all_ids = [];
-    all_ids.push(main_proc);
-    all_ids = all_ids.concat(additional_procs);
-
-    // get total price of procedures by all_ids using procedure.getTotalCost //
-    return new Promise(async (resolve, reject) => {
-      Procedure.getTotalCost(all_ids, saloon_id, (err, data) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-  }
-  //////////////////////////
-
   static async createAppoint(appoint: appoint, result) {
     // Get date and time from reservation_date_time //
     let date_r_obj = new Date(appoint.reservation_date_time);

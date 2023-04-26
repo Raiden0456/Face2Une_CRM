@@ -2,32 +2,41 @@ const stripe = require('stripe')(process.env.STRIPE_TEST_SECRET_KEY);
 import { Router } from 'express';
 const router = Router();
 import dotenv from 'dotenv';
+import { getTotalCost } from '../utils/totalPrice_procs.js';
 dotenv.config();
 
-router.post('/stripe-checkout', async (req, res) => {
-    const sig = req.headers['stripe-signature'];
+router.get('/checkout-appoint', async (req, res) => {
+  const all_ids = [req.body.main_proc, ...req.body.additional_procs];
+  const total_price = await getTotalCost(all_ids, req.body.saloon_id);
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: total_price.currency,
+            product_data: {
+              name: 'Appointment',
+            },
+            unit_amount: total_price.total * 100, // in cents
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: 'https://example.com/success',
+      cancel_url: 'https://example.com/cancel',
+    });
 
-    let event;
-  
-    try {
-      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_TEST_ENDPOINT_SECRET);
-    } catch (err) {
-        res.status(400).send(`Webhook Error: ${err.message}`);
-      return;
-    } 
-      // Handle the event
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      const paymentIntentSucceeded = event.data.object;
-      // Then define and call a function to handle the event payment_intent.succeeded
-      break;
-    // ... handle other event types
-    default:
-      console.log(`Unhandled event type ${event.type}`);
+    res.json({ id: session.id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while creating the checkout session.' });
   }
-
-  // Return a 200 response to acknowledge receipt of the event
-  res.send();
 });
+
+// router.post('/create-package-charge', async (req, res) => {
+
+
 
 export default router;

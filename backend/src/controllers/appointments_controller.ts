@@ -1,4 +1,5 @@
 import Appointment from "../models/appointments_model.js";
+import { getTotalCost } from "../utils/totalPrice_procs.js";
 import { join } from "path";
 // Retrieve appointments from the database.
 export function loadAppoint(url_params, res) {
@@ -35,8 +36,8 @@ export async function updateAppoint(
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await Appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 1);
-  appoint.total_price_gbp = await Appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 3);
+  appoint.total_price = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 1);
+  appoint.total_price_gbp = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 3);
   
   Appointment.updateAppointById(appoint, (err, data) => {
     if (err)
@@ -71,8 +72,8 @@ export async function createAppoint(
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await Appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 1);
-  appoint.total_price_gbp = await Appointment.getTotalPrice(appoint.procedure_id, appoint.additional_ids, 3);
+  appoint.total_price = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 1);
+  appoint.total_price_gbp = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 3);
   Appointment.createAppoint(appoint, (err, data) => {
     if (err)
       res.status(500).json({

@@ -76,30 +76,6 @@ class Procedure {
     }
   }
 
-  static async getTotalCost(proc_ids: number[], saloon_id: number, result: Function) {
-    try {
-      let total = 0;
-      const selectColumn = saloon_id == 3 ? "price_gbp" : "price";
-
-      for (let i = 0; i < proc_ids.length; i++) {
-        const resp: any = await supabase
-          .from("procedures")
-          .select(selectColumn)
-          .eq("id", proc_ids[i]);
-
-        if (resp.error) {
-          throw resp.error;
-        }
-        total += resp.data[0].price
-          ? resp.data[0].price
-          : resp.data[0].price_gbp;
-      }
-      result(null, total);
-    } catch (error) {
-      result(error, null);
-    }
-  }
-
   static async createProc(proc: ProcedureData, result: Function) {
     try {
       const { data, error } = await supabase
