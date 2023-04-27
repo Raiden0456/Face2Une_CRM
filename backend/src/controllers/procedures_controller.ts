@@ -1,4 +1,5 @@
 import Procedure from "../models/procedures_model.js";
+import { getTotalCost } from "../utils/totalPrice_procs.js";
 import { join } from "path";
 
 // Retrieve procedures from the database.
@@ -42,15 +43,14 @@ export function loadProc(add = 0, saloon_id, res) {
 // Get total cost of procedures by array of their ids
 export function totalCost(proc_ids: number[], saloon_id: number, res) {
   if (!saloon_id) saloon_id = 1;
-  Procedure.getTotalCost(proc_ids, saloon_id, (err, data) => {
-    if (err)
+  getTotalCost(proc_ids, saloon_id).then((data) => {
+    if (data.error) {
       res.status(500).json({
         success: false,
-        message:
-          err.message || "Some error occurred while counting total cost.",
+        message: data.error.message || "Some error occurred while calculating total cost.",
       });
-    else {
-    res.json({ success: true, data: data });
+    } else {
+      res.json({ success: true, data: data });
     }
   });
 }
