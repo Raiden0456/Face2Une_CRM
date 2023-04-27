@@ -13,3 +13,23 @@
   justify-content: start;
   margin-bottom: 1.5rem;
 }
+
+.Home__promocode_description {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  align-items: start;
+  justify-content: center;
+  border: 1px solid #91a0db;
+  border-radius: 16px;
+
+  h3 {
+    font-weight: 500;
+    margin-bottom: 1rem;
+    align-self: center;
+  }
+
+  div {
+    margin-bottom: 0.75rem;
+  }
+}
