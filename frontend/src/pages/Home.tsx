@@ -12,14 +12,17 @@ import useForm from '../utils/useForm';
 import { AddCertificate, AddPackage, AddProcedure } from '../components/AddProductForms';
 import { SelectField } from '../components/base/SelectField';
 import { findElementById } from '../utils/funcs';
+import { CouponsService } from '../service/CouponsService';
 
 import s from './Home.scss';
 
 export const Home = ({ loading }: { loading: boolean }) => {
-  const { inputs, handleChange, clearForm, resetForm } = useForm({ email: '', promo: '' });
+  const couponsService = new CouponsService();
+  const { inputs, handleChange, clearForm, resetForm } = useForm({ email: '', code: '' });
+  const [loader, setLoader] = useState(false);
+  const [promocode, setPromocode] = useState<any>(null);
   const [displayInput, setDisplayInput] = useState(false);
   const [saloon, setSaloon] = useState<any>(null);
-
 
   useEffect(() => {
     const localStorageSaloon = localStorage.getItem('saloon');
@@ -31,6 +34,22 @@ export const Home = ({ loading }: { loading: boolean }) => {
     }
   }, [ProceduresStore.saloonsStatus.saloonsData]);
 
+  const onPromo = () => {
+    if (inputs.email && inputs.code) {
+      setLoader(true);
+      couponsService.checkPromocode(inputs.email, inputs.code).then((r) => {
+        if (r.success) {
+          setPromocode(r.data);
+          setDisplayInput(!displayInput);
+          resetForm();
+        }
+        setLoader(false);
+      });
+    } else {
+      setDisplayInput(!displayInput);
+    }
+  };
+
   return (
     <Container
       header={<NavBar />}
@@ -39,18 +58,61 @@ export const Home = ({ loading }: { loading: boolean }) => {
         <>
           <div className={s.Home__header}>
             <div>
-              <ButtonContained
-                width="200px"
-                onClick={() => {
-                  setDisplayInput(!displayInput);
-                }}
-              >
-                Use My Code
-              </ButtonContained>
-              {displayInput && (
+              {loader ? (
+                <TailSpinFixed />
+              ) : (
                 <>
-                  <Input name="email" value={inputs.email} placeholder="Email:" onChange={handleChange} />
-                  <Input name="promo" value={inputs.promo} placeholder="Promocode:" onChange={handleChange} />
+                  <ButtonContained width="200px" style={{ marginBottom: '1rem' }} onClick={onPromo}>
+                    Check My Code
+                  </ButtonContained>
+                  {displayInput && (
+                    <>
+                      <Input name="email" value={inputs.email} placeholder="Email:" onChange={handleChange} />
+                      <Input name="code" value={inputs.promo} placeholder="Promocode:" onChange={handleChange} />
+                    </>
+                  )}
+
+                  {promocode && (
+                    <div className={s.Home__promocode_description}>
+                      {promocode.message ? (
+                        <h3 style={{ marginBottom: 0 }}>{promocode.message}</h3>
+                      ) : (
+                        <>
+                          <h3>{promocode.name}</h3>
+
+                          <div>
+                            <u>Promocode type:</u> {promocode.code_type}
+                          </div>
+
+                          {promocode.code_type === 'coupon' && (
+                            <>
+                              <div>
+                                <u>Discount:</u> {promocode.discount}
+                              </div>
+
+                              <div>
+                                <u>Procedures:</u>
+                                {promocode.procedure_ids
+                                  .map(
+                                    (id: number) =>
+                                      findElementById(ProceduresStore.proceduresStatus.proceduresData, id).name,
+                                  )
+                                  .join(', ')}
+                              </div>
+                            </>
+                          )}
+
+                          {promocode.code_type === 'certificate' && (
+                            <>
+                              <div>
+                                <u>Discount:</u> {promocode.discount_left} {promocode.currency}
+                              </div>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
                 </>
               )}
             </div>

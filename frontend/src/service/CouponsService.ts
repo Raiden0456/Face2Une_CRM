@@ -62,4 +62,14 @@ export class CouponsService {
       ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/coupons' });
     }
   }
+
+  async checkPromocode(email: string, code: string) {
+    const r = await JSONFetchGet(`code_check?email=${email}&code=${code}`);
+
+    if (r?.success) {
+      return r;
+    } else {
+      ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl: '/' });
+    }
+  }
 }
