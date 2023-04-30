@@ -69,11 +69,12 @@ export const Confirmation = () => {
     const { proc_id, opt_proc_id, date } = mainPassanger;
     const { clientId } = userInfo;
     appointmentService
+      /* Promocode commented until back is ready */
       .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId /* promocode */ })
       .then((r) => {
-        /* Promocode commented until back is ready */
         if (r.success) {
           console.log('Apponitment for Main Passenger Created!', r);
+          // Здесь нужно сделть редирект на страницу с подтверждением через window.location.href="redirect_url"
         }
       });
 
@@ -82,6 +83,7 @@ export const Confirmation = () => {
       appointmentService.createAppointment({ proc_id, opt_proc_id, date, client_id: clientId }).then((r) => {
         if (r.success) {
           console.log('Apponitment for Additional Passenger Created!', r);
+          // ИЛИ Здесь нужно сделть редирект на страницу с подтверждением через window.location.href="redirect_url"
         }
       });
     }
