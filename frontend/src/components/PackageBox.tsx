@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
 import { Radio } from './base/Checkbox';
 import { ProceduresStore } from '../store/Procedures.store';
+import { getCurrencySymbol } from '../utils/getCurrencySymbol';
 
 import s from './ProcedureBox.scss';
 
@@ -130,7 +131,10 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
               <h3>
                 Package: {packageItem?.amount} {packageItem?.name}
               </h3>
-              <p>{packageItem?.price}€</p>
+              <p>
+                {packageItem?.price}
+                {getCurrencySymbol(localStorage.getItem('currency'))}
+              </p>
             </div>
             <div className={s.BookingBox__header_btns}>
               <ButtonContained width="100px" onClick={handleProceed}>

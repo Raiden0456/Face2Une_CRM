@@ -7,6 +7,7 @@ import useForm from '../utils/useForm';
 import { ModalStore } from '../store/Modal.store';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
+import { getCurrencySymbol } from '../utils/getCurrencySymbol';
 
 import s from './ProcedureBox.scss';
 
@@ -98,7 +99,10 @@ const CertificateBox: React.FC<IBookingBox> = ({ width = '100%', certItem }) => 
           <div className={s.BookingBox__header}>
             <div className={s.BookingBox__header_column}>
               <h3>{name}</h3>
-              <p>{price}€</p>
+              <p>
+                {price}
+                {getCurrencySymbol(localStorage.getItem('currency'))}
+              </p>
             </div>
             <div className={s.BookingBox__header_btns}>
               <ButtonContained width="100px" onClick={handleProceed}>

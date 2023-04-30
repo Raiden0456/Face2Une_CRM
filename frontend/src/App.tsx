@@ -21,6 +21,7 @@ import { ConfirmationCertificate } from './pages/ConfirmationCertificate';
 import { Scheduling } from './pages/Scheduling';
 import { ModalStore } from './store/Modal.store';
 import { Summary } from './pages/Summary';
+import { StatusPage } from './pages/StatusPage';
 //
 require('./App.scss');
 
@@ -101,6 +102,8 @@ const App = observer(() => {
             <Route path="/confirmation" element={<Confirmation />} />
             <Route path="/confirmation-package" element={<ConfirmationPackage />} />
             <Route path="/confirmation-certificate" element={<ConfirmationCertificate />} />
+            <Route path="/success" element={<StatusPage type="success" />} />
+            <Route path="/error" element={<StatusPage type="error" />} />
             <Route element={<PrivateRouteAdmin />}>
               <Route path="/employees" element={<Employees />} />
             </Route>

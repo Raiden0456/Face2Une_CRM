@@ -10,33 +10,15 @@ import useForm from '../utils/useForm';
 import { Input, PhoneInputStyled } from '../components/base/Input';
 import { AuthStore } from '../store/Auth.store';
 import { handleConfirmClient } from '../hooks/handleConfirmClient';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import { getCurrencySymbol } from '../utils/getCurrencySymbol';
 
 import s from './ConfirmationPackage.scss';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
-
-// Custom hook to use async script
-const useScript = (url: string) => {
-  useEffect(() => {
-    const script = document.createElement('script');
-
-    script.src = url;
-    script.async = true;
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, [url]);
-};
 
 export const ConfirmationPackage = () => {
   const appointmentService = new AppointmentService();
   const [buyPackage, setBuyPackage] = useState<any>(null);
   const [selectQuantity, setSelectQuantity] = useState<number>(1);
-  const [showPaymentWidget, setShowPaymentWidget] = useState<boolean>(false);
-
-  useScript('https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js');
 
   const [loading, setLoading] = useState({ global: false, local: false });
 
@@ -81,19 +63,6 @@ export const ConfirmationPackage = () => {
         .then((r) => {
           if (r.success) {
             console.log('Package for the Passenger Created!', r);
-            setShowPaymentWidget(true);
-            // @ts-ignore
-            if (window.SumUpCard) {
-              // @ts-ignore
-              window.SumUpCard.mount({
-                id: 'sumup-card',
-                checkoutId: '2ceffb63-cbbe-4227-87cf-0409dd191a98',
-                onResponse: function (type: any, body: any) {
-                  console.log('Type', type);
-                  console.log('Body', body);
-                },
-              });
-            }
           }
         });
     }
@@ -109,94 +78,89 @@ export const ConfirmationPackage = () => {
             <TailSpinFixed />
           ) : (
             <div className={s.ConfirmationPackage}>
-              {showPaymentWidget ? (
-                <div id="sumup-card"></div>
-              ) : (
-                <>
-                  <div className={s.ConfirmationPackage__header}>
-                    <h2>Your order:</h2>
+              <div className={s.ConfirmationPackage__header}>
+                <h2>Your order:</h2>
+              </div>
+
+              <div className={s.ConfirmationPackage__content}>
+                <form
+                  className={s.PackageInfoForm}
+                  id="userInfo"
+                  onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                    e.preventDefault();
+                    isPossiblePhoneNumber(`+${inputs?.phone}`) && handleConfirmation();
+                  }}
+                >
+                  <div>
+                    <Input
+                      required
+                      className={s.Input}
+                      name="firstName"
+                      label="First Name:"
+                      type="text"
+                      value={inputs?.firstName}
+                      onChange={handleChange}
+                    />
+                    <br />
+                    <Input
+                      required
+                      className={s.Input}
+                      name="lastName"
+                      label="Last Name:"
+                      type="text"
+                      value={inputs?.lastName}
+                      onChange={handleChange}
+                    />
                   </div>
-
-                  <div className={s.ConfirmationPackage__content}>
-                    <form
-                      className={s.PackageInfoForm}
-                      id="userInfo"
-                      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                        e.preventDefault();
-                        isPossiblePhoneNumber(`+${inputs?.phone}`) && handleConfirmation();
-                      }}
-                    >
-                      <div>
-                        <Input
-                          required
-                          className={s.Input}
-                          name="firstName"
-                          label="First Name:"
-                          type="text"
-                          value={inputs?.firstName}
-                          onChange={handleChange}
-                        />
-                        <br />
-                        <Input
-                          required
-                          className={s.Input}
-                          name="lastName"
-                          label="Last Name:"
-                          type="text"
-                          value={inputs?.lastName}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div>
-                        <PhoneInputStyled
-                          defaultValue={`+${inputs?.phone}`}
-                          onChange={(e) => handleNumberChange(e, 'phone')}
-                          error={phoneError}
-                          label="Phone:"
-                          onBlur={() =>
-                            isPossiblePhoneNumber(`+${inputs?.phone}`) ? setPhoneError(false) : setPhoneError(true)
-                          }
-                        />
-                        <br />
-                        <Input
-                          autoComplete="email"
-                          required
-                          label="Email:"
-                          type="email"
-                          name="email"
-                          value={inputs?.email}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </form>
-
-                    <ProductBox type="pack" procedure={buyPackage} />
+                  <div>
+                    <PhoneInputStyled
+                      defaultValue={`+${inputs?.phone}`}
+                      onChange={(e) => handleNumberChange(e, 'phone')}
+                      error={phoneError}
+                      label="Phone:"
+                      onBlur={() =>
+                        isPossiblePhoneNumber(`+${inputs?.phone}`) ? setPhoneError(false) : setPhoneError(true)
+                      }
+                    />
+                    <br />
+                    <Input
+                      autoComplete="email"
+                      required
+                      label="Email:"
+                      type="email"
+                      name="email"
+                      value={inputs?.email}
+                      onChange={handleChange}
+                    />
                   </div>
+                </form>
 
-                  <div className={s.Confirmation__footer}>
-                    <div className={s.Confirmation__footer_selectWrapper}>
-                      <p>
-                        <strong>Number of packages:</strong>
-                      </p>
-                      <NumberDropdown
-                        min={1}
-                        max={10}
-                        value={selectQuantity}
-                        onChange={(value: number) => setSelectQuantity(value)}
-                      />
-                    </div>
-                    {buyPackage && (
-                      <p>
-                        <strong>Total:</strong> {buyPackage?.price * selectQuantity}€
-                      </p>
-                    )}
+                <ProductBox type="pack" procedure={buyPackage} />
+              </div>
 
-                    <ButtonContained type="submit" form="userInfo" width="200px">
-                      Pay Now
-                    </ButtonContained>
-                  </div>
-                </>
-              )}
+              <div className={s.Confirmation__footer}>
+                <div className={s.Confirmation__footer_selectWrapper}>
+                  <p>
+                    <strong>Number of packages:</strong>
+                  </p>
+                  <NumberDropdown
+                    min={1}
+                    max={10}
+                    value={selectQuantity}
+                    onChange={(value: number) => setSelectQuantity(value)}
+                  />
+                </div>
+                {buyPackage && (
+                  <p>
+                    <strong>Total:</strong> {buyPackage?.price * selectQuantity}
+                    {getCurrencySymbol(localStorage.getItem('currency'))}
+                  </p>
+                )}
+
+                <ButtonContained type="submit" form="userInfo" width="200px">
+                  Pay Now
+                </ButtonContained>
+              </div>
             </div>
           )}
         </>

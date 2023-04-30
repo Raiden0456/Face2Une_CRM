@@ -8,19 +8,22 @@ import { TailSpinFixed } from '../components/TailSpin';
 import ProductBox from '../components/ProductBox';
 import { allProcsIds } from '../utils/funcs';
 import { ProceduresStore } from '../store/Procedures.store';
+import { getCurrencySymbol } from '../utils/getCurrencySymbol';
+import { UseCode } from '../components/UseCode';
 
 import s from './Confirmation.scss';
 
 export const Confirmation = () => {
   const proceduresService = new ProceduresService();
   const appointmentService = new AppointmentService();
-  const [mainPassanger, setMainPassanger] = useState<any>(null); // TBD TS
-  const [addPassangers, setAddPassangers] = useState<any>(null); // TBD TS
-  const [userInfo, setUserInfo] = useState<any>(null); // TBD TS
-  const [procedure, setProcedure] = useState(null); // TBD TS
+  const [mainPassanger, setMainPassanger] = useState<any>(null);
+  const [addPassangers, setAddPassangers] = useState<any>(null);
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const [procedure, setProcedure] = useState(null);
   const [loading, setLoading] = useState({ global: false, local: false });
   const [isToggled, setIsToggled] = useState<boolean>(false);
-  const [total, setTotal] = useState<number | null>(null);
+  const [total, setTotal] = useState<any>(null);
+  const [promocode, setPromocode] = useState<any>(null);
 
   // Look up for booking info in sessionStorage
   // Redirect back if not found
@@ -65,11 +68,14 @@ export const Confirmation = () => {
   const handleConfirmation = () => {
     const { proc_id, opt_proc_id, date } = mainPassanger;
     const { clientId } = userInfo;
-    appointmentService.createAppointment({ proc_id, opt_proc_id, date, client_id: clientId }).then((r) => {
-      if (r.success) {
-        console.log('Apponitment for Main Passenger Created!', r);
-      }
-    });
+    appointmentService
+      .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId /* promocode */ })
+      .then((r) => {
+        /* Promocode commented until back is ready */
+        if (r.success) {
+          console.log('Apponitment for Main Passenger Created!', r);
+        }
+      });
 
     for (let passenger of addPassangers) {
       const { proc_id, opt_proc_id } = passenger;
@@ -94,6 +100,8 @@ export const Confirmation = () => {
               <div className={s.Confirmation__header}>
                 <h2>Your reservation, {userInfo?.firstName}:</h2>
               </div>
+
+              {addPassangers?.length === 0 && <UseCode onPromocodeChange={setPromocode} />}
 
               <div className={s.Confirmation__content}>
                 <div style={{ margin: '0' }}>
@@ -143,11 +151,16 @@ export const Confirmation = () => {
               <div className={s.Confirmation__footer}>
                 <p>
                   <strong>Date:</strong> {new Date(mainPassanger?.date).toLocaleDateString()} at{' '}
-                  {new Date(mainPassanger?.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }, )}
+                  {new Date(mainPassanger?.date).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                  })}
                 </p>
                 {total && (
                   <p>
-                    <strong>Total:</strong> {total}€
+                    <strong>Total:</strong> {total.total}
+                    {getCurrencySymbol(total.currency)}
                   </p>
                 )}
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProcedureData } from '../store/Procedures.store';
+import { getCurrencySymbol } from '../utils/getCurrencySymbol';
 
 import s from './ProcedureBox.scss';
 
@@ -10,6 +11,8 @@ interface IBookingBox {
 }
 
 const ProductBox: React.FC<IBookingBox> = ({ procedure, addProcedures, type = 'proc' }) => {
+  console.log('procedure', procedure);
+
   return (
     <div className={s.BookingBox}>
       <div className={s.BookingBox__header} style={{ margin: '0' }}>
@@ -21,7 +24,8 @@ const ProductBox: React.FC<IBookingBox> = ({ procedure, addProcedures, type = 'p
           </h3>
         )}
         <p>
-          {procedure?.duration && `${procedure?.duration} minutes @`} {procedure?.price}€
+          {procedure?.duration && `${procedure?.duration} minutes @`} {procedure?.price}
+          {getCurrencySymbol(localStorage.getItem('currency'))}
         </p>
       </div>
       {addProcedures?.length > 0 && (

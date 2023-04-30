@@ -1,0 +1,29 @@
+.Use_code_inputs {
+  max-width: 300px;
+
+  div {
+    margin: 0.5rem 0 !important;
+  }
+}
+
+.Use_code {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  align-items: start;
+  justify-content: center;
+  border: 1px solid #91a0db;
+  border-radius: 16px;
+  width: auto;
+  max-width: 350px;
+
+  h3 {
+    font-weight: 500;
+    margin-bottom: 1rem;
+    align-self: center;
+  }
+
+  div {
+    margin: 0.5rem 0 !important;
+  }
+}

@@ -6,7 +6,16 @@ import { AuthService } from '../service/AuthService';
 import { Link } from 'react-router-dom';
 import { ButtonOutlined } from './base/Button';
 
-const adminPaths = ['/clients', '/calendar', '/employees', '/coupons', '/scheduling', '/clients-summary'];
+const adminPaths = [
+  '/clients',
+  '/calendar',
+  '/employees',
+  '/coupons',
+  '/scheduling',
+  '/clients-summary',
+  '/success',
+  '/error',
+];
 const confirmationPaths = ['/confirmation', '/confirmation-package', '/confirmation-certificate'];
 
 const NavBar = observer(() => {

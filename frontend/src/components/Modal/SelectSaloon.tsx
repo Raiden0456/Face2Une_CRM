@@ -15,14 +15,15 @@ const SelectSaloon: React.FC<any> = () => {
     value: ProceduresStore.saloonsStatus.saloonsData!![0].id,
   });
 
-  /* useEffect(() => {
-    setLoading(true);
-    setLoading(false);
-  }, []); */
-
-  // Add Client Order
   const handleSubmit = async () => {
     localStorage.setItem('saloon', String(saloon.value));
+
+    if (saloon.value === 3) {
+      localStorage.setItem('currency', 'gbp');
+    } else {
+      localStorage.setItem('currency', 'eur');
+    }
+
     window.location.reload();
   };
 

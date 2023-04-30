@@ -9,9 +9,10 @@ import useForm from '../utils/useForm';
 import { Input, PhoneInputStyled } from '../components/base/Input';
 import { AuthStore } from '../store/Auth.store';
 import { handleConfirmClient } from '../hooks/handleConfirmClient';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import { getCurrencySymbol } from '../utils/getCurrencySymbol';
 
 import s from './ConfirmationCertificate.scss';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 export const ConfirmationCertificate = () => {
   const appointmentService = new AppointmentService();
@@ -135,7 +136,8 @@ export const ConfirmationCertificate = () => {
 
               <div className={s.Confirmation__footer}>
                 <p>
-                  <strong>Total:</strong> {certificate?.price}€
+                  <strong>Total:</strong> {certificate?.price}
+                  {getCurrencySymbol(localStorage.getItem('currency'))}
                 </p>
 
                 <ButtonContained type="submit" form="userInfo" width="200px">

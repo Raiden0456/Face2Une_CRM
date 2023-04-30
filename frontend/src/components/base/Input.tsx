@@ -63,7 +63,7 @@ export const Input: React.FC<IInput> = ({
         {...shared}
       />
       {helperText && <small>{helperText}</small>}
-      <div onClick={onIconClick}>{endIcon}</div>
+      {endIcon && <div onClick={onIconClick}>{endIcon}</div>}
     </div>
   );
 };
