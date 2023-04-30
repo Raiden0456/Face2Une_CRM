@@ -1,4 +1,9 @@
-const stripe = require('stripe')(process.env.STRIPE_TEST_SECRET_KEY);
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
+  apiVersion: '2022-11-15',
+});
+
 import { Router } from 'express';
 const router = Router();
 import dotenv from 'dotenv';
