@@ -40,7 +40,6 @@ router.get('/checkout-appoint', async (req, res) => {
   }
 });
 
-// router.post('/create-package-charge', async (req, res) => {
 
 
 
