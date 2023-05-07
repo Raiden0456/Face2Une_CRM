@@ -45,6 +45,11 @@ export const Home = ({ loading }: { loading: boolean }) => {
                 }))}
                 onChange={(e) => {
                   localStorage.setItem('saloon', String(e.value));
+                  if (Number(e.value) === 3) {
+                    localStorage.setItem('currency', 'gbp');
+                  } else {
+                    localStorage.setItem('currency', 'eur');
+                  }
                   window.location.reload();
                 }}
                 value={saloon}

@@ -15,6 +15,7 @@ import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '../store/Auth.store';
+import { getCurrencySymbol } from '../utils/getCurrencySymbol';
 
 import s from './ProcedureBox.scss';
 
@@ -207,7 +208,8 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
               {/* {ModalStore.modalStatus.open && <h4></h4>} */}
               <h3>{procedure?.name}</h3>
               <p>
-                {procedure?.duration} minutes @ {procedure?.price}€
+                {procedure?.duration} minutes @ {procedure?.price}
+                {getCurrencySymbol(localStorage.getItem('currency'))}
               </p>
             </div>
             <div className={s.BookingBox__header_btns}>

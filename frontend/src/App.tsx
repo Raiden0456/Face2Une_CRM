@@ -58,12 +58,14 @@ const App = observer(() => {
       if (r.success) {
         ProceduresStore.setSaloonsStatus({ saloonsData: r.data });
 
-        if (!localStorage.getItem('saloon')) {
+        if (!localStorage.getItem('saloon') || !localStorage.getItem('currency')) {
           // Open the select saloon modal
           ModalStore.setModalStatus({ open: true, action: 'selectSaloon', redirectUrl: '/' });
         }
         // If there is a saloonID in localStorage, we fetch the data
-        fetchData();
+        if (localStorage.getItem('saloon') && localStorage.getItem('currency')) {
+          fetchData();
+        }
       }
     });
   }, []);
