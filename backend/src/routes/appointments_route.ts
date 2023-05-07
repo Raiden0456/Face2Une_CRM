@@ -11,6 +11,7 @@ router.get('/appoint/:appointid', function(req, res){
     appoint.loadAppoint({column: "id", value: req.params.appointid}, res);
 });
 router.post('/create_appoint', function(req, res){
+    //TODO: connect stripe payment here
     appoint.createAppoint(req.body, res);
 });
 router.post('/update_appoint', function(req, res){

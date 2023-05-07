@@ -20,8 +20,9 @@ router.delete('/delete_cert/:certid', function(req, res){
     cert.deleteCert(req.params.certid, res);
 });
 
-// buy and use certificates //
+// buy certificates //
 router.post('/buy_cert', function(req, res){
+    //TODO: connect stripe payment here
     cert.buyCertificates(req.body.client_id, req.body.certificate_id, res);
 });
 

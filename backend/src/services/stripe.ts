@@ -40,7 +40,4 @@ router.get('/checkout-appoint', async (req, res) => {
   }
 });
 
-
-
-
 export default router;

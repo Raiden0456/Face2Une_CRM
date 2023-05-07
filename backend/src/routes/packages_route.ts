@@ -20,8 +20,9 @@ router.delete('/delete_pack/:packid', function(req, res){
     pack.deletePack(req.params.packid, res);
 });
 
-// buy and use packages //
+// buy packages //
 router.post('/buy_pack', function(req, res){
+    //TODO: connect stripe payment here
     pack.buyPackages(req.body.client_id, req.body.packages, res);
 });
 
