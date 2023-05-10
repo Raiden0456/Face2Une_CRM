@@ -1,5 +1,4 @@
 import { Router } from "express";
-import Stripe from "stripe";
 import * as appoint from "../controllers/appointments_controller.js";
 import { getTotalCost } from "../utils/totalPrice_procs.js";
 import stripe from "../services/stripe.js";
@@ -15,7 +14,7 @@ router.get("/appoint/:appointid", function (req, res) {
 
 router.post("/create_appoint", async function (req, res) {
   // Prepare stripe payment session
-  const all_ids = [req.body.main_proc, ...req.body.additional_procs];
+  const all_ids = [req.body.procedure_id, ...req.body.additional_ids];
   const total_price = await getTotalCost(all_ids, req.body.saloon_id);
   try {
     const session = await stripe.checkout.sessions.create({
@@ -41,8 +40,8 @@ router.post("/create_appoint", async function (req, res) {
       },
     });
 
-    // Respond with session ID
-    res.json({ id: session.id });
+   // Send session id to frontend
+   res.json({ id: session.id });
   } catch (error) {
     console.error(error);
     res.status(500).json({
