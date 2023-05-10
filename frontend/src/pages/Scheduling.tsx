@@ -85,7 +85,6 @@ export const Scheduling = () => {
 
     scheduleService.getSchedule({ index: page, perPage: ROWS_PER_PAGE, workDate, saloonId }).then((r) => {
       if (r.success) {
-        console.log(r);
         setData(r.data);
         setTotalRows(r.data.length);
         setLoading(false);

@@ -33,7 +33,6 @@ const PackageBox: React.FC<IBookingBox> = ({ width = '100%', packageItem }) => {
 
     const r = await proceduresService.updatePackage({ ...inputs, procedure_id: procID });
     if (r.success) {
-      console.log('Successfully Updated!');
       window.location.reload();
     }
 

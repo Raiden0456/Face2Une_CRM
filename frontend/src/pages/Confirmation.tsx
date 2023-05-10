@@ -10,6 +10,7 @@ import { allProcsIds } from '../utils/funcs';
 import { ProceduresStore } from '../store/Procedures.store';
 import { getCurrencySymbol } from '../utils/getCurrencySymbol';
 import { UseCode } from '../components/UseCode';
+import { loadStripe } from '@stripe/stripe-js';
 
 import s from './Confirmation.scss';
 
@@ -40,11 +41,6 @@ export const Confirmation = () => {
     let sessionUserInfo: any = sessionStorage.getItem('user_info');
     setUserInfo(JSON.parse(sessionUserInfo));
 
-    /* SESSION STORAGE LOGS */
-    console.log('From session mainPassanger', parsedMainPassanger);
-    console.log('From session addPassangers', parsedAddPassangers);
-    console.log('From session userInfo', JSON.parse(sessionUserInfo));
-
     if (sessionMainPassanger && sessionUserInfo) {
       // Fetch MAIN proc for main passanger
       proceduresService.getProcedure(parsedMainPassanger.proc_id).then((procedure) => {
@@ -65,25 +61,27 @@ export const Confirmation = () => {
     }
   }, []);
 
-  const handleConfirmation = () => {
+  const handleConfirmation = async () => {
     const { proc_id, opt_proc_id, date } = mainPassanger;
     const { clientId } = userInfo;
+    const stripe = await loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
     appointmentService
       /* Promocode commented until back is ready */
+      // TBD: group all passangers in one appointment
       .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId /* promocode */ })
       .then((r) => {
-        if (r.success) {
-          console.log('Apponitment for Main Passenger Created!', r);
-          // Здесь нужно сделть редирект на страницу с подтверждением через window.location.href="redirect_url"
+        if (r.id) {
+          console.log('Apponitment for Main Passenger Created!', r, stripe);
+          // Здесь нужно сделть редирект на страницу с stripe.redirectToCheckout({ sessionId: session.id });
+          stripe?.redirectToCheckout({ sessionId: r.id });
         }
       });
 
     for (let passenger of addPassangers) {
       const { proc_id, opt_proc_id } = passenger;
       appointmentService.createAppointment({ proc_id, opt_proc_id, date, client_id: clientId }).then((r) => {
-        if (r.success) {
+        if (r.id) {
           console.log('Apponitment for Additional Passenger Created!', r);
-          // ИЛИ Здесь нужно сделть редирект на страницу с подтверждением через window.location.href="redirect_url"
         }
       });
     }

@@ -57,7 +57,7 @@ export const ConfirmationCertificate = () => {
 
     if (clientId) {
       appointmentService.buyCertificate({ client_id: clientId, certificate_id: certificate.id }).then((r) => {
-        if (r.success) {
+        if (r.id) {
           console.log('Certificate for the Passenger Created!', r);
         }
       });

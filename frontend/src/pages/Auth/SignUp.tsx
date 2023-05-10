@@ -34,7 +34,6 @@ const SignUp = observer(({ mobile }: { mobile: boolean }) => {
       setLoader(true);
       setError({ status: false, message: '' });
       setSuccess({ status: false, message: '' });
-      console.log(inputs);
       authService.signUp(inputs).then((r) => {
         setLoader(false);
         if (!r.success) {

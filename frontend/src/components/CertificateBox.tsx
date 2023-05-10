@@ -31,7 +31,6 @@ const CertificateBox: React.FC<IBookingBox> = ({ width = '100%', certItem }) => 
 
     const r = await proceduresService.updateCertificate(inputs);
     if (r.success) {
-      console.log('Successfully Updated!');
       window.location.reload();
     }
 

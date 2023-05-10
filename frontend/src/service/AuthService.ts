@@ -19,7 +19,6 @@ export class AuthService {
     AuthStore.setupAuthData({ authorized: 'check_auth' });
 
     const r = await JSONFetchGet('session_user');
-    console.log(r);
 
     if (r.success) {
       AuthStore.setupAuthData({

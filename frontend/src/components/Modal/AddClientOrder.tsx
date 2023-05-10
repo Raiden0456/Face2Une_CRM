@@ -28,7 +28,6 @@ const AddClientOrder: React.FC<any> = ({ clientId, email }) => {
       })
       .then((r) => {
         if (r.success) {
-          console.log('Successfully Added!');
           setSuccess(true);
         }
       });

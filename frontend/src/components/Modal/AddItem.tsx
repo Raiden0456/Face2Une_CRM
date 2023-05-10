@@ -107,7 +107,6 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
           .createCoupon({ ...inputs, procedure_ids: filterObjectToArray(procedures), expiry_date: startDate })
           .then((r) => {
             if (r.success) {
-              console.log('Successfully Added!');
               window.location.reload();
             }
           });
@@ -116,7 +115,6 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
           .updateCoupon({ ...inputs, procedure_ids: filterObjectToArray(procedures), expiry_date: startDate, id })
           .then((r) => {
             if (r.success) {
-              console.log('Successfully Updated!');
               window.location.reload();
             }
           });
@@ -125,14 +123,12 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
       if (!edit) {
         userService.createEmployee({ ...inputs, rights: 'employee' }).then((r) => {
           if (r.success) {
-            console.log('Successfully Added!');
             window.location.reload();
           }
         });
       } else {
         userService.updateEmployee({ ...inputs, rights: 'employee', id }).then((r) => {
           if (r.success) {
-            console.log('Successfully Updated!');
             window.location.reload();
           }
         });
@@ -140,7 +136,6 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
     } else if (addType === 'admin') {
       userService.createEmployee({ ...inputs, rights: 'admin' }).then((r) => {
         if (r.success) {
-          console.log('Successfully Added!');
           window.location.reload();
         }
       });
@@ -155,7 +150,6 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
         })
         .then((r) => {
           if (r.success) {
-            console.log('Successfully Updated!');
             window.location.reload();
           }
         });
@@ -397,7 +391,6 @@ const AddItem: React.FC<IAddItem> = ({ addType, id, edit }) => {
                     <h3>Available Studios:</h3>
 
                     {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
-
                       <Radio
                         name="saloons"
                         value={saloon.id}

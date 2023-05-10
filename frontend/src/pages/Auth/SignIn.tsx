@@ -25,7 +25,6 @@ const SignIn = observer(({ mobile }: { mobile: boolean }) => {
     e.preventDefault();
     setLoader(true);
     setError({ status: false, message: '' });
-    console.log(inputs);
     authService.signIn(inputs).then((r) => {
       setLoader(false);
       if (!r.success) {

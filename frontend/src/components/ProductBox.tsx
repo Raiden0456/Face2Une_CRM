@@ -11,8 +11,6 @@ interface IBookingBox {
 }
 
 const ProductBox: React.FC<IBookingBox> = ({ procedure, addProcedures, type = 'proc' }) => {
-  console.log('procedure', procedure);
-
   return (
     <div className={s.BookingBox}>
       <div className={s.BookingBox__header} style={{ margin: '0' }}>

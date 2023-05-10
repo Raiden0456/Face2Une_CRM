@@ -31,7 +31,6 @@ export const AddPassanger = observer(({ setItems, items, procedures }: any) => {
     setItems([]);
   };
 
-  //console.log('Additional Passengers', items);
   return (
     <>
       {procedures &&

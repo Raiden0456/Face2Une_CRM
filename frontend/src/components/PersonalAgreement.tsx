@@ -62,7 +62,7 @@ export const PersonalAgreement = () => {
         <br />
       </div>
 
-      <Checkbox required onChange={(e) => console.log(e)}>
+      <Checkbox required onChange={() => null}>
         I have read and agree to the terms above *
       </Checkbox>
     </div>

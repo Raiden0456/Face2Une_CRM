@@ -22,8 +22,6 @@ export const UseCode = ({ onPromocodeChange }: any) => {
       setLoader(true);
       couponsService.checkPromocode(inputs.email, inputs.code).then((r) => {
         if (r.success) {
-          console.log('r.data', r.data);
-
           setPromocode(r.data);
           setDisplayInput(!displayInput);
           resetForm();

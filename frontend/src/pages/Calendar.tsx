@@ -90,7 +90,6 @@ export const Calendar = () => {
     setLoading(true);
     userService.addSource(selectedSource as number).then((r) => {
       if (r.success) {
-        console.log(r.data);
         setSuccessMessage(true);
       }
       setLoading(false);

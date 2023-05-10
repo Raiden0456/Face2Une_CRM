@@ -56,7 +56,6 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
         })
         .then((r) => {
           if (r.success) {
-            console.log('Successfully Added!');
             window.location.reload();
           }
         });
@@ -68,7 +67,6 @@ const AddScheduling: React.FC<IScheduling> = ({ schedulingType, edit }) => {
         })
         .then((r) => {
           if (r.success) {
-            console.log('Successfully Added!');
             window.location.reload();
           }
         });

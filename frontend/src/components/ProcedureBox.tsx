@@ -43,10 +43,8 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
     event.preventDefault();
     setLoading(true);
 
-    console.log('UPDATING DATA...', inputs);
     const r = await proceduresService.updateProcedure({ ...inputs, saloon_ids: saloonIds });
     if (r.success) {
-      console.log('Successfully Updated!');
       window.location.reload();
     }
 
@@ -75,11 +73,7 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
       });
     } else {
       // Main Passanger
-      console.log('Main Passanger Booked:', {
-        proc_id: procedure?.id,
-        opt_proc_id: filterObjectToArray(optionalProcedures),
-        date: startDate,
-      });
+
       sessionStorage.setItem(
         'main_passanger',
         JSON.stringify({
@@ -90,7 +84,6 @@ const ProcedureBox: React.FC<IBookingBox> = ({ width = '100%', type = 'main', pr
       );
 
       // Other Passangers
-      console.log('Additional Passengers Booked:', filterAddPassengers(items));
       sessionStorage.setItem('add_passangers', JSON.stringify(filterAddPassengers(items)));
 
       ModalStore.setModalStatus({

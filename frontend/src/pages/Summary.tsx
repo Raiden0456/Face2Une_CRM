@@ -60,7 +60,6 @@ export const Summary = () => {
 
     clientService.getClients(page, ROWS_PER_PAGE, filterLike).then((r) => {
       if (r.success) {
-        console.log(r);
         setData(r.data);
         setTotalRows(r.total);
         setLoading(false);
