@@ -62,6 +62,7 @@ export const Confirmation = () => {
   }, []);
 
   const handleConfirmation = async () => {
+    setLoading({ ...loading, global: true });
     const { proc_id, opt_proc_id, date } = mainPassanger;
     const { clientId } = userInfo;
     const stripe = await loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
@@ -73,7 +74,15 @@ export const Confirmation = () => {
         if (r.id) {
           console.log('Apponitment for Main Passenger Created!', r, stripe);
           // Здесь нужно сделть редирект на страницу с stripe.redirectToCheckout({ sessionId: session.id });
-          stripe?.redirectToCheckout({ sessionId: r.id });
+          stripe?.redirectToCheckout({ sessionId: r.id }).then(function (result) {
+            // If `redirectToCheckout` fails due to a browser or network
+            // error, you should display the localized error message to your
+            // customer using `error.message`.
+            if (result.error) {
+              setLoading({ ...loading, global: false });
+              alert(result.error.message);
+            }
+          });
         }
       });
 

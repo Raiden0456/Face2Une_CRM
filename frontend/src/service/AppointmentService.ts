@@ -34,7 +34,7 @@ export class AppointmentService {
       saloon_id,
     });
 
-    if (r) {
+    if (r?.id) {
       return r;
     } else {
       ModalStore.setModalStatus({ open: true, action: 'error', redirectUrl });
