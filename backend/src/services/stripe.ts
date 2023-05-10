@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
 
 export async function handleStripeWebhook(req, res) {
   const sig = req.headers['stripe-signature'];
-
+  console.log(`🔔  Webhook received! ${sig}`);
   let event;
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_TEST_ENDPOINT_SECRET);
@@ -21,7 +21,7 @@ export async function handleStripeWebhook(req, res) {
   }
 
   // Handle the event
-  if (event.type === 'payment_intent.succeeded') {
+  if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
 
      // Extract metadata
@@ -31,7 +31,7 @@ export async function handleStripeWebhook(req, res) {
 
     switch (instanceType) {
       case 'appointment':
-        createAppoint(data, (err, data) => {
+        await createAppoint(data, (err, data) => {
           if (err) {
             console.log(`⚠️  Error creating appointment.`, err.message);
             return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -41,7 +41,7 @@ export async function handleStripeWebhook(req, res) {
         });
         break;
       case 'certificate':
-        buyCertificates(data.client_id, data.certificate_id, (err, data) => {
+        await buyCertificates(data.client_id, data.certificate_id, (err, data) => {
           if (err) {
             console.log(`⚠️  Error buying certificate.`, err.message);
             return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -51,7 +51,7 @@ export async function handleStripeWebhook(req, res) {
         });
         break;
       case 'package':
-        buyPackages(data.client_id, data.packages, (err, data) => {
+        await buyPackages(data.client_id, data.packages, (err, data) => {
           if (err) {
             console.log(`⚠️  Error buying package.`, err.message);
             return res.status(400).send(`Webhook Error: ${err.message}`);

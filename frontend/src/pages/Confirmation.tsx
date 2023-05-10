@@ -65,7 +65,7 @@ export const Confirmation = () => {
     setLoading({ ...loading, global: true });
     const { proc_id, opt_proc_id, date } = mainPassanger;
     const { clientId } = userInfo;
-    const stripe = await loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+    const stripe = await loadStripe(process.env.STRIPE_TEST_PUBLIC_KEY as string);
     appointmentService
       /* Promocode commented until back is ready */
       // TBD: group all passangers in one appointment
