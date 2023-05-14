@@ -22,7 +22,7 @@ router.delete('/delete_client/:clientid', function(req, res){
 
 // add Orders to clients //
 router.post('/add_client_order', function(req, res){
-    client.addOrder(req.body.client_id, req.body.email, req.body.package_id, req.body.certificate_id, res);
+    client.addOrder(req.body.client_id, req.body.email, req.body.package_id, req.body.certificate_id, req.body.saloon_id, res);
 });
 
 export default router;

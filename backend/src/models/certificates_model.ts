@@ -76,7 +76,11 @@ class Certificate {
   }
 
   // Buying and tracking certificates //
-  static async buyCertificate(client_id: number, certificate_id: number) {
+  static async buyCertificate(
+    client_id: number,
+    certificate_id: number,
+    saloon_id: number
+  ) {
     const respo: any = await supabase
       .from("certificates")
       .select("*")
@@ -84,26 +88,38 @@ class Certificate {
     if (respo.error) {
       return respo.error;
     }
-    const cert_price = respo.data[0].price ? respo.data[0].price : 0;
-    const cert_price_gbp = respo.data[0].price_gbp ? respo.data[0].price_gbp : 0;
+    let cert_price, cert_price_gbp;
+    if (saloon_id == 3) {
+      cert_price = 0;
+      cert_price_gbp = respo.data[0].price_gbp
+        ? respo.data[0].price_gbp
+        : 0;
+    } else {
+      cert_price = respo.data[0].price ? respo.data[0].price : 0;
+      cert_price_gbp = 0;
+    }
+
     // generate promocode //
     const promocode = voucher_codes.generate({
       length: 8,
       count: 1,
     });
     // insert certificates //
-    const { data, error } = await supabase.from("track_certificates").insert([
-      {
-        certificate_id: certificate_id,
-        code: promocode[0],
-        discount_left: cert_price,
-        discount_left_gbp: cert_price_gbp,
-        expiry_date: new Date(
-          new Date().setFullYear(new Date().getFullYear() + 1)
-        ),
-        client_id: client_id,
-      },
-    ]).select();
+    const { data, error } = await supabase
+      .from("track_certificates")
+      .insert([
+        {
+          certificate_id: certificate_id,
+          code: promocode[0],
+          discount_left: cert_price,
+          discount_left_gbp: cert_price_gbp,
+          expiry_date: new Date(
+            new Date().setFullYear(new Date().getFullYear() + 1)
+          ),
+          client_id: client_id,
+        },
+      ])
+      .select();
     if (error) {
       return error;
     }

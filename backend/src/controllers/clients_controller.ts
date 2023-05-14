@@ -105,6 +105,7 @@ export function addOrder(
   email: string,
   package_id: number,
   certificate_id: number,
+  saloon_id: number,
   res
 ) {
   try {
@@ -112,7 +113,7 @@ export function addOrder(
       buyPackages(client_id, [{package_id: package_id, amount_bought: 1}], res);
     }
     else if (certificate_id != null) {
-      buyCertificates(client_id, certificate_id, res);
+      buyCertificates(client_id, certificate_id, saloon_id, res);
     }
     else {
       res.status(500).json({

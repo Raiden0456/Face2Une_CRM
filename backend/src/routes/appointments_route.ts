@@ -13,9 +13,13 @@ router.get("/appoint/:appointid", function (req, res) {
 });
 
 router.post("/create_appoint", async function (req, res) {
+  let all_ids = [];
+  req.body.data.forEach(item => {
+    all_ids.push(item.procedure_id);
+    all_ids.push(...item.additional_ids);
+  });
+  const total_price = await getTotalCost(all_ids, req.body.data[0].saloon_id, req.body.promocode);
   // Prepare stripe payment session
-  const all_ids = [req.body.procedure_id, ...req.body.additional_ids];
-  const total_price = await getTotalCost(all_ids, req.body.saloon_id);
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -36,7 +40,7 @@ router.post("/create_appoint", async function (req, res) {
       cancel_url: "https://example.com/cancel",
       metadata: {
         instanceType: "appointment",
-        appointmentDetails: JSON.stringify(req.body),
+        data: JSON.stringify(req.body),
       },
     });
 

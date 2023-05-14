@@ -2,6 +2,7 @@ import { Router } from "express";
 var router = Router();
 import Stripe from "stripe";
 import * as cert from "../controllers/certificates_controller.js";
+import Certificate from "../models/certificates_model.js";
 import stripe from "../services/stripe.js";
 
 //Routing for the certificates//
@@ -25,15 +26,15 @@ router.delete("/delete_cert/:certid", function (req, res) {
 // buy certificates //
 router.post("/buy_cert", async function (req, res) {
   // Get certificate details
-  const certificate = (await cert.findOneCert(
-    req.body.certificate_id,
-    res
-  )) as any;
-  const currency = req.body.saloon_id == 3 ? "GBP" : "EUR";
+  let certificate = await Certificate.getCertById(
+    req.body.certificate_id
+  ) as any;
+  certificate = certificate[0];
+  const currency = req.body.saloon_id == 3 ? "gbp" : "eur";
   const total_price =
     req.body.saloon_id == 3
-      ? certificate.data.price_gbp
-      : certificate.data.price;
+      ? certificate.price_gbp
+      : certificate.price;
 
   // Prepare stripe payment session
   try {

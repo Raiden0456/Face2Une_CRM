@@ -489,6 +489,10 @@
                   },
                   "certificate_id": {
                     "type": "integer"
+                  },
+                  "saloon_id": {
+                    "type": "integer",
+                    "default": 1
                   }
                 }
               }
@@ -835,42 +839,6 @@
               }
             }
           } 
-        },
-        "/use_code": {
-          "post":{
-            "tags": ["Codes"],
-            "summary": "Use code and modify database, NOTE: CAN NOT BE USED BEFORE VALIDITY IS CHEKED",
-            "parameters": [
-              {
-                "in": "body",
-                "name": "body",
-                "description": "object of code params",
-                "required": true,
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email":{ 
-                      "type": "string"
-                    },
-                    "promocode": {
-                      "type": "string"
-                    },
-                    "code_type": {
-                      "type": "string"
-                    },
-                    "total_price": {
-                      "type": "number"
-                    }
-                  }
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Uses codes, e.g modifies database"
-              }
-            }
-          }
         },
         "/users": {
           "get": {
@@ -1396,21 +1364,43 @@
         "/create_appoint": {
           "post": {
             "tags": ["Appointments"],
-            "summary": "Create new appointment",
+            "summary": "Create new appointments",
             "parameters": [
               {
-              "in": "body",
-              "name": "body",
-              "description": "object of appointment",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Appointment"
+                "in": "body",
+                "name": "body",
+                "description": "object of appointments",
+                "required": true,
+                "schema":
+                {
+                  "type": "object",
+                  "properties": 
+                  {
+                    "data": 
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Appointment"
+                      }
+                    },
+                    "promocode": {
+                      "type": "object",
+                      "properties": {
+                        "email": {
+                          "type": "string"
+                        },
+                        "promocode": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
               }
-            }
             ],
             "responses": {
               "200": {
-                "description": "Create an user in appointment using JSON format"
+                "description": "Returns session id for stripe payment"
               }
             }
           }
@@ -1709,50 +1699,6 @@
               }
             }
           }
-        },
-        "/payment": {
-          "post": {
-            "tags": ["SumUp"],
-            "summary": "Proceed to payment",
-            "parameters": [
-              {
-              "in": "body",
-              "name": "body",
-              "description": "object of payment",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Payment"
-              }
-            }
-            ],
-            "responses": {
-              "200": {
-                "description": "Proceed to payment using JSON format"
-              }
-            }
-          }
-        },
-        "/webhook": {
-          "post": {
-            "tags": ["SumUp"],
-            "summary": "Webhook for SumUp",
-            "parameters": [
-              {
-              "in": "body",
-              "name": "body",
-              "description": "object of webhook",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Webhook"
-              }
-            }
-            ], 
-            "responses": {
-              "200": {
-                "description": "Webhook for SumUp"
-              }
-            }
-          }
         }
       },
     "definitions": {
@@ -1930,6 +1876,10 @@
           },
           "certificate_id": {
             "type": "number",
+            "default": null
+          },
+          "saloon_id": {
+            "type": "integer",
             "default": null
           }
         }

@@ -121,12 +121,14 @@ export async function deleteCert(id: number, res) {
 export async function buyCertificates(
   client_id: number,
   certificate_id: number,
+  saloon_id: number,
   res
 ) {
   try {
     const data = await Certificate.buyCertificate(
       client_id,
-      certificate_id
+      certificate_id,
+      saloon_id
     );
     if (data.length === 0) {
       res.status(404).json({

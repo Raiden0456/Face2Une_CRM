@@ -36,8 +36,10 @@ export async function updateAppoint(
   res
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 1);
-  appoint.total_price_gbp = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 3);
+  const cost_eur = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 1);
+  const cost_gbp = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 3);
+  appoint.total_price = cost_eur.total;
+  appoint.total_price_gbp = cost_gbp.total;
   
   Appointment.updateAppointById(appoint, (err, data) => {
     if (err)
@@ -68,24 +70,30 @@ export async function createAppoint(
     total_price_gbp: any;
     saloon_id: number;
     new_client: boolean;
-  },
-  res
+  }
 ) {
   // Get total price of appointment and add it to appoint object //
-  appoint.total_price = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 1);
-  appoint.total_price_gbp = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 3);
-  Appointment.createAppoint(appoint, (err, data) => {
-    if (err)
-      res.status(500).json({
-        success: false,
-        message:
-          err.message || "Some error occurred while creating appointment.",
-      });
-    else {
-      res.json({ success: true, data: data });
-    }
+  const cost_eur = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 1);
+  const cost_gbp = await getTotalCost([appoint.procedure_id, ...appoint.additional_ids], 3);
+  appoint.total_price = cost_eur.total;
+  appoint.total_price_gbp = cost_gbp.total;
+
+  return new Promise((resolve, reject) => {
+    Appointment.createAppoint(appoint, (err, data) => {
+      if (err) {
+        reject({
+          status: 500,
+          success: false,
+          message:
+            err.message || "Some error occurred while creating appointment."
+        });
+      } else {
+        resolve({ success: true, data: data });
+      }
+    });
   });
 }
+
 
 // Delete an appointment with the specified id in the request
 export function deleteAppoint(id: number, res) {

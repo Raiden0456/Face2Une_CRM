@@ -1,7 +1,7 @@
 import  PromoCode  from "../models/codes_model.js";
 
 // check code type and return the code object //
-export async function checkCodeType(email: string, promocode: string, res) {
+export async function checkCodeType(email: string, promocode: string, res): Promise<any> {
   const params = {
     email: email,
     promocode: promocode,
