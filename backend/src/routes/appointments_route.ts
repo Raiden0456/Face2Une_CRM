@@ -36,8 +36,8 @@ router.post("/create_appoint", async function (req, res) {
         },
       ],
       mode: "payment",
-      success_url: "https://example.com/success",
-      cancel_url: "https://example.com/cancel",
+      success_url:process.env.CORS_ORIGIN + "/success",
+      cancel_url:process.env.CORS_ORIGIN + "/cancel",
       metadata: {
         instanceType: "appointment",
         data: JSON.stringify(req.body),

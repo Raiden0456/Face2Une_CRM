@@ -327,6 +327,10 @@
                   "client_id": {
                     "type": "integer"
                   },
+                  "saloon_id": {
+                    "type": "integer",
+                    "default": 1
+                  },
                   "packages": {
                     "type": "array",
                     "items": {
