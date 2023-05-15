@@ -111,11 +111,15 @@ export const AddAppointment = () => {
     appointmentService
       .createAppointment(
         {
-          proc_id: pickedProcedure as number,
-          opt_proc_id: filterObjectToArray(pickedOptProcedures),
-          date: startDate,
-          client_id: clientID as number,
-          saloon_id: saloonID as number,
+          data: [
+            {
+              procedure_id: pickedProcedure as number,
+              additional_ids: filterObjectToArray(pickedOptProcedures),
+              reservation_date_time: startDate,
+              client_id: clientID as number,
+              saloon_id: saloonID as number,
+            },
+          ],
         },
         '/calendar',
       )
@@ -262,7 +266,6 @@ export const AddAppointment = () => {
             <div className={s.AddAppointmentForm__saloons}>
               <h3>Available Studios:</h3>
               {ProceduresStore.saloonsStatus.saloonsData?.map((saloon) => (
-
                 <Radio
                   name="saloons"
                   value={saloon.id}

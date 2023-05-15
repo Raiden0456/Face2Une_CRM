@@ -12,6 +12,7 @@ import { AuthStore } from '../store/Auth.store';
 import { handleConfirmClient } from '../hooks/handleConfirmClient';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { getCurrencySymbol } from '../utils/getCurrencySymbol';
+import { loadStripe } from '@stripe/stripe-js';
 
 import s from './ConfirmationPackage.scss';
 
@@ -51,18 +52,35 @@ export const ConfirmationPackage = () => {
   }, [AuthStore.email]);
 
   const handleConfirmation = async () => {
+    setLoading({ ...loading, global: true });
     const clientId = await handleConfirmClient({
       email: inputs.email,
       clientInfo: inputs,
       fallback: '/confirmation-package',
     });
 
+    // Stripe test key
+    const stripe = await loadStripe(process.env.STRIPE_TEST_PUBLIC_KEY as string);
+
     if (clientId) {
       appointmentService
-        .buyPack({ client_id: clientId, package_id: buyPackage.id, amount: Number(selectQuantity) })
+        .buyPack({
+          client_id: clientId,
+          package_id: buyPackage.id,
+          amount: Number(selectQuantity),
+          saloon_id: Number(localStorage.getItem('saloon')),
+        })
         .then((r) => {
-          if (r.success) {
-            console.log('Package for the Passenger Created!', r);
+          if (r.id) {
+            stripe?.redirectToCheckout({ sessionId: r.id }).then(function (result) {
+              // If `redirectToCheckout` fails due to a browser or network
+              // error, you should display the localized error message to your
+              // customer using `error.message`.
+              if (result.error) {
+                setLoading({ ...loading, global: false });
+                alert(result.error.message);
+              }
+            });
           }
         });
     }

@@ -63,17 +63,41 @@ export const Confirmation = () => {
 
   const handleConfirmation = async () => {
     setLoading({ ...loading, global: true });
+    const data = [];
+    // Main passanger
     const { proc_id, opt_proc_id, date } = mainPassanger;
     const { clientId } = userInfo;
+    const saloon_id = Number(localStorage.getItem('saloon'));
+    data.push({
+      procedure_id: proc_id,
+      additional_ids: opt_proc_id,
+      reservation_date_time: date,
+      client_id: clientId,
+      saloon_id,
+    });
+
+    // Extra passanger(-s)
+    for (let passenger of addPassangers) {
+      const { proc_id, opt_proc_id } = passenger;
+      data.push({
+        procedure_id: proc_id,
+        additional_ids: opt_proc_id,
+        reservation_date_time: date,
+        client_id: clientId,
+        saloon_id,
+      });
+    }
+
+    // Stripe test key
     const stripe = await loadStripe(process.env.STRIPE_TEST_PUBLIC_KEY as string);
+
     appointmentService
-      /* Promocode commented until back is ready */
-      // TBD: group all passangers in one appointment
-      .createAppointment({ proc_id, opt_proc_id, date, client_id: clientId /* promocode */ })
+      .createAppointment({
+        data,
+        promocode: promocode ? { email: promocode.email, promocode: promocode.promocode } : undefined,
+      })
       .then((r) => {
         if (r.id) {
-          console.log('Apponitment for Main Passenger Created!', r, stripe);
-          // Здесь нужно сделть редирект на страницу с stripe.redirectToCheckout({ sessionId: session.id });
           stripe?.redirectToCheckout({ sessionId: r.id }).then(function (result) {
             // If `redirectToCheckout` fails due to a browser or network
             // error, you should display the localized error message to your
@@ -85,15 +109,6 @@ export const Confirmation = () => {
           });
         }
       });
-
-    for (let passenger of addPassangers) {
-      const { proc_id, opt_proc_id } = passenger;
-      appointmentService.createAppointment({ proc_id, opt_proc_id, date, client_id: clientId }).then((r) => {
-        if (r.id) {
-          console.log('Apponitment for Additional Passenger Created!', r);
-        }
-      });
-    }
   };
 
   return (
@@ -110,7 +125,7 @@ export const Confirmation = () => {
                 <h2>Your reservation, {userInfo?.firstName}:</h2>
               </div>
 
-              {addPassangers?.length === 0 && <UseCode onPromocodeChange={setPromocode} />}
+              <UseCode onPromocodeChange={setPromocode} />
 
               <div className={s.Confirmation__content}>
                 <div style={{ margin: '0' }}>

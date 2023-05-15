@@ -11,13 +11,13 @@ import { AuthStore } from '../store/Auth.store';
 import { handleConfirmClient } from '../hooks/handleConfirmClient';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { getCurrencySymbol } from '../utils/getCurrencySymbol';
+import { loadStripe } from '@stripe/stripe-js';
 
 import s from './ConfirmationCertificate.scss';
 
 export const ConfirmationCertificate = () => {
   const appointmentService = new AppointmentService();
   const [certificate, setCertificate] = useState<any>(null);
-
   const [loading, setLoading] = useState({ global: false, local: false });
 
   const { inputs, handleChange, handleNumberChange, clearForm, resetForm, setInputs } = useForm({
@@ -49,18 +49,36 @@ export const ConfirmationCertificate = () => {
   }, [AuthStore.email]);
 
   const handleConfirmation = async () => {
+    setLoading({ ...loading, global: true });
     const clientId = await handleConfirmClient({
       email: inputs.email,
       clientInfo: inputs,
       fallback: '/confirmation-certificate',
     });
 
+    // Stripe test key
+    const stripe = await loadStripe(process.env.STRIPE_TEST_PUBLIC_KEY as string);
+
     if (clientId) {
-      appointmentService.buyCertificate({ client_id: clientId, certificate_id: certificate.id }).then((r) => {
-        if (r.id) {
-          console.log('Certificate for the Passenger Created!', r);
-        }
-      });
+      appointmentService
+        .buyCertificate({
+          client_id: clientId,
+          certificate_id: certificate.id,
+          saloon_id: Number(localStorage.getItem('saloon')),
+        })
+        .then((r) => {
+          if (r.id) {
+            stripe?.redirectToCheckout({ sessionId: r.id }).then(function (result) {
+              // If `redirectToCheckout` fails due to a browser or network
+              // error, you should display the localized error message to your
+              // customer using `error.message`.
+              if (result.error) {
+                setLoading({ ...loading, global: false });
+                alert(result.error.message);
+              }
+            });
+          }
+        });
     }
   };
 
