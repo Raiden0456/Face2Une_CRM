@@ -1,6 +1,6 @@
-# Face2Une CRM System
+# FaceStellar CRM System
 
-Face2Une CRM is a Customer Relationship Management system designed for the Face2Une beauty salon. The system is hosted on Heroku and can be accessed [here](https://face2une-crm-prod.herokuapp.com/).
+FaceStellar CRM is a Customer Relationship Management system designed for the FaceStellar beauty salon. The system is hosted on Heroku and can be accessed [here](https://face2une-crm-prod.herokuapp.com/).
 
 ## Tech Stack
 
@@ -31,4 +31,4 @@ Please note that the project is still under development, and more features may b
 
 ## How to Use
 
-To use the system, navigate to the [Face2Une CRM system](https://face2une-crm-prod.herokuapp.com/) on Heroku(currently offline). If you wish to contribute to the project, you can clone the repository from [GitHub](https://github.com/Raiden0456/Face2Une_CRM) and follow the instructions in the README files in the backend and frontend directories.
+To use the system, navigate to the [FaceStellar CRM system](https://face2une-crm-prod.herokuapp.com/) on Heroku(currently offline). If you wish to contribute to the project, you can clone the repository from [GitHub](https://github.com/Raiden0456/Face2Une_CRM) and follow the instructions in the README files in the backend and frontend directories.
